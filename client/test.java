@@ -1,1 +1,5 @@
-//this is a test
+package client;
+
+public class test {
+	
+}
