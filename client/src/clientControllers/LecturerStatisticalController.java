@@ -6,7 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 
-public class OngoingTestController extends BasicController{
+public class LecturerStatisticalController extends BasicController{
 
 	@FXML
 	private TableView<?> table;

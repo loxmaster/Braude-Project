@@ -14,7 +14,6 @@ public class HODFX extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-//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
 	@Override
 	public void start(Stage stage) throws Exception {
 		FXMLLoader loader = new FXMLLoader();

@@ -1,18 +1,12 @@
 package clientControllers;
 
-import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class CreateTestController {
+public class CreateTestController extends BasicController{
 
 	@FXML
 	private ScrollPane table;
@@ -21,30 +15,16 @@ public class CreateTestController {
 	void addQuestionPressed(ActionEvent event) {
 		// Open question DB screen from existing stage
 		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		AnchorPane newScene = null;
-		try {
-			newScene = FXMLLoader.load(getClass().getResource("/clientFXMLS/LecturerDBQ.fxml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Scene scene = new Scene(newScene);
+		openScreen("/clientFXMLS/LecturerDBQ.fxml", currentStage);
 		currentStage.setTitle("CEMS System - Lecturer - Create Test - Question Data Base");
-		currentStage.setScene(scene);
 	}
 
 	@FXML
 	void backPressed(ActionEvent event) {
 		// Open lecturer screen from existing stage
 		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		AnchorPane newScene = null;
-		try {
-			newScene = FXMLLoader.load(getClass().getResource("/clientFXMLS/Lecturer1.fxml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Scene scene = new Scene(newScene);
+		openScreen("/clientFXMLS/Lecturer1.fxml", currentStage);
 		currentStage.setTitle("CEMS System - Lecturer");
-		currentStage.setScene(scene);
 	}
 
 	@FXML
@@ -56,15 +36,8 @@ public class CreateTestController {
 	void logoutPressed(ActionEvent event) {
 		// open Login screen from existing stage
 		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		VBox vbox = null;
-		try {
-			vbox = FXMLLoader.load(getClass().getResource("/clientFXMLS/LoginScreen.fxml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Scene scene = new Scene(vbox);
+		openScreen("/clientFXMLS/LoginScreen.fxml", currentStage);
 		currentStage.setTitle("CEMS System - Login");
-		currentStage.setScene(scene);
 	}
 
 	@FXML
