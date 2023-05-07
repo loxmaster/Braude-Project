@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.clientControllers.CreateQuestionController">
+<children>
+    <Button layoutX="40.0" layoutY="13.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button depthTest="ENABLE" layoutX="596.0" layoutY="13.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="5.0" layoutY="513.0" mnemonicParsing="false" onAction="#addAnotherPressed" prefHeight="30.0" prefWidth="200.0" text="Confirm , Add another" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="30.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="535.0" layoutY="513.0" mnemonicParsing="false" onAction="#cancelPressed" prefHeight="30.0" prefWidth="200.0" text="Cancel" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="30.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="268.0" layoutY="505.0" mnemonicParsing="false" onAction="#confirmPressed" prefHeight="30.0" prefWidth="200.0" text="Confirm , Finish" AnchorPane.bottomAnchor="15.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="197.0" layoutY="80.0" prefHeight="30.0" prefWidth="80.0" text="Subject:" textAlignment="CENTER" AnchorPane.leftAnchor="197.0">
+         <font>
+            <Font name="Calibri Italic" size="20.0" />
+         </font>
+      </Label>
+      <ChoiceBox layoutX="285.0" layoutY="80.0" prefHeight="30.0" prefWidth="250.0" />
+      <TextArea layoutX="135.0" layoutY="125.0" prefHeight="161.0" prefWidth="581.0" AnchorPane.bottomAnchor="264.0" AnchorPane.leftAnchor="135.0" />
+      <TextField alignment="CENTER" layoutX="87.0" layoutY="300.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="210.0" AnchorPane.leftAnchor="87.0" AnchorPane.rightAnchor="34.0" />
+      <TextField layoutX="87.0" layoutY="348.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="162.0" AnchorPane.leftAnchor="87.0" AnchorPane.rightAnchor="34.0" />
+      <TextField layoutX="87.0" layoutY="399.0" maxWidth="630.0" prefHeight="40.0" prefWidth="629.0" AnchorPane.bottomAnchor="111.0" AnchorPane.leftAnchor="87.0" AnchorPane.rightAnchor="34.0" />
+      <TextField layoutX="87.0" layoutY="452.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="87.0" AnchorPane.rightAnchor="34.0" />
+      <Text layoutX="19.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question" textAlignment="CENTER" wrappingWidth="112.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="37.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" textAlignment="CENTER" AnchorPane.bottomAnchor="216.984375" AnchorPane.rightAnchor="702.6796875">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="38.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" textAlignment="CENTER" AnchorPane.bottomAnchor="168.984375" AnchorPane.rightAnchor="702.828125">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="36.0" layoutY="429.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" AnchorPane.bottomAnchor="116.984375" AnchorPane.rightAnchor="704.09375">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="37.0" layoutY="481.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D" AnchorPane.bottomAnchor="64.984375" AnchorPane.rightAnchor="701.78125">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <CheckBox layoutX="56.0" layoutY="464.0" mnemonicParsing="false" AnchorPane.bottomAnchor="64.0" AnchorPane.rightAnchor="675.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <CheckBox layoutX="56.0" layoutY="412.0" mnemonicParsing="false" AnchorPane.bottomAnchor="116.0" AnchorPane.rightAnchor="675.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <CheckBox layoutX="56.0" layoutY="361.0" mnemonicParsing="false" AnchorPane.bottomAnchor="167.0" AnchorPane.rightAnchor="675.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <CheckBox layoutX="56.0" layoutY="312.0" mnemonicParsing="false" AnchorPane.bottomAnchor="216.0" AnchorPane.rightAnchor="675.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="236.0" layoutY="55.0" prefHeight="41.0" prefWidth="240.0" text="Create Question" textAlignment="CENTER" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="36.0" />
+         </font>
+      </Label>
+      <Button layoutX="15.0" layoutY="51.0" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#helpPressed" text="Help">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font></Button>
+</children>
+</AnchorPane>
