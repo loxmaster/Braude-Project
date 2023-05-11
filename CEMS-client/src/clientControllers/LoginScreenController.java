@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 public class LoginScreenController extends BasicController {
 
 	@FXML
-	private Button loginButton;
+	private Button BtnInfo;
 
 	@FXML
 	private Label wrongLabel;

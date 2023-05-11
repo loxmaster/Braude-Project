@@ -16,6 +16,8 @@ public class BasicController {
 			e.printStackTrace();
 		}
 		Scene scene = new Scene(root);
+		scene.getStylesheets().add("/clientFXMLS/background.css");
+		//scene.getStylesheets().add(getClass().getResource("/clientFXMLS/background.css").toExternalForm());
 		currentStage.setScene(scene);
 	}
 }

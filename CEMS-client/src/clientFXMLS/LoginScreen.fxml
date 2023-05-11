@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="510.0" prefWidth="690.0" scaleShape="false" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LoginScreenController">
+<AnchorPane id="root" prefHeight="510.0" prefWidth="690.0" scaleShape="false" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LoginScreenController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="169.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="346.0" prefWidth="353.0">
          <children>
@@ -42,7 +42,7 @@
                   <Font name="Calibri Bold Italic" size="27.0" />
                </font>
             </Label>
-            <Button fx:id="loginButton" alignment="CENTER" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#pressedLogin" text="Login" textAlignment="CENTER">
+            <Button fx:id="BtnInfo" alignment="CENTER" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#pressedLogin" text="Login" textAlignment="CENTER">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>

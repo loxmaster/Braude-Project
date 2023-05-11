@@ -1,4 +1,4 @@
-package clientUI;
+package serverUI;
 
 import java.io.IOException;
 import javafx.application.Application;
@@ -26,7 +26,7 @@ public class LoginScreenFX extends Application {
 		AnchorPane root;
 		FXMLLoader loader = new FXMLLoader();
 		stage.setTitle("CEMS System - Login");
-		loader.setLocation(getClass().getResource("/clientFXMLS/LoginScreen.fxml"));
+		loader.setLocation(getClass().getResource("/serverFXMLS/LoginScreen.fxml"));
 		try {
 			root = loader.load();
 		} catch (IOException e) {

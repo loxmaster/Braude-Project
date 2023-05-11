@@ -1,4 +1,4 @@
-package clientHandler;
+package clientHandlers;
 
 // This file contains material supporting section 3.7 of the textbook:
 // "Object Oriented Software Engineering" and is issued under the open-source
@@ -52,6 +52,7 @@ public class ChatClient extends AbstractClient {
    */
   public void handleMessageFromServer(Object msg) // changed
   {
+    System.out.println("--> handleMessageFromServer");
   }
 
   /**

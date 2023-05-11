@@ -4,14 +4,7 @@ package serverHandler;
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
-import java.io.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import serverOcsf.*;;
+import serverOcsf.*;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
@@ -51,63 +44,8 @@ public class EchoServer extends AbstractServer {
 	 * @param client The connection from which the message originated.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		Connection conn = null;
-		Statement stmt;
-
-		if (msg instanceof String) {
-			String tempQuery = (String) msg;
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
-				System.out.println("Driver definition succeed");
-			} catch (Exception ex) {
-				/* handle the error */
-				System.out.println("Driver definition failed");
-			}
-			try {
-				conn = DriverManager.getConnection("jdbc:mysql://localhost/lab6schema?serverTimezone=IST", "root",
-						"02587595mM!");
-				System.out.println("SQL connection succeed");
-			} catch (SQLException ex) {// handle any errors
-				System.out.println("SQLException: " + ex.getMessage());
-				System.out.println("SQLState: " + ex.getSQLState());
-				System.out.println("VendorError: " + ex.getErrorCode());
-			}
-
-			if (tempQuery.contains("SELECT")) {
-				// Search existing student
-				try {
-					stmt = conn.createStatement();
-					ResultSet result = stmt.executeQuery(tempQuery);
-					if (result.next()) {
-						int tempID = result.getInt(1);
-						String name = result.getString(2);
-						System.out.println("Got from query: " + name);
-						this.sendToAllClients("Query got: " + name + " ID - " + tempID);
-					} else {
-						System.out.println("Query didnt find anything.");
-						this.sendToAllClients("Query didnt find anything.");
-					}
-				} catch (SQLException e) {
-					System.out.println("Query Failed");
-					e.printStackTrace();
-				}
-			}
-			if (tempQuery.contains("UPDATE")) {
-				// Update existing student
-				try {
-					stmt = conn.createStatement();
-					stmt.executeUpdate(tempQuery);
-					System.out.println("Database Updated.");
-					this.sendToAllClients("Database Updated.");
-				} catch (SQLException e) {
-					System.out.println("Update Failed");
-					e.printStackTrace();
-				}
-			}
-		} else {
-			System.out.println("Message received: " + msg + " from " + client);
-			this.sendToAllClients(msg);
-		}
+		System.out.println("Message received: " + msg + " from " + client);
+		this.sendToAllClients(msg);
 	}
 
 	/**

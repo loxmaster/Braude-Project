@@ -18,7 +18,7 @@ public class HODFX extends Application {
 	public void start(Stage stage) throws Exception {
 		FXMLLoader loader = new FXMLLoader();
 		stage.setTitle("CEMS System - Head Of Department");
-		loader.setLocation(getClass().getResource("/client/clientFXMLS/HOD.fxml"));
+		loader.setLocation(getClass().getResource("/clientFXMLS/HOD.fxml"));
 		AnchorPane newScene = null;
 		try {
 			newScene = loader.load();
