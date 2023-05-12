@@ -1,0 +1,8 @@
+#BtnInfo {
+    -fx-background-color: skyblue;
+	-fx-text-fill: rgb(104, 29, 29);
+}
+
+.root {
+    -fx-background-image: url('/clientFXML/background.jpg');
+}
