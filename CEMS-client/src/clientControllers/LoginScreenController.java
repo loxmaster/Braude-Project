@@ -2,7 +2,7 @@ package clientControllers;
 
 import java.io.IOException;
 
-import clientHandlers.StudentUI;
+import clientHandlers.ClientUI;
 import clientHandlers.ClientHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class LoginScreenController extends BasicController {
@@ -33,7 +34,7 @@ public class LoginScreenController extends BasicController {
 	private PasswordField passTextbox;
 
 	@FXML
-	void pressedLogin(ActionEvent event) {
+	void pressedLogin(ActionEvent event) throws IOException {
 		email = emailTextbox.getText();
 		password = passTextbox.getText();
 		System.out.println(email + " " + password);
@@ -41,13 +42,21 @@ public class LoginScreenController extends BasicController {
 			setVisibleFalse();
 		else {
 			// verify students credintials
-			StudentUI.chat.acceptLogin(email, password);
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					ClientUI.chat.loginVarification(email, password);
+				}
+			});
 			//
+			t.start();
 			try {
 				Thread.sleep(1000);
+				t.join();
 			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			
+			//
+
 			if (!ClientHandler.user.getIsFound()) {
 				setVisibleFalse();
 				System.out.println("user not found! (loginscreencontroller)");
@@ -55,33 +64,58 @@ public class LoginScreenController extends BasicController {
 				// if found loading the student screen
 				switch (ClientHandler.user.getType()) {
 					case "student": {
-						Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-						StudentScreenController ssc = new StudentScreenController();
+						((Node) event.getSource()).getScene().getWindow().hide();
+						Stage currentStage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						AnchorPane root = loader.load(getClass().getResource("/clientFXMLS/StudentScreen.fxml").openStream());
+						StudentScreenController ssc = loader.getController();
 						ssc.loadStudent(ClientHandler.user);
+						Scene scene = new Scene(root);
+						scene.getStylesheets().add(getClass().getResource("/clientFXMLS/background.css").toExternalForm());
 						System.out.println("Opening Student screen...");
-						openScreen("/clientFXMLS/StudentScreen.fxml", currentStage);
 						currentStage.setTitle("CEMS System - Student");
+						currentStage.setScene(scene);
+						currentStage.show();
 						break;
 					}
 
 					case "lecturer": {
-						Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-						LecturerController lsc = new LecturerController();
-						lsc.loadLecturer(ClientHandler.user);
+						((Node) event.getSource()).getScene().getWindow().hide();
+						Stage currentStage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						AnchorPane root = loader.load(getClass().getResource("/clientFXMLS/Lecturer1.fxml").openStream());
+						LecturerController lc = loader.getController();
+						lc.loadLecturer(ClientHandler.user);
+						Scene scene = new Scene(root);
+						scene.getStylesheets().add(getClass().getResource("/clientFXMLS/background.css").toExternalForm());
 						System.out.println("Opening Lecturer screen...");
-						openScreen("/clientFXMLS/Lecturer1.fxml", currentStage);
 						currentStage.setTitle("CEMS System - Lecturer");
+						currentStage.setScene(scene);
+						currentStage.show();
 						break;
 					}
 
-					case "hod":
-						Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-						HODController ssc = new HODController();
-						// ssc.loadHod(HodHandler.student);
+					case "hod": {
+						((Node) event.getSource()).getScene().getWindow().hide();
+						Stage currentStage = new Stage();
+						FXMLLoader loader = new FXMLLoader();
+						AnchorPane root = loader.load(getClass().getResource("/clientFXMLS/HOD.fxml").openStream());
+						// HODController hoc = loader.getController();
+						// hoc.loadHOD(ClientHandler.user);
+						Scene scene = new Scene(root);
+						scene.getStylesheets().add(getClass().getResource("/clientFXMLS/background.css").toExternalForm());
 						System.out.println("Opening HOD screen...");
-						openScreen("/clientFXMLS/HOD.fxml", currentStage);
 						currentStage.setTitle("CEMS System - Head Of The Department");
+						currentStage.setScene(scene);
+						currentStage.show();
 						break;
+					}
+
+					default: {
+						setVisibleFalse();
+						System.out.println("some is wrong with database");
+					}
+
 				}
 			}
 

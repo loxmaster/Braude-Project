@@ -5,7 +5,7 @@ public class User {
     private String username, password;
     private String pName, lName, email, Department, type;
     private boolean isOnline, isFound;
-
+    
     public String getType() {
         return type;
     }

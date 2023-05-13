@@ -4,8 +4,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import logic.User;
 
 public class HODController extends BasicController {
+	private User  hod;
+	
+	public void loadHod(User user) {
+		hod = user;
+    }
 
 	@FXML
 	void HodStatisticalPressed(ActionEvent event) {

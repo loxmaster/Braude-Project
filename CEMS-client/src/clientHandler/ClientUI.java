@@ -4,17 +4,25 @@ import clientControllers.LoginScreenController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class StudentUI extends Application {
-    public static StudentController chat;
+public class ClientUI extends Application {
+    public static ClientController chat;
  
     public static void main(String[] args) {
         launch(args);
-    }
-
+    } 
+ 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        chat = new StudentController("localhost", 5555);
+        chat = new ClientController("localhost", 5555);
         LoginScreenController loginController = new LoginScreenController();
         loginController.start(primaryStage);
     }
 }
+/**
+ * To Do:
+ * 
+ * Add question from DB to table
+ * Add buttons to edit the question (or other methods)
+ * Update the question text, number.
+ * 
+ */

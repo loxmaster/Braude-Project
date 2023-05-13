@@ -8,21 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-// This file contains material supporting section 3.7 of the textbook:
-// "Object Oriented Software Engineering" and is issued under the open-source
-// license found at www.lloseng.com 
-
 import serverOcsf.*;
 
 /**
  * This class overrides some of the methods in the abstract superclass in order
  * to give more functionality to the server.
- *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
- * @author Paul Holden
- * @version July 2000
  */
 public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
@@ -44,7 +34,7 @@ public class EchoServer extends AbstractServer {
 	public EchoServer(int port) {
 		super(port);
 	}
-	// Instance methods ************************************************
+	// Methods ************************************************
 
 	/**
 	 * This method handles any messages received from the client.
@@ -55,37 +45,125 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		System.out.println("Message received: " + msg + " from " + client);
 		ResultSet result;
-		String notFound = "Not Found";
+		String notFound = "Not Found", res;
 		if (msg instanceof ArrayList) {
 			ArrayList<String> list = (ArrayList<String>) msg;
-			try {
-				stmt = conn.createStatement();
-				result = stmt.executeQuery("SELECT * FROM users  WHERE (`email` = '" + list.get(0) + "');");
-				// maybe seperate username and password (correct username but wrong password)
-				if (result.next()) { // && result2.next())
-					// check if the password in the DB is the same as user input
-					if (result.getString(2).equals(list.get(1))) {
-						String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
-						System.out.println("Message sent back: " + res);
-						client.sendToClient((Object) res);
-					}
-				} else {
-					// The user is not in the database (not registered)
-					// or incorrect password
-					System.out.println("user has not been found!");
-					client.sendToClient((Object) notFound);
+
+			if (list.get(0).equals("lecturersubjects")) {
+				// gets lecturer subjects
+				try {
+					ArrayList<String> resList = getSubjectsFromDBForLecturer(list.get(1), "lecturersubjects");
+					if (resList == null)
+						client.sendToClient((Object) notFound);
+					client.sendToClient((Object) resList);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} catch (IOException e2) {
+					e2.printStackTrace();
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (IOException ioe) {
-				ioe.printStackTrace();
+			} else if (list.get(0).equals("lecturerquestions")) {
+				// gets all lecturer questions from db
+				try {
+					ArrayList<String> resList = getQuestionsFromDBForLecturer(list.get(1), "lecturerquestions");
+					if (resList == null)
+						client.sendToClient((Object) notFound);
+					client.sendToClient((Object) resList);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (IOException eq) {
+					eq.printStackTrace();
+				}
+			}
+			
+			else {
+				try {
+					// user login authentication
+					//String resultQuery = AuthenticateUser(list);
+					stmt = conn.createStatement();
+					result = stmt.executeQuery(list.get(0));
+					if (result.next()) {
+						// check if the password in the DB is the same as user input
+						if (result.getString(2).equals(list.get(2))) {
+							res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
+							System.out.println("Message sent back: " + res);
+							client.sendToClient((Object) res);
+						}
+					} else {
+						// The user is not in the database (not registered)
+						// or incorrect password
+						System.out.println("user has not been found!");
+						client.sendToClient((Object) notFound);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (IOException ioe) {
+					ioe.printStackTrace();
+				}
 			}
 		} else {
-			try {
-				client.sendToClient(msg);
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (msg instanceof String) {
+				String query = (String) msg;
+				res = "allsubjects,";
+				boolean hasFound = false;
+				try {
+					stmt = conn.createStatement();
+					result = stmt.executeQuery(query);
+					while (result.next()) {
+						hasFound = true;
+						res += result.getString(1) + ",";
+					}
+					if (!hasFound) {
+						client.sendToClient((Object) notFound);
+					}
+					System.out.println("Sent back: " + res);
+					client.sendToClient((Object) res);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					client.sendToClient(msg);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
+		}
+	}
+ 
+	// gets questions from db
+	// SELECT questiontext FROM projecton.questions WHERE ( `lecturer` = 'noah' );
+	private ArrayList<String> getQuestionsFromDBForLecturer(String query, String out) throws SQLException {
+		stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(query);
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out);
+		while (result.next()) {
+			// check if the password in the DB is the same as user input
+			res.add(result.getString(1));
+			return res;
+		} 
+		System.out.println("Message sent back: " + res);
+		if (res.size() == 1) 
+			return null;
+		return res;
+		// [lecturerquestions , why? , ...]
+	}
+	
+	// gets subjects from db
+	private ArrayList<String> getSubjectsFromDBForLecturer(String query, String out) throws SQLException {
+		stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(query);
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out);
+		if (result.next()) {
+			// check if the password in the DB is the same as user input
+			res.add(result.getString(1));
+			System.out.println("Message sent back: " + res);
+			return res;
+		} else {
+			return null;
 		}
 	}
 
@@ -121,8 +199,6 @@ public class EchoServer extends AbstractServer {
 		System.out.println("Server has stopped listening for connections.");
 	}
 
-	// Class methods ***************************************************
-
 	/**
 	 * This method is responsible for the creation of the server instance (there is
 	 * no UI in this phase).
@@ -148,4 +224,3 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 }
-// End of EchoServer class

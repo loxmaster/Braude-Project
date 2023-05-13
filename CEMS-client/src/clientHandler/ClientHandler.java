@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import clientControllers.LoginScreenController;
+import clientControllers.LecturerController;
 import clientOcsf.*;
 
 /**
@@ -15,8 +15,10 @@ import clientOcsf.*;
 public class ClientHandler extends AbstractClient {
 
   /**
-   * The interface type variable. It allows the implementation of
-   * the display method in the client.
+   * @param client       interface type variable. It allows the implementation of
+   *                     the display method in the client.
+   * @param User         static variable to remember localy the data about user.
+   * @param subjectsList static arrayList of all the subjects available.
    */
 
   ChatIF client;
@@ -32,6 +34,12 @@ public class ClientHandler extends AbstractClient {
 
   // Methods ****************************************************
 
+  public static void resetClientData() {
+    user = new User();
+    LecturerController.subjectsList = new ArrayList<String>();
+    LecturerController.questions = new ArrayList<String>();
+  }
+
   /**
    * This method handles all data that comes in from the server.
    *
@@ -39,19 +47,50 @@ public class ClientHandler extends AbstractClient {
    */
   public void handleMessageFromServer(Object msg) {
     System.out.println("got message: " + msg);
-    if (msg.toString().equals("Not Found")) {
+    String[] res;
+    ArrayList<String> list;
+    
+    if (msg instanceof ArrayList) {
+      list = ((ArrayList<String>) msg);
+
+      if (list.get(0).equals("lecturersubjects")) {
+        res = list.get(1).split(",");
+        for (String s : res) {
+          LecturerController.subjectsList.add(s.toUpperCase());
+        }
+      }
+
+      else if (list.get(0).equals("lecturerquestions")) {
+        for (int i = 1 ; i < list.size() ; i++) {
+          LecturerController.questions.add(list.get(i));
+        }
+      }
+
+    }
+
+    else if (msg.toString().equals("Not Found")) {
       System.out.println("Not Found in handler");
       user.setIsFound(false);
-    } else {
-      String[] res = ((String) msg).toString().split("\\s");
+    }
+
+    else if (msg.toString().contains("allsubjects")) {
+      res = ((String) msg).toString().split(",");
+      for (int i = 1; i < res.length; i++)
+        LecturerController.subjectsList.add(res[i].toUpperCase());
+    }
+
+    else {
+      // ["str","asd"]
+      res = ((String) msg).toString().split("\\s");
       user.setUsername(res[0]);
       user.setPassword(res[1]);
       user.setType(res[2]);
       // rest of the shit in the table
       user.setIsFound(true);
     }
-    // notify the client
-    // LoginScreenController.notify();
+
+    // notify the client to wake him up to tell him that the handler is done
+    // client.notify();
     System.out.println("--> messageFromServerHandled");
   }
 
@@ -67,22 +106,69 @@ public class ClientHandler extends AbstractClient {
       client.display("Could not send message to server.  Terminating client.");
       quit();
     }
-  } 
+  }
 
   /**
    * Handles the message received from the client login user interface
    *
-   * @param message The message from the UI.
+   * @param email    email entered.
+   * @param password password entered.
    */
-  public void handleMessageFromLoginUI(Object email, Object password) {
+  public void handleMessageFromLoginUI(Object username, Object password) {
 
     ArrayList<String> credentials = new ArrayList<String>();
-    credentials.addAll(Arrays.asList((String) email, (String) password));
+    String query = "SELECT * FROM users  WHERE (`username` = '" + username + "');";
+    credentials.addAll(Arrays.asList(query, (String) username, (String) password));
     try {
       sendToServer((Object) credentials);
     } catch (IOException e) {
       client.display("Could not send message to server.  Terminating client.");
       quit();
+    }
+  }
+
+  /**
+   * Handles the message received from the lecturer user interface
+   * gets all the subjects.
+   */
+  public void handleMessageFromLecturerUI() {
+    String query = "SELECT DISTINCT subjectname FROM subjectcourses;";
+    // SELECT courses FROM projecton.lecturer WHERE (`username` = 'noah');
+    try {
+      sendToServer((Object) query);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Handles the message received from the lecturer user interface
+   * gets all the subjects for the lecturer.
+   */
+  public void handleMessageFromLecturerUI(Object username) {
+    String query = "SELECT courses FROM projecton.lecturer WHERE (`username` = '" + (String) username + "');";
+    ArrayList<String> list = new ArrayList<String>();
+    list.addAll(Arrays.asList("lecturersubjects", query));
+    try {
+      sendToServer((Object) list);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Handles the message received from the lecturer user interface
+   * gets all the questions for the lecturer.
+   */
+  public void GetLeturersQuestions(String username) {
+    
+    ArrayList<String> list = new ArrayList<String>();
+    list.add("lecturerquestions");
+    list.add("SELECT questiontext FROM projecton.questions WHERE ( `lecturer` = '" + username + "' );");
+    try {
+      sendToServer((Object) list);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
@@ -96,4 +182,5 @@ public class ClientHandler extends AbstractClient {
     }
     System.exit(0);
   }
+
 }

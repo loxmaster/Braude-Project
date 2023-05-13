@@ -2,22 +2,19 @@ package clientHandlers;
 
 import java.io.*;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
-public class StudentController implements ChatIF {
+public class ClientController implements ChatIF {
     // Class variables *************************************************
 
     /**
-     * The default port to connect on.
+     * @param DEFAULT_PORT the default port to connect on.
+     * @param client       The instance of the client that created this
+     *                     ClientController.
      */
     final public static int DEFAULT_PORT = 5555;
-
-    // Instance variables **********************************************
-
-    /**
-     * The instance of the client that created this ConsoleChat.
-     */
     ClientHandler client;
- 
+
     // Constructors ****************************************************
 
     /**
@@ -26,7 +23,7 @@ public class StudentController implements ChatIF {
      * @param host The host to connect to.
      * @param port The port to connect on.
      */
-    public StudentController(String host, int port) {
+    public ClientController(String host, int port) {
         try {
             client = new ClientHandler(host, port, this);
         } catch (IOException exception) {
@@ -54,13 +51,14 @@ public class StudentController implements ChatIF {
             }
         }
     }
- 
+
     /**
-     * input from the login screen.
-     * @param email user email
+     * Accepts user input from the login screen.
+     * 
+     * @param email    user email
      * @param password user password
      */
-    public void acceptLogin(Object email, Object password) {
+    public void loginVarification(Object email, Object password) {
         try {
             // pass email and password to the client for authentication
             client.handleMessageFromLoginUI(email, password);
@@ -68,14 +66,28 @@ public class StudentController implements ChatIF {
             System.out.println("Unexpected error while reading from UI!");
             ex.printStackTrace();
         }
-
     }
+
+    // gets all subject available
+    public void getAllSubjects() {
+        client.handleMessageFromLecturerUI();
+    }
+
+    // gets subject for specific lecturer
+    public void getSubjectsForLecturer(Object username) {
+        client.handleMessageFromLecturerUI(username);
+    }
+
+    //gets all of specific lecturer questions
+    public void GetLeturersQuestions(String username) {
+        client.GetLeturersQuestions(username);
+    }
+
 
     /**
      * Method to send question information to DataBase
-     * 
      */
-    public void sendQuestion() {
+    public void sendQuestion(ArrayList<String> list) {
         String query = "INSERT INTO `projecton`.`questions` (`id`, `subject`, `course name`, `question text`, `question number`, `lecturer`) VALUES ('00', 'Math', 'Calculus 1', 'how are you ?', '1', 'Misha');";
         client.handleMessageFromClientUI(query);
     }
@@ -87,8 +99,7 @@ public class StudentController implements ChatIF {
      * @param message The string to be displayed.
      */
     @Override
-    public void display(Object message) // this
-    {
+    public void display(Object message) {
         if (message instanceof ResultSet) {
             ResultSet result = (ResultSet) message;
             try {
@@ -100,4 +111,5 @@ public class StudentController implements ChatIF {
         } else
             System.out.println("> " + (String) message.toString());
     }
+
 }

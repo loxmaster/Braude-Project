@@ -1,24 +1,65 @@
 package clientControllers;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import clientHandlers.ClientHandler;
+import clientHandlers.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import logic.User;
 
 public class LecturerController extends BasicController {
-	User lecturer = new User();
-	
+	// idk if lecturer is needed , can be accessed through ClientHandler
+	public User lecturer;
+	public static ArrayList<String> subjectsList = new ArrayList<String>();
+	public static ArrayList<String> questions = new ArrayList<String>();
+
 	@FXML
+	private Button BtnInfo;
+
+	@FXML
+	private Label welcomeLabel;
+
+	public User getLecturer() {
+		return lecturer;
+	}
+
+	public void setLecturer(User lecturer) {
+		this.lecturer = lecturer;
+	}
+
+	@FXML 
 	private TextArea textBox;
+
+	public void loadLecturer(User user) {
+		// get all the data for subjects
+		// thread here
+		lecturer = user;
+		ClientUI.chat.getSubjectsForLecturer((Object)lecturer.getUsername());
+		welcomeLabel.setText(welcomeLabel.getText() + " " + lecturer.getUsername().toUpperCase() + " !"); // lasim lev leshanot le name ve lo username
+	}
+
+	@FXML
+	void QuestionPressed(ActionEvent event) throws IOException {
+		// go to options screen
+		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+		openScreen("/clientFXMLS/LecturerOptions.fxml", currentStage);
+		currentStage.setTitle("CEMS System - Lecturer - Questions");
+		
+	}
 
 	@FXML
 	void CheckTheTestsPressed(ActionEvent event) {
 		// open Test Check screen from existing stage
 		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Check Tests");
+		currentStage.setTitle("CEMS System - Lecturer - Check Tests");
 	}
 
 	@FXML
@@ -35,14 +76,7 @@ public class LecturerController extends BasicController {
 		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 		openScreen("/clientFXMLS/LoginScreen.fxml", currentStage);
 		currentStage.setTitle("CEMS System - Login");
-	}
-
-	@FXML
-	void CreateQuestionPressed(ActionEvent event) {
-		// Open Create Question screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/LecturerCreateQ.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Lecturer - Create Questions");
+		ClientHandler.resetClientData();
 	}
 
 	@FXML
@@ -68,9 +102,5 @@ public class LecturerController extends BasicController {
 		openScreen("/clientFXMLS/LecturerStatistical.fxml", currentStage);
 		currentStage.setTitle("CEMS System - Lecturer - Statistical Information");
 	}
-
-    public void loadLecturer(User user) {
-		lecturer = user; 
-    }
 
 }
