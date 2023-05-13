@@ -1,0 +1,3 @@
+[submodule "cems.client"]
+	path = cems.client
+	url = ./cems.client
