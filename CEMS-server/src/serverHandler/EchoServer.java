@@ -142,13 +142,12 @@ public class EchoServer extends AbstractServer {
 		while (result.next()) {
 			// check if the password in the DB is the same as user input
 			res.add(result.getString(1));
-			return res;
 		} 
 		System.out.println("Message sent back: " + res);
 		if (res.size() == 1) 
 			return null;
 		return res;
-		// [lecturerquestions , why? , ...]
+		// ["lecturerquestions" , why? , ...]
 	}
 	
 	// gets subjects from db

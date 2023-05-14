@@ -1,5 +1,7 @@
 package logic;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 public class QuestionModel {
@@ -11,7 +13,18 @@ public class QuestionModel {
         id = 0;
         this.question = question;
         answer = null;
-        edit = null;
+        edit = new Button();
+        edit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// remember all the shit of the question 
+                // send to EditQuestionScreen
+			}
+        });
+        edit.setText("Edit");
+        edit.setId("BtnInfo");
+        edit.setPrefWidth(60);
+        edit.setPrefHeight(20);
     }
     public int getId() {
         return id;

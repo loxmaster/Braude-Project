@@ -4,18 +4,16 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
-import clientHandlers.ClientHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+
 
 public class CreateQuestionController extends BasicController {
 
@@ -96,9 +94,7 @@ public class CreateQuestionController extends BasicController {
 	@FXML
 	void cancelPressed(ActionEvent event) {
 		// Opens lecturer screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/Lecturer1.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Lecturer");
+		openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
 	}
 
 	@FXML
@@ -107,19 +103,14 @@ public class CreateQuestionController extends BasicController {
 	}
 
 	@FXML
-	void logoutPressed(ActionEvent event) {
-		// open Login screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/LoginScreen.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Login");
-		ClientHandler.resetClientData();
+	void LogoutPressed(ActionEvent event) {
+		logoutPressed(event);
 	}
 
 	@FXML
 	void backPressed(ActionEvent event) {
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/LecturerOptions.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Lecturer");
+		// goes back to options screen
+		openScreen("/clientFXMLS/LecturerOptions.fxml", "CEMS System - Lecturer", event);
 	}
 
 }

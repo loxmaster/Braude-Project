@@ -2,23 +2,21 @@ package clientControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.stage.Stage;
 import logic.User;
+
+@SuppressWarnings("unused")
 
 public class HODController extends BasicController {
 	private User  hod;
 	
-	public void loadHod(User user) {
+	public void loadHOD(User user) {
 		hod = user;
     }
 
 	@FXML
 	void HodStatisticalPressed(ActionEvent event) {
 		// open Statistical screen screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/HodStatisticScrene.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Head Of Department - Statistics");
+		openScreen("/clientFXMLS/HodStatisticScrene.fxml", "CEMS System - Head Of Department - Statistics", event);
 	}
 
 	@FXML
@@ -27,19 +25,15 @@ public class HODController extends BasicController {
 	}
 
 	@FXML
-	void logoutPressed(ActionEvent event) {
+	void LogoutPressed(ActionEvent event) {
 		// open Login screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/LoginScreen.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Login");
+		logoutPressed(event);
 	}
 
 	@FXML
 	void permissionsPressed(ActionEvent event) {
 		// open Permissions screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/HodPermission.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Head Of Department - Permissions");
+		openScreen("/clientFXMLS/HodPermission.fxml", "CEMS System - Head Of Department - Permissions", event);
 	}
 
 }

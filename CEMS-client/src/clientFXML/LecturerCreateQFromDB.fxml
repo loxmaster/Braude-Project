@@ -17,7 +17,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button depthTest="ENABLE" layoutX="596.0" layoutY="13.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+      <Button depthTest="ENABLE" layoutX="596.0" layoutY="13.0" mnemonicParsing="false" onAction="#LogoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>

@@ -2,9 +2,8 @@ package clientControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
-import javafx.stage.Stage;
+
 
 public class CreateTestController extends BasicController {
 
@@ -14,17 +13,13 @@ public class CreateTestController extends BasicController {
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
 		// Open question DB screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/LecturerDBQ.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Lecturer - Create Test - Question Data Base");
+		openScreen("/clientFXMLS/LecturerDBQ.fxml", "CEMS System - Lecturer - Create Test - Question Data Base", event);
 	}
 
 	@FXML
 	void backPressed(ActionEvent event) {
 		// Open lecturer screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/Lecturer1.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Lecturer");
+		openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
 	}
 
 	@FXML
@@ -33,11 +28,9 @@ public class CreateTestController extends BasicController {
 	}
 
 	@FXML
-	void logoutPressed(ActionEvent event) {
+	void LogoutPressed(ActionEvent event) {
 		// open Login screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/LoginScreen.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Login");
+		logoutPressed(event);
 	}
 
 	@FXML

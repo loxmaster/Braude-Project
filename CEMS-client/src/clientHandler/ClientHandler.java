@@ -111,7 +111,7 @@ public class ClientHandler extends AbstractClient {
   /**
    * Handles the message received from the client login user interface
    *
-   * @param email    email entered.
+   * @param username username entered.
    * @param password password entered.
    */
   public void handleMessageFromLoginUI(Object username, Object password) {

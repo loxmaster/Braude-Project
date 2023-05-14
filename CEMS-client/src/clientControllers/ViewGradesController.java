@@ -2,9 +2,7 @@ package clientControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.ToggleButton;
-import javafx.stage.Stage;
 
 public class ViewGradesController extends BasicController {
 
@@ -13,17 +11,13 @@ public class ViewGradesController extends BasicController {
 
     @FXML
     void LogOutPressed(ActionEvent event) {
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        openScreen("/clientFXMLS/LoginScreen.fxml", currentStage);
-        currentStage.setTitle("CEMS System - Login");
+        logoutPressed(event);
     }
 
     @FXML
     void backButtonPressed(ActionEvent event) {
-        // Loading student main screen from existing stage
-        Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        openScreen("/clientFXMLS/StudentScreen.fxml", currentStage);
-        currentStage.setTitle("CEMS System - Student");
+        // Loading student main screen 
+        openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student", event);
     }
 
 }

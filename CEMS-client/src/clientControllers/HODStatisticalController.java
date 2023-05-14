@@ -2,17 +2,13 @@ package clientControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.stage.Stage;
 
 public class HODStatisticalController extends BasicController {
 
 	@FXML
 	void backPressed(ActionEvent event) {
 		// open HOD screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/HOD.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Head Of Department");
+		openScreen("/clientFXMLS/HOD.fxml", "CEMS System - Head Of Department", event);
 	}
 
 	@FXML
@@ -22,34 +18,27 @@ public class HODStatisticalController extends BasicController {
 
 	@FXML
 	void infoOnLecturerPressed(ActionEvent event) {
-		// open Student Statistic screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/HODStatisticOnLecturer.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Login");
+		// open Student Statistic screen 
+		openScreen("/clientFXMLS/HODStatisticOnLecturer.fxml", "CEMS System - Head Of Department - Statistics On Lecturer", event);
 	}
 
 	@FXML
 	void infoOnStudentPressed(ActionEvent event) {
-		// open Student Statistic screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/HODStatisticOnStudent.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Login");
+		// open Student Statistic screen 
+		openScreen("/clientFXMLS/HODStatisticOnStudent.fxml", "CEMS System - Head Of Department - Statistics On Student", event);
 	}
 
 	@FXML
 	void infoOnSubjectPressed(ActionEvent event) {
-		// open Subject Statistic screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/HODStatisticOnSubject.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Login");
+		// open Subject Statistic screen 
+		openScreen("/clientFXMLS/HODStatisticOnSubject.fxml", "CEMS System - Head Of Department - Statistics On Subject", event);
+		
 	}
 
 	@FXML
-	void logoutPressed(ActionEvent event) {
-		// open Login screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/LoginScreen.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Login");
+	void LogoutPressed(ActionEvent event) {
+		// open Login screen 
+		logoutPressed(event);
 	}
 
 	@FXML

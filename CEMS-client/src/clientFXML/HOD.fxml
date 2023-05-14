@@ -38,7 +38,7 @@
             <Insets top="15.0" />
          </padding>
       </VBox>
-      <Button layoutX="474.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+      <Button layoutX="474.0" layoutY="14.0" mnemonicParsing="false" onAction="#LogoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>

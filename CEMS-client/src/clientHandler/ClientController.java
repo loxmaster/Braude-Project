@@ -79,7 +79,7 @@ public class ClientController implements ChatIF {
     }
 
     //gets all of specific lecturer questions
-    public void GetLeturersQuestions(String username) {
+    public void GetLecturersQuestions(String username) {
         client.GetLeturersQuestions(username);
     }
 

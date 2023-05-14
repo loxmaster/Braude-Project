@@ -2,9 +2,7 @@ package clientControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 public class EnterCodeForTestController extends BasicController {
 
@@ -12,27 +10,21 @@ public class EnterCodeForTestController extends BasicController {
 	private TextField code;
 
 	@FXML
-	void backPressed(ActionEvent event) {
-		// Opens student screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/StudentScreen.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Student");
+	void BackPressed(ActionEvent event) {
+		// Opens student screen
+		openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student", event);
 	}
 
 	@FXML
-	void logoutPressed(ActionEvent event) {
-		// Opens login screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/LoginScreen.fxml", currentStage);
-		currentStage.setTitle("CEMS System - Login");
+	void LogOutPressed(ActionEvent event) {
+		// Opens login screen
+		logoutPressed(event);
 	}
 
 	@FXML
-	void submitPressed(ActionEvent event) {
-		// Opens Student Give ID screen from existing stage
-		Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-		openScreen("/clientFXMLS/StudentGivesID.fxml", currentStage);
-		currentStage.setTitle("CEMS - Enter ID For Exam");
+	void SubmitPressed(ActionEvent event) {
+		// Opens Student Give ID screen
+		openScreen("/clientFXMLS/StudentGivesID.fxml", "CEMS - Enter ID For Exam", event);
 	}
 
 }

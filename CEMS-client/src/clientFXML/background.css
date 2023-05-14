@@ -4,5 +4,5 @@
 }
 
 .root {
-    -fx-background-image: url('/clientFXML/background.jpg');
+    -fx-background-image: url('\background.jpg');
 }
