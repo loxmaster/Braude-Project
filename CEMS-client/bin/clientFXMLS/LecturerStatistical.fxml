@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.clientControllers.LecturerStatisticalController">
+<children>
+    <Button layoutX="10.0" layoutY="3.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button depthTest="ENABLE" layoutX="540.0" layoutY="3.0" mnemonicParsing="false" onAction="#LogOutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Label alignment="CENTER" layoutX="186.0" layoutY="55.0" prefHeight="41.0" prefWidth="340.0" text="Statistical Informatrion" textAlignment="CENTER" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="36.0" />
+         </font>
+      </Label>
+      <TableView layoutX="161.0" layoutY="78.0" prefHeight="457.0" prefWidth="720.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+        <columns>
+          <TableColumn prefWidth="96.0" text="Test ID" />
+          <TableColumn prefWidth="92.0" text="Average" />
+            <TableColumn prefWidth="104.0" text="Median" />
+            <TableColumn prefWidth="152.0" text="Subject" />
+            <TableColumn prefWidth="125.0" text="Date" />
+            <TableColumn prefWidth="150.0" text="Grade Distribution" />
+        </columns>
+      </TableView>
+</children>
+</AnchorPane>

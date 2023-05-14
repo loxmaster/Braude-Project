@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.clientControllers.StudentExamController">
+   <children>
+      <TextField alignment="CENTER" layoutX="165.0" layoutY="14.0" text="Exam">
+         <font>
+            <Font name="Calibri Bold Italic" size="36.0" />
+         </font>
+      </TextField>
+      <ScrollPane fx:id="pane" layoutX="5.0" layoutY="124.0" prefHeight="376.0" prefWidth="740.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+      <ChoiceBox fx:id="qComboBox" layoutX="200.0" layoutY="92.0" prefWidth="150.0" />
+      <Button layoutX="658.0" layoutY="511.0" minHeight="30.0" minWidth="130.0" mnemonicParsing="false" onAction="#submitPressed" text="Submit" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="605.0" AnchorPane.rightAnchor="15.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <TextField layoutX="14.0" layoutY="87.0" prefHeight="29.0" prefWidth="159.0" text="Question Number:">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="29.0" layoutY="513.0" prefHeight="29.0" prefWidth="484.0" text="Please make sure you answered all questions and Good Luck" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="15.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>
