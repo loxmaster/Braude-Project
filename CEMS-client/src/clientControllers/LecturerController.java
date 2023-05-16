@@ -9,13 +9,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import logic.QuestionModel;
 import logic.User;
 
 public class LecturerController extends BasicController {
 	// idk if lecturer is needed , can be accessed through ClientHandler
 	public User lecturer;
 	public static ArrayList<String> subjectsList = new ArrayList<String>();
-	public static ArrayList<String> questions = new ArrayList<String>();
+	public static ArrayList<QuestionModel> questions = new ArrayList<QuestionModel>();
 
 	@FXML
 	private Button BtnInfo;

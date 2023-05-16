@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.clientControllers.HODStatisticOnLecturerController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.HODStatisticOnLecturerController">
 <children>
       <ComboBox fx:id="comboBox" layoutX="316.0" layoutY="57.0" prefHeight="30.0" prefWidth="250.0" />
       <Label layoutX="236.0" layoutY="57.0" prefHeight="30.0" prefWidth="80.0" text="Lecturer:">
@@ -21,7 +21,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button depthTest="ENABLE" layoutX="540.0" layoutY="3.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+      <Button depthTest="ENABLE" layoutX="540.0" layoutY="3.0" mnemonicParsing="false" onAction="#LogoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
