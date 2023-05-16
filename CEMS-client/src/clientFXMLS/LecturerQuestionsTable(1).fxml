@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="837.0" prefWidth="1227.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LecturerQuestionsTableController">
+<children>
+    <Button fx:id="BtnInfo" layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="BtnInfo" depthTest="ENABLE" layoutX="482.0" layoutY="5.0" mnemonicParsing="false" onAction="#LogoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Label alignment="CENTER" layoutX="235.0" layoutY="75.0" prefHeight="41.0" prefWidth="170.0" text="Your Question " textAlignment="CENTER" AnchorPane.leftAnchor="235.0" AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="75.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="36.0" />
+         </font>
+      </Label>
+      <Button fx:id="BtnInfo" layoutX="145.0" layoutY="10.0" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#helpPressed" text="Help">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font></Button>
+      <ScrollPane layoutX="310.0" layoutY="242.0" prefHeight="605.0" prefWidth="1207.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+         <content>
+            <TableView id="table" fx:id="table" prefHeight="601.0" prefWidth="1201.0">
+              <columns>
+                <TableColumn id="id" fx:id="id" prefWidth="76.0" text="Question ID" />
+                  <TableColumn id="subject" fx:id="subject" prefWidth="52.0" text="Subject" />
+                  <TableColumn id="coursename" fx:id="coursename" prefWidth="82.0" text="Course Name" />
+                  <TableColumn id="questiontext" fx:id="questiontext" prefWidth="168.0" text="Question Text" />
+                  <TableColumn id="questionnumber" fx:id="questionnumber" minWidth="5.0" prefWidth="123.0" text="Question Number" />
+                  <TableColumn id="lecturer" fx:id="lecturer" prefWidth="74.0" text="lecturer" />
+                  <TableColumn id="edit" fx:id="edit" prefWidth="66.0" text="Edit" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </content>
+      </ScrollPane>
+</children>
+</AnchorPane>

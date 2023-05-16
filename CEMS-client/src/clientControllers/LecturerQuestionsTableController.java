@@ -12,7 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import logic.QuestionModel;
 
-public class LecturerQuestionsTableController extends BasicController{
+public class LecturerQuestionsTableController extends BasicController {
 
     @FXML
     private Button BtnInfo;
@@ -21,35 +21,47 @@ public class LecturerQuestionsTableController extends BasicController{
     private TableView<QuestionModel> table;
     
     @FXML
-    private TableColumn<QuestionModel, String> answer;
+    private TableColumn<QuestionModel, String> id;
+
+    @FXML
+    private TableColumn<QuestionModel, String> subject;
+
+    @FXML
+    private TableColumn<QuestionModel, String> coursename;
+
+    @FXML
+    private TableColumn<QuestionModel, String> questiontext;
+
+    @FXML
+    private TableColumn<QuestionModel, String> questionnumber;
+
+    @FXML
+    private TableColumn<QuestionModel, String> lecturer;
 
     @FXML
     private TableColumn<QuestionModel, Button> edit;
 
-    @FXML
-    private TableColumn<QuestionModel, Integer> id;
 
-    @FXML
-    private TableColumn<QuestionModel, String> question;
+    public void loadTable(ArrayList<QuestionModel> question) {
 
-    public void loadTable(ArrayList<String> list) {
-
-        answer.setCellValueFactory(new PropertyValueFactory<>("Answer"));
-        edit.setCellValueFactory(new PropertyValueFactory<>("Edit"));
         id.setCellValueFactory(new PropertyValueFactory<>("Id"));
-        question.setCellValueFactory(new PropertyValueFactory<>("Question"));
+        subject.setCellValueFactory(new PropertyValueFactory<>("Subject"));
+        coursename.setCellValueFactory(new PropertyValueFactory<>("Coursename"));
+        questiontext.setCellValueFactory(new PropertyValueFactory<>("Questiontext"));
+        questionnumber.setCellValueFactory(new PropertyValueFactory<>("Questionnumber"));
+        lecturer.setCellValueFactory(new PropertyValueFactory<>("Lecturer"));
+        edit.setCellValueFactory(new PropertyValueFactory<>("Edit"));
 
-        ArrayList<QuestionModel> qList = new ArrayList<QuestionModel>();
-        for (String s : list) {
-            qList.add(new QuestionModel(s));
-        }
-        ObservableList<QuestionModel> questions = FXCollections.observableArrayList(qList);
-        table.setItems(questions);
+        ObservableList<QuestionModel> questionList = FXCollections.observableArrayList(LecturerController.questions);
+        table.setItems(questionList);
     }
 
     @FXML
     void backPressed(ActionEvent event) {
-
+    	// return to table view from 'Edit Question'
+    			//((Node) event.getSource()).getScene().getWindow().hide();
+    			openScreen("/clientFXMLS/LecturerOptions.fxml", "CEMS System - Lecturer", event);
+    			// TODO see if the return works
     }
 
     @FXML
