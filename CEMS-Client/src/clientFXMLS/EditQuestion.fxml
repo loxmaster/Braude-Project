@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="651.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.EditQuestionController">
+<children>
+    <Button fx:id="BtnInfo" layoutX="40.0" layoutY="13.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="BtnInfo" depthTest="ENABLE" layoutX="596.0" layoutY="13.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="BtnInfo" layoutX="535.0" layoutY="513.0" mnemonicParsing="false" onAction="#cancelPressed" prefHeight="34.0" prefWidth="151.0" text="Cancel" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="30.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="BtnInfo" layoutX="37.0" layoutY="501.0" mnemonicParsing="false" onAction="#SavePressed" prefHeight="34.0" prefWidth="151.0" text="Save" AnchorPane.bottomAnchor="15.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="200.0" layoutY="141.0" prefHeight="30.0" prefWidth="80.0" text="Subject:" textAlignment="CENTER" AnchorPane.leftAnchor="200.0">
+         <font>
+            <Font name="Calibri Italic" size="20.0" />
+         </font>
+      </Label>
+      <TextArea fx:id="body" layoutX="135.0" layoutY="125.0" prefHeight="161.0" prefWidth="581.0" AnchorPane.bottomAnchor="264.0" AnchorPane.leftAnchor="135.0" />
+      <TextField fx:id="qA" alignment="CENTER" layoutX="93.0" layoutY="403.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="208.0" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="28.0" />
+      <TextField fx:id="qB" layoutX="93.0" layoutY="451.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="28.0" />
+      <TextField fx:id="qC" layoutX="93.0" layoutY="502.0" maxWidth="630.0" prefHeight="40.0" prefWidth="629.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="28.0" />
+      <TextField fx:id="qD" layoutX="93.0" layoutY="555.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="56.0" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="28.0" />
+      <Text layoutX="14.0" layoutY="311.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question" textAlignment="CENTER" wrappingWidth="112.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="31.0" layoutY="431.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" textAlignment="CENTER" AnchorPane.bottomAnchor="215.984375" AnchorPane.rightAnchor="834.6796875">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="32.0" layoutY="479.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" textAlignment="CENTER" AnchorPane.bottomAnchor="167.984375" AnchorPane.rightAnchor="834.828125">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="31.0" layoutY="531.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" AnchorPane.bottomAnchor="115.984375" AnchorPane.rightAnchor="835.09375">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <Text layoutX="31.0" layoutY="583.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D" AnchorPane.bottomAnchor="63.984375" AnchorPane.rightAnchor="833.78125">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+      <CheckBox fx:id="D" layoutX="48.0" layoutY="563.0" mnemonicParsing="false" AnchorPane.bottomAnchor="63.0" AnchorPane.rightAnchor="806.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="C" layoutX="48.0" layoutY="511.0" mnemonicParsing="false" AnchorPane.bottomAnchor="115.0" AnchorPane.rightAnchor="806.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="B" layoutX="48.0" layoutY="460.0" mnemonicParsing="false" AnchorPane.bottomAnchor="166.0" AnchorPane.rightAnchor="806.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <CheckBox fx:id="A" layoutX="48.0" layoutY="411.0" mnemonicParsing="false" AnchorPane.bottomAnchor="215.0" AnchorPane.rightAnchor="806.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="200.0" layoutY="72.0" prefHeight="41.0" prefWidth="240.0" text="Edit Question" textAlignment="CENTER" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="72.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="36.0" />
+         </font>
+      </Label>
+      <Button fx:id="BtnInfo" layoutX="148.0" layoutY="13.0" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#helpPressed" text="Help">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font></Button>
+      <ComboBox fx:id="subjectCombobox" layoutX="280.0" layoutY="141.0" prefHeight="30.0" prefWidth="190.0" />
+      <Label layoutX="514.0" layoutY="141.0" prefHeight="30.0" prefWidth="101.0" text="Question Number:">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font>
+      </Label>
+      <TextField fx:id="qNumber" alignment="CENTER" layoutX="620.0" layoutY="141.0" prefHeight="30.0" prefWidth="86.0" />
+</children>
+</AnchorPane>
