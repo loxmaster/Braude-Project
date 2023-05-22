@@ -25,7 +25,9 @@ public class BasicController {
 	 * @param event the triger event
 	 */ 
 	public BasicController openScreen(String fxml, String title ,ActionEvent event) {
-		((Node) event.getSource()).getScene().getWindow().hide();
+		if(event != null){
+			((Node) event.getSource()).getScene().getWindow().hide();
+		}
 		AnchorPane root = null;
 		Stage currentStage = new Stage();
 		FXMLLoader loader = new FXMLLoader();
@@ -35,7 +37,7 @@ public class BasicController {
 			e.printStackTrace();
 		}
 		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/clientFXMLS/background.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource("/gui/Stylesheet.css").toExternalForm());
 		currentStage.setScene(scene);
 		currentStage.setTitle(title);
 		currentStage.show();

@@ -40,8 +40,12 @@ public class LoginScreenController extends BasicController {
 		ClientUI.chat.openConnection();
 
 		// gest text from fields
-		username = emailTextbox.getText();
-		password = passTextbox.getText();
+		//username = emailTextbox.getText();
+		// // password = passTextbox.getText();
+		// emailTextbox.setText("noah");
+		// passTextbox.setText("123456");
+		username = "noah";
+		password = "123456";
 		System.out.println("Entered: " + username + " " + password);
 
 		if (username.trim().isEmpty() || password.trim().isEmpty())
@@ -101,11 +105,6 @@ public class LoginScreenController extends BasicController {
 	}
 
 	public void start(Stage stage) throws IOException {
-		Parent root = FXMLLoader.load(getClass().getResource("/clientFXMLS/LoginScreen.fxml"));
-		Scene scene = new Scene(root);
-		scene.getStylesheets().add(getClass().getResource("/clientFXMLS/background.css").toExternalForm());
-		stage.setTitle("CEMS - Login");
-		stage.setScene(scene);
-		stage.show();
+		openScreen("/clientFXMLS/LoginScreen.fxml", "CEMS - Login", null) ;
 	}
 }
