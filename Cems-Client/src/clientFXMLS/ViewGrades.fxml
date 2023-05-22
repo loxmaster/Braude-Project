@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.ViewGradesController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.ViewGradesController">
    <children>
       <ToggleButton layoutX="46.0" layoutY="29.0" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#backButtonPressed" text="back" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0">
          <font>

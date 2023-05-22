@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LecturerOptionsController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LecturerOptionsController">
 <children>
   <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="150.0" layoutY="87.0" prefHeight="36.0" prefWidth="332.0" style="&#10;" text="Select Option" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0">
     <font>
@@ -39,11 +39,6 @@
          </cursor>
       </VBox>
       <Button fx:id="BtnInfo" layoutX="474.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
-         </font>
-      </Button>
-      <Button fx:id="BtnInfo" layoutX="150.0" layoutY="14.0" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#HelpPressed" text="Help" AnchorPane.leftAnchor="150.0" AnchorPane.topAnchor="14.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>

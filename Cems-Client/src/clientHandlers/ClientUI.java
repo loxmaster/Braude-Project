@@ -18,3 +18,4 @@ public class ClientUI extends Application {
         loginController.start(primaryStage);
     }
 }
+

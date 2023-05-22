@@ -4,10 +4,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CheckTestController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CheckTestController">
 <children>
     <Button layoutX="10.0" layoutY="3.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0">
          <font>
@@ -19,12 +20,12 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Label alignment="CENTER" layoutX="186.0" layoutY="55.0" prefHeight="41.0" prefWidth="340.0" text="Check Test" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="145.0" AnchorPane.topAnchor="30.0">
+      <Label alignment="CENTER" layoutX="145.0" layoutY="109.0" prefHeight="41.0" prefWidth="340.0" text="Check Test" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="145.0" AnchorPane.topAnchor="109.0">
          <font>
             <Font name="Calibri Bold Italic" size="36.0" />
          </font>
       </Label>
-      <TableView fx:id="table" layoutX="161.0" layoutY="76.0" prefHeight="459.0" prefWidth="670.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="76.0">
+      <TableView fx:id="table" layoutX="161.0" layoutY="159.0" prefHeight="464.0" prefWidth="720.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="159.0">
         <columns>
           <TableColumn prefWidth="120.0" text="Test ID" />
           <TableColumn prefWidth="120.0" text="Subject" />
@@ -34,5 +35,6 @@
             <TableColumn prefWidth="106.0" text="checked" />
         </columns>
       </TableView>
+      <ImageView fitHeight="82.0" fitWidth="166.0" layoutX="274.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
 </children>
 </AnchorPane>

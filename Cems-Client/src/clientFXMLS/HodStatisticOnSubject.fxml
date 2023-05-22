@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="550.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.HODStatisticOnSubjectController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.HODStatisticOnSubjectController">
 <children>
       <ComboBox fx:id="comboBox" layoutX="306.0" layoutY="57.0" prefHeight="30.0" prefWidth="250.0" />
       <Label layoutX="236.0" layoutY="57.0" prefHeight="30.0" prefWidth="80.0" text="Subject:">

@@ -6,18 +6,14 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="651.0" prefWidth="876.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.EditQuestionController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.EditQuestionController">
 <children>
-    <Button fx:id="BtnInfo" layoutX="40.0" layoutY="13.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
-         </font>
-      </Button>
-      <Button fx:id="BtnInfo" depthTest="ENABLE" layoutX="596.0" layoutY="13.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+      <Button fx:id="BtnInfo" depthTest="ENABLE" layoutX="1138.0" layoutY="83.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="83.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
@@ -32,12 +28,12 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="200.0" layoutY="141.0" prefHeight="30.0" prefWidth="80.0" text="Subject:" textAlignment="CENTER" AnchorPane.leftAnchor="200.0">
+      <Label layoutX="285.0" layoutY="191.0" prefHeight="30.0" prefWidth="80.0" text="Subject:" textAlignment="CENTER" AnchorPane.leftAnchor="285.0">
          <font>
             <Font name="Calibri Italic" size="20.0" />
          </font>
       </Label>
-      <TextArea fx:id="body" layoutX="135.0" layoutY="125.0" prefHeight="161.0" prefWidth="581.0" AnchorPane.bottomAnchor="264.0" AnchorPane.leftAnchor="135.0" />
+      <TextArea fx:id="body" layoutX="136.0" layoutY="259.0" prefHeight="161.0" prefWidth="1116.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="136.0" />
       <TextField fx:id="qA" alignment="CENTER" layoutX="93.0" layoutY="403.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="208.0" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="28.0" />
       <TextField fx:id="qB" layoutX="93.0" layoutY="451.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="28.0" />
       <TextField fx:id="qC" layoutX="93.0" layoutY="502.0" maxWidth="630.0" prefHeight="40.0" prefWidth="629.0" AnchorPane.bottomAnchor="109.0" AnchorPane.leftAnchor="93.0" AnchorPane.rightAnchor="28.0" />
@@ -47,61 +43,58 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="31.0" layoutY="431.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" textAlignment="CENTER" AnchorPane.bottomAnchor="215.984375" AnchorPane.rightAnchor="834.6796875">
+      <Text layoutX="37.0" layoutY="502.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" textAlignment="CENTER" AnchorPane.bottomAnchor="213.984375" AnchorPane.rightAnchor="1232.6796875">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <Text layoutX="32.0" layoutY="479.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" textAlignment="CENTER" AnchorPane.bottomAnchor="167.984375" AnchorPane.rightAnchor="834.828125">
+      <Text layoutX="38.0" layoutY="550.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" textAlignment="CENTER" AnchorPane.bottomAnchor="165.984375" AnchorPane.rightAnchor="1232.828125">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <Text layoutX="31.0" layoutY="531.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" AnchorPane.bottomAnchor="115.984375" AnchorPane.rightAnchor="835.09375">
+      <Text layoutX="38.0" layoutY="602.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" AnchorPane.bottomAnchor="113.984375" AnchorPane.rightAnchor="1232.09375">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <Text layoutX="31.0" layoutY="583.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D" AnchorPane.bottomAnchor="63.984375" AnchorPane.rightAnchor="833.78125">
+      <Text layoutX="37.0" layoutY="654.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D" AnchorPane.bottomAnchor="61.984375" AnchorPane.rightAnchor="1231.78125">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <CheckBox fx:id="D" layoutX="48.0" layoutY="563.0" mnemonicParsing="false" AnchorPane.bottomAnchor="63.0" AnchorPane.rightAnchor="806.0">
+      <CheckBox fx:id="D" layoutX="55.0" layoutY="634.0" mnemonicParsing="false" AnchorPane.bottomAnchor="61.0" AnchorPane.rightAnchor="1203.0">
          <font>
             <Font size="16.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="C" layoutX="48.0" layoutY="511.0" mnemonicParsing="false" AnchorPane.bottomAnchor="115.0" AnchorPane.rightAnchor="806.0">
+      <CheckBox fx:id="C" layoutX="55.0" layoutY="582.0" mnemonicParsing="false" AnchorPane.bottomAnchor="113.0" AnchorPane.rightAnchor="1203.0">
          <font>
             <Font size="16.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="B" layoutX="48.0" layoutY="460.0" mnemonicParsing="false" AnchorPane.bottomAnchor="166.0" AnchorPane.rightAnchor="806.0">
+      <CheckBox fx:id="B" layoutX="55.0" layoutY="531.0" mnemonicParsing="false" AnchorPane.bottomAnchor="164.0" AnchorPane.rightAnchor="1203.0">
          <font>
             <Font size="16.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="A" layoutX="48.0" layoutY="411.0" mnemonicParsing="false" AnchorPane.bottomAnchor="215.0" AnchorPane.rightAnchor="806.0">
+      <CheckBox fx:id="A" layoutX="55.0" layoutY="482.0" mnemonicParsing="false" AnchorPane.bottomAnchor="213.0" AnchorPane.rightAnchor="1203.0">
          <font>
             <Font size="16.0" />
          </font>
       </CheckBox>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="200.0" layoutY="72.0" prefHeight="41.0" prefWidth="240.0" text="Edit Question" textAlignment="CENTER" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="72.0">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="206.0" layoutY="127.0" prefHeight="41.0" prefWidth="240.0" text="Edit Question" textAlignment="CENTER" AnchorPane.leftAnchor="206.0" AnchorPane.rightAnchor="194.0" AnchorPane.topAnchor="127.0">
          <font>
             <Font name="Calibri Bold Italic" size="36.0" />
          </font>
       </Label>
-      <Button fx:id="BtnInfo" layoutX="148.0" layoutY="13.0" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#helpPressed" text="Help">
-         <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
-         </font></Button>
-      <ComboBox fx:id="subjectCombobox" layoutX="280.0" layoutY="141.0" prefHeight="30.0" prefWidth="190.0" />
-      <Label layoutX="514.0" layoutY="141.0" prefHeight="30.0" prefWidth="101.0" text="Question Number:">
+      <ComboBox fx:id="subjectCombobox" layoutX="456.0" layoutY="191.0" prefHeight="30.0" prefWidth="190.0" />
+      <Label layoutX="773.0" layoutY="198.0" prefHeight="30.0" prefWidth="101.0" text="Question Number:">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
       </Label>
-      <TextField fx:id="qNumber" alignment="CENTER" layoutX="620.0" layoutY="141.0" prefHeight="30.0" prefWidth="86.0" />
+      <TextField fx:id="qNumber" alignment="CENTER" layoutX="905.0" layoutY="198.0" prefHeight="30.0" prefWidth="86.0" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="13.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" />
 </children>
 </AnchorPane>
