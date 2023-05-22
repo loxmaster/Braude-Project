@@ -11,12 +11,12 @@
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.HODController">
 <children>
-  <Label alignment="CENTER" layoutX="140.0" layoutY="106.0" prefHeight="36.0" prefWidth="332.0" style="&#10;" text="Welcome back , User !" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="160.0">
+  <Label alignment="CENTER" layoutX="150.0" layoutY="178.0" prefHeight="36.0" prefWidth="332.0" style="&#10;" text="Welcome back , User !" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0">
     <font>
       <Font name="Calibri Bold Italic" size="31.0" />
     </font>
   </Label>
-      <VBox alignment="CENTER" fillWidth="false" layoutX="200.0" layoutY="160.0" prefHeight="341.0" prefWidth="350.0" spacing="30.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="160.0">
+      <VBox alignment="CENTER" fillWidth="false" layoutX="200.0" layoutY="270.0" prefHeight="401.0" prefWidth="880.0" spacing="30.0" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="270.0">
          <children>
             <Button alignment="CENTER" mnemonicParsing="false" onAction="#HodStatisticalPressed" prefHeight="30.0" prefWidth="250.0" text="Statistical information" textAlignment="CENTER">
                <font>
@@ -31,6 +31,14 @@
                   <Font name="Calibri Bold Italic" size="18.0" />
                </font>
             </Button>
+            <Button mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout">
+               <font>
+                  <Font name="Calibri Bold Italic" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="100.0" />
+               </VBox.margin>
+            </Button>
          </children>
          <cursor>
             <Cursor fx:constant="MOVE" />
@@ -39,11 +47,16 @@
             <Insets top="15.0" />
          </padding>
       </VBox>
-      <Button layoutX="474.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="logo" layoutX="570.0" layoutY="37.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="exitbutton" layoutX="1130.0" layoutY="27.0" maxWidth="26.0" minWidth="26.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="26.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
 </children>
 </AnchorPane>

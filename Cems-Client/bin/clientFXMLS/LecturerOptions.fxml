@@ -10,12 +10,27 @@
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LecturerOptionsController">
 <children>
-  <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="150.0" layoutY="87.0" prefHeight="36.0" prefWidth="332.0" style="&#10;" text="Select Option" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0">
-    <font>
-      <Font name="Calibri Bold Italic" size="31.0" />
-    </font>
-  </Label>
-      <VBox alignment="CENTER" layoutX="60.0" layoutY="132.0" prefHeight="340.0" prefWidth="300.0" style="-fx-border-color: black;" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="132.0">
+      <Label alignment="CENTER" layoutX="143.0" layoutY="141.0" prefHeight="41.0" prefWidth="464.0" text="Select Option" textAlignment="CENTER" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="141.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="31.0" />
+         </font>
+      </Label>
+      <Button fx:id="BtnInfo" layoutX="10.0" layoutY="3.0" mnemonicParsing="false" onAction="#backToLecturer" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" maxWidth="26.0" minWidth="26.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="26.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="logo" layoutX="580.0" layoutY="20.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <VBox alignment="CENTER" layoutX="60.0" layoutY="190.0" prefHeight="508.0" prefWidth="880.0" AnchorPane.bottomAnchor="22.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="190.0">
          <children>
             <Button fx:id="BtnInfo" mnemonicParsing="false" onAction="#CreateQuestionPressed" prefHeight="30.0" prefWidth="250.0" text="Create Questions">
                <font>
@@ -38,15 +53,5 @@
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </VBox>
-      <Button fx:id="BtnInfo" layoutX="474.0" layoutY="14.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
-         </font>
-      </Button>
-      <Button fx:id="BtnInfo" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToLecturer" prefHeight="34.0" prefWidth="120.0" text="Back">
-         <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
-         </font>
-      </Button>
 </children>
 </AnchorPane>

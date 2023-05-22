@@ -20,8 +20,8 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <ComboBox fx:id="comboBox" layoutX="307.0" layoutY="57.0" prefHeight="30.0" prefWidth="250.0" />
-      <Label layoutX="213.0" layoutY="57.0" prefHeight="30.0" prefWidth="103.0" text="Student ID:">
+      <ComboBox fx:id="comboBox" layoutX="562.0" layoutY="194.0" prefHeight="30.0" prefWidth="250.0" />
+      <Label layoutX="468.0" layoutY="194.0" prefHeight="30.0" prefWidth="103.0" text="Student ID:">
          <font>
             <Font name="Calibri" size="20.0" />
          </font>
@@ -31,12 +31,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button depthTest="ENABLE" layoutX="540.0" layoutY="3.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
-         </font>
-      </Button>
-      <Label alignment="CENTER" layoutX="143.0" layoutY="7.0" prefHeight="41.0" prefWidth="464.0" text="Statistical Informatrion On Student" textAlignment="CENTER" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="7.0">
+      <Label alignment="CENTER" layoutX="157.0" layoutY="135.0" prefHeight="41.0" prefWidth="464.0" text="Statistical Informatrion On Student" textAlignment="CENTER" AnchorPane.leftAnchor="157.0" AnchorPane.rightAnchor="129.0" AnchorPane.topAnchor="135.0">
          <font>
             <Font name="Calibri Bold Italic" size="31.0" />
          </font>
@@ -50,5 +45,15 @@
             <TableColumn prefWidth="140.0" text="Grade" />
         </columns>
       </TableView>
+      <Button fx:id="logo" layoutX="554.0" layoutY="24.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="exitbutton" layoutX="1240.0" layoutY="24.0" maxWidth="26.0" minWidth="26.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="26.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
 </children>
 </AnchorPane>

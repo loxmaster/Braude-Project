@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 
@@ -30,6 +31,7 @@ public class BasicController {
 		}
 		AnchorPane root = null;
 		Stage currentStage = new Stage();
+		currentStage.initStyle(StageStyle.UNDECORATED); 
 		FXMLLoader loader = new FXMLLoader();
 		try {
 			root = loader.load(getClass().getResource(fxml).openStream());
