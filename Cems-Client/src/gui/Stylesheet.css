@@ -1,45 +1,142 @@
-#BtnInfo {
-    /* -fx-background-color: skyblue;
-	-fx-text-fill: rgb(104, 29, 29); */
-
-    -fx-background-color:
-    #c3c4c4,
-    linear-gradient(#d6d6d6 50%, white 100%),
-    radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);
--fx-background-radius: 5;
--fx-background-insets: 0,1,1;
--fx-text-fill: black;
--fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
-}
+/* ....................IMAGES_BACKGROUNDS........................ */
 
 .root {
     -fx-background-image: url('\background.jpg');
 }
 
-#exitbutton{
-	-fx-background-image: url("exit.jpg");
-	-fx-background-color: transparent;
+#logo{
+
+	-fx-background-image: url("logo2.jpg");
+	-fx-background-color: transparent; 
+	-fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+	-fx-min-width: 265px;
+    -fx-min-height: 100px;
+    -fx-max-width: 265px;
+    -fx-max-height: 100px;
+	
 }
 
-.combo-box{
-	-fx-focus-color: transparent;
-	-fx-text-box-border: transparent;
-	-fx-opacity: 90%;
-	-fx-background-color: #ececec;
-	-fx-text-fill: black;
-	-fx-prompt-text-fill: #ff0000;
-}
-
-.choice-box {
-	-fx-focus-color: transparent;
-	-fx-text-box-border: transparent;
-	-fx-opacity: 90%;
-	-fx-background-color: #ececec;
-	-fx-text-fill: black;
-	-fx-prompt-text-fill: #00ff37;
-}
+/* ............................BUTTONS................................ */
 
 .button {
+	-fx-padding: 8px 16px;
+	-fx-font-size: 12px;
+	-fx-font-weight: bold;
+	-fx-text-align: center;
+	-fx-text-decoration: none;
+	-fx-text-transform: uppercase;
+	-fx-text-fill: rgb(0, 0, 0);
+	-fx-background-color:
+		#c3c4c4,
+		linear-gradient(#d4a7ff 50%, rgb(203, 122, 250) 100%),
+		radial-gradient(center 50% -40%, radius 200%, #e9d6ff 45%, rgba(230,230,230,0) 50%);	-fx-background-radius: 50px;
+	-fx-background-radius: 30px;
+	-fx-border-color: transparent;
+	-fx-border-radius: 30px;
+	-fx-transition-duration: 0.3s;
+	-fx-cursor: hand;
+	-fx-max-height: 30px;
+  }
+  
+  .button:hover {
+	-fx-background-color: #ff7f50;
+  }
+  
+  .button:pressed {
+	-fx-translate-y: 4px;
+  }
+
+#exitbutton{
+	-fx-padding: 12px 24px;
+	-fx-font-size: 16px;
+	-fx-font-weight: bold;
+	-fx-text-align: center;
+	-fx-text-decoration:none;
+	-fx-text-transform: uppercase;
+	-fx-text-fill: rgb(0, 0, 0);
+	-fx-background-color:
+		#c3c4c4,
+		linear-gradient(#d4a7ff 50%, rgb(203, 122, 250) 100%),
+		radial-gradient(center 50% -40%, radius 200%, #e9d6ff 45%, rgba(230,230,230,0) 50%);	-fx-background-radius: 50px;
+	-fx-border-color: transparent;
+	-fx-border-radius: 50px;
+	-fx-transition-duration: 0.3s;
+	-fx-cursor: hand;
+} 
+
+#exitbutton:hover {
+	-fx-background-color: #ff1500; /* Lighter shade of red on hover */
+  }
+  
+#exitbutton:pressed {
+	-fx-translate-y: 4px;
+  }
+
+#loginbutton {
+	-fx-padding: 12px 24px;
+	-fx-font-size: 16px;
+	-fx-font-weight: bold;
+	-fx-text-align: center;
+	-fx-text-decoration:none;
+	-fx-text-transform: uppercase;
+	-fx-text-fill: rgb(0, 0, 0);
+	-fx-background-color:
+		#c3c4c4,
+		linear-gradient(#d4a7ff 50%, rgb(203, 122, 250) 100%),
+		radial-gradient(center 50% -40%, radius 200%, #e9d6ff 45%, rgba(230,230,230,0) 50%);	-fx-background-radius: 50px;
+	-fx-background-radius: 50px;
+	-fx-border-color: transparent;
+	-fx-border-radius: 50px;
+	-fx-transition-duration: 0.3s;
+	-fx-cursor: hand;
+  }
+  
+  #loginbutton:hover {
+	-fx-background-color: #29a70a;
+  }
+
+  #savebutton:hover {
+	-fx-background-color: #29a70a;
+  }
+  
+  #loginbutton:pressed {
+	-fx-translate-y: 4px;
+  }
+
+  #Logout {
+	-fx-padding: 12px 24px;
+	-fx-font-size: 16px;
+	-fx-font-weight: bold;
+	-fx-text-align: center;
+	-fx-text-decoration: none;
+	-fx-text-transform: uppercase;
+	-fx-text-fill: rgb(0, 0, 0);
+	-fx-background-color:
+		#c3c4c4,
+		linear-gradient(#d4a7ff 50%, rgb(203, 122, 250) 100%),
+		radial-gradient(center 50% -40%, radius 200%, #e9d6ff 45%, rgba(230,230,230,0) 50%);	-fx-background-radius: 50px;
+	-fx-background-radius: 50px;
+	-fx-border-color: transparent;
+	-fx-border-radius: 50px;
+	-fx-transition-duration: 0.3s;
+	-fx-cursor: hand;
+  }
+  
+  #Logout:hover {
+	-fx-background-color: #ff1500; /* Lighter shade of red on hover */
+  }
+
+  #cancelbutton:hover {
+	-fx-background-color: #ff1500; /* Lighter shade of red on hover */
+  }
+  
+  #Logout:pressed {
+	-fx-translate-y: 4px;
+  }
+  
+  #editbutton {
     -fx-background-color:
             #c3c4c4,
             linear-gradient(#d6d6d6 50%, white 100%),
@@ -48,18 +145,17 @@
     -fx-background-insets: 0,1,1;
     -fx-text-fill: black;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
+	-fx-background-radius: 50px;
+
 }
 
+#editbutton:pressed {
+	-fx-translate-y: 1px;
+  }
+  
 
-.scroll-pane {
-	-fx-background-color: transparent;
-	-fx-hbar-policy: never;
-	-fx-vbar-policy: never;
-}
-.scroll-pane > .viewport {
-	-fx-background-color: transparent;
-}
 
+/* ............................TABLES................................ */
 
 .table-view{
 	-fx-background-color: radial-gradient(center 50% 50%, radius 100%, rgba(255, 255, 255, 0.77), transparent);
@@ -152,3 +248,72 @@
 	-fx-background-color: #f602bc;
 	-fx-background-radius: 15px;
 }
+
+/* ...........................PANES............................... */
+.scroll-pane {
+	-fx-background-color: transparent;
+	-fx-hbar-policy: never;
+	-fx-vbar-policy: never;
+}
+.scroll-pane > .viewport {
+	-fx-background-color: transparent;
+}
+
+/* ............................BOX................................ */
+
+.combo-box {
+	-fx-background-color: #ffffff;
+	-fx-background-radius: 5px;
+	-fx-padding: 5px;
+  }
+  
+  .combo-box .arrow-button {
+	-fx-background-color: transparent;
+	-fx-background-radius: 0;
+  }
+  
+  .combo-box .arrow-button:hover {
+	-fx-background-color: #e0e0e0;
+  }
+  
+  .combo-box .list-view {
+	-fx-background-color: #ffffff;
+	-fx-background-radius: 5px;
+	-fx-padding: 0;
+  }
+  
+  .combo-box .list-cell:hover {
+	-fx-background-color: #e0e0e0;
+  }
+  
+  .combo-box .list-cell:filled:selected {
+	-fx-background-color: #b3d9ff;
+  }
+
+
+  /* ..................text................. */
+
+  
+  .text-field {
+	-fx-background-color: #ffffff;
+	-fx-background-radius: 5px;
+	-fx-border-color: #000000;
+	-fx-border-radius: 5px;
+	-fx-padding: 5px;
+	-fx-font-size: 16px;
+	-fx-font-weight: bold;
+	-fx-font-family: "Calibri";
+  }
+  
+  .text-field:focused {
+	-fx-border-color: #178113;
+  }
+  
+  .text-field:hover {
+	-fx-border-color: #4561ff;
+  }
+  
+  .text-field:disabled {
+	-fx-opacity: 0.6;
+  }
+  

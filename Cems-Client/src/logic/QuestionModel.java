@@ -59,7 +59,7 @@ public class QuestionModel implements Serializable {
             }
         });
 
-        edit.setId("BtnInfo");
+        edit.setId("editbutton");
         edit.setPrefWidth(60);
         edit.setPrefHeight(20);
     }

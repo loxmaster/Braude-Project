@@ -10,34 +10,39 @@
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.HODPermissionController">
 <children>
-    <Button layoutX="10.0" layoutY="3.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="10.0">
+    <Button layoutX="10.0" layoutY="3.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button depthTest="ENABLE" layoutX="540.0" layoutY="3.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="30.0" prefWidth="120.0" text="Logout" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
-         </font>
-      </Button>
-      <Label alignment="CENTER" layoutX="296.0" layoutY="7.0" prefHeight="41.0" prefWidth="158.0" text="Permission" textAlignment="CENTER" AnchorPane.leftAnchor="296.0" AnchorPane.rightAnchor="296.0" AnchorPane.topAnchor="7.0">
+      <Label alignment="CENTER" layoutX="296.0" layoutY="154.0" prefHeight="41.0" prefWidth="158.0" text="Permission" textAlignment="CENTER" AnchorPane.leftAnchor="296.0" AnchorPane.rightAnchor="296.0" AnchorPane.topAnchor="154.0">
          <font>
             <Font name="Calibri Bold Italic" size="31.0" />
          </font>
       </Label>
-      <TableView fx:id="table" layoutX="15.0" layoutY="116.0" prefHeight="434.0" prefWidth="720.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+      <TableView fx:id="table" layoutX="15.0" layoutY="272.0" prefHeight="434.0" prefWidth="720.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
         <columns>
-            <TableColumn prefWidth="100.0" text="Subject" />
-          <TableColumn prefWidth="100.0" text="Time To Add" />
-            <TableColumn prefWidth="320.0" text="Reason" />
-          <TableColumn prefWidth="100.0" text="Approve" />
-            <TableColumn prefWidth="100.0" text="Deny" />
+            <TableColumn prefWidth="167.0" text="Subject" />
+          <TableColumn prefWidth="180.0" text="Time To Add" />
+            <TableColumn prefWidth="513.0" text="Reason" />
+          <TableColumn prefWidth="208.0" text="Approve" />
+            <TableColumn prefWidth="181.0" text="Deny" />
         </columns>
       </TableView>
-      <Text layoutX="18.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaible Lecturer Requests" wrappingWidth="234.13671875" AnchorPane.leftAnchor="18.0">
+      <Text layoutX="18.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Avaible Lecturer Requests" wrappingWidth="234.13671875" AnchorPane.leftAnchor="18.0">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Text>
+      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="EXIT" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="logo" layoutX="569.0" layoutY="44.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
 </children>
 </AnchorPane>

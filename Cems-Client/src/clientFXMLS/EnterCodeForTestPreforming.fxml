@@ -10,20 +10,20 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.EnterCodeForTestController">
    <children>
-      <Button layoutX="31.0" layoutY="15.0" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#BackPressed" prefHeight="34.0" prefWidth="120.0" text="Back">
+      <Button layoutX="31.0" layoutY="15.0" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#BackPressed" prefHeight="34.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font></Button>
-      <Button layoutX="448.0" layoutY="15.0" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="34.0" prefWidth="120.0" text="Logout">
+      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="EXIT" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <VBox alignment="TOP_CENTER" layoutX="166.0" layoutY="50.0" prefHeight="351.0" prefWidth="257.0" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="165.0" AnchorPane.rightAnchor="165.0" AnchorPane.topAnchor="50.0">
+      <VBox alignment="TOP_CENTER" layoutX="195.0" layoutY="234.0" prefHeight="476.0" prefWidth="910.0" spacing="40.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="185.0" AnchorPane.rightAnchor="185.0" AnchorPane.topAnchor="224.0">
          <children>
-            <Text lineSpacing="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter 4 digit Code:" textAlignment="CENTER" wrappingWidth="250.13671875">
+            <Text lineSpacing="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter 4 digit Code:" textAlignment="CENTER" wrappingWidth="363.13671875">
                <font>
-                  <Font name="Calibri Italic" size="20.0" />
+                  <Font name="Calibri Bold Italic" size="36.0" />
                </font>
             </Text>
             <TextField alignment="CENTER" minHeight="40.0" promptText="Code">
@@ -35,6 +35,12 @@
                <font>
                   <Font name="Calibri Bold Italic" size="18.0" />
                </font>
+               <opaqueInsets>
+                  <Insets top="100.0" />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets top="100.0" />
+               </VBox.margin>
             </Button>
          </children>
          <opaqueInsets>
@@ -44,6 +50,11 @@
             <Insets top="40.0" />
          </padding>
       </VBox>
+      <Button fx:id="logo" layoutX="1145.0" layoutY="25.0" maxWidth="26.0" minHeight="30.0" minWidth="26.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
    </children>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
