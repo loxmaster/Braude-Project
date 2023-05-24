@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CreateTestController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CreateTestController">
 <children>
     <Button layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#backToLecturer" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
@@ -32,68 +32,64 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <TextField alignment="CENTER" layoutX="760.0" layoutY="218.0" prefHeight="25.0" prefWidth="55.0" text="100" AnchorPane.bottomAnchor="470.0" AnchorPane.topAnchor="220.0">
+      <TextField alignment="CENTER" layoutX="780.0" layoutY="176.0" prefHeight="25.0" prefWidth="55.0" text="100" AnchorPane.bottomAnchor="514.0" AnchorPane.topAnchor="176.0">
          <font>
             <Font name="Calibri Bold Italic" size="16.0" />
          </font>
       </TextField>
-      <Text layoutX="614.0" layoutY="238.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total points:" textAlignment="CENTER" AnchorPane.bottomAnchor="470.0">
+      <Text layoutX="627.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Points:" textAlignment="CENTER" AnchorPane.bottomAnchor="514.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Text>
-      <TextField alignment="CENTER" layoutX="394.0" layoutY="267.0" prefHeight="28.0" prefWidth="80.0" text="D23Q" AnchorPane.bottomAnchor="425.0">
+      <TextField alignment="CENTER" layoutX="396.0" layoutY="226.0" prefHeight="28.0" prefWidth="80.0" text="D23Q" AnchorPane.bottomAnchor="464.0">
          <font>
             <Font name="Calibri Italic" size="16.0" />
          </font>
       </TextField>
-      <Text layoutX="261.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Test Code:" textAlignment="CENTER" wrappingWidth="126.0" AnchorPane.bottomAnchor="425.0">
+      <Text layoutX="263.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Test Code:" textAlignment="CENTER" wrappingWidth="126.0" AnchorPane.bottomAnchor="464.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Text>
-      <Label layoutX="852.0" layoutY="217.0" prefHeight="30.0" prefWidth="101.0" text="Subject:" textAlignment="CENTER" AnchorPane.bottomAnchor="470.0" AnchorPane.leftAnchor="852.0">
+      <Label layoutX="870.0" layoutY="176.0" prefHeight="30.0" prefWidth="110.0" text="Subject:" textAlignment="CENTER" AnchorPane.bottomAnchor="514.0" AnchorPane.leftAnchor="870.0" AnchorPane.rightAnchor="365.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Label>
-      <ChoiceBox layoutX="953.0" layoutY="219.0" prefHeight="30.0" prefWidth="250.0" AnchorPane.bottomAnchor="470.0" />
-      <TextField layoutX="122.0" layoutY="264.0" prefHeight="24.0" prefWidth="101.0" AnchorPane.bottomAnchor="425.0">
+      <ChoiceBox layoutX="997.0" layoutY="176.0" prefHeight="30.0" prefWidth="250.0" AnchorPane.bottomAnchor="514.0" AnchorPane.rightAnchor="98.0" />
+      <TextField layoutX="124.0" layoutY="226.0" prefHeight="24.0" prefWidth="101.0" AnchorPane.bottomAnchor="464.0">
          <font>
             <Font name="Calibri" size="16.0" />
          </font>
       </TextField>
-      <DatePicker layoutX="122.0" layoutY="222.0" prefHeight="24.0" AnchorPane.bottomAnchor="470.0" />
-      <TextField alignment="CENTER" layoutX="445.0" layoutY="217.0" prefHeight="30.0" prefWidth="95.0" text="08:30" AnchorPane.bottomAnchor="470.0" AnchorPane.leftAnchor="445.0" AnchorPane.rightAnchor="740.0">
+      <DatePicker layoutX="95.0" layoutY="176.0" prefHeight="24.0" AnchorPane.bottomAnchor="514.0" />
+      <TextField alignment="CENTER" layoutX="447.0" layoutY="176.0" prefHeight="30.0" prefWidth="95.0" text="08:30" AnchorPane.bottomAnchor="514.0" AnchorPane.leftAnchor="447.0" AnchorPane.rightAnchor="738.0">
          <font>
             <Font name="Calibri Italic" size="16.0" />
          </font>
       </TextField>
-      <Text layoutX="15.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" textAlignment="CENTER" AnchorPane.bottomAnchor="470.0" AnchorPane.leftAnchor="15.0">
+      <Text layoutX="17.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" textAlignment="CENTER" AnchorPane.bottomAnchor="514.0" AnchorPane.leftAnchor="17.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Text>
-      <Label alignment="CENTER" layoutX="235.0" layoutY="148.0" prefHeight="41.0" prefWidth="170.0" text="Create Test" textAlignment="CENTER" AnchorPane.leftAnchor="235.0" AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="148.0">
+      <Label alignment="CENTER" layoutX="235.0" layoutY="120.0" prefHeight="41.0" prefWidth="170.0" text="Create Test" textAlignment="CENTER" AnchorPane.leftAnchor="235.0" AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="120.0">
          <font>
-            <Font name="Calibri Bold Italic" size="36.0" />
+            <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
-      <Text layoutX="324.0" layoutY="242.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" AnchorPane.bottomAnchor="470.0">
+      <Text layoutX="326.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" AnchorPane.bottomAnchor="514.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Text>
-      <Text layoutX="12.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duration:" wrappingWidth="126.0" AnchorPane.bottomAnchor="425.0" AnchorPane.leftAnchor="12.0">
+      <Text layoutX="14.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duration:" wrappingWidth="126.0" AnchorPane.bottomAnchor="464.0" AnchorPane.leftAnchor="14.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Text>
-      <ScrollPane fx:id="table" layoutX="310.0" layoutY="242.0" prefHeight="361.0" prefWidth="1260.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-        </content>
-      </ScrollPane>
+      <ScrollPane fx:id="table" layoutX="310.0" layoutY="242.0" prefHeight="385.0" prefWidth="1305.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
       <Button fx:id="logo" depthTest="ENABLE" layoutX="620.0" layoutY="54.0" minWidth="26.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
