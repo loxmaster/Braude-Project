@@ -318,4 +318,38 @@
   .text-field:disabled {
 	-fx-opacity: 0.6;
   }
-  
+
+
+
+    /* ..................scroll pane................. */
+
+	.scroll-pane {
+		-fx-background-color: #ffffff; /* Set the background color */
+	}
+	
+	.scroll-pane .viewport {
+		-fx-background-color: transparent; /* Set the background color of the visible viewport area */
+	}
+	
+	.scroll-pane .scroll-bar {
+		-fx-background-color: #e1e1e1; /* Set the background color of the scroll bars */
+	}
+	
+	.scroll-pane .scroll-bar .thumb {
+		-fx-background-color: #888888; /* Set the color of the scroll thumb */
+	}
+	
+	.scroll-pane .scroll-bar .thumb:hover {
+		-fx-background-color: #555555; /* Set the color of the scroll thumb when hovered */
+	}
+	
+	.scroll-pane .scroll-bar .increment-button,
+	.scroll-pane .scroll-bar .decrement-button {
+		-fx-background-color: #c1c1c1; /* Set the background color of the scroll buttons */
+	}
+	
+	.scroll-pane .scroll-bar .increment-button:hover,
+	.scroll-pane .scroll-bar .decrement-button:hover {
+		-fx-background-color: #a1a1a1; /* Set the background color of the scroll buttons when hovered */
+	}
+	

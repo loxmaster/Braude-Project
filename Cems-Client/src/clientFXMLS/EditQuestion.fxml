@@ -26,7 +26,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="136.0" layoutY="213.0" prefHeight="30.0" prefWidth="102.0" text="Subject:" textAlignment="CENTER" AnchorPane.leftAnchor="150.0">
+      <Label layoutX="136.0" layoutY="213.0" prefHeight="30.0" prefWidth="102.0" text="Subject:" textAlignment="CENTER" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="150.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
@@ -85,13 +85,13 @@
             <Font name="Calibri Bold Italic" size="36.0" />
          </font>
       </Label>
-      <ComboBox fx:id="subjectCombobox" layoutX="248.0" layoutY="213.0" prefHeight="30.0" prefWidth="250.0" AnchorPane.leftAnchor="270.0" />
-      <Label layoutX="640.0" layoutY="213.0" prefHeight="30.0" prefWidth="200.0" text="Question Number:" AnchorPane.rightAnchor="150.0">
+      <ComboBox fx:id="subjectCombobox" layoutX="248.0" layoutY="213.0" prefHeight="30.0" prefWidth="250.0" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="825.0" />
+      <Label layoutX="640.0" layoutY="213.0" prefHeight="30.0" prefWidth="200.0" text="Question Number:" AnchorPane.bottomAnchor="480.0" AnchorPane.rightAnchor="150.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="qNumber" alignment="CENTER" layoutX="873.0" layoutY="213.0" prefHeight="30.0" prefWidth="86.0" AnchorPane.rightAnchor="50.0" />
+      <TextField fx:id="qNumber" alignment="CENTER" layoutX="873.0" layoutY="213.0" prefHeight="30.0" prefWidth="86.0" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="1200.0" AnchorPane.rightAnchor="50.0" />
       <Button fx:id="logo" depthTest="ENABLE" layoutX="1148.0" layoutY="93.0" maxWidth="26.0" minWidth="26.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="26.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
@@ -102,6 +102,6 @@
             <Font name="Calibri Bold" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="qA1" alignment="CENTER" layoutX="130.0" layoutY="262.0" prefHeight="154.0" prefWidth="1145.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="270.0" />
+      <TextField fx:id="qA1" alignment="CENTER" layoutX="130.0" layoutY="262.0" prefHeight="158.0" prefWidth="1145.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="260.0" />
 </children>
 </AnchorPane>
