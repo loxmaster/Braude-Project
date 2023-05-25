@@ -15,7 +15,7 @@ public class ClientModel {
     }
 
     public String getHost() {
-        return host;
+        return this.host;
     }
 
     public void setHost(String host) {
@@ -23,7 +23,7 @@ public class ClientModel {
     }
 
     public InetAddress getIp() {
-        return ip;
+        return this.ip;
     }
 
     public void setIp(InetAddress ip) {
@@ -31,7 +31,7 @@ public class ClientModel {
     }
 
     public boolean getIsConnected() {
-        return isConnected;
+        return this.isConnected;
     }
 
     public void setIsConnected(boolean isConnected) {
@@ -48,12 +48,10 @@ public class ClientModel {
 
     @Override
     public boolean equals(Object obj) {
+        if ((obj == null) || (this.getClass() != obj.getClass()) )
+            return false;
         if (this == obj)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
         ClientModel other = (ClientModel) obj;
         if (ip == null) {
             if (other.ip != null)
