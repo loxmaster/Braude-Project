@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.DBQController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.DBQController">
 <children>
     <Button layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
@@ -24,21 +24,21 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Label alignment="CENTER" layoutX="235.0" layoutY="143.0" prefHeight="41.0" prefWidth="170.0" text="DBQ" textAlignment="CENTER" AnchorPane.leftAnchor="235.0" AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="143.0">
+      <Label alignment="CENTER" layoutX="235.0" layoutY="143.0" prefHeight="41.0" prefWidth="170.0" text="Question Data Base" textAlignment="CENTER" AnchorPane.leftAnchor="235.0" AnchorPane.rightAnchor="235.0" AnchorPane.topAnchor="143.0">
          <font>
-            <Font name="Calibri Bold Italic" size="36.0" />
+            <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
       <Button layoutX="35.0" layoutY="546.0" minHeight="34.0" minWidth="200.0" mnemonicParsing="false" onAction="#createQuestionPressed" text="Create Questions" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="15.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font></Button>
-      <TableView fx:id="table" layoutX="10.0" layoutY="217.0" prefHeight="440.0" prefWidth="1260.0">
+      <TableView fx:id="table" layoutX="10.0" layoutY="217.0" prefHeight="440.0" prefWidth="1260.0" AnchorPane.bottomAnchor="63.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
         <columns>
           <TableColumn prefWidth="201.0" text="Question ID" />
           <TableColumn prefWidth="298.0" text="Lecturer Name" />
             <TableColumn prefWidth="547.0" text="Question" />
-            <TableColumn prefWidth="213.0" text="Check" />
+            <TableColumn prefWidth="256.0" text="Check" />
         </columns>
       </TableView>
       <Button fx:id="logo" depthTest="ENABLE" layoutX="492.0" layoutY="15.0" maxWidth="26.0" minWidth="26.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
