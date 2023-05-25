@@ -3,11 +3,11 @@ package logic;
 public class User {
 
     private String username, password;
-    private String pName, lName, email, Department, type;
+    private String pName, lName, email, department, type;
     private boolean isOnline, isFound;
     
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(String type) {
@@ -19,11 +19,11 @@ public class User {
     }
 
     public boolean getIsFound() {
-        return isFound;
+        return this.isFound;
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
@@ -31,7 +31,7 @@ public class User {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
@@ -39,7 +39,7 @@ public class User {
     }
 
     public String getpName() {
-        return pName;
+        return this.pName;
     }
 
     public void setpName(String pName) {
@@ -47,7 +47,7 @@ public class User {
     }
 
     public String getlName() {
-        return lName;
+        return this.lName;
     }
 
     public void setlName(String lName) {
@@ -55,7 +55,7 @@ public class User {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -63,15 +63,15 @@ public class User {
     }
 
     public String getDepartment() {
-        return Department;
+        return this.department;
     }
 
     public void setDepartment(String department) {
-        Department = department;
+        this.department = department;
     }
 
     public boolean isOnline() {
-        return isOnline;
+        return this.isOnline;
     }
 
     public void setOnline(boolean isOnline) {
