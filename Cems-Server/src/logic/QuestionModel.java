@@ -63,7 +63,7 @@ public class QuestionModel implements Serializable {
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(String id) {
@@ -71,7 +71,7 @@ public class QuestionModel implements Serializable {
     }
 
     public String getSubject() {
-        return subject;
+        return this.subject;
     }
 
     public void setSubject(String subject) {
@@ -79,7 +79,7 @@ public class QuestionModel implements Serializable {
     }
 
     public String getCoursename() {
-        return coursename;
+        return this.coursename;
     }
 
     public void setCoursename(String coursename) {
@@ -87,7 +87,7 @@ public class QuestionModel implements Serializable {
     }
 
     public String getQuestiontext() {
-        return questiontext;
+        return this.questiontext;
     }
 
     public void setQuestiontext(String questiontext) {
@@ -95,7 +95,7 @@ public class QuestionModel implements Serializable {
     }
 
     public String getQuestionnumber() {
-        return questionnumber;
+        return this.questionnumber;
     }
 
     public void setQuestionnumber(String questionnumber) {
@@ -103,16 +103,17 @@ public class QuestionModel implements Serializable {
     }
 
     public String getLecturer() {
-        return lecturer;
+        return this.lecturer;
     }
 
     public void setLecturer(String lecturer) {
         this.lecturer = lecturer;
     }
 
+    //how is this diffrent from create button ? just by creating edit ?
     public Button getEdit() {
         createButton();
-        return edit;
+        return this.edit;
     }
 
     public void setEdit(Button edit) {
