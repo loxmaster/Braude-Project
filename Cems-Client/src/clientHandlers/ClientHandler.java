@@ -3,7 +3,6 @@ package clientHandlers;
 import logic.QuestionModel;
 import logic.User;
 import java.io.*;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -172,13 +171,13 @@ public class ClientHandler extends AbstractClient {
 	 * Handles the message received from the lecturer user interface gets all the
 	 * questions for the lecturer.
 	 */
-	public void GetLeturersQuestions(String username) {
+	public void GetLeturersQuestions(Object object) {
 		/*
 		 * try { openConnection(); } catch (IOException e1) { System.out.println(1); }
 		 */
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("lecturerquestions");
-		list.add("SELECT * FROM projecton.questions where ( `lecturer` = '" + username + "' );");
+		list.add("SELECT * FROM projecton.questions where ( `lecturer` = '" + (String) object + "' );");
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
@@ -205,7 +204,8 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	/**
-	 * This method overrites super method that handles what happans when connection is closed
+	 * This method overrites super method that handles what happans when connection
+	 * is closed
 	 * with the server.
 	 */
 	protected void connectionClosed() {
@@ -219,14 +219,6 @@ public class ClientHandler extends AbstractClient {
 		try {
 			sendToServer((Object) this.getInetAddress());
 			closeConnection();
-		} catch (IOException e) {}
-		//System.exit(0);
-	}
-
-	/**
-	 * This method is called by garbage collection.
-	 */
-	protected void finalize() {
-		quit();
+		} catch (IOException e) { e.printStackTrace(); }
 	}
 }

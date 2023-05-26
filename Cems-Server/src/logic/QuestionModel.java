@@ -1,22 +1,18 @@
 package logic;
 
-import java.io.IOException;
 import java.io.Serializable;
 
-//import clientControllers.EditQuestionController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+import javafx.scene.control.CheckBox;
 
 public class QuestionModel implements Serializable {
+
     private String id, subject, coursename;
     private String questiontext, questionnumber, lecturer;
     private Button edit;
+    private CheckBox checkBox;
 
     public QuestionModel(String id, String subject, String coursename, String questiontext, String questionnumber,
             String lecturer) {
@@ -26,6 +22,15 @@ public class QuestionModel implements Serializable {
         this.questiontext = questiontext;
         this.questionnumber = questionnumber;
         this.lecturer = lecturer;
+        checkBox = new CheckBox();
+    }
+
+    public CheckBox getCheckBox() {
+        return checkBox;
+    }
+
+    public void setCheckBox(CheckBox checkBox) {
+        this.checkBox = checkBox;
     }
 
     public void createButton() {
@@ -35,29 +40,10 @@ public class QuestionModel implements Serializable {
 
             @Override
             public void handle(ActionEvent event) {
-                // remember all the data of the question
-                // send to EditQuestionScreen
-                ((Node) event.getSource()).getScene().getWindow().hide();
-                AnchorPane root = null;
-                Stage currentStage = new Stage();
-                FXMLLoader loader = new FXMLLoader();
-                try {
-                    root = loader.load(getClass().getResource("/clientFXMLS/EditQuestion.fxml").openStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //EditQuestionController eqc = loader.getController();
-                //eqc.loadQuestion(getQuestion());
-                System.out.println("opening edit question");
-                Scene scene = new Scene(root);
-                scene.getStylesheets().add(getClass().getResource("/clientFXMLS/background.css").toExternalForm());
-                currentStage.setScene(scene);
-                currentStage.setTitle("CEMS System - Lecturer - Edit Question");
-                currentStage.show();
             }
         });
 
-        edit.setId("BtnInfo");
+        edit.setId("editbutton");
         edit.setPrefWidth(60);
         edit.setPrefHeight(20);
     }
@@ -110,7 +96,6 @@ public class QuestionModel implements Serializable {
         this.lecturer = lecturer;
     }
 
-    //how is this diffrent from create button ? just by creating edit ?
     public Button getEdit() {
         createButton();
         return this.edit;

@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -18,6 +19,7 @@ public class QuestionModel implements Serializable {
     private String id, subject, coursename;
     private String questiontext, questionnumber, lecturer;
     private Button edit;
+    private CheckBox checkBox;
 
     public QuestionModel(String id, String subject, String coursename, String questiontext, String questionnumber,
             String lecturer) {
@@ -27,6 +29,15 @@ public class QuestionModel implements Serializable {
         this.questiontext = questiontext;
         this.questionnumber = questionnumber;
         this.lecturer = lecturer;
+        checkBox = new CheckBox();
+    }
+
+    public CheckBox getCheckBox() {
+        return checkBox;
+    }
+
+    public void setCheckBox(CheckBox checkBox) {
+        this.checkBox = checkBox;
     }
 
     public void createButton() {

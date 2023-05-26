@@ -42,6 +42,22 @@ public class LecturerController extends BasicController {
 		setWelcomeLabel();
 	}
 
+	public static ArrayList<String> getSubjectsList() {
+		return subjectsList;
+	}
+
+	public static void setSubjectsList(ArrayList<String> subjectsList) {
+		LecturerController.subjectsList = subjectsList;
+	}
+
+	public static ArrayList<QuestionModel> getQuestions() {
+		return questions;
+	}
+
+	public static void setQuestions(ArrayList<QuestionModel> questions) {
+		LecturerController.questions = questions;
+	}
+
 	@FXML
 	void QuestionPressed(ActionEvent event) throws IOException {
 		// go to options screen

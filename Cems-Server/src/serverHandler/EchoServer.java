@@ -30,9 +30,9 @@ public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
 
 	// Variables for handling the clients timout disconnect
-	private Map<ConnectionToClient, Long> lastMessageTimes;
-	private Timer timer;
-	private long timeoutDuration = 60000; // Timeout for disconnect in Miliseconds
+	//private Map<ConnectionToClient, Long> lastMessageTimes;
+	//private Timer timer;
+	//private long timeoutDuration = 60000; // Timeout for disconnect in Miliseconds
 
 	// The default port to listen on.
 	final public static int DEFAULT_PORT = 5555;
@@ -41,7 +41,7 @@ public class EchoServer extends AbstractServer {
 	public static EchoServer echoServer;
 
 	// Variables for the queries
-	private static Connection conn = null;
+	private static Connection conn ;
 	private Statement stmt;
 
 	/**
@@ -56,10 +56,11 @@ public class EchoServer extends AbstractServer {
 	 * @param port The port number to connect on.
 	 */
 	public EchoServer(int port) {
+
 		super(port);
 
-		lastMessageTimes = new HashMap<>();
-		timer = new Timer();
+		//lastMessageTimes = new HashMap<>();
+		//timer = new Timer();
 	}
 
 	// Main ****************************************************
@@ -100,7 +101,8 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
-		lastMessageTimes.put(client, System.currentTimeMillis());
+		//lastMessageTimes.put(client, System.currentTimeMillis());
+
 		System.out.println("Message received: " + msg + " from " + client);
 		ResultSet result;
 		String notFound = "Not Found", res;
@@ -216,7 +218,7 @@ public class EchoServer extends AbstractServer {
 	// gets questions from db
 
 	private ArrayList<QuestionModel> getQuestionsFromDBForLecturer(String query) throws SQLException {
-		stmt = conn.createStatement();
+		stmt = getConn().createStatement();
 		ResultSet result = stmt.executeQuery(query);
 		ArrayList<QuestionModel> res = new ArrayList<QuestionModel>();
 		while (result.next()) {
@@ -256,8 +258,7 @@ public class EchoServer extends AbstractServer {
 			System.out.println("Driver definition failed");
 		}
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/" + DBname + "?serverTimezone=IST", username,
-					Password);
+			setConn(DriverManager.getConnection("jdbc:mysql://localhost/" + DBname + "?serverTimezone=IST", username, Password));
 			System.out.println("SQL connection succeed");
 		} catch (SQLException ex) {// handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
@@ -266,6 +267,14 @@ public class EchoServer extends AbstractServer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static Connection getConn() {
+		return conn;
+	}
+
+	public static void setConn(Connection conn) {
+		EchoServer.conn = conn;
 	}
 
 	/**
@@ -283,16 +292,16 @@ public class EchoServer extends AbstractServer {
 	 */
 	@Override
 	protected void clientConnected(ConnectionToClient client) {
-		lastMessageTimes.put(client, System.currentTimeMillis());
+		// lastMessageTimes.put(client, System.currentTimeMillis());
 
 		ClientModel clientModel = new ClientModel(client.getInetAddress().getHostName(), client.getInetAddress(), client.isAlive());
 		ServerUI.sController.loadToTable(clientModel);
 
 		// Start the timer task to check for inactivity
-		startTimerTask();
+		//startTimerTask();
 	}
 
-	private void startTimerTask() {
+	/*private void startTimerTask() {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -312,7 +321,7 @@ public class EchoServer extends AbstractServer {
 				clientDisconnected(client);
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * This method overrites the method from AbstractServer where this method is

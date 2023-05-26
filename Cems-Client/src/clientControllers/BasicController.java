@@ -60,4 +60,11 @@ public class BasicController {
 		LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
 		lc.setWelcomeLabel();
 	}
+
+	@FXML
+	void exitPressed(ActionEvent event) {
+		ClientHandler.resetClientData();
+		ClientUI.chat.quit();
+		System.exit(0);
+	}
 }
