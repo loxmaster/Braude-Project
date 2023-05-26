@@ -13,18 +13,20 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class QuestionModel implements Serializable {
+public class Question implements Serializable {
     private String id, subject, coursename;
-    private String questiontext, questionnumber, lecturer;
+    private String questionText, questionNumber, lecturer;
+    private String[] answerText;
+    private int correctAnswer;
     private Button edit;
 
-    public QuestionModel(String id, String subject, String coursename, String questiontext, String questionnumber,
+    public Question(String id, String subject, String coursename, String questiontext, String questionnumber,
             String lecturer) {
         this.id = id;
         this.subject = subject;
         this.coursename = coursename;
-        this.questiontext = questiontext;
-        this.questionnumber = questionnumber;
+        this.questionText = questiontext;
+        this.questionNumber = questionnumber;
         this.lecturer = lecturer;
     }
 
@@ -87,19 +89,19 @@ public class QuestionModel implements Serializable {
     }
 
     public String getQuestiontext() {
-        return this.questiontext;
+        return this.questionText;
     }
 
     public void setQuestiontext(String questiontext) {
-        this.questiontext = questiontext;
+        this.questionText = questiontext;
     }
 
     public String getQuestionnumber() {
-        return this.questionnumber;
+        return this.questionNumber;
     }
 
     public void setQuestionnumber(String questionnumber) {
-        this.questionnumber = questionnumber;
+        this.questionNumber = questionnumber;
     }
 
     public String getLecturer() {
@@ -120,7 +122,7 @@ public class QuestionModel implements Serializable {
         this.edit = edit;
     }
 
-    public QuestionModel getQuestion() {
+    public Question getQuestion() {
         return this;
     }
 
