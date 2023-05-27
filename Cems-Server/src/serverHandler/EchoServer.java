@@ -14,7 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import logic.ClientModel;
-import logic.Question;
+import logic.QuestionModel;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import serverUI.ServerUI;
@@ -117,11 +117,27 @@ public class EchoServer extends AbstractServer {
 		else if (msg instanceof ArrayList) {
 			ArrayList<String> list = (ArrayList<String>) msg;
 
-			// if (list.get(0).equals("getsubjectID")) {
-			// 	client.sendToClient((Object) list.get(1));
-			// }
+			
+			//TODO noah: check if this works lul
+			if (list.get(0).equals("getSubjectID")) {
+				try {
+					// send query to be executed along with the identifier
+					ArrayList<String> resultList = getSubjectID(list.get(1), "getSubjectID");
+					//result list should have arraylist = {identifier, subjectname}
 
-			 if (list.get(0).equals("editquestion")) {
+					// if we got no results: send notFound signal
+					if (resultList == null)
+						client.sendToClient((Object) notFound);
+					// else return the subjectID result we got from the query
+					else
+						client.sendToClient(resultList);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			if (list.get(0).equals("editQuestion")) {
 				try {
 					int isReturned = editQuestion(list.get(1));
 					if (isReturned == 0)
@@ -146,10 +162,12 @@ public class EchoServer extends AbstractServer {
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
-			} else if (list.get(0).equals("lecturerquestions")) {
-				// gets all lecturer questions from db
+			}
+
+			else if (list.get(0).equals("lecturerQuestions")) {
+				// gets all lecturer Questions from db
 				try {
-					ArrayList<Question> resList = getQuestionsFromDBForLecturer(list.get(1));
+					ArrayList<QuestionModel> resList = getQuestionsFromDBForLecturer(list.get(1));
 					if (resList == null)
 						client.sendToClient((Object) notFound);
 					System.out.println("Server: " + resList.toArray());
@@ -222,15 +240,15 @@ public class EchoServer extends AbstractServer {
 		int res = stmt.executeUpdate(query);
 		return res;
 	}
-	// gets questions from db
+	// gets Questions from db
 
-	private ArrayList<Question> getQuestionsFromDBForLecturer(String query) throws SQLException {
+	private ArrayList<QuestionModel> getQuestionsFromDBForLecturer(String query) throws SQLException {
 		stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(query);
-		ArrayList<Question> res = new ArrayList<Question>();
+		ArrayList<QuestionModel> res = new ArrayList<QuestionModel>();
 		while (result.next()) {
-			// while threres questions in result , adding them into result array
-			Question q = new Question(result.getString(1), result.getString(2), result.getString(3),
+			// while threres Questions in result , adding them into result array
+			QuestionModel q = new QuestionModel(result.getString(1), result.getString(2), result.getString(3),
 					result.getString(4), result.getString(5), result.getString(6));
 			res.add(q);
 		}
@@ -321,6 +339,33 @@ public class EchoServer extends AbstractServer {
 				// Client has exceeded the timeout duration, consider it disconnected
 				clientDisconnected(client);
 			}
+		}
+	}
+
+	/**
+	 * get subject id from the database
+	 * //TODO noah: check if this works lul
+	 * we could change this method to send generic queries with identifiers
+	 * 
+	 * @param query
+	 * @param identifier
+	 * @return
+	 * @throws SQLException
+	 */
+	private ArrayList<String> getSubjectID(String query, String identifier) throws SQLException {
+		stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(query);
+		ArrayList<String> output = new ArrayList<String>();
+		//add the "getSubjectID" identifier
+		output.add(identifier);
+		//TODO
+		//if there's a result??
+		if (result.next()) {
+			output.add(result.getString(1));
+			System.out.println("Message sent back: " + output);
+			return output;
+		} else {
+			return null;
 		}
 	}
 

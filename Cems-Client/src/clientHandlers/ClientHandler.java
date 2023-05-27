@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import clientControllers.CreateQuestionController;
 import clientControllers.LecturerController;
 import ocsf.client.*;
 
@@ -73,6 +74,12 @@ public class ClientHandler extends AbstractClient {
 					for (String s : subjectArray) {
 						LecturerController.getSubjectsList().add(s.toUpperCase());
 					}
+				}
+				//TODO noah: check if this works lul
+				// assign subjectID that we've got from the server
+				else if (list.get(0).equals("getSubjectID")) {
+					// subjectArray = list.get(1).split(",");
+					CreateQuestionController.subjectID = list.get(1);
 				}
 			}
 
@@ -202,10 +209,11 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	public void CreateQuestion( String Id,String subject,String Body, String QNumber) {
-		ArrayList<String> list = new ArrayList<String>();		
+	public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
+		ArrayList<String> list = new ArrayList<String>();
 		list.add("createquestion");
-		list.add("INSERT INTO `projecton`.`questions` SET `id` = '" + Id + "',`subject` = '" + subject + "', `questiontext` = '" + Body
+		list.add("INSERT INTO `projecton`.`questions` SET `id` = '" + Id + "',`subject` = '" + subject
+				+ "', `questiontext` = '" + Body
 				+ "', `questionnumber` = '" + QNumber + "',`lecturer` = '" + user.getUsername() + "' ;");
 		// INSERT INTO `projecton`.`questions` SET `id` = '13', `questiontext` = '13',
 		// `questionnumber` = '13' WHERE (`id` = '01001');
@@ -216,22 +224,27 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-		/**
-	 * Handles the message received from the lecturer user interface gets all the
-	 * subjects for the lecturer.
+	/**
+	 * 
+	 * create a new arraylist subject, add an identifier "getSubjectID" so the
+	 * Echoserver idenrtifies it,
+	 * the second cell should contain 'subjectname' for the server to parse
 	 */
 	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
-		
-		String subjectID = "SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subjectname + "' );";
+		ArrayList<String> subject = new ArrayList<String>();
+		subject.add("getSubjectID");
+
+		subject.add("SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subjectname + "' );");
 		try {
-			sendToServer((Object) subjectID);
+			sendToServer((Object) subject);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * This method overrites super method that handles what happans when connection is closed
+	 * This method overrites super method that handles what happans when connection
+	 * is closed
 	 * with the server.
 	 */
 	protected void connectionClosed() {
@@ -245,8 +258,9 @@ public class ClientHandler extends AbstractClient {
 		try {
 			sendToServer((Object) this.getInetAddress());
 			closeConnection();
-		} catch (IOException e) {}
-		//System.exit(0);
+		} catch (IOException e) {
+		}
+		// System.exit(0);
 	}
 
 	/**

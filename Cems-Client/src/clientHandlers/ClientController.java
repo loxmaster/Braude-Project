@@ -84,11 +84,12 @@ public class ClientController implements ChatIF {
 
     // gets all of specific lecturer questions
     public void GetSubjectIDfromSubjectCourses(String subjectname) {
-        ArrayList<String> subject = new ArrayList<String>();
-        subject.add("getsubjectID");
-        subject.add(subjectname);
+        try {
+            client.GetSubjectIDfromSubjectCourses(subjectname);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        client.GetSubjectIDfromSubjectCourses(subject);
     }
 
     public void getSubjectsForLecturer(Object username) {

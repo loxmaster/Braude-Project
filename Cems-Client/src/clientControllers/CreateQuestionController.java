@@ -16,7 +16,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class CreateQuestionController extends BasicController {
-
+//TODO noah: check if this works lul
 	public static String subjectID;
 
 
@@ -89,7 +89,7 @@ public class CreateQuestionController extends BasicController {
 			// append subjectid to to question number to get the QuestionID
 			//String questionIdQuery = "SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subject + "' );";
 
-			//FIXME
+			
 			ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
 			//ClientUI.chat.CreateQuestion(QuestionID, subject, qBody, qnumber);
 			LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml",
@@ -99,7 +99,8 @@ public class CreateQuestionController extends BasicController {
 		}
 
 		// ClientUI.chat.sendQuestion(q);
-	}
+	
+	
 
 
 	@FXML
