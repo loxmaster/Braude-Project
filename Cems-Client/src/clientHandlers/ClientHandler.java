@@ -79,7 +79,8 @@ public class ClientHandler extends AbstractClient {
 				// assign subjectID that we've got from the server
 				else if (list.get(0).equals("getSubjectID")) {
 					// subjectArray = list.get(1).split(",");
-					CreateQuestionController.subjectID = list.get(1);
+					System.out.println("Client Handler: " + list.get(1));
+					CreateQuestionController.setSubjectID(list.get(1));
 				}
 			}
 

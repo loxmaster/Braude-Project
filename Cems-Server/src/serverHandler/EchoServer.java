@@ -137,7 +137,7 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 
-			if (list.get(0).equals("editQuestion")) {
+			else if (list.get(0).equals("editQuestion")) {
 				try {
 					int isReturned = editQuestion(list.get(1));
 					if (isReturned == 0)

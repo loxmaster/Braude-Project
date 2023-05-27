@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LecturerController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="/gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LecturerController">
 <children>
   <Label fx:id="welcomeLabel" alignment="CENTER" layoutX="242.0" layoutY="142.0" prefHeight="36.0" prefWidth="266.0" style="&#10;" text="Welcome back ," textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="242.0" AnchorPane.rightAnchor="242.0">
     <font>

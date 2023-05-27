@@ -16,9 +16,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class CreateQuestionController extends BasicController {
-//TODO noah: check if this works lul
-	public static String subjectID;
-
+	// TODO noah: check if this works lul
+	public static String subjectID ;
 
 	@FXML
 	private TextField qNumber;
@@ -34,6 +33,10 @@ public class CreateQuestionController extends BasicController {
 
 	@FXML
 	private ComboBox<String> subjectCombobox;
+
+	public static void setSubjectID(String subjectID) {
+		CreateQuestionController.subjectID = subjectID;
+	}
 
 	public void loadSubjects(ArrayList<String> list) {
 		ObservableList<String> subjectList = FXCollections.observableArrayList(list);
@@ -66,42 +69,45 @@ public class CreateQuestionController extends BasicController {
 		} else {
 			// checks who is the correct answer
 
-}
-
-			if (answerA)
-				correctAnswer = "A";
-			else if (answerB)
-				correctAnswer = "B";
-			else if (answerC)
-				correctAnswer = "C";
-			else if (answerD)
-				correctAnswer = "D";
-
-			q.add(subject);
-			q.add(qBody);
-			q.add(optionA);
-			q.add(optionB);
-			q.add(optionC);
-			q.add(optionD);
-			q.add(optionA);
-			q.add(correctAnswer);
-
-			// append subjectid to to question number to get the QuestionID
-			//String questionIdQuery = "SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subject + "' );";
-
-			
-			ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
-			//ClientUI.chat.CreateQuestion(QuestionID, subject, qBody, qnumber);
-			LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml",
-					"CEMS System - Lecturer", event);
-			lc.loadLecturer(ClientHandler.user);
-			System.out.println("Opening Lecturer screen...");
 		}
 
-		// ClientUI.chat.sendQuestion(q);
-	
-	
+		if (answerA)
+			correctAnswer = "A";
+		else if (answerB)
+			correctAnswer = "B";
+		else if (answerC)
+			correctAnswer = "C";
+		else if (answerD)
+			correctAnswer = "D";
 
+		q.add(subject);
+		q.add(qBody);
+		q.add(optionA);
+		q.add(optionB);
+		q.add(optionC);
+		q.add(optionD);
+		q.add(optionA);
+		q.add(correctAnswer);
+
+		// append subjectid to to question number to get the QuestionID
+		// String questionIdQuery = "SELECT subjectid FROM projecton.subjectcourses
+		// where ( `subjectname` = '" + subject + "' );";
+
+		ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
+		// ClientUI.chat.CreateQuestion(QuestionID, subject, qBody, qnumber);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("CreateQuestion: " + subjectID);
+		LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
+		lc.loadLecturer(ClientHandler.user);
+		
+		System.out.println("Opening Lecturer screen...");
+	}
+
+	// ClientUI.chat.sendQuestion(q);
 
 	@FXML
 	void addAnotherPressed(ActionEvent event) {
