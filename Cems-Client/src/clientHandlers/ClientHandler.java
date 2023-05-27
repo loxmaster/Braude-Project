@@ -3,7 +3,6 @@ package clientHandlers;
 import logic.QuestionModel;
 import logic.User;
 import java.io.*;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -64,8 +63,7 @@ public class ClientHandler extends AbstractClient {
 
 			if (((ArrayList<?>) severMessage).get(0) instanceof QuestionModel) {
 				questionList = (ArrayList<QuestionModel>) severMessage;
-				for (QuestionModel question : questionList)
-					LecturerController.questions.add(question);
+				LecturerController.setQuestions(questionList);
 			}
 
 			else {
@@ -73,7 +71,7 @@ public class ClientHandler extends AbstractClient {
 				if (list.get(0).equals("lecturersubjects")) {
 					subjectArray = list.get(1).split(",");
 					for (String s : subjectArray) {
-						LecturerController.subjectsList.add(s.toUpperCase());
+						LecturerController.getSubjectsList().add(s.toUpperCase());
 					}
 				}
 			}
@@ -199,6 +197,34 @@ public class ClientHandler extends AbstractClient {
 		// `questionnumber` = '13' WHERE (`id` = '01001');
 		try {
 			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void CreateQuestion( String Id,String subject,String Body, String QNumber) {
+		ArrayList<String> list = new ArrayList<String>();		
+		list.add("createquestion");
+		list.add("INSERT INTO `projecton`.`questions` SET `id` = '" + Id + "',`subject` = '" + subject + "', `questiontext` = '" + Body
+				+ "', `questionnumber` = '" + QNumber + "',`lecturer` = '" + user.getUsername() + "' ;");
+		// INSERT INTO `projecton`.`questions` SET `id` = '13', `questiontext` = '13',
+		// `questionnumber` = '13' WHERE (`id` = '01001');
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+		/**
+	 * Handles the message received from the lecturer user interface gets all the
+	 * subjects for the lecturer.
+	 */
+	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
+		
+		String subjectID = "SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subjectname + "' );";
+		try {
+			sendToServer((Object) subjectID);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
