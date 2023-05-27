@@ -68,7 +68,7 @@ public class ServerController {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        
+
     }
 
     /**
@@ -105,7 +105,7 @@ public class ServerController {
     @FXML
     void disconnectServer(ActionEvent event) {
         try {
-            EchoServer.echoServer.close();
+            EchoServer.getServerInstance().close();
         } catch (IOException e) {
             e.printStackTrace();
         }
