@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import clientHandlers.ClientHandler;
+import clientHandlers.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +16,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class CreateQuestionController extends BasicController {
+
+	public static String subjectID;
+
 
 	@FXML
 	private TextField qNumber;
@@ -43,6 +47,7 @@ public class CreateQuestionController extends BasicController {
 		ArrayList<String> q = new ArrayList<String>();
 		String correctAnswer = null;
 		String subject = subjectCombobox.getValue();
+		String qnumber = qNumber.getText();
 		String qBody = body.getText();
 		String optionA = qA.getText();
 		String optionB = qB.getText();
@@ -60,6 +65,9 @@ public class CreateQuestionController extends BasicController {
 			JOptionPane.showMessageDialog(null, "Please dont be stupid !", "Error", JOptionPane.ERROR_MESSAGE);
 		} else {
 			// checks who is the correct answer
+
+}
+
 			if (answerA)
 				correctAnswer = "A";
 			else if (answerB)
@@ -78,6 +86,12 @@ public class CreateQuestionController extends BasicController {
 			q.add(optionA);
 			q.add(correctAnswer);
 
+			// append subjectid to to question number to get the QuestionID
+			//String questionIdQuery = "SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subject + "' );";
+
+			//FIXME
+			ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
+			//ClientUI.chat.CreateQuestion(QuestionID, subject, qBody, qnumber);
 			LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml",
 					"CEMS System - Lecturer", event);
 			lc.loadLecturer(ClientHandler.user);
@@ -86,6 +100,7 @@ public class CreateQuestionController extends BasicController {
 
 		// ClientUI.chat.sendQuestion(q);
 	}
+
 
 	@FXML
 	void addAnotherPressed(ActionEvent event) {
@@ -128,13 +143,13 @@ public class CreateQuestionController extends BasicController {
 			q.add(optionA);
 			q.add(correctAnswer);
 		}
-		 correctAnswer = null;
-		 subjectCombobox.setValue("");
-		 body.setText("");
-		 qA.setText("");
-		 qB.setText("");
-		 qC.setText("");
-		 qD.setText("");
+		correctAnswer = null;
+		subjectCombobox.setValue("");
+		body.setText("");
+		qA.setText("");
+		qB.setText("");
+		qC.setText("");
+		qD.setText("");
 		A.setSelected(false);
 		B.setSelected(false);
 		C.setSelected(false);

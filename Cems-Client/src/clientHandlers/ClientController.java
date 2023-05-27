@@ -39,15 +39,21 @@ public class ClientController implements ChatIF {
      * and sends it to the server for processing.
      */
     public void accept() {
-        /*try {
-            BufferedReader fromConsole = new BufferedReader(new InputStreamReader(System.in));
-            System.out.println("> Connected To Server ");
-            Object message = fromConsole.readLine();
-            client.handleMessageFromClientUI(message);
-        } catch (Exception ex) {
-            System.out.println("Unexpected error while reading from console!");
-            ex.printStackTrace();
-        }*/
+        /*
+         * 
+         *try {
+
+         *         *BufferedReader fromConsole = new BufferedReader(new
+         *InputStreamReader(System.in));
+         *System.out.println("> Connected To Server ");
+         *  * Object message = fromConsole.readLine();
+         *client.handleMessageFromClientUI(message);
+         *} catch (Exception ex) {
+         *  
+         * System.out.println("Unexpected error while reading from console!");
+         * ex.printStackTrace();
+         * }
+         */
     }
 
     /**
@@ -68,22 +74,53 @@ public class ClientController implements ChatIF {
 
     // gets all subject available
     public void getAllSubjects() {
-        client.handleMessageFromLecturerUI();
+        try {
+            client.handleMessageFromLecturerUI();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    // gets subject for specific lecturer
-    public void getSubjectsForLecturer(Object username) {
-        client.handleMessageFromLecturerUI(username);
-    }
 
     // gets all of specific lecturer questions
-    public void GetLecturersQuestions(String username) {
-        client.GetLeturersQuestions(username);
+    public void GetSubjectIDfromSubjectCourses(String subjectname) {
+        ArrayList<String> subject = new ArrayList<String>();
+        subject.add("getsubjectID");
+        subject.add(subjectname);
+
+        client.GetSubjectIDfromSubjectCourses(subject);
+    }
+
+    public void getSubjectsForLecturer(Object username) {
+        try {
+            client.handleMessageFromLecturerUI(username);
+        } catch (Exception e) {
+        //client.EditQuestion(newBody, newQNumber, originalId);
+        e.printStackTrace();
+        }
+
+    }
+    
+    public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
+        client.CreateQuestion(Id, subject, Body, QNumber);
+    }    
+
+    // gets all of specific lecturer questions
+    public void GetLecturersQuestions(Object object) {
+        try {
+            client.GetLeturersQuestions((String) object);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // TODO
     public void EditQuestion(String newBody, String newQNumber, String originalId) {
-        client.EditQuestion(newBody, newQNumber, originalId);
+        try {
+            client.EditQuestion(newBody, newQNumber, originalId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -91,7 +128,11 @@ public class ClientController implements ChatIF {
      */
     public void sendQuestion(ArrayList<String> list) {
         String query = "INSERT INTO `projecton`.`questions` (`id`, `subject`, `course name`, `question text`, `question number`, `lecturer`) VALUES ('00', 'Math', 'Calculus 1', 'how are you ?', '1', 'Misha');";
-        client.handleMessageFromClientUI(query);
+        try {
+            client.handleMessageFromClientUI(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

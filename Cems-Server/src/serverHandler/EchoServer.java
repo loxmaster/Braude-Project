@@ -14,7 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import logic.ClientModel;
-import logic.QuestionModel;
+import logic.Question;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import serverUI.ServerUI;
@@ -30,9 +30,9 @@ public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
 
 	// Variables for handling the clients timout disconnect
-	//private Map<ConnectionToClient, Long> lastMessageTimes;
-	//private Timer timer;
-	//private long timeoutDuration = 60000; // Timeout for disconnect in Miliseconds
+	private Map<ConnectionToClient, Long> lastMessageTimes;
+	private Timer timer;
+	private long timeoutDuration = 60000; // Timeout for disconnect in Miliseconds
 
 	// The default port to listen on.
 	final public static int DEFAULT_PORT = 5555;
@@ -57,9 +57,8 @@ public class EchoServer extends AbstractServer {
 	 */
 	private EchoServer(int port) {
 		super(port);
-
-		//lastMessageTimes = new HashMap<>();
-		//timer = new Timer();
+		lastMessageTimes = new HashMap<>();
+		timer = new Timer();
 	}
 
 	public static synchronized EchoServer getServerInstance() {
@@ -89,7 +88,6 @@ public class EchoServer extends AbstractServer {
 
 		serverInstance = getServerInstance();
 
-
 		try {
 			serverInstance.listen(); // Start listening for connections
 		} catch (Exception e) {
@@ -107,7 +105,7 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
-		//lastMessageTimes.put(client, System.currentTimeMillis());
+		lastMessageTimes.put(client, System.currentTimeMillis());
 		System.out.println("Message received: " + msg + " from " + client);
 		ResultSet result;
 		String notFound = "Not Found", res;
@@ -119,7 +117,11 @@ public class EchoServer extends AbstractServer {
 		else if (msg instanceof ArrayList) {
 			ArrayList<String> list = (ArrayList<String>) msg;
 
-			if (list.get(0).equals("editquestion")) {
+			// if (list.get(0).equals("getsubjectID")) {
+			// 	client.sendToClient((Object) list.get(1));
+			// }
+
+			 if (list.get(0).equals("editquestion")) {
 				try {
 					int isReturned = editQuestion(list.get(1));
 					if (isReturned == 0)
@@ -147,7 +149,7 @@ public class EchoServer extends AbstractServer {
 			} else if (list.get(0).equals("lecturerquestions")) {
 				// gets all lecturer questions from db
 				try {
-					ArrayList<QuestionModel> resList = getQuestionsFromDBForLecturer(list.get(1));
+					ArrayList<Question> resList = getQuestionsFromDBForLecturer(list.get(1));
 					if (resList == null)
 						client.sendToClient((Object) notFound);
 					System.out.println("Server: " + resList.toArray());
@@ -222,13 +224,13 @@ public class EchoServer extends AbstractServer {
 	}
 	// gets questions from db
 
-	private ArrayList<QuestionModel> getQuestionsFromDBForLecturer(String query) throws SQLException {
+	private ArrayList<Question> getQuestionsFromDBForLecturer(String query) throws SQLException {
 		stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(query);
-		ArrayList<QuestionModel> res = new ArrayList<QuestionModel>();
+		ArrayList<Question> res = new ArrayList<Question>();
 		while (result.next()) {
 			// while threres questions in result , adding them into result array
-			QuestionModel q = new QuestionModel(result.getString(1), result.getString(2), result.getString(3),
+			Question q = new Question(result.getString(1), result.getString(2), result.getString(3),
 					result.getString(4), result.getString(5), result.getString(6));
 			res.add(q);
 		}
@@ -290,17 +292,17 @@ public class EchoServer extends AbstractServer {
 	 */
 	@Override
 	protected void clientConnected(ConnectionToClient client) {
-		//lastMessageTimes.put(client, System.currentTimeMillis());
+		lastMessageTimes.put(client, System.currentTimeMillis());
 
 		ClientModel clientModel = new ClientModel(client.getInetAddress().getHostName(), client.getInetAddress(),
 				client.isAlive());
 		ServerUI.sController.loadToTable(clientModel);
 
 		// Start the timer task to check for inactivity
-		//startTimerTask();
+		startTimerTask();
 	}
 
-	/*private void startTimerTask() {
+	private void startTimerTask() {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -320,7 +322,7 @@ public class EchoServer extends AbstractServer {
 				clientDisconnected(client);
 			}
 		}
-	}*/
+	}
 
 	/**
 	 * This method overrites the method from AbstractServer where this method is
