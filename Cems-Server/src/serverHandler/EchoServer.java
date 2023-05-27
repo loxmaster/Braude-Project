@@ -38,7 +38,7 @@ public class EchoServer extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
 
 	// Instance of the server
-	public static EchoServer echoServer;
+	private static EchoServer serverInstance;
 
 	// Variables for the queries
 	private static Connection conn = null;
@@ -55,11 +55,16 @@ public class EchoServer extends AbstractServer {
 	 *
 	 * @param port The port number to connect on.
 	 */
-	public EchoServer(int port) {
+	private EchoServer(int port) {
 		super(port);
-
 		lastMessageTimes = new HashMap<>();
 		timer = new Timer();
+	}
+
+	public static synchronized EchoServer getServerInstance() {
+		if (serverInstance == null)
+			serverInstance = new EchoServer(DEFAULT_PORT);
+		return serverInstance;
 	}
 
 	// Main ****************************************************
@@ -81,11 +86,11 @@ public class EchoServer extends AbstractServer {
 			port = DEFAULT_PORT; // Set port to 5555
 		}
 
-		echoServer = new EchoServer(port);
+		serverInstance = getServerInstance();
 
 		try {
-			echoServer.listen(); // Start listening for connections
-		} catch (Exception ex) {
+			serverInstance.listen(); // Start listening for connections
+		} catch (Exception e) {
 			System.out.println("ERROR - Could not listen for clients!");
 		}
 	}
@@ -285,7 +290,8 @@ public class EchoServer extends AbstractServer {
 	protected void clientConnected(ConnectionToClient client) {
 		lastMessageTimes.put(client, System.currentTimeMillis());
 
-		ClientModel clientModel = new ClientModel(client.getInetAddress().getHostName(), client.getInetAddress(), client.isAlive());
+		ClientModel clientModel = new ClientModel(client.getInetAddress().getHostName(), client.getInetAddress(),
+				client.isAlive());
 		ServerUI.sController.loadToTable(clientModel);
 
 		// Start the timer task to check for inactivity
