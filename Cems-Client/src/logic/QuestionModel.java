@@ -2,7 +2,6 @@ package logic;
 
 import java.io.IOException;
 import java.io.Serializable;
-
 import clientControllers.EditQuestionController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
