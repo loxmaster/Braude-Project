@@ -3,7 +3,6 @@ package clientHandlers;
 import logic.QuestionModel;
 import logic.User;
 import java.io.*;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -64,8 +63,7 @@ public class ClientHandler extends AbstractClient {
 
 			if (((ArrayList<?>) severMessage).get(0) instanceof QuestionModel) {
 				questionList = (ArrayList<QuestionModel>) severMessage;
-				for (QuestionModel question : questionList)
-					LecturerController.questions.add(question);
+				LecturerController.setQuestions(questionList);
 			}
 
 			else {
@@ -73,7 +71,7 @@ public class ClientHandler extends AbstractClient {
 				if (list.get(0).equals("lecturersubjects")) {
 					subjectArray = list.get(1).split(",");
 					for (String s : subjectArray) {
-						LecturerController.subjectsList.add(s.toUpperCase());
+						LecturerController.getSubjectsList().add(s.toUpperCase());
 					}
 				}
 			}

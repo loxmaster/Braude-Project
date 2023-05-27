@@ -63,7 +63,7 @@ public class EditQuestionController extends BasicController {
 		// return to table view from 'Edit Question'
 		//((Node) event.getSource()).getScene().getWindow().hide();
 		LecturerQuestionsTableController lqtc = (LecturerQuestionsTableController) openScreen("/clientFXMLS/LecturerQuestionsTable.fxml", "CEMS System - Lecturer - Questions Table", event);
-		lqtc.loadTable(LecturerController.questions);
+		lqtc.loadTable();
 	}
 
 	@FXML
