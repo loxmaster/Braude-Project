@@ -217,7 +217,7 @@ public class EchoServer extends AbstractServer {
 	}
 	// gets questions from db
 
-	private ArrayList<QuestionModel> getQuestionsFromDBForLecturer(String query) throws SQLException {
+	private ArrayList<Question> getQuestionsFromDBForLecturer(String query) throws SQLException {
 		stmt = getConn().createStatement();
 		ResultSet result = stmt.executeQuery(query);
 		ArrayList<Question> res = new ArrayList<Question>();
