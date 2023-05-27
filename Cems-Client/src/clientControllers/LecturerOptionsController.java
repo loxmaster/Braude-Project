@@ -1,6 +1,7 @@
 package clientControllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -10,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import logic.QuestionModel;
 
 public class LecturerOptionsController extends BasicController {
 
@@ -32,12 +34,13 @@ public class LecturerOptionsController extends BasicController {
     @FXML
     void UpdateQuestionPressed(ActionEvent event) throws IOException {
         // Sends data pull request
+        LecturerController.setQuestions(new ArrayList<QuestionModel>());
         ClientUI.chat.GetLecturersQuestions(ClientHandler.user.getUsername());
         
         // opens the question data base screen for this lecturer
         // and loads the questions into table.
         LecturerQuestionsTableController lqtc = (LecturerQuestionsTableController) openScreen("/clientFXMLS/LecturerQuestionsTable.fxml", "CEMS System - Lecturer - Questions Table", event);
-        lqtc.loadTable(LecturerController.questions);
+        lqtc.loadTable();
     }
 
     @FXML

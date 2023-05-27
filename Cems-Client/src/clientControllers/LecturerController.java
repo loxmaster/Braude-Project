@@ -15,8 +15,8 @@ import logic.User;
 
 public class LecturerController extends BasicController {
 
-	public static ArrayList<String> subjectsList = new ArrayList<String>();
-	public static ArrayList<QuestionModel> questions = new ArrayList<QuestionModel>();
+	public static ArrayList<String> subjectsList;
+	public static ArrayList<QuestionModel> questions;
 
 	@FXML
 	private Button BtnInfo;
@@ -24,7 +24,7 @@ public class LecturerController extends BasicController {
 	@FXML
 	private Label welcomeLabel;
 
-	@FXML 
+	@FXML
 	private TextArea textBox;
 
 	/**
@@ -32,11 +32,12 @@ public class LecturerController extends BasicController {
 	 * TODO change to name and not username.
 	 */
 	public void setWelcomeLabel() {
-		welcomeLabel.setText(welcomeLabel.getText() + " " + ClientHandler.user.getUsername().toUpperCase() + " !"); 
+		welcomeLabel.setText(welcomeLabel.getText() + " " + ClientHandler.user.getUsername().toUpperCase() + " !");
 	}
 
 	public void loadLecturer(User user) {
 		// get all the subjects for lecturer
+		setSubjectsList(new ArrayList<String>());
 		ClientUI.chat.getSubjectsForLecturer((Object) ClientHandler.user.getUsername());
 		// Sets the welcome label
 		setWelcomeLabel();
@@ -79,4 +80,21 @@ public class LecturerController extends BasicController {
 		// open Statistical information
 		openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Lecturer - Statistical Information", event);
 	}
+
+	public static ArrayList<String> getSubjectsList() {
+		return subjectsList;
+	}
+
+	public static void setSubjectsList(ArrayList<String> subjectsList) {
+		LecturerController.subjectsList = subjectsList;
+	}
+
+	public static ArrayList<QuestionModel> getQuestions() {
+		return questions;
+	}
+
+	public static void setQuestions(ArrayList<QuestionModel> questions) {
+		LecturerController.questions = questions;
+	}
+
 }
