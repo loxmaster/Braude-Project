@@ -9,7 +9,7 @@ public class ClientUI extends Application {
  
     public static void main(String[] args) {
         launch(args);
-    }  
+    } 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -18,4 +18,3 @@ public class ClientUI extends Application {
         loginController.start(primaryStage);
     }
 }
-
