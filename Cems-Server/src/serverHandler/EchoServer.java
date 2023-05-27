@@ -14,7 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import logic.ClientModel;
-import logic.QuestionModel;
+import logic.Question;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import serverUI.ServerUI;
@@ -142,7 +142,7 @@ public class EchoServer extends AbstractServer {
 			} else if (list.get(0).equals("lecturerquestions")) {
 				// gets all lecturer questions from db
 				try {
-					ArrayList<QuestionModel> resList = getQuestionsFromDBForLecturer(list.get(1));
+					ArrayList<Question> resList = getQuestionsFromDBForLecturer(list.get(1));
 					if (resList == null)
 						client.sendToClient((Object) notFound);
 					System.out.println("Server: " + resList.toArray());
@@ -220,10 +220,10 @@ public class EchoServer extends AbstractServer {
 	private ArrayList<QuestionModel> getQuestionsFromDBForLecturer(String query) throws SQLException {
 		stmt = getConn().createStatement();
 		ResultSet result = stmt.executeQuery(query);
-		ArrayList<QuestionModel> res = new ArrayList<QuestionModel>();
+		ArrayList<Question> res = new ArrayList<Question>();
 		while (result.next()) {
 			// while threres questions in result , adding them into result array
-			QuestionModel q = new QuestionModel(result.getString(1), result.getString(2), result.getString(3),
+			Question q = new Question(result.getString(1), result.getString(2), result.getString(3),
 					result.getString(4), result.getString(5), result.getString(6));
 			res.add(q);
 		}

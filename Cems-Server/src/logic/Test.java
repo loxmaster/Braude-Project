@@ -1,94 +1,102 @@
 package logic;
 
-import java.util.ArrayList;
+import java.util.Date;
 
 public class Test {
-    private ArrayList<QuestionModel> quesitonsInTest;
-    private String id, subject, author;
-    private String duration, testComments, testCode;
-    private String date, time;
+    private Question[] questions;
+    
 
-    public Test(String id, String subject, String author, String duration, String testComments, String testCode,
-            String date, String time) {
-        this.id = id;
-        this.subject = subject;
-        this.author = author;
+    private Lecturer auther,managingLecturer;
+    private int id,duration;
+    private String comment,code;
+    private Date date;
+    private Boolean isComputerized;
+
+    public Test(Question[] question, int duration,int id, String comment, Lecturer auther, Lecturer managingLecturer, String code, String manaString, Boolean isComputerized,Date date){
+        this.questions = question;
         this.duration = duration;
-        this.testComments = testComments;
-        this.testCode = testCode;
+        this.comment = comment;
+        this.auther = auther;
+        this.managingLecturer = managingLecturer;
+        //check if id/code needs to be calculated here
+        this.code =code;
+        this.id = id;
+        //* *//
         this.date = date;
-        this.time = time;
+        this.isComputerized = isComputerized;
     }
 
-    public ArrayList<QuestionModel> getQuesitonsInTest() {
-        return quesitonsInTest;
+    public Question[] getQuestions() {
+        return this.questions;
     }
 
-    public void setQuesitonsInTest(ArrayList<QuestionModel> quesitonsInTest) {
-        this.quesitonsInTest = quesitonsInTest;
+    public void setQuestions(Question[] questions) {
+        this.questions = questions;
     }
 
-    public String getId() {
-        return id;
+    public Lecturer getAuther() {
+        return this.auther;
     }
 
-    public void setId(String id) {
+    public Lecturer getManagingLecturer() {
+        return this.managingLecturer;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public int getDuration() {
+        return this.duration;
+    }
+
+    public String getComment() {
+        return this.comment;
+    }
+
+    public String getCode() {
+        return this.code;
+    }
+
+    public Date getDate() {
+        return this.date;
+    }
+
+    public Boolean getIsComputerized() {
+        return this.isComputerized;
+    }
+
+    public void setAuther(Lecturer auther) {
+        this.auther = auther;
+    }
+
+    public void setManagingLecturer(Lecturer managingLecturer) {
+        this.managingLecturer = managingLecturer;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 
-    public String getTestComments() {
-        return testComments;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public void setTestComments(String testComments) {
-        testComments = testComments;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getTestCode() {
-        return testCode;
-    }
-
-    public void setTestCode(String testCode) {
-        this.testCode = testCode;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public String getTime() {
-        return time;
+    public void setIsComputerized(Boolean isComputerized) {
+        this.isComputerized = isComputerized;
     }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
+    
 }
+
