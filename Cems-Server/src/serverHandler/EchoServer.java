@@ -38,7 +38,7 @@ public class EchoServer extends AbstractServer {
 	final public static int DEFAULT_PORT = 5555;
 
 	// Instance of the server
-	public static EchoServer echoServer;
+	public static EchoServer serverInstance;
 
 	// Variables for the queries
 	private static Connection conn = null;
@@ -62,6 +62,12 @@ public class EchoServer extends AbstractServer {
 		//timer = new Timer();
 	}
 
+	public static synchronized EchoServer getServerInstance() {
+		if (serverInstance == null)
+			serverInstance = new EchoServer(DEFAULT_PORT);
+		return serverInstance;
+	}
+
 	// Main ****************************************************
 
 	/**
@@ -81,11 +87,11 @@ public class EchoServer extends AbstractServer {
 			port = DEFAULT_PORT; // Set port to 5555
 		}
 
-		echoServer = new EchoServer(port);
+		serverInstance = getServerInstance();
 
 		try {
-			echoServer.listen(); // Start listening for connections
-		} catch (Exception ex) {
+			serverInstance.listen(); // Start listening for connections
+		} catch (Exception e) {
 			System.out.println("ERROR - Could not listen for clients!");
 		}
 	}
