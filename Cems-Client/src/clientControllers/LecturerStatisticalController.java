@@ -37,10 +37,11 @@ public class LecturerStatisticalController extends BasicController {
 				new PieChart.Data("Passed", 50),
 				new PieChart.Data("Failed", 30));
 
-		pieChartData.forEach(
-				data -> data.nameProperty().bind(Bindings.concat(data.getName(), "amount", data.pieValueProperty())));
+		//pieChartData.forEach(
+				//data -> data.nameProperty().bind(Bindings.concat(data.getName(), "amount", data.pieValueProperty())));
 
 				
+		System.out.println(pieChart.getData());
 		pieChart.getData().addAll(pieChartData);
 	}
 
@@ -77,16 +78,15 @@ public class LecturerStatisticalController extends BasicController {
 	void viewGraph_ButtonPressed(ActionEvent event) {
 		// return to table view from 'Edit Question'
 		// ((Node) event.getSource()).getScene().getWindow().hide();
-		openScreen("/clientFXMLS/LecturerStatistical_GraphView.fxml", "CEMS System - Viewing Graph", event);
+		LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen("/clientFXMLS/LecturerStatistical_GraphView.fxml", "CEMS System - Viewing Graph", event);
+		lsc.initialize_PieChart();
 	}
 
 	@FXML
-	void backtoStatistical_Main(ActionEvent event) {
+	void backtoStatistical(ActionEvent event) {
 		// return to table view from 'Edit Question'
 		// ((Node) event.getSource()).getScene().getWindow().hide();
-		openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Visualization - Statistical Information",
-				event);
-
+		openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Visualization - Statistical Information",event);
 		// FIXME fix this load table thingy
 		// lecturerStatisticalController.loadTable();
 

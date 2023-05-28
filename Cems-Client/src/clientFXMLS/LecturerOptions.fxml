@@ -40,7 +40,7 @@
                   <Insets top="-0.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="BtnInfo" mnemonicParsing="false" onAction="#UpdateQuestionPressed" prefHeight="30.0" prefWidth="250.0" text="Update Question">
+            <Button fx:id="BtnInfo" mnemonicParsing="false" onAction="#Question Pool" prefHeight="30.0" prefWidth="250.0" text="Update Question">
                <font>
                   <Font name="Calibri Bold Italic" size="18.0" />
                </font>
