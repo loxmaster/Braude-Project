@@ -30,9 +30,9 @@ public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
 
 	// Variables for handling the clients timout disconnect
-	private Map<ConnectionToClient, Long> lastMessageTimes;
-	private Timer timer;
-	private long timeoutDuration = 60000; // Timeout for disconnect in Miliseconds
+	//private Map<ConnectionToClient, Long> lastMessageTimes;
+	//private Timer timer;
+	//private long timeoutDuration = 60000; // Timeout for disconnect in Miliseconds
 
 	// The default port to listen on.
 	final public static int DEFAULT_PORT = 5555;
@@ -57,8 +57,9 @@ public class EchoServer extends AbstractServer {
 	 */
 	private EchoServer(int port) {
 		super(port);
-		lastMessageTimes = new HashMap<>();
-		timer = new Timer();
+
+		//lastMessageTimes = new HashMap<>();
+		//timer = new Timer();
 	}
 
 	public static synchronized EchoServer getServerInstance() {
@@ -105,7 +106,8 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
-		lastMessageTimes.put(client, System.currentTimeMillis());
+		//lastMessageTimes.put(client, System.currentTimeMillis());
+
 		System.out.println("Message received: " + msg + " from " + client);
 		ResultSet result;
 		String notFound = "Not Found", res;
@@ -354,17 +356,17 @@ public class EchoServer extends AbstractServer {
 	 */
 	@Override
 	protected void clientConnected(ConnectionToClient client) {
-		lastMessageTimes.put(client, System.currentTimeMillis());
+		//lastMessageTimes.put(client, System.currentTimeMillis());
 
 		ClientModel clientModel = new ClientModel(client.getInetAddress().getHostName(), client.getInetAddress(),
 				client.isAlive());
 		ServerUI.sController.loadToTable(clientModel);
 
 		// Start the timer task to check for inactivity
-		startTimerTask();
+		//startTimerTask();
 	}
 
-	private void startTimerTask() {
+	/*private void startTimerTask() {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -384,7 +386,7 @@ public class EchoServer extends AbstractServer {
 				clientDisconnected(client);
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * get subject id from the database
