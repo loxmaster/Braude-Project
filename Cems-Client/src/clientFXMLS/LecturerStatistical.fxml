@@ -42,7 +42,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="exitbutton1" layoutX="1178.0" layoutY="114.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="View Graph" textAlignment="CENTER">
+      <Button fx:id="viewGraph" layoutX="1178.0" layoutY="114.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="View Graph" textAlignment="CENTER">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
