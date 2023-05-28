@@ -1,67 +1,96 @@
 package clientControllers;
 
-import java.util.Observable;
+import java.util.ArrayList;
 
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import logic.Statistics;
 
 public class LecturerStatisticalController extends BasicController {
 
 	@FXML
-	private TableView<?> table;
+    private TableColumn<Statistics, String> Average;
+
+    @FXML
+    private TableColumn<Statistics, String> Course;
+
+    @FXML
+    private TableColumn<Statistics, String> Date;
+
+    @FXML
+    private TableColumn<Statistics, String> Median;
+
+    @FXML
+    private TableColumn<Statistics, String> TestID;
+
+    @FXML
+    private Button exitbutton;
+
+    @FXML
+    private Button logo;
+
+    @FXML
+    private TableView<Statistics> table;
+
+	@FXML
+    private TableColumn<Statistics, Button> viewGraph;
+
+    @FXML
+    private Button viewGraphButton;
+
 	@FXML
 	private PieChart pieChart;
+
 	@FXML
-	private BarChart<?, ?> barchart;
+	private BarChart<String, Number>  barchart;
+
 	@FXML
 	private Button backToLecturer;
+
 	@FXML
 	private Button backButton;
-	@FXML
-	private Button viewGraph;
+
 
 	// TODO need to find a way to populate the pie chart and get rid on the new
 	// "PieChart.Data(Testing, 50)"
 	// * need to add a Sleep option
 
-	public void initialize_PieChart() {// pass data as argument (?)
-		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-				new PieChart.Data("Passed", 50),
-				new PieChart.Data("Failed", 30));
 
-		//pieChartData.forEach(
-				//data -> data.nameProperty().bind(Bindings.concat(data.getName(), "amount", data.pieValueProperty())));
+	public void load() {
+		Average.setCellValueFactory(new PropertyValueFactory<>("Average"));
+        Course.setCellValueFactory(new PropertyValueFactory<>("Course"));
+        Date.setCellValueFactory(new PropertyValueFactory<>("Date"));
+        Median.setCellValueFactory(new PropertyValueFactory<>("Median"));
+        TestID.setCellValueFactory(new PropertyValueFactory<>("TestID"));
+		viewGraph.setCellValueFactory(new PropertyValueFactory<>("viewGraph"));
 
-				
-		System.out.println(pieChart.getData());
-		pieChart.getData().addAll(pieChartData);
-	}
+		Statistics stat1 = new Statistics("56.78", "malam", "2023-05-29", "79", "020301");
+		Statistics stat2 = new Statistics("74", "malam", "2023-04-30", "70", "020302");
+		Statistics stat3 = new Statistics("94", "algebra1", "2022-01-25", "91", "010201");
 
-	public void initialize_BarChart() {// pass data as argument (?)
+		ArrayList<Statistics> tempArray = new ArrayList<>();
+		tempArray.add(stat1);
+		tempArray.add(stat2);
+		tempArray.add(stat3);
 
-		XYChart.Series series1 = new XYChart.Series<>();
-
-		series1.setName("2023");
-		series1.getData().add(new XYChart.Data("tinkywinky", 23532));
-		series1.getData().add(new XYChart.Data("lala", 666));
-		series1.getData().add(new XYChart.Data("po", 11111));
-
-		XYChart.Series series2 = new XYChart.Series<>();
-
-		series2.setName("2022");
-		series2.getData().add(new XYChart.Data("abc", 123));
-		series2.getData().add(new XYChart.Data("def", 456));
-		series2.getData().add(new XYChart.Data("ghi", 678));
-
-		barchart.getData().addAll(series1, series2);
+		ObservableList<Statistics> listToAdd = FXCollections.observableArrayList(tempArray);
+		table.setItems(listToAdd);
 
 	}
 
@@ -78,8 +107,9 @@ public class LecturerStatisticalController extends BasicController {
 	void viewGraph_ButtonPressed(ActionEvent event) {
 		// return to table view from 'Edit Question'
 		// ((Node) event.getSource()).getScene().getWindow().hide();
-		LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen("/clientFXMLS/LecturerStatistical_GraphView.fxml", "CEMS System - Viewing Graph", event);
+		GraphController lsc = (GraphController) openScreen("/clientFXMLS/LecturerStatistical_GraphView.fxml", "CEMS System - Viewing Graph", event);
 		lsc.initialize_PieChart();
+		lsc.initialize_BarChart();
 	}
 
 	@FXML
