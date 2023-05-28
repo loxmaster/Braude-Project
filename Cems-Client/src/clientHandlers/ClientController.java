@@ -4,6 +4,8 @@ import java.io.*;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import javax.print.DocFlavor.STRING;
+
 public class ClientController implements ChatIF {
     // Class variables *************************************************
 
@@ -110,6 +112,17 @@ public class ClientController implements ChatIF {
             e.printStackTrace();
         }
     }
+
+    // public void CreateAnswers(String optionA, String optionB, String optionC, String optionD,String correctAnswer) {
+    //     try{
+
+    //        //client.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer);
+	// }
+    //     }
+    //     catch (Exception e){
+    //         e.printStackTrace();
+    //     }
+    // }
 
     // gets all of specific lecturer questions
     public void GetLecturersQuestions(Object object) {
