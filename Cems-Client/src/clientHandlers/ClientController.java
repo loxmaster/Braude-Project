@@ -113,16 +113,15 @@ public class ClientController implements ChatIF {
         }
     }
 
-    // public void CreateAnswers(String optionA, String optionB, String optionC, String optionD,String correctAnswer) {
-    //     try{
+    public void CreateAnswers(String optionA, String optionB, String optionC, String optionD,String correctAnswer,String subjectID) {
+        try{
 
-    //        //client.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer);
-	// }
-    //     }
-    //     catch (Exception e){
-    //         e.printStackTrace();
-    //     }
-    // }
+           client.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer,subjectID);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     // gets all of specific lecturer questions
     public void GetLecturersQuestions(Object object) {

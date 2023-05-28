@@ -100,8 +100,9 @@ public class CreateQuestionController extends BasicController {
 			e.printStackTrace();
 		}
 		System.out.println("CreateQuestion: " + subjectID);
+		subjectID += qnumber;
 		ClientUI.chat.CreateQuestion(subjectID, subject, qBody, qnumber);
-		//ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer);
+		ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer,subjectID);
 	}
 
 	@FXML
