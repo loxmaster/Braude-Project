@@ -117,13 +117,12 @@ public class EchoServer extends AbstractServer {
 		else if (msg instanceof ArrayList) {
 			ArrayList<String> list = (ArrayList<String>) msg;
 
-			
-			//TODO noah: check if this works lul
+			// TODO noah: check if this works lul
 			if (list.get(0).equals("getSubjectID")) {
 				try {
 					// send query to be executed along with the identifier
 					ArrayList<String> resultList = getSubjectID(list.get(1), "getSubjectID");
-					//result list should have arraylist = {identifier, subjectname}
+					// result list should have arraylist = {identifier, subjectname}
 
 					// if we got no results: send notFound signal
 					if (resultList == null)
@@ -143,6 +142,20 @@ public class EchoServer extends AbstractServer {
 					if (isReturned == 0)
 						client.sendToClient((Object) notFound);
 					client.sendToClient((Object) isReturned);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+			} 
+			//createquestion 
+			else if (list.get(0).equals("createquestion")) {
+				try {
+					int isReturned = createQuestionQuery(list.get(1));
+					if (isReturned == 0)// this means that we could make the update, return notFound Object
+						client.sendToClient((Object) notFound);
+					else
+						client.sendToClient((Object) isReturned);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				} catch (IOException e2) {
@@ -236,6 +249,12 @@ public class EchoServer extends AbstractServer {
 	}
 
 	private int editQuestion(String query) throws SQLException {
+		stmt = conn.createStatement();
+		int res = stmt.executeUpdate(query);
+		return res;
+	}
+
+	private int createQuestionQuery(String query) throws SQLException {
 		stmt = conn.createStatement();
 		int res = stmt.executeUpdate(query);
 		return res;
@@ -356,10 +375,10 @@ public class EchoServer extends AbstractServer {
 		stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(query);
 		ArrayList<String> output = new ArrayList<String>();
-		//add the "getSubjectID" identifier
+		// add the "getSubjectID" identifier
 		output.add(identifier);
-		//TODO
-		//if there's a result??
+		// TODO
+		// if there's a result??
 		if (result.next()) {
 			output.add(result.getString(1));
 			System.out.println("Message sent back: " + output);

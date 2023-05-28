@@ -89,18 +89,14 @@ public class CreateQuestionController extends BasicController {
 		q.add(optionA);
 		q.add(correctAnswer);
 
-		// append subjectid to to question number to get the QuestionID
-		// String questionIdQuery = "SELECT subjectid FROM projecton.subjectcourses
-		// where ( `subjectname` = '" + subject + "' );";
-
 		ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
-		// ClientUI.chat.CreateQuestion(QuestionID, subject, qBody, qnumber);
 		try {
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		System.out.println("CreateQuestion: " + subjectID);
+		ClientUI.chat.CreateQuestion(subjectID, subject, qBody, qnumber);
 		LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
 		lc.loadLecturer(ClientHandler.user);
 		

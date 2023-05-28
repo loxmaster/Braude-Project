@@ -41,15 +41,15 @@ public class ClientController implements ChatIF {
     public void accept() {
         /*
          * 
-         *try {
-
-         *         *BufferedReader fromConsole = new BufferedReader(new
-         *InputStreamReader(System.in));
-         *System.out.println("> Connected To Server ");
-         *  * Object message = fromConsole.readLine();
-         *client.handleMessageFromClientUI(message);
-         *} catch (Exception ex) {
-         *  
+         * try {
+         * 
+         * *BufferedReader fromConsole = new BufferedReader(new
+         * InputStreamReader(System.in));
+         * System.out.println("> Connected To Server ");
+         * * Object message = fromConsole.readLine();
+         * client.handleMessageFromClientUI(message);
+         * } catch (Exception ex) {
+         * 
          * System.out.println("Unexpected error while reading from console!");
          * ex.printStackTrace();
          * }
@@ -81,7 +81,6 @@ public class ClientController implements ChatIF {
         }
     }
 
-
     // gets all of specific lecturer questions
     public void GetSubjectIDfromSubjectCourses(String subjectname) {
         try {
@@ -96,15 +95,21 @@ public class ClientController implements ChatIF {
         try {
             client.handleMessageFromLecturerUI(username);
         } catch (Exception e) {
-        //client.EditQuestion(newBody, newQNumber, originalId);
-        e.printStackTrace();
+            // client.EditQuestion(newBody, newQNumber, originalId);
+            e.printStackTrace();
         }
 
     }
-    
+
     public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
-        client.CreateQuestion(Id, subject, Body, QNumber);
-    }    
+        try{
+
+            client.CreateQuestion(Id, subject, Body, QNumber);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     // gets all of specific lecturer questions
     public void GetLecturersQuestions(Object object) {

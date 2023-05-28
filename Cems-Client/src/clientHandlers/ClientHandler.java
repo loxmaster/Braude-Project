@@ -75,7 +75,7 @@ public class ClientHandler extends AbstractClient {
 						LecturerController.getSubjectsList().add(s.toUpperCase());
 					}
 				}
-				//TODO noah: check if this works lul
+
 				// assign subjectID that we've got from the server
 				else if (list.get(0).equals("getSubjectID")) {
 					// subjectArray = list.get(1).split(",");
@@ -194,15 +194,16 @@ public class ClientHandler extends AbstractClient {
 	// TODO
 	// UPDATE `projecton`.`questions` SET `questiontext` = 'sas', `questionnumber`
 	// ='ass' WHERE (`id` = '01001');
-
 	public void EditQuestion(String newBody, String newQNumber, String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
 		String s = originalId.substring(0, 2) + newQNumber;
 		list.add("editquestion");
-		list.add("UPDATE `projecton`.`questions` SET `id` = '" + s + "', `questiontext` = '" + newBody
-				+ "', `questionnumber` = '" + newQNumber + "' WHERE (`id` = '" + originalId + "');");
-		// UPDATE `projecton`.`questions` SET `id` = '13', `questiontext` = '13',
-		// `questionnumber` = '13' WHERE (`id` = '01001');
+
+		// Construct the UPDATE query to edit the question
+		String query = "UPDATE `projecton`.`questions` SET `id` = '" + s + "', `questiontext` = '" + newBody
+				+ "', `questionnumber` = '" + newQNumber + "' WHERE (`id` = '" + originalId + "');";
+		list.add(query);
+
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
@@ -213,11 +214,15 @@ public class ClientHandler extends AbstractClient {
 	public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("createquestion");
-		list.add("INSERT INTO `projecton`.`questions` SET `id` = '" + Id + "',`subject` = '" + subject
-				+ "', `questiontext` = '" + Body
-				+ "', `questionnumber` = '" + QNumber + "',`lecturer` = '" + user.getUsername() + "' ;");
-		// INSERT INTO `projecton`.`questions` SET `id` = '13', `questiontext` = '13',
-		// `questionnumber` = '13' WHERE (`id` = '01001');
+
+		// Append QNumber to Id to create a unique question Id
+		Id += QNumber;
+
+		// Construct the INSERT query to create a new question
+		String query = "INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
+				+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername() + "');";
+		list.add(query);
+
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
