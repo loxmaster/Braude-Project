@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import clientControllers.CreateQuestionController;
 import clientControllers.LecturerController;
 import ocsf.client.*;
 
@@ -73,6 +74,13 @@ public class ClientHandler extends AbstractClient {
 					for (String s : subjectArray) {
 						LecturerController.getSubjectsList().add(s.toUpperCase());
 					}
+				}
+
+				// assign subjectID that we've got from the server
+				else if (list.get(0).equals("getSubjectID")) {
+					// subjectArray = list.get(1).split(",");
+					System.out.println("Client Handler: " + list.get(1));
+					CreateQuestionController.setSubjectID(list.get(1));
 				}
 			}
 
@@ -186,15 +194,47 @@ public class ClientHandler extends AbstractClient {
 	// TODO
 	// UPDATE `projecton`.`questions` SET `questiontext` = 'sas', `questionnumber`
 	// ='ass' WHERE (`id` = '01001');
-
 	public void EditQuestion(String newBody, String newQNumber, String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
 		String s = originalId.substring(0, 2) + newQNumber;
 		list.add("editquestion");
-		list.add("UPDATE `projecton`.`questions` SET `id` = '" + s + "', `questiontext` = '" + newBody
-				+ "', `questionnumber` = '" + newQNumber + "' WHERE (`id` = '" + originalId + "');");
-		// UPDATE `projecton`.`questions` SET `id` = '13', `questiontext` = '13',
-		// `questionnumber` = '13' WHERE (`id` = '01001');
+
+		// Construct the UPDATE query to edit the question
+		String query = "UPDATE `projecton`.`questions` SET `id` = '" + s + "', `questiontext` = '" + newBody
+				+ "', `questionnumber` = '" + newQNumber + "' WHERE (`id` = '" + originalId + "');";
+		list.add(query);
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("createquestion");
+		// Construct the INSERT query to create a new question
+		String query = "INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
+				+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername() + "');";
+		list.add(query);
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void CreateAnswers(String optionA, String optionB, String optionC, String optionD,String correctAnswer,String subjectID) {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("createanswers");
+
+		// Construct the INSERT query to create a new answer
+		String query = "INSERT INTO `projecton`.`answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
+				+ optionA + "', '" + optionB + "', '" + optionC + "', '" + optionD + "', '" + correctAnswer + "', '" + subjectID + "');";
+		list.add(query);
+
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
@@ -215,7 +255,26 @@ public class ClientHandler extends AbstractClient {
     }
 	
 	/**
-	 * This method overrites super method that handles what happans when connection is closed
+	 * 
+	 * create a new arraylist subject, add an identifier "getSubjectID" so the
+	 * Echoserver idenrtifies it,
+	 * the second cell should contain 'subjectname' for the server to parse
+	 */
+	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
+		ArrayList<String> subject = new ArrayList<String>();
+		subject.add("getSubjectID");
+
+		subject.add("SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subjectname + "' );");
+		try {
+			sendToServer((Object) subject);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * This method overrites super method that handles what happans when connection
+	 * is closed
 	 * with the server.
 	 */
 	protected void connectionClosed() {
@@ -229,8 +288,9 @@ public class ClientHandler extends AbstractClient {
 		try {
 			sendToServer((Object) this.getInetAddress());
 			closeConnection();
-		} catch (IOException e) {}
-		//System.exit(0);
+		} catch (IOException e) {
+		}
+		// System.exit(0);
 	}
 
 	/**

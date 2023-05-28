@@ -30,9 +30,9 @@ public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
 
 	// Variables for handling the clients timout disconnect
-	//private Map<ConnectionToClient, Long> lastMessageTimes;
-	//private Timer timer;
-	//private long timeoutDuration = 60000; // Timeout for disconnect in Miliseconds
+	private Map<ConnectionToClient, Long> lastMessageTimes;
+	private Timer timer;
+	private long timeoutDuration = 60000; // Timeout for disconnect in Miliseconds
 
 	// The default port to listen on.
 	final public static int DEFAULT_PORT = 5555;
@@ -57,9 +57,8 @@ public class EchoServer extends AbstractServer {
 	 */
 	private EchoServer(int port) {
 		super(port);
-
-		//lastMessageTimes = new HashMap<>();
-		//timer = new Timer();
+		lastMessageTimes = new HashMap<>();
+		timer = new Timer();
 	}
 
 	public static synchronized EchoServer getServerInstance() {
@@ -89,7 +88,6 @@ public class EchoServer extends AbstractServer {
 
 		serverInstance = getServerInstance();
 
-
 		try {
 			serverInstance.listen(); // Start listening for connections
 		} catch (Exception e) {
@@ -107,7 +105,7 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
-		//lastMessageTimes.put(client, System.currentTimeMillis());
+		lastMessageTimes.put(client, System.currentTimeMillis());
 		System.out.println("Message received: " + msg + " from " + client);
 		ResultSet result;
 		String notFound = "Not Found", res;
@@ -120,12 +118,59 @@ public class EchoServer extends AbstractServer {
 			ArrayList<String> list = (ArrayList<String>) msg;
 
 
-			if (list.get(0).equals("editquestion") || list.get(0).equals("Addtesttodata")) {
+			// TODO noah: check if this works lul
+			if (list.get(0).equals("getSubjectID")) {
+				try {
+					// send query to be executed along with the identifier
+					ArrayList<String> resultList = getSubjectID(list.get(1), "getSubjectID");
+					// result list should have arraylist = {identifier, subjectname}
+
+					// if we got no results: send notFound signal
+					if (resultList == null)
+						client.sendToClient((Object) notFound);
+					// else return the subjectID result we got from the query
+					else
+						client.sendToClient(resultList);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
+			else if (list.get(0).equals("editQuestion") || list.get(0).equals("Addtesttodata")) {
 				try {
 					int isReturned = executeMyQuery(list.get(1));
 					if (isReturned == 0)
 						client.sendToClient((Object) notFound);
 					client.sendToClient((Object) isReturned);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+			} 
+
+				else if (list.get(0).equals("createanswers")) {
+				try {
+					int isReturned = createanswers(list.get(1));
+					if (isReturned == 0)
+						client.sendToClient((Object) notFound);
+					else
+						client.sendToClient((Object) isReturned);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+			} 
+			//createquestion 
+			else if (list.get(0).equals("createquestion")) {
+				try {
+					int isReturned = createQuestionQuery(list.get(1));
+					if (isReturned == 0)// this means that we could make the update, return notFound Object
+						client.sendToClient((Object) notFound);
+					else
+						client.sendToClient((Object) isReturned);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				} catch (IOException e2) {
@@ -145,8 +190,10 @@ public class EchoServer extends AbstractServer {
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
-			} else if (list.get(0).equals("lecturerquestions")) {
-				// gets all lecturer questions from db
+			}
+
+			else if (list.get(0).equals("lecturerQuestions")) {
+				// gets all lecturer Questions from db
 				try {
 					ArrayList<QuestionModel> resList = getQuestionsFromDBForLecturer(list.get(1));
 					if (resList == null)
@@ -222,14 +269,26 @@ public class EchoServer extends AbstractServer {
 		int res = stmt.executeUpdate(query);
 		return res;
 	}
-	// gets questions from db
+
+		private int createanswers(String query) throws SQLException {
+		stmt = conn.createStatement();
+		int res = stmt.executeUpdate(query);
+		return res;
+	}
+
+	private int createQuestionQuery(String query) throws SQLException {
+		stmt = conn.createStatement();
+		int res = stmt.executeUpdate(query);
+		return res;
+	}
+	// gets Questions from db
 
 	private ArrayList<QuestionModel> getQuestionsFromDBForLecturer(String query) throws SQLException {
 		stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(query);
 		ArrayList<QuestionModel> res = new ArrayList<QuestionModel>();
 		while (result.next()) {
-			// while threres questions in result , adding them into result array
+			// while threres Questions in result , adding them into result array
 			QuestionModel q = new QuestionModel(result.getString(1), result.getString(2), result.getString(3),
 					result.getString(4), result.getString(5), result.getString(6));
 			res.add(q);
@@ -292,17 +351,17 @@ public class EchoServer extends AbstractServer {
 	 */
 	@Override
 	protected void clientConnected(ConnectionToClient client) {
-		//lastMessageTimes.put(client, System.currentTimeMillis());
+		lastMessageTimes.put(client, System.currentTimeMillis());
 
 		ClientModel clientModel = new ClientModel(client.getInetAddress().getHostName(), client.getInetAddress(),
 				client.isAlive());
 		ServerUI.sController.loadToTable(clientModel);
 
 		// Start the timer task to check for inactivity
-		//startTimerTask();
+		startTimerTask();
 	}
 
-	/*private void startTimerTask() {
+	private void startTimerTask() {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -322,7 +381,34 @@ public class EchoServer extends AbstractServer {
 				clientDisconnected(client);
 			}
 		}
-	}*/
+	}
+
+	/**
+	 * get subject id from the database
+	 * //TODO noah: check if this works lul
+	 * we could change this method to send generic queries with identifiers
+	 * 
+	 * @param query
+	 * @param identifier
+	 * @return
+	 * @throws SQLException
+	 */
+	private ArrayList<String> getSubjectID(String query, String identifier) throws SQLException {
+		stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(query);
+		ArrayList<String> output = new ArrayList<String>();
+		// add the "getSubjectID" identifier
+		output.add(identifier);
+		// TODO
+		// if there's a result??
+		if (result.next()) {
+			output.add(result.getString(1));
+			System.out.println("Message sent back: " + output);
+			return output;
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * This method overrites the method from AbstractServer where this method is
