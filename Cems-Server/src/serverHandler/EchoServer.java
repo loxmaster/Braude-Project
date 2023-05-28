@@ -177,7 +177,7 @@ public class EchoServer extends AbstractServer {
 					e2.printStackTrace();
 				}
 			}
-
+			
 			else if (list.get(0).equals("lecturersubjects")) {
 				// gets lecturer subjects
 				try {
@@ -273,7 +273,7 @@ public class EchoServer extends AbstractServer {
 		return res;
 	}
 
-		private int createanswers(String query) throws SQLException {
+	private int createanswers(String query) throws SQLException {
 		stmt = conn.createStatement();
 		int res = stmt.executeUpdate(query);
 		return res;

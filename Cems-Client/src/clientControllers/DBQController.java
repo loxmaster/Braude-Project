@@ -16,7 +16,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import logic.QuestionModel;
 import logic.Test;
 
-
 public class DBQController extends BasicController {
 	private Test testToReturn;
 	

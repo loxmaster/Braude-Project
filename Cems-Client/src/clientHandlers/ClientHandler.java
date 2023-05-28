@@ -198,7 +198,6 @@ public class ClientHandler extends AbstractClient {
 	// TODO
 	// UPDATE `projecton`.`questions` SET `questiontext` = 'sas', `questionnumber`
 	// ='ass' WHERE (`id` = '01001');
-
 	public void EditQuestion(String newBody, String newQNumber, String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
 		String s = originalId.substring(0, 2) + newQNumber;
@@ -293,8 +292,9 @@ public class ClientHandler extends AbstractClient {
 		try {
 			sendToServer((Object) this.getInetAddress());
 			closeConnection();
-		} catch (IOException e) {}
-		//System.exit(0);
+		} catch (IOException e) {
+		}
+		// System.exit(0);
 	}
 
 	/**
