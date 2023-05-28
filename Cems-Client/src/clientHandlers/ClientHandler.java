@@ -1,14 +1,14 @@
 package clientHandlers;
 
-import logic.QuestionModel;
-import logic.User;
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.LecturerController;
-import ocsf.client.*;
+import logic.QuestionModel;
+import logic.User;
+import ocsf.client.AbstractClient;
 
 @SuppressWarnings("unchecked")
 /**
@@ -64,7 +64,11 @@ public class ClientHandler extends AbstractClient {
 
 			if (((ArrayList<?>) severMessage).get(0) instanceof QuestionModel) {
 				questionList = (ArrayList<QuestionModel>) severMessage;
-				LecturerController.setQuestions(questionList);
+				//for (int i = 0 ; i<questionList.size() ; i++) {
+
+				//}
+				// sd
+				 LecturerController.setQuestions(questionList);
 			}
 
 			else {
@@ -242,6 +246,18 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	
+    public void sendTestToDatabase(String query) {
+		ArrayList<String> listToSend = new ArrayList<String>();
+		listToSend.add("Addtesttodata");
+		listToSend.add(query);
+		try {
+			sendToServer((Object)listToSend);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+	
 	/**
 	 * 
 	 * create a new arraylist subject, add an identifier "getSubjectID" so the

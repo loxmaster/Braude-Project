@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import logic.QuestionModel;
 
@@ -22,7 +21,7 @@ public class EditQuestionController extends BasicController {
 	private Button BtnInfo;
 
 	@FXML
-	private TextArea body;
+	private TextField body;
 
 	@FXML
 	private CheckBox A, B, C, D;
