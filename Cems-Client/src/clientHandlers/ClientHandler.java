@@ -1,14 +1,14 @@
 package clientHandlers;
 
-import logic.QuestionModel;
-import logic.User;
-import java.io.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.LecturerController;
-import ocsf.client.*;
+import logic.QuestionModel;
+import logic.User;
+import ocsf.client.AbstractClient;
 
 @SuppressWarnings("unchecked")
 /**
@@ -64,7 +64,11 @@ public class ClientHandler extends AbstractClient {
 
 			if (((ArrayList<?>) severMessage).get(0) instanceof QuestionModel) {
 				questionList = (ArrayList<QuestionModel>) severMessage;
-				LecturerController.setQuestions(questionList);
+				//for (int i = 0 ; i<questionList.size() ; i++) {
+
+				//}
+				// sd
+				 LecturerController.setQuestions(questionList);
 			}
 
 			else {
@@ -194,6 +198,7 @@ public class ClientHandler extends AbstractClient {
 	// TODO
 	// UPDATE `projecton`.`questions` SET `questiontext` = 'sas', `questionnumber`
 	// ='ass' WHERE (`id` = '01001');
+
 	public void EditQuestion(String newBody, String newQNumber, String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
 		String s = originalId.substring(0, 2) + newQNumber;
@@ -288,9 +293,8 @@ public class ClientHandler extends AbstractClient {
 		try {
 			sendToServer((Object) this.getInetAddress());
 			closeConnection();
-		} catch (IOException e) {
-		}
-		// System.exit(0);
+		} catch (IOException e) {}
+		//System.exit(0);
 	}
 
 	/**

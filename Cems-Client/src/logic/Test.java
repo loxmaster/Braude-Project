@@ -1,6 +1,5 @@
 package logic;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javafx.scene.control.DatePicker;

@@ -150,7 +150,7 @@ public class EchoServer extends AbstractServer {
 				}
 			} 
 
-				else if (list.get(0).equals("createanswers")) {
+			else if (list.get(0).equals("createanswers")) {
 				try {
 					int isReturned = createanswers(list.get(1));
 					if (isReturned == 0)
@@ -192,7 +192,7 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 
-			else if (list.get(0).equals("lecturerQuestions")) {
+			else if (list.get(0).equals("lecturerquestions")) {
 				// gets all lecturer Questions from db
 				try {
 					ArrayList<QuestionModel> resList = getQuestionsFromDBForLecturer(list.get(1));
@@ -231,7 +231,9 @@ public class EchoServer extends AbstractServer {
 					ioe.printStackTrace();
 				}
 			}
-		} else {
+		} 
+		
+		else {
 			if (msg instanceof String) {
 				String query = (String) msg;
 				res = "allsubjects,";
@@ -263,6 +265,7 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 	
+
 	// Funtion for executing queries, return number of rows affected.
 	private int executeMyQuery(String query) throws SQLException {
 		stmt = conn.createStatement();

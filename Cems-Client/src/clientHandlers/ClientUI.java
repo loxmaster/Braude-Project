@@ -1,5 +1,5 @@
 package clientHandlers;
- 
+
 import clientControllers.LoginScreenController;
 import javafx.application.Application;
 import javafx.stage.Stage;
