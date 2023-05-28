@@ -1,5 +1,7 @@
 package clientControllers;
 
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 import javafx.collections.FXCollections;
@@ -58,7 +60,16 @@ public class DBQController extends BasicController {
 
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
-		// TODO Remembers the questions
+		// Remembers the questions that needs to be added
+		ObservableList<QuestionModel> tempQuestionList = table.getItems();
+		ArrayList<QuestionModel> questionsToAdd = new ArrayList<QuestionModel>();
+
+		for (int i = 0 ; i < tempQuestionList.size() ; i++) {
+			//System.out.println(tempQuestionList.get(i));
+			//if(Check.getCellObservableValue(tempQuestionList.get(i)).getValue().isSelected())
+				//questionsToAdd.add(tempQuestionList.get(i));
+		}
+
 
 		testToReturn.setQuesitonsInTest(LecturerController.getQuestions());
 		// open Create Tests back with already updated test

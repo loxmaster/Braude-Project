@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -31,6 +32,12 @@ public class CreateTestController extends BasicController {
 	private TextArea qBody;
 
 	@FXML
+    private TextField code, duration, startTime, totalPoints;
+
+    @FXML
+    private DatePicker date;
+	
+	@FXML
 	private VBox questionTracker;
 
 	@FXML
@@ -41,13 +48,22 @@ public class CreateTestController extends BasicController {
 
 	@FXML
 	private Button savebutton;
-	
-	@FXML
-	private ComboBox<String> subjectComboBox;
+
+    @FXML
+    private ComboBox<String> subjectComboBox;
 
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
-		// Open question DB screen from existing stage
+		
+		test.setAuthor(ClientHandler.user.getpName());
+		test.setSubject(subjectComboBox.getValue());
+		test.setTestCode(code.getText());
+		test.setTime(startTime.getText());
+		test.setDate(date.toString());
+		test.setDuration(duration.getText());
+		//test.setId(null);
+
+		// Gets all the questions from DataBase
 		LecturerController.setQuestions(new ArrayList<QuestionModel>());
 		ClientUI.chat.GetLecturersQuestions(ClientHandler.user.getUsername());
 
@@ -86,7 +102,7 @@ public class CreateTestController extends BasicController {
         //questionInTestButton.setId("questionbutton");
         questionInTestButton.setPrefWidth(60);
         questionInTestButton.setPrefHeight(20);
-		
+		question.setEdit(questionInTestButton);
 		return questionInTestButton;
     }
 
@@ -95,9 +111,18 @@ public class CreateTestController extends BasicController {
 
 	}
 
+	// INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('sd', 'sd', 'sd', 'sd', 'sd', 'sd', 'sd', 'sd');
 	@FXML
 	void savePressed(ActionEvent event) {
+		test.setAuthor(ClientHandler.user.getpName());
+		test.setSubject(subjectComboBox.getValue());
+		test.setTestCode(code.getText());
+		test.setTime(startTime.getText());
+		test.setDate(date.toString());
+		test.setDuration(duration.getText());
+		//test.setId(null);
 
+		//ClientUI.chat.sendTestToDatabase(test);
 	}
 
 }

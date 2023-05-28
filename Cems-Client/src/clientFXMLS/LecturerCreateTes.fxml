@@ -35,7 +35,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <TextField alignment="CENTER" layoutX="788.0" layoutY="179.0" prefHeight="25.0" prefWidth="55.0" text="100" AnchorPane.bottomAnchor="511.0" AnchorPane.topAnchor="179.0">
+      <TextField fx:id="totalPoints" alignment="CENTER" layoutX="788.0" layoutY="179.0" prefHeight="25.0" prefWidth="55.0" text="100" AnchorPane.bottomAnchor="511.0" AnchorPane.topAnchor="179.0">
          <font>
             <Font name="Calibri Bold Italic" size="16.0" />
          </font>
@@ -45,7 +45,7 @@
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Text>
-      <TextField alignment="CENTER" layoutX="984.0" layoutY="668.0" prefHeight="28.0" prefWidth="80.0" text="D23Q" AnchorPane.bottomAnchor="22.0">
+      <TextField fx:id="code" alignment="CENTER" layoutX="984.0" layoutY="668.0" prefHeight="28.0" prefWidth="80.0" text="D23Q" AnchorPane.bottomAnchor="22.0">
          <font>
             <Font name="Calibri Italic" size="16.0" />
          </font>
@@ -60,13 +60,13 @@
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Label>
-      <TextField layoutX="457.0" layoutY="231.0" prefHeight="30.0" prefWidth="135.0" AnchorPane.bottomAnchor="459.0">
+      <TextField fx:id="duration" alignment="CENTER" layoutX="457.0" layoutY="231.0" prefHeight="30.0" prefWidth="116.0" text="00:00" AnchorPane.bottomAnchor="459.0">
          <font>
             <Font name="Calibri" size="16.0" />
          </font>
       </TextField>
-      <DatePicker layoutX="95.0" layoutY="176.0" prefHeight="30.0" prefWidth="200.0" AnchorPane.bottomAnchor="514.0" />
-      <TextField alignment="CENTER" layoutX="457.0" layoutY="176.0" prefHeight="30.0" prefWidth="135.0" text="08:30" AnchorPane.bottomAnchor="514.0" AnchorPane.leftAnchor="457.0" AnchorPane.rightAnchor="753.0">
+      <DatePicker fx:id="date" layoutX="95.0" layoutY="176.0" prefHeight="30.0" prefWidth="200.0" AnchorPane.bottomAnchor="514.0" />
+      <TextField fx:id="startTime" alignment="CENTER" layoutX="457.0" layoutY="176.0" prefHeight="30.0" prefWidth="135.0" text="08:30" AnchorPane.bottomAnchor="514.0" AnchorPane.leftAnchor="457.0" AnchorPane.rightAnchor="753.0">
          <font>
             <Font name="Calibri Italic" size="16.0" />
          </font>
