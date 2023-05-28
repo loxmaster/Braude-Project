@@ -49,7 +49,7 @@ public class EditQuestionController extends BasicController {
 
 	@FXML
 	void SavePressed(ActionEvent event) {
-		// TODO
+		
 		String newBody = body.getText();
 		String newQNumber = qNumber.getText();
 		ClientUI.chat.EditQuestion(newBody, newQNumber, originalId);
@@ -68,7 +68,7 @@ public class EditQuestionController extends BasicController {
 
 	@FXML
 	void cancelPressed(ActionEvent event) {
-		// REVIEW cancel does the same as back maybe remove the 'Back' utton?
+		// TODO cancel does the same as back maybe remove the 'Back' utton?
 		backPressed(event);
 	}
 

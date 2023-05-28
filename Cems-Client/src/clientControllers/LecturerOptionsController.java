@@ -24,8 +24,9 @@ public class LecturerOptionsController extends BasicController {
     @FXML
     void CreateQuestionPressed(ActionEvent event) throws IOException {
         if (LecturerController.subjectsList.isEmpty())
-            JOptionPane.showMessageDialog(null, "Lecturer has no subjects !", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Lecturer has no subjects!", "Error", JOptionPane.ERROR_MESSAGE);
         else {
+            // Open the CreateQuestionController and pass the subjects list
             CreateQuestionController cqc = (CreateQuestionController) openScreen("/clientFXMLS/LecturerCreateQ.fxml", "CEMS System - Lecturer - Create Question", event);
             cqc.loadSubjects(LecturerController.subjectsList);
         }
@@ -37,14 +38,14 @@ public class LecturerOptionsController extends BasicController {
         LecturerController.setQuestions(new ArrayList<QuestionModel>());
         ClientUI.chat.GetLecturersQuestions(ClientHandler.user.getUsername());
         
-        // opens the question data base screen for this lecturer
-        // and loads the questions into table.
+        // Open the LecturerQuestionsTableController and load the questions into the table
         LecturerQuestionsTableController lqtc = (LecturerQuestionsTableController) openScreen("/clientFXMLS/LecturerQuestionsTable.fxml", "CEMS System - Lecturer - Questions Table", event);
         lqtc.loadTable();
     }
 
     @FXML
     void HelpPressed(ActionEvent event) {
-
+        // Handle the Help button action if needed
     }
 }
+
