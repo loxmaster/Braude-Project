@@ -214,13 +214,25 @@ public class ClientHandler extends AbstractClient {
 	public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("createquestion");
-
-		// Append QNumber to Id to create a unique question Id
-		Id += QNumber;
-
 		// Construct the INSERT query to create a new question
 		String query = "INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
 				+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername() + "');";
+		list.add(query);
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void CreateAnswers(String optionA, String optionB, String optionC, String optionD,String correctAnswer,String subjectID) {
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("createanswers");
+
+		// Construct the INSERT query to create a new answer
+		String query = "INSERT INTO `projecton`.`answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
+				+ optionA + "', '" + optionB + "', '" + optionC + "', '" + optionD + "', '" + correctAnswer + "', '" + subjectID + "');";
 		list.add(query);
 
 		try {

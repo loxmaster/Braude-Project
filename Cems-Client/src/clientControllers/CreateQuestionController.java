@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
 
 public class CreateQuestionController extends BasicController {
 	// TODO noah: check if this works lul
-	public static String subjectID ;
+	public static String subjectID;
 
 	@FXML
 	private TextField qNumber;
@@ -47,48 +47,52 @@ public class CreateQuestionController extends BasicController {
 	@FXML
 	void confirmPressed(ActionEvent event) {
 		// [subject, qBody, optionA, optionB, optionC, optionD, correctAnswer]
-		ArrayList<String> q = new ArrayList<String>();
 		String correctAnswer = null;
-		String subject = subjectCombobox.getValue();
-		String qnumber = qNumber.getText();
-		String qBody = body.getText();
-		String optionA = qA.getText();
-		String optionB = qB.getText();
-		String optionC = qC.getText();
-		String optionD = qD.getText();
-		boolean answerA = A.isSelected();
-		boolean answerB = B.isSelected();
-		boolean answerC = C.isSelected();
-		boolean answerD = D.isSelected();
-
-		if (subject == null || qBody == null || optionA == null || optionB == null || optionC == null || optionD == null
-				||
-				(!answerA && !answerB && !answerC && !answerD)) {
+		int countcheck = 0;
+		if (A.isSelected()) {
+			countcheck++;
+		}
+		if (B.isSelected()) {
+			countcheck++;
+		}
+		if (C.isSelected()) {
+			countcheck++;
+		}
+		if (D.isSelected()) {
+			countcheck++;
+		}
+		if (subjectCombobox.getValue() == null || qNumber == null || body.getText().isEmpty() || qA.getText().isEmpty()
+				|| qB.getText().isEmpty() || qC.getText().isEmpty() || qD.getText().isEmpty()
+				|| (!A.isSelected() && !B.isSelected() && !C.isSelected() && !D.isSelected())
+				|| countcheck != 1) {
 			// error
-			JOptionPane.showMessageDialog(null, "Please dont be stupid !", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					"Please don't leave any fields empty and make sure to select only one correct answer", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		} else {
 			// checks who is the correct answer
+			if (A.isSelected())
+				correctAnswer = "A";
+			else if (B.isSelected())
+				correctAnswer = "B";
+			else if (C.isSelected())
+				correctAnswer = "C";
+			else if (D.isSelected())
+				correctAnswer = "D";
 
+			sendQandANStoSQL(subjectCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),
+					qC.getText(), qD.getText(), correctAnswer);
+			LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml",
+					"CEMS System - Lecturer",
+					event);
+			lc.loadLecturer(ClientHandler.user);
+			System.out.println("Opening Lecturer screen...");
 		}
+	}
 
-		if (answerA)
-			correctAnswer = "A";
-		else if (answerB)
-			correctAnswer = "B";
-		else if (answerC)
-			correctAnswer = "C";
-		else if (answerD)
-			correctAnswer = "D";
-
-		q.add(subject);
-		q.add(qBody);
-		q.add(optionA);
-		q.add(optionB);
-		q.add(optionC);
-		q.add(optionD);
-		q.add(optionA);
-		q.add(correctAnswer);
-
+	public void sendQandANStoSQL(String subject, String qBody, String qnumber, String optionA, String optionB,
+			String optionC, String optionD, String correctAnswer) {
+		// getting subject id from data
 		ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
 		try {
 			Thread.sleep(5000);
@@ -96,67 +100,61 @@ public class CreateQuestionController extends BasicController {
 			e.printStackTrace();
 		}
 		System.out.println("CreateQuestion: " + subjectID);
+		subjectID += qnumber;
 		ClientUI.chat.CreateQuestion(subjectID, subject, qBody, qnumber);
-		LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
-		lc.loadLecturer(ClientHandler.user);
-		
-		System.out.println("Opening Lecturer screen...");
+		ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer,subjectID);
 	}
-
-	// ClientUI.chat.sendQuestion(q);
 
 	@FXML
 	void addAnotherPressed(ActionEvent event) {
 		// [subject, qBody, optionA, optionB, optionC, optionD, correctAnswer]
-		ArrayList<String> q = new ArrayList<String>();
 		String correctAnswer = null;
-		String subject = subjectCombobox.getValue();
-		String qBody = body.getText();
-		String optionA = qA.getText();
-		String optionB = qB.getText();
-		String optionC = qC.getText();
-		String optionD = qD.getText();
-		boolean answerA = A.isSelected();
-		boolean answerB = B.isSelected();
-		boolean answerC = C.isSelected();
-		boolean answerD = D.isSelected();
-
-		if (subject == null || qBody == null || optionA == null || optionB == null || optionC == null || optionD == null
-				||
-				(!answerA && !answerB && !answerC && !answerD)) {
+		int countcheck = 0;
+		if (A.isSelected()) {
+			countcheck++;
+		}
+		if (B.isSelected()) {
+			countcheck++;
+		}
+		if (C.isSelected()) {
+			countcheck++;
+		}
+		if (D.isSelected()) {
+			countcheck++;
+		}
+		if (subjectCombobox.getValue() == null || qNumber == null || body.getText().isEmpty() || qA.getText().isEmpty()
+				|| qB.getText().isEmpty() || qC.getText().isEmpty() || qD.getText().isEmpty()
+				|| (!A.isSelected() && !B.isSelected() && !C.isSelected() && !D.isSelected())
+				|| countcheck != 1) {
 			// error
-			JOptionPane.showMessageDialog(null, "Please dont be stupid !", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null,
+					"Please don't leave any fields empty and make sure to select only one correct answer", "Error",
+					JOptionPane.ERROR_MESSAGE);
 		} else {
 			// checks who is the correct answer
-			if (answerA)
+			if (A.isSelected())
 				correctAnswer = "A";
-			else if (answerB)
+			else if (B.isSelected())
 				correctAnswer = "B";
-			else if (answerC)
+			else if (C.isSelected())
 				correctAnswer = "C";
-			else if (answerD)
+			else if (D.isSelected())
 				correctAnswer = "D";
 
-			q.add(subject);
-			q.add(qBody);
-			q.add(optionA);
-			q.add(optionB);
-			q.add(optionC);
-			q.add(optionD);
-			q.add(optionA);
-			q.add(correctAnswer);
+			sendQandANStoSQL(subjectCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),
+					qC.getText(), qD.getText(), correctAnswer);
+			correctAnswer = null;
+			subjectCombobox.setValue("");
+			body.setText("");
+			qA.setText("");
+			qB.setText("");
+			qC.setText("");
+			qD.setText("");
+			A.setSelected(false);
+			B.setSelected(false);
+			C.setSelected(false);
+			D.setSelected(false);
 		}
-		correctAnswer = null;
-		subjectCombobox.setValue("");
-		body.setText("");
-		qA.setText("");
-		qB.setText("");
-		qC.setText("");
-		qD.setText("");
-		A.setSelected(false);
-		B.setSelected(false);
-		C.setSelected(false);
-		D.setSelected(false);
 
 	}
 
@@ -164,11 +162,6 @@ public class CreateQuestionController extends BasicController {
 	void cancelPressed(ActionEvent event) {
 		// Opens lecturer screen from existing stage
 		openScreen("/clientFXMLS/LecturerOptions.fxml", "CEMS System - Lecturer", event);
-	}
-
-	@FXML
-	void helpPressed(ActionEvent event) {
-
 	}
 
 	@FXML

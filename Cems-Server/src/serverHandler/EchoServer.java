@@ -148,6 +148,20 @@ public class EchoServer extends AbstractServer {
 					e2.printStackTrace();
 				}
 			} 
+
+				else if (list.get(0).equals("createanswers")) {
+				try {
+					int isReturned = createanswers(list.get(1));
+					if (isReturned == 0)
+						client.sendToClient((Object) notFound);
+					else
+						client.sendToClient((Object) isReturned);
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+			} 
 			//createquestion 
 			else if (list.get(0).equals("createquestion")) {
 				try {
@@ -249,6 +263,12 @@ public class EchoServer extends AbstractServer {
 	}
 
 	private int editQuestion(String query) throws SQLException {
+		stmt = conn.createStatement();
+		int res = stmt.executeUpdate(query);
+		return res;
+	}
+
+		private int createanswers(String query) throws SQLException {
 		stmt = conn.createStatement();
 		int res = stmt.executeUpdate(query);
 		return res;

@@ -60,22 +60,22 @@
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Text>
-      <CheckBox fx:id="D" layoutX="47.0" layoutY="632.0" mnemonicParsing="false" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="110.0">
+      <CheckBox fx:id="D" layoutX="110.0" layoutY="629.0" mnemonicParsing="false">
          <font>
             <Font size="16.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="C" layoutX="47.0" layoutY="580.0" mnemonicParsing="false" AnchorPane.bottomAnchor="115.0" AnchorPane.leftAnchor="110.0">
+      <CheckBox fx:id="C" layoutX="110.0" layoutY="579.0" mnemonicParsing="false">
          <font>
             <Font size="16.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="B" layoutX="47.0" layoutY="529.0" mnemonicParsing="false" AnchorPane.bottomAnchor="165.0" AnchorPane.leftAnchor="110.0">
+      <CheckBox fx:id="B" layoutX="110.0" layoutY="529.0" mnemonicParsing="false">
          <font>
             <Font size="16.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="A" layoutX="47.0" layoutY="480.0" mnemonicParsing="false" AnchorPane.bottomAnchor="215.0" AnchorPane.leftAnchor="110.0">
+      <CheckBox fx:id="A" layoutX="110.0" layoutY="479.0" mnemonicParsing="false">
          <font>
             <Font size="16.0" />
          </font>
