@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -52,6 +54,12 @@ public class CreateTestController extends BasicController {
     @FXML
     private ComboBox<String> subjectComboBox;
 
+	public void load() {
+		ObservableList<String> subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
+		subjectComboBox.getItems().removeAll();
+		subjectComboBox.setItems(subjectList);
+	}
+
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
 		
@@ -59,12 +67,16 @@ public class CreateTestController extends BasicController {
 		test.setSubject(subjectComboBox.getValue());
 		test.setTestCode(code.getText());
 		test.setTime(startTime.getText());
-		test.setDate(date.toString());
+		test.setDate(date);
+		System.out.println(date.getId());
+		System.out.println(date.getValue());
+
 		test.setDuration(duration.getText());
 		//test.setId(null);
 
 		// Gets all the questions from DataBase
 		LecturerController.setQuestions(new ArrayList<QuestionModel>());
+		// TODO withdraw question from subject not lecturer name
 		ClientUI.chat.GetLecturersQuestions(ClientHandler.user.getUsername());
 
 		// Opens the Question DataBase
@@ -72,10 +84,23 @@ public class CreateTestController extends BasicController {
 		dbq.load(test);
 	}
 
+	/**
+	 * Method to set the test we were working on when returning to this screen.
+	 */ 
 	public void setTest(Test test) {
 		this.test = test;
-		ArrayList<QuestionModel> tempQuestionList = test.getQuesitonsInTest();
 
+		
+		//test.getAuthor(ClientHandler.user.getpName());
+		// loads the subjects in the subjects combobox
+		load();
+		subjectComboBox.setValue(test.getSubject());
+		code.setText(test.getTestCode());
+		startTime.setText(test.getTime());
+		duration.setText(test.getDuration());
+		date.setValue(test.getDate().getValue());
+
+		ArrayList<QuestionModel> tempQuestionList = test.getQuesitonsInTest();
 		int index=1;
 		for (QuestionModel question : tempQuestionList) {
 			questionTracker.getChildren().add(createQuestionInTestButton(question, index));
@@ -118,11 +143,14 @@ public class CreateTestController extends BasicController {
 		test.setSubject(subjectComboBox.getValue());
 		test.setTestCode(code.getText());
 		test.setTime(startTime.getText());
-		test.setDate(date.toString());
+		test.setDate(date);
 		test.setDuration(duration.getText());
 		//test.setId(null);
 
-		//ClientUI.chat.sendTestToDatabase(test);
+		ClientUI.chat.sendTestToDatabase(test);
+
+		// Goes to lecturer screen
+		backToLecturer(event);
 	}
 
 }

@@ -119,9 +119,10 @@ public class EchoServer extends AbstractServer {
 		else if (msg instanceof ArrayList) {
 			ArrayList<String> list = (ArrayList<String>) msg;
 
-			if (list.get(0).equals("editquestion")) {
+
+			if (list.get(0).equals("editquestion") || list.get(0).equals("Addtesttodata")) {
 				try {
-					int isReturned = editQuestion(list.get(1));
+					int isReturned = executeMyQuery(list.get(1));
 					if (isReturned == 0)
 						client.sendToClient((Object) notFound);
 					client.sendToClient((Object) isReturned);
@@ -214,8 +215,9 @@ public class EchoServer extends AbstractServer {
 			}
 		}
 	}
-
-	private int editQuestion(String query) throws SQLException {
+	
+	// Funtion for executing queries, return number of rows affected.
+	private int executeMyQuery(String query) throws SQLException {
 		stmt = conn.createStatement();
 		int res = stmt.executeUpdate(query);
 		return res;

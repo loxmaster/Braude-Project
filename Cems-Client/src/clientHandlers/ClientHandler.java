@@ -202,6 +202,18 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	
+    public void sendTestToDatabase(String query) {
+		ArrayList<String> listToSend = new ArrayList<String>();
+		listToSend.add("Addtesttodata");
+		listToSend.add(query);
+		try {
+			sendToServer((Object)listToSend);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+	
 	/**
 	 * This method overrites super method that handles what happans when connection is closed
 	 * with the server.

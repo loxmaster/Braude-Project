@@ -1,8 +1,11 @@
 package clientHandlers;
 
-import java.io.*;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
+import logic.QuestionModel;
+import logic.Test;
 
 public class ClientController implements ChatIF {
     // Class variables *************************************************
@@ -81,17 +84,19 @@ public class ClientController implements ChatIF {
         client.GetLeturersQuestions(username);
     }
 
-    // TODO
+    // Sends question to data base and updating existing one
     public void EditQuestion(String newBody, String newQNumber, String originalId) {
         client.EditQuestion(newBody, newQNumber, originalId);
     }
 
     /**
      * Method to send question information to DataBase
+     * 	// INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('sd', 'sd', 'sd', 'sd', 'sd', 'sd', 'sd', 'sd');
      */
-    public void sendQuestion(ArrayList<String> list) {
-        String query = "INSERT INTO `projecton`.`questions` (`id`, `subject`, `course name`, `question text`, `question number`, `lecturer`) VALUES ('00', 'Math', 'Calculus 1', 'how are you ?', '1', 'Misha');";
-        client.handleMessageFromClientUI(query);
+    public void sendTestToDatabase(Test test) {
+
+        String query = "INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('" + test.getId() + "','" + test.getDuration() + "', '" + test.getTestComments() + "', '" + test.getAuthor() + "', '" + test.getTestCode() + "', '" + test.getDate().getValue().toString() + "','" + test.getTime() + "', '" + test.getQuesitonsInTest() + "');";
+        client.sendTestToDatabase(query);
     }
 
     /**
