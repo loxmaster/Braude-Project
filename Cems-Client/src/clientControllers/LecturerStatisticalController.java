@@ -92,7 +92,7 @@ public class LecturerStatisticalController extends BasicController {
 		ObservableList<Statistics> listToAdd = FXCollections.observableArrayList(tempArray);
 		table.setItems(listToAdd);
 
-	}
+	 }
 
 	@FXML
 	void backtoLecturerMain(ActionEvent event) {
@@ -116,7 +116,8 @@ public class LecturerStatisticalController extends BasicController {
 	void backtoStatistical(ActionEvent event) {
 		// return to table view from 'Edit Question'
 		// ((Node) event.getSource()).getScene().getWindow().hide();
-		openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Visualization - Statistical Information",event);
+		openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Visualization - Statistical Information",
+				event);
 		// FIXME fix this load table thingy
 		// lecturerStatisticalController.loadTable();
 
