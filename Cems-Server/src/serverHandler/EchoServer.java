@@ -147,9 +147,9 @@ public class EchoServer extends AbstractServer {
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
-			} 
+			}
 
-				else if (list.get(0).equals("createanswers")) {
+			else if (list.get(0).equals("createanswers")) {
 				try {
 					int isReturned = createanswers(list.get(1));
 					if (isReturned == 0)
@@ -161,8 +161,8 @@ public class EchoServer extends AbstractServer {
 				} catch (IOException e2) {
 					e2.printStackTrace();
 				}
-			} 
-			//createquestion 
+			}
+			// createquestion
 			else if (list.get(0).equals("createquestion")) {
 				try {
 					int isReturned = createQuestionQuery(list.get(1));
@@ -197,6 +197,24 @@ public class EchoServer extends AbstractServer {
 					ArrayList<QuestionModel> resList = getQuestionsFromDBForLecturer(list.get(1));
 					if (resList == null)
 						client.sendToClient((Object) notFound);
+					System.out.println("Server: " + resList.toArray());
+					client.sendToClient((Object) resList);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (IOException eq) {
+					eq.printStackTrace();
+				}
+			}
+			// testGrade parse: PASSED FAILED test queries
+			else if (list.get(0).equals("testGrades")) {
+				// gets all lecturer Questions from db
+				try {
+					ArrayList<String> resList = testGrades_passed_Query(list.get(1), 1);
+					if (resList == null) {
+						client.sendToClient((Object) notFound);
+						System.out.println("Error: (testGrades) problem with the first PASSED query!");
+					}
+
 					System.out.println("Server: " + resList.toArray());
 					client.sendToClient((Object) resList);
 				} catch (SQLException e) {
@@ -262,13 +280,43 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 
+	// query_passed: select passed students
+	//grade_index - position of the grade field
+	private ArrayList<String> testGrades_passed_Query(String query_passed, int grade_index) throws SQLException {
+		ArrayList<String> outputList = new ArrayList<String>();
+		stmt = conn.createStatement();
+		ArrayList<ResultSet> res = new ArrayList<>();
+		ResultSet queryResult = stmt.executeQuery(query_passed);
+
+		//outputList.addAll((String)queryResult.getString(query_passed));
+		while (queryResult.next()) {
+			outputList.add(queryResult.getString(grade_index));
+		}
+		return outputList;
+	}
+
+	// query_failed: select failed students query
+	//grade_index - position of the grade field
+	private ArrayList<String> testGrades_failed_Query(String query_failed, int grade_index) throws SQLException {
+		ArrayList<String> outputList = new ArrayList<String>();
+		stmt = conn.createStatement();
+		ArrayList<ResultSet> res = new ArrayList<>();
+		ResultSet queryResult = stmt.executeQuery(query_failed);
+
+		//outputList.addAll((String)queryResult.getString(query_passed));
+		while (queryResult.next()) {
+			outputList.add(queryResult.getString(grade_index));
+		}
+		return outputList;
+	}
+
 	private int editQuestion(String query) throws SQLException {
 		stmt = conn.createStatement();
 		int res = stmt.executeUpdate(query);
 		return res;
 	}
 
-		private int createanswers(String query) throws SQLException {
+	private int createanswers(String query) throws SQLException {
 		stmt = conn.createStatement();
 		int res = stmt.executeUpdate(query);
 		return res;

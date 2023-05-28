@@ -211,6 +211,25 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	//query that selects PASSED and FAILED grades --> echoserver to parse
+	//parse: [testGrades(echoServer identifier), passed(query), failed(query)]
+	public void GetTestGrades_StatisticalInformation(String testID) {
+		ArrayList<String> list = new ArrayList<String>();
+		
+		list.add("testGrades");
+//FIXME fix this query
+		String query_passed = "SELECT grade from projecton.testResults WHERE grade>=55";
+		String query_failed = "SELECT grade from projecton.testResults WHERE grade<55";
+		
+		list.add(query_passed);
+		list.add(query_failed);
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("createquestion");
