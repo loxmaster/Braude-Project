@@ -8,13 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import logic.ClientModel;
-import logic.QuestionModel;
+import logic.Question;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import serverUI.ServerUI;
@@ -197,7 +193,7 @@ public class EchoServer extends AbstractServer {
 			else if (list.get(0).equals("lecturerquestions")) {
 				// gets all lecturer Questions from db
 				try {
-					ArrayList<QuestionModel> resList = getQuestionsFromDBForLecturer(list.get(1));
+					ArrayList<Question> resList = getQuestionsFromDBForLecturer(list.get(1));
 					if (resList == null)
 						client.sendToClient((Object) notFound);
 					System.out.println("Server: " + resList.toArray());
@@ -288,13 +284,13 @@ public class EchoServer extends AbstractServer {
 	}
 	// gets Questions from db
 
-	private ArrayList<QuestionModel> getQuestionsFromDBForLecturer(String query) throws SQLException {
+	private ArrayList<Question> getQuestionsFromDBForLecturer(String query) throws SQLException {
 		stmt = conn.createStatement();
 		ResultSet result = stmt.executeQuery(query);
-		ArrayList<QuestionModel> res = new ArrayList<QuestionModel>();
+		ArrayList<Question> res = new ArrayList<Question>();
 		while (result.next()) {
 			// while threres Questions in result , adding them into result array
-			QuestionModel q = new QuestionModel(result.getString(1), result.getString(2), result.getString(3),
+			Question q = new Question(result.getString(1), result.getString(2), result.getString(3),
 					result.getString(4), result.getString(5), result.getString(6));
 			res.add(q);
 		}

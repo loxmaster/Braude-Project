@@ -1,12 +1,7 @@
 package logic;
 
 import java.io.Serializable;
-import clientControllers.EditQuestionController;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 
@@ -15,7 +10,7 @@ public class QuestionModel implements Serializable {
     private String id, subject, coursename;
     private String questiontext, questionnumber, lecturer;
     private Button edit;
-    //private CheckBox checkBox;
+    private CheckBox checkBox;
 
     public QuestionModel(String id, String subject, String coursename, String questiontext, String questionnumber,
             String lecturer) {
@@ -25,7 +20,7 @@ public class QuestionModel implements Serializable {
         this.questiontext = questiontext;
         this.questionnumber = questionnumber;
         this.lecturer = lecturer;
-        //checkBox = new CheckBox();
+        checkBox = new CheckBox();
     }
 
     public String getId() {
@@ -89,7 +84,7 @@ public class QuestionModel implements Serializable {
     }
 
     public CheckBox getCheckBox() {
-        return new CheckBox();
+        return checkBox;
     }
 
 }

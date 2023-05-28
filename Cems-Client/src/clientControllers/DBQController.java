@@ -57,20 +57,22 @@ public class DBQController extends BasicController {
         }
 	}
 
+	/**
+	 * Method to reurn to create test screen with the selected questions.
+	 * @param event
+	 */
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
 		// Remembers the questions that needs to be added
 		ObservableList<QuestionModel> tempQuestionList = table.getItems();
 		ArrayList<QuestionModel> questionsToAdd = new ArrayList<QuestionModel>();
 
-		for (int i = 0 ; i < tempQuestionList.size() ; i++) {
-			//System.out.println(tempQuestionList.get(i));
-			//if(Check.getCellObservableValue(tempQuestionList.get(i)).getValue().isSelected())
-				//questionsToAdd.add(tempQuestionList.get(i));
-		}
+		for (int i = 0 ; i < tempQuestionList.size() ; i++) 
+			if(Check.getCellObservableValue(tempQuestionList.get(i)).getValue().isSelected()) 
+				questionsToAdd.add(tempQuestionList.get(i));
+		
 
-
-		testToReturn.setQuesitonsInTest(LecturerController.getQuestions());
+		testToReturn.addToQuestions(questionsToAdd);
 		// open Create Tests back with already updated test
 		CreateTestController ctc = (CreateTestController)openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
 		ctc.setTest(testToReturn);

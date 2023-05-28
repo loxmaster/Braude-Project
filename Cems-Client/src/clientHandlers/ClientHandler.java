@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.LecturerController;
+import logic.Question;
 import logic.QuestionModel;
 import logic.User;
 import ocsf.client.AbstractClient;
@@ -53,7 +54,7 @@ public class ClientHandler extends AbstractClient {
 		System.out.println("got message: " + severMessage);
 		String[] subjectArray;
 		ArrayList<String> list;
-		ArrayList<QuestionModel> questionList;
+		ArrayList<Question> questionList;
 
 		if (severMessage instanceof Integer) {
 			if ((Integer) severMessage == 1)
@@ -62,13 +63,16 @@ public class ClientHandler extends AbstractClient {
 				System.out.println("Update wasnt so successful");
 		} else if (severMessage instanceof ArrayList) {
 
-			if (((ArrayList<?>) severMessage).get(0) instanceof QuestionModel) {
-				questionList = (ArrayList<QuestionModel>) severMessage;
-				//for (int i = 0 ; i<questionList.size() ; i++) {
-
-				//}
-				// sd
-				 LecturerController.setQuestions(questionList);
+			if (((ArrayList<?>) severMessage).get(0) instanceof Question) {
+				questionList = (ArrayList<Question>) severMessage;
+				ArrayList<QuestionModel> listToAdd = new ArrayList<>();
+				
+				for (int i = 0 ; i < questionList.size() ; i++) {
+					listToAdd.add(new QuestionModel(questionList.get(i).getId(), questionList.get(i).getSubject(), questionList.get(i).getCoursename(), 
+					questionList.get(i).getQuestiontext(), questionList.get(i).getQuestionnumber(), questionList.get(i).getLecturer()));
+				}
+				
+				LecturerController.setQuestions(listToAdd);
 			}
 
 			else {

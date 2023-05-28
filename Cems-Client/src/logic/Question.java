@@ -5,13 +5,13 @@ import java.io.Serializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 
-public class QuestionModel implements Serializable {
+public class Question implements Serializable {
 
     private String id, subject, coursename;
     private String questiontext, questionnumber, lecturer;
     private Button edit;
 
-    public QuestionModel(String id, String subject, String coursename, String questiontext, String questionnumber,
+    public Question(String id, String subject, String coursename, String questiontext, String questionnumber,
             String lecturer) {
         this.id = id;
         this.subject = subject;
@@ -77,7 +77,7 @@ public class QuestionModel implements Serializable {
         this.edit = edit;
     }
 
-    public QuestionModel getQuestion() {
+    public Question getQuestion() {
         return this;
     }
 
