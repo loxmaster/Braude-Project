@@ -209,12 +209,13 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
+
 //return a list of grades where [testGrades, passed grades, failed grades] 
 	//query that selects PASSED and FAILED grades --> echoserver to parse
 	//parse: [testGrades(echoServer identifier), passed(query), failed(query)]
 	public void GetTestGrades_StatisticalInformation(String testID) {
 		ArrayList<String> list = new ArrayList<String>();
-		
+
 		list.add("testGrades");
 //FIXME fix this query
 		String query_passed = "SELECT grade from projecton.testResults WHERE grade>=55";
