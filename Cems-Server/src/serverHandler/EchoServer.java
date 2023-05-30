@@ -227,36 +227,10 @@ public class EchoServer extends AbstractServer {
 						}
 						break;
 
+					case "createquestion":
+					case "createanswers":
 					case "editQuestion":
 					case "Addtesttodata":
-
-						try {
-							int flag = executeMyQuery(list.get(1));
-							client.sendToClient(flag == 0 ? "Not Found" : flag);
-
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						}
-						break;
-
-					case "createanswers": {
-
-						try {
-
-							int flag = executeMyQuery(list.get(1));
-							client.sendToClient(flag == 0 ? "Not Found" : flag);
-
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						}
-					}
-						break;
-
-					case "createquestion":
 
 						try {
 							int flag = executeMyQuery(list.get(1));
