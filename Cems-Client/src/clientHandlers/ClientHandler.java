@@ -191,7 +191,6 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-	// TODO
 	// UPDATE `projecton`.`questions` SET `questiontext` = 'sas', `questionnumber`
 	// ='ass' WHERE (`id` = '01001');
 	public void EditQuestion(String newBody, String newQNumber, String originalId) {

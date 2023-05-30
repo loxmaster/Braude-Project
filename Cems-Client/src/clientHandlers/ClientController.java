@@ -132,7 +132,6 @@ public class ClientController implements ChatIF {
         }
     }
 
-    // TODO
     public void EditQuestion(String newBody, String newQNumber, String originalId) {
         try {
             client.EditQuestion(newBody, newQNumber, originalId);

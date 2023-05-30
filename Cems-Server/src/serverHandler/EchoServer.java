@@ -445,7 +445,6 @@ public class EchoServer extends AbstractServer {
 		ArrayList<String> output = new ArrayList<String>();
 		// add the "getSubjectID" identifier
 		output.add(identifier);
-		// TODO
 		// if there's a result??
 		if (result.next()) {
 			output.add(result.getString(1));
