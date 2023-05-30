@@ -2,11 +2,14 @@ package logic;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.DatePicker;
+
 public class Test {
     private ArrayList<QuestionModel> quesitonsInTest;
     private String id, subject, author;
     private String duration, TestComments, testCode;
-    private String date, time;
+    private String time, dateString;
+    private DatePicker date;
 
     public Test() {
         id = new String();
@@ -15,19 +18,19 @@ public class Test {
         duration = new String();
         TestComments = new String();
         testCode = new String();
-        date = new String();
         time = new String();
+        dateString = new String();
      }
 
     public Test(String id, String subject, String author, String duration, String testComments, String testCode,
-            String date, String time) {
+            String dateString, String time) {
         this.id = id;
         this.subject = subject;
         this.author = author;
         this.duration = duration;
         TestComments = testComments;
         this.testCode = testCode;
-        this.date = date;
+        this.dateString = dateString;
         this.time = time;
     }
 
@@ -45,6 +48,18 @@ public class Test {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public void setDate(DatePicker date) {
+        this.date = date;
     }
 
     public String getSubject() {
@@ -87,19 +102,15 @@ public class Test {
         this.testCode = testCode;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getTime() {
         return time;
     }
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public DatePicker getDate() {
+        return date;
     }
 }

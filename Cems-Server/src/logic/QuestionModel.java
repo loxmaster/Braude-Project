@@ -3,6 +3,7 @@ package logic;
 import java.io.Serializable;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 
 public class QuestionModel implements Serializable {
 
@@ -78,6 +79,10 @@ public class QuestionModel implements Serializable {
 
     public QuestionModel getQuestion() {
         return this;
+    }
+
+    public CheckBox getCheckBox() {
+        return new CheckBox();
     }
 
 }

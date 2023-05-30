@@ -30,9 +30,9 @@ public class EchoServer extends AbstractServer {
 	// Class variables *************************************************
 
 	// Variables for handling the clients timout disconnect
-	private Map<ConnectionToClient, Long> lastMessageTimes;
-	private Timer timer;
-	private long timeoutDuration = 60000; // Timeout for disconnect in Miliseconds
+	//private Map<ConnectionToClient, Long> lastMessageTimes;
+	//private Timer timer;
+	//private long timeoutDuration = 60000; // Timeout for disconnect in Miliseconds
 
 	// The default port to listen on.
 	final public static int DEFAULT_PORT = 5555;
@@ -57,8 +57,9 @@ public class EchoServer extends AbstractServer {
 	 */
 	private EchoServer(int port) {
 		super(port);
-		lastMessageTimes = new HashMap<>();
-		timer = new Timer();
+
+		//lastMessageTimes = new HashMap<>();
+		//timer = new Timer();
 	}
 
 	public static synchronized EchoServer getServerInstance() {
@@ -105,7 +106,8 @@ public class EchoServer extends AbstractServer {
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
-		lastMessageTimes.put(client, System.currentTimeMillis());
+		//lastMessageTimes.put(client, System.currentTimeMillis());
+
 		System.out.println("Message received: " + msg + " from " + client);
 		ResultSet result;
 		String notFound = "Not Found", res;
@@ -116,6 +118,7 @@ public class EchoServer extends AbstractServer {
 
 		else if (msg instanceof ArrayList) {
 			ArrayList<String> list = (ArrayList<String>) msg;
+
 
 			// TODO noah: check if this works lul
 			if (list.get(0).equals("getSubjectID")) {
@@ -136,9 +139,9 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 
-			else if (list.get(0).equals("editQuestion")) {
+			else if (list.get(0).equals("editQuestion") || list.get(0).equals("Addtesttodata")) {
 				try {
-					int isReturned = editQuestion(list.get(1));
+					int isReturned = executeMyQuery(list.get(1));
 					if (isReturned == 0)
 						client.sendToClient((Object) notFound);
 					client.sendToClient((Object) isReturned);
@@ -176,7 +179,7 @@ public class EchoServer extends AbstractServer {
 					e2.printStackTrace();
 				}
 			}
-
+			
 			else if (list.get(0).equals("lecturersubjects")) {
 				// gets lecturer subjects
 				try {
@@ -191,7 +194,7 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 
-			else if (list.get(0).equals("lecturerQuestions")) {
+			else if (list.get(0).equals("lecturerquestions")) {
 				// gets all lecturer Questions from db
 				try {
 					ArrayList<QuestionModel> resList = getQuestionsFromDBForLecturer(list.get(1));
@@ -248,7 +251,9 @@ public class EchoServer extends AbstractServer {
 					ioe.printStackTrace();
 				}
 			}
-		} else {
+		} 
+		
+		else {
 			if (msg instanceof String) {
 				String query = (String) msg;
 				res = "allsubjects,";
@@ -310,7 +315,8 @@ public class EchoServer extends AbstractServer {
 		return outputList;
 	}
 
-	private int editQuestion(String query) throws SQLException {
+	// Funtion for executing queries, return number of rows affected.
+	private int executeMyQuery(String query) throws SQLException {
 		stmt = conn.createStatement();
 		int res = stmt.executeUpdate(query);
 		return res;
@@ -397,17 +403,17 @@ public class EchoServer extends AbstractServer {
 	 */
 	@Override
 	protected void clientConnected(ConnectionToClient client) {
-		lastMessageTimes.put(client, System.currentTimeMillis());
+		//lastMessageTimes.put(client, System.currentTimeMillis());
 
 		ClientModel clientModel = new ClientModel(client.getInetAddress().getHostName(), client.getInetAddress(),
 				client.isAlive());
 		ServerUI.sController.loadToTable(clientModel);
 
 		// Start the timer task to check for inactivity
-		startTimerTask();
+		//startTimerTask();
 	}
 
-	private void startTimerTask() {
+	/*private void startTimerTask() {
 		timer.schedule(new TimerTask() {
 			@Override
 			public void run() {
@@ -427,7 +433,7 @@ public class EchoServer extends AbstractServer {
 				clientDisconnected(client);
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * get subject id from the database

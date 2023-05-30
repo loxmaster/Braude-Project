@@ -99,7 +99,7 @@ public class LecturerQuestionsTableController extends BasicController {
                 eqc.loadQuestion(question.getQuestion(), question.getId());
                 System.out.println("opening edit question");
                 Scene scene = new Scene(root);
-                scene.getStylesheets().add(getClass().getResource("/clientFXMLS/background.css").toExternalForm());
+                scene.getStylesheets().add(getClass().getResource("/gui/Stylesheet.css").toExternalForm());
                 currentStage.setScene(scene);
                 currentStage.setTitle("CEMS System - Lecturer - Edit Question");
                 currentStage.show();
