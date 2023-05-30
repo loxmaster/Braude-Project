@@ -9,6 +9,7 @@ public class Question implements Serializable {
 
     private String id, subject, coursename;
     private String questiontext, questionnumber, lecturer;
+    private String OptionA, OptionB, OptionC, OptionD, answer;
     private Button edit;
 
     public Question(String id, String subject, String coursename, String questiontext, String questionnumber,
@@ -19,6 +20,46 @@ public class Question implements Serializable {
         this.questiontext = questiontext;
         this.questionnumber = questionnumber;
         this.lecturer = lecturer;
+    }
+
+    public String getOptionA() {
+        return OptionA;
+    }
+
+    public void setOptionA(String optionA) {
+        OptionA = optionA;
+    }
+
+    public String getOptionB() {
+        return OptionB;
+    }
+
+    public void setOptionB(String optionB) {
+        OptionB = optionB;
+    }
+
+    public String getOptionC() {
+        return OptionC;
+    }
+
+    public void setOptionC(String optionC) {
+        OptionC = optionC;
+    }
+
+    public String getOptionD() {
+        return OptionD;
+    }
+
+    public void setOptionD(String optionD) {
+        OptionD = optionD;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public String getId() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import clientControllers.CreateQuestionController;
+import clientControllers.DBQController;
 import clientControllers.LecturerController;
 import logic.Question;
 import logic.QuestionModel;
@@ -61,22 +62,45 @@ public class ClientHandler extends AbstractClient {
 				System.out.println("Update was successful");
 			else
 				System.out.println("Update wasnt so successful");
-		} else if (severMessage instanceof ArrayList) {
-
+		} 
+		
+		else if (severMessage instanceof ArrayList) {
+			
 			if (((ArrayList<?>) severMessage).get(0) instanceof Question) {
 				questionList = (ArrayList<Question>) severMessage;
 				ArrayList<QuestionModel> listToAdd = new ArrayList<>();
-				
-				for (int i = 0 ; i < questionList.size() ; i++) {
-					listToAdd.add(new QuestionModel(questionList.get(i).getId(), questionList.get(i).getSubject(), questionList.get(i).getCoursename(), 
-					questionList.get(i).getQuestiontext(), questionList.get(i).getQuestionnumber(), questionList.get(i).getLecturer()));
+
+				for (int i = 0; i < questionList.size(); i++) {
+					listToAdd.add(new QuestionModel(questionList.get(i).getId(), 
+							questionList.get(i).getSubject(),
+							questionList.get(i).getCoursename(),
+							questionList.get(i).getQuestiontext(), 
+							questionList.get(i).getQuestionnumber(),
+							questionList.get(i).getLecturer(),
+							questionList.get(i).getOptionA(),
+							questionList.get(i).getOptionB(),
+							questionList.get(i).getOptionC(),
+							questionList.get(i).getOptionD(),
+							questionList.get(i).getAnswer()));
 				}
-				
+
 				LecturerController.setQuestions(listToAdd);
 			}
 
 			else {
 				list = ((ArrayList<String>) severMessage);
+
+				// Checks if the msg from server is the answers to the questions
+				/*if (list.get(0).equals("answers")) {
+					for (int i = 1 ; i < list.size() ; i+=5) {
+						DBQController.getQuestionsToAdd().get(i).setOptionA(list.get(i));
+						DBQController.getQuestionsToAdd().get(i).setOptionB(list.get(i + 1));
+						DBQController.getQuestionsToAdd().get(i).setOptionC(list.get(i + 2));
+						DBQController.getQuestionsToAdd().get(i).setOptionD(list.get(i + 3));
+						DBQController.getQuestionsToAdd().get(i).setAnswer(list.get(i + 4));
+					}
+				}*/
+
 				if (list.get(0).equals("lecturersubjects")) {
 					subjectArray = list.get(1).split(",");
 					for (String s : subjectArray) {
@@ -99,6 +123,7 @@ public class ClientHandler extends AbstractClient {
 			user.setIsFound(false);
 		}
 
+		// Gets all the subject for lecturer
 		else if (severMessage.toString().contains("allsubjects")) {
 			subjectArray = ((String) severMessage).toString().split(",");
 			for (int i = 1; i < subjectArray.length; i++)
@@ -106,17 +131,15 @@ public class ClientHandler extends AbstractClient {
 		}
 
 		else {
-			// ["str","asd"]
+			// Here we recieve the confirmation of the client login
 			subjectArray = ((String) severMessage).toString().split("\\s");
 			user.setUsername(subjectArray[0]);
 			user.setPassword(subjectArray[1]);
 			user.setType(subjectArray[2]);
-			// rest of the shit in the table
+			// rest of the stuff in the table
 			user.setIsFound(true);
 		}
 
-		// notify the client to wake him up to tell him that the handler is done
-		// client.notify();
 		System.out.println("--> messageFromServerHandled");
 	}
 
@@ -199,6 +222,7 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
+
 	// TODO
 	// UPDATE `projecton`.`questions` SET `questiontext` = 'sas', `questionnumber`
 	// ='ass' WHERE (`id` = '01001');
@@ -234,13 +258,15 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	public void CreateAnswers(String optionA, String optionB, String optionC, String optionD,String correctAnswer,String subjectID) {
+	public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer,
+			String subjectID) {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("createanswers");
 
 		// Construct the INSERT query to create a new answer
 		String query = "INSERT INTO `projecton`.`answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
-				+ optionA + "', '" + optionB + "', '" + optionC + "', '" + optionD + "', '" + correctAnswer + "', '" + subjectID + "');";
+				+ optionA + "', '" + optionB + "', '" + optionC + "', '" + optionD + "', '" + correctAnswer + "', '"
+				+ subjectID + "');";
 		list.add(query);
 
 		try {
@@ -250,18 +276,17 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	
-    public void sendTestToDatabase(String query) {
+	public void sendTestToDatabase(String query) {
 		ArrayList<String> listToSend = new ArrayList<String>();
 		listToSend.add("Addtesttodata");
 		listToSend.add(query);
 		try {
-			sendToServer((Object)listToSend);
+			sendToServer((Object) listToSend);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
-	
+	}
+
 	/**
 	 * 
 	 * create a new arraylist subject, add an identifier "getSubjectID" so the
@@ -279,6 +304,25 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * A method to get answers for question given their id .
+	 * 
+	 * @param idList the id list of questions to get answers to.
+	 * 
+	 
+	public void getAnswersForQuestion(ArrayList<String> idList) {
+		ArrayList<String> qIdList = new ArrayList<String>();
+		qIdList.add("getanswers");
+		for (String s : idList) {
+			qIdList.add("SELECT optionA,optionB,optionC,optionD,correctAnswer FROM `projecton`.`answers` WHERE (`questionid` = '" + s + "');");
+		}
+		try {
+			sendToServer((Object) qIdList);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}*/
 
 	/**
 	 * This method overrites super method that handles what happans when connection

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import logic.QuestionModel;
 import logic.Test;
 
 public class ClientController implements ChatIF {
@@ -144,13 +143,23 @@ public class ClientController implements ChatIF {
 
     /**
      * Method to send question information to DataBase
-     * 	// INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('sd', 'sd', 'sd', 'sd', 'sd', 'sd', 'sd', 'sd');
+     * @param test the test to add
      */
     public void sendTestToDatabase(Test test) {
 
         String query = "INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('" + test.getId() + "','" + test.getDuration() + "', '" + test.getTestComments() + "', '" + test.getAuthor() + "', '" + test.getTestCode() + "', '" + test.getDate().getValue().toString() + "','" + test.getTime() + "', '" + test.getQuesitonsInTest() + "');";
         client.sendTestToDatabase(query);
     }
+
+    /*public void getAnswersForQuestion(ArrayList<String> idList) {
+        try {
+            client.getAnswersForQuestion(idList);
+        } catch ( Exception e) {
+            e.printStackTrace();
+        }
+        
+    }*/
+
 
     /**
      * This method overrides the method in the ChatIF interface. It displays a

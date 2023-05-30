@@ -15,13 +15,18 @@ public class QuestionModel implements Serializable {
     private CheckBox checkBox;
 
     public QuestionModel(String id, String subject, String coursename, String questiontext, String questionnumber,
-            String lecturer) {
+            String lecturer, String optionA, String optionB, String optionC, String optionD, String answer) {
         this.id = id;
         this.subject = subject;
         this.coursename = coursename;
         this.questiontext = questiontext;
         this.questionnumber = questionnumber;
         this.lecturer = lecturer;
+        this.optionA = optionA;
+        this.optionB = optionB;
+        this.optionC = optionC;
+        this.optionD = optionD;
+        this.answer = answer;
         checkBox = new CheckBox();
     }
 
@@ -127,6 +132,31 @@ public class QuestionModel implements Serializable {
 
     public CheckBox getCheckBox() {
         return checkBox;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        QuestionModel other = (QuestionModel) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 
 }
