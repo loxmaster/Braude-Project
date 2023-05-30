@@ -315,7 +315,8 @@ public class EchoServer extends AbstractServer {
 		return outputList;
 	}
 
-	private int editQuestion(String query) throws SQLException {
+	// Funtion for executing queries, return number of rows affected.
+	private int executeMyQuery(String query) throws SQLException {
 		stmt = conn.createStatement();
 		int res = stmt.executeUpdate(query);
 		return res;
