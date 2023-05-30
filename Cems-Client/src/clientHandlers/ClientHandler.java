@@ -209,7 +209,7 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-
+//return a list of grades where [testGrades, passed grades, failed grades] 
 	//query that selects PASSED and FAILED grades --> echoserver to parse
 	//parse: [testGrades(echoServer identifier), passed(query), failed(query)]
 	public void GetTestGrades_StatisticalInformation(String testID) {
