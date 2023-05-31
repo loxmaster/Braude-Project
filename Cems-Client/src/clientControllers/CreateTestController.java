@@ -120,6 +120,7 @@ public class CreateTestController extends BasicController {
 			public void handle(ActionEvent event) {
 
 				qBody.setText(question.getQuestiontext());
+				qBody.setWrapText(true);
 				OptionA.setText(question.getOptionA());
 				OptionB.setText(question.getOptionB());
 				OptionC.setText(question.getOptionC());
