@@ -34,16 +34,17 @@ public class EchoServer extends AbstractServer {
 	// The default port to listen on.
 	final public static int DEFAULT_PORT = 5555;
 
+	// Errors Strings
+	private String userNotFound = "User Not Found";
+	private String idExists = "Id Exists";
+	private String notFound = "Not Found";
+
 	// Instance of the server
 	private static EchoServer serverInstance;
 
 	// Variables for the queries
 	private static Connection conn = null;
 	private Statement stmt;
-
-	/**
-	 * The default port to listen on.
-	 */
 
 	// Constructors ****************************************************
 
@@ -76,14 +77,6 @@ public class EchoServer extends AbstractServer {
 	 */
 	public static void main(String[] args) {
 
-		int port; // Port to listen on
-
-		try {
-			port = Integer.parseInt(args[0]); // Get port from command line
-		} catch (Throwable t) {
-			port = DEFAULT_PORT; // Set port to 5555
-		}
-
 		serverInstance = getServerInstance();
 
 		try {
@@ -106,258 +99,180 @@ public class EchoServer extends AbstractServer {
 		// lastMessageTimes.put(client, System.currentTimeMillis());
 
 		System.out.println("Message received: " + msg + " from " + client);
-		ResultSet result;
-		String notFound = "Not Found", res;
 
-		// if gets InetAddress then it means hes finished
+		// If gets InetAddress then it means he`s finished
 		if (msg instanceof InetAddress)
 			clientDisconnected(client);
 
-		else if (msg instanceof ArrayList) {
-			ArrayList<String> list = (ArrayList<String>) msg;
+		else
+			try {
+				if (msg instanceof ArrayList) {
+					ArrayList<String> list = (ArrayList<String>) msg;
 
-			/*if (list.get(0).equals("getanswers")) {
-				try {
-					// Gets the answers for every question
-					ArrayList<String> answers = getAnswers(list);
+					// Gets the subject id to build the question id
+					if (list.get(0).equals("getSubjectID")) {
+						// send query to be executed along with the identifier
+						ArrayList<String> resultList = getDataFromDB(list.get(1), "getSubjectID");
+						// result list should have arraylist = {identifier, subjectId}
 
-					// returns the answers to the client
-					client.sendToClient((Object) answers);
+						// if we got no results: send notFound signal
+						if (resultList == null)
+							client.sendToClient((Object) notFound);
+						// else return the subjectID result we got from the query
+						else
+							client.sendToClient(resultList);
 
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+					}
 
-			}*/
-
-			// Gets the subject id to build the question id
-			if (list.get(0).equals("getSubjectID")) {
-				try {
-					// send query to be executed along with the identifier
-					ArrayList<String> resultList = getSubjectID(list.get(1), "getSubjectID");
-					// result list should have arraylist = {identifier, subjectname}
-
-					// if we got no results: send notFound signal
-					if (resultList == null)
-						client.sendToClient((Object) notFound);
-					// else return the subjectID result we got from the query
-					else
-						client.sendToClient(resultList);
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-			else if (list.get(0).equals("editquestion") || list.get(0).equals("Addtesttodata")) {
-				try {
-					int isReturned = executeMyQuery(list.get(1));
-					if (isReturned == 0)
-						client.sendToClient((Object) notFound);
-					client.sendToClient((Object) isReturned);
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
-			}
-
-			else if (list.get(0).equals("createanswers")) {
-				try {
-					int isReturned = executeMyQuery(list.get(1));
-					if (isReturned == 0)
-						client.sendToClient((Object) notFound);
-					else
+					else if (list.get(0).equals("editquestion") || list.get(0).equals("Addtesttodata")
+							|| list.get(0).equals("createanswers") || list.get(0).equals("createquestion")) {
+						int isReturned = executeMyQuery(list.get(1));
+						if (isReturned == 0)
+							client.sendToClient((Object) idExists);
 						client.sendToClient((Object) isReturned);
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
-			}
-			// createquestion
-			else if (list.get(0).equals("createquestion")) {
-				try {
-					int isReturned = executeMyQuery(list.get(1));
-					if (isReturned == 0)// this means that we could make the update, return notFound Object
-						client.sendToClient((Object) notFound);
-					else
-						client.sendToClient((Object) isReturned);
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
-			}
+					}
 
-			else if (list.get(0).equals("lecturersubjects")) {
-				// gets lecturer subjects
-				try {
-					ArrayList<String> resList = getSubjectsFromDBForLecturer(list.get(1), "lecturersubjects");
-					if (resList == null)
-						client.sendToClient((Object) notFound);
-					client.sendToClient((Object) resList);
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				} catch (IOException e2) {
-					e2.printStackTrace();
-				}
-			}
+					// gets lecturer subjects
+					else if (list.get(0).equals("lecturersubjects")) {
+						ArrayList<String> resList = getDataFromDB(list.get(1), "lecturersubjects");
+						if (resList == null)
+							client.sendToClient((Object) notFound);
+						client.sendToClient((Object) resList);
+					}
 
-			else if (list.get(0).equals("lecturerquestions")) {
-				// gets all lecturer Questions from db
-				try {
-					ArrayList<Question> resList = getQuestionsFromDBForLecturer(list.get(1));
-					if (resList == null)
-						client.sendToClient((Object) notFound);
-					System.out.println("Server: " + resList.toArray());
-					client.sendToClient((Object) resList);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} catch (IOException eq) {
-					eq.printStackTrace();
-				}
-			}
+					// gets all lecturer Questions from db
+					else if (list.get(0).equals("lecturerquestions")) {
+						ArrayList<Question> resList = getQuestionsFromDBForLecturer(list.get(1));
+						if (resList == null)
+							client.sendToClient((Object) notFound);
+						System.out.println("Server: " + resList.toArray());
+						client.sendToClient((Object) resList);
+					}
 
-			else {
-				try {
 					// user login authentication
-					stmt = conn.createStatement();
-					result = stmt.executeQuery(list.get(0));
-					if (result.next()) {
-						// check if the password in the DB is the same as user input
-						if (result.getString(2).equals(list.get(2))) {
-							res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
-							System.out.println("Message sent back: " + res);
-							client.sendToClient((Object) res);
-						}
-					} else {
-						// The user is not in the database (not registered)
-						// or incorrect password
-						System.out.println("user has not been found!");
-						client.sendToClient((Object) notFound);
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} catch (IOException ioe) {
-					ioe.printStackTrace();
+					else
+						loginVarification(list, client);
 				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		}
+	}
 
-		else {
-			if (msg instanceof String) {
-				String query = (String) msg;
-				res = "allsubjects,";
-				boolean hasFound = false;
-				try {
-					stmt = conn.createStatement();
-					result = stmt.executeQuery(query);
-					while (result.next()) {
-						hasFound = true;
-						res += result.getString(1) + ",";
-					}
-					if (!hasFound) {
-						client.sendToClient((Object) notFound);
-					}
-					System.out.println("Sent back: " + res);
+	// User Login Varification
+	private void loginVarification(ArrayList<String> list, ConnectionToClient client) {
+		try {
+
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(list.get(0));
+			if (result.next()) {
+				// check if the password in the DB is the same as user input
+				if (result.getString(2).equals(list.get(2))) {
+					String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
+					System.out.println("Message sent back: " + res);
 					client.sendToClient((Object) res);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
 				}
 			} else {
-				try {
-					client.sendToClient(msg);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				// The user is not in the database (not registered)
+				// or incorrect password
+				System.out.println("user has not been found!");
+				client.sendToClient((Object) userNotFound);
 			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
 	}
 
-	/*private ArrayList<String> getAnswers(ArrayList<String> list) throws SQLException {
-		ArrayList<String> answers = new ArrayList<>();
-		answers.add("answers");
-
-		for (int i = 1; i < list.size(); i += 5) {
-			stmt = conn.createStatement();
-			ResultSet res = stmt.executeQuery(list.get(i));
-
-			while (res.next()) {
-				answers.add(res.getString(1));
-				answers.add(res.getString(2));
-				answers.add(res.getString(3));
-				answers.add(res.getString(4));
-				answers.add(res.getString(5));
-			}
-
-			res.close();
-		}
-
-		return answers;
-	}*/
-
 	/**
-	 * Function for executing queries, returns a number of rows affected.
-	 * Returns -1 upon failure.
-	 */ 
-
-	private int executeMyQuery(String query) {	
+	 * Method for executing Update queries .
+	 * 
+	 * @param query the query to execute.
+	 * @return returns how many rows affected , 0 upon failure.
+	 */
+	private int executeMyQuery(String query) {
 		try {
 			stmt = conn.createStatement();
 			int res = stmt.executeUpdate(query);
 			return res;
-		} catch (SQLException e){
-			return -1;
+		} catch (SQLException e) {
+			return 0;
 		}
 	}
 
-	
 	// gets Questions from db
-	private ArrayList<Question> getQuestionsFromDBForLecturer(String query) throws SQLException {
-		stmt = conn.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		ArrayList<Question> res = new ArrayList<Question>();
+	private ArrayList<Question> getQuestionsFromDBForLecturer(String query) {
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			ArrayList<Question> res = new ArrayList<Question>();
 
-		while (result.next()) {
-			// while threres Questions in result , adding them into result array
-			Question q = new Question(result.getString(1), 
-					result.getString(2), result.getString(3),
-					result.getString(4), result.getString(5), 
-					result.getString(6));
-			
-			Statement answerstmt = conn.createStatement();
-			ResultSet answers = answerstmt.executeQuery("SELECT optionA,optionB,optionC,optionD,correctAnswer FROM `projecton`.`answers` WHERE (`questionid` = '" + q.getId() + "');");
-			while (answers.next()) {
-				q.setOptionA(answers.getString(1));
-				q.setOptionB(answers.getString(2));
-				q.setOptionC(answers.getString(3));
-				q.setOptionD(answers.getString(4));
-				q.setAnswer(answers.getString(5));
+			while (result.next()) {
+				// while threres Questions in result , adding them into result array
+				Question q = new Question(result.getString(1),
+						result.getString(2), result.getString(3),
+						result.getString(4), result.getString(5),
+						result.getString(6));
+
+				Statement answerstmt = conn.createStatement();
+				ResultSet answers = answerstmt.executeQuery(
+						"SELECT optionA,optionB,optionC,optionD,correctAnswer FROM `projecton`.`answers` WHERE (`questionid` = '"
+								+ q.getId() + "');");
+				while (answers.next()) {
+					q.setOptionA(answers.getString(1));
+					q.setOptionB(answers.getString(2));
+					q.setOptionC(answers.getString(3));
+					q.setOptionD(answers.getString(4));
+					q.setAnswer(answers.getString(5));
+				}
+				answers.close();
+				res.add(q);
 			}
-			answers.close();
-			res.add(q);
-		}
-		System.out.println("Message sent back: " + res);
-		if (res.size() == 0)
-			return null;
-		return res;
-	}
-
-	// gets subjects from db
-	private ArrayList<String> getSubjectsFromDBForLecturer(String query, String out) throws SQLException {
-		stmt = conn.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		ArrayList<String> res = new ArrayList<String>();
-		res.add(out);
-		if (result.next()) {
-			// check if the password in the DB is the same as user input
-			res.add(result.getString(1));
 			System.out.println("Message sent back: " + res);
+			if (res.size() == 0)
+				return null;
 			return res;
-		} else {
-			return null;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		return null;
 	}
 
+	/**
+	 * Method to get data from database.
+	 * 
+	 * @param query
+	 * @param out   the out String , first in the list.
+	 * @return
+	 * @throws SQLException
+	 */
+	private ArrayList<String> getDataFromDB(String query, String out) {
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			ArrayList<String> res = new ArrayList<String>();
+			res.add(out);
+			if (result.next()) {
+				res.add(result.getString(1));
+				System.out.println("Message sent back: " + res);
+				return res;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Method to start the server connection with MySQL WorkBench.
+	 * 
+	 * @param DBname
+	 * @param username
+	 * @param Password
+	 */
 	public static void startServer(String DBname, String username, String Password) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
@@ -428,33 +343,6 @@ public class EchoServer extends AbstractServer {
 	 * }
 	 * }
 	 */
-
-	/**
-	 * get subject id from the database
-	 * //TODO noah: check if this works lul
-	 * we could change this method to send generic queries with identifiers
-	 * 
-	 * @param query
-	 * @param identifier
-	 * @return
-	 * @throws SQLException
-	 */
-	private ArrayList<String> getSubjectID(String query, String identifier) throws SQLException {
-		stmt = conn.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		ArrayList<String> output = new ArrayList<String>();
-		// add the "getSubjectID" identifier
-		output.add(identifier);
-		// TODO
-		// if there's a result??
-		if (result.next()) {
-			output.add(result.getString(1));
-			System.out.println("Message sent back: " + output);
-			return output;
-		} else {
-			return null;
-		}
-	}
 
 	/**
 	 * This method overrites the method from AbstractServer where this method is

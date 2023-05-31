@@ -160,9 +160,7 @@ public class CreateTestController extends BasicController {
 
 	}
 
-	// INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`,
-	// `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('sd', 'sd', 'sd',
-	// 'sd', 'sd', 'sd', 'sd', 'sd');
+
 	@FXML
 	void savePressed(ActionEvent event) {
 		test.setAuthor(ClientHandler.user.getpName());
@@ -171,7 +169,7 @@ public class CreateTestController extends BasicController {
 		test.setTime(startTime.getText());
 		test.setDate(date);
 		test.setDuration(duration.getText());
-		// test.setId(null);
+		// TODO test.setId();
 
 		ClientUI.chat.sendTestToDatabase(test);
 

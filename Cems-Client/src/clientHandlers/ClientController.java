@@ -1,8 +1,9 @@
 package clientHandlers;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 
 import logic.Test;
 
@@ -41,21 +42,17 @@ public class ClientController implements ChatIF {
      * and sends it to the server for processing.
      */
     public void accept() {
-        /*
-         * 
-         * try {
-         * 
-         * *BufferedReader fromConsole = new BufferedReader(new
-         * InputStreamReader(System.in));
-         * System.out.println("> Connected To Server ");
-         * * Object message = fromConsole.readLine();
-         * client.handleMessageFromClientUI(message);
-         * } catch (Exception ex) {
-         * 
-         * System.out.println("Unexpected error while reading from console!");
-         * ex.printStackTrace();
-         * }
-         */
+        try {
+            BufferedReader fromConsole = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("> Connected To Server ");
+            Object message = fromConsole.readLine();
+            client.handleMessageFromClientUI(message);
+        } catch (Exception ex) {
+
+            System.out.println("Unexpected error while reading from console!");
+            ex.printStackTrace();
+        }
+
     }
 
     /**
@@ -74,16 +71,7 @@ public class ClientController implements ChatIF {
         }
     }
 
-    // gets all subject available
-    public void getAllSubjects() {
-        try {
-            client.handleMessageFromLecturerUI();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // gets all of specific lecturer questions
+    // gets the id of the subject given
     public void GetSubjectIDfromSubjectCourses(String subjectname) {
         try {
             client.GetSubjectIDfromSubjectCourses(subjectname);
@@ -93,32 +81,31 @@ public class ClientController implements ChatIF {
 
     }
 
+    // gets all subject available for lecturer
     public void getSubjectsForLecturer(Object username) {
         try {
             client.handleMessageFromLecturerUI(username);
         } catch (Exception e) {
-            // client.EditQuestion(newBody, newQNumber, originalId);
             e.printStackTrace();
         }
-
     }
 
+    // sends query to create qeustion with data
     public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
-        try{
-
+        try {
             client.CreateQuestion(Id, subject, Body, QNumber);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void CreateAnswers(String optionA, String optionB, String optionC, String optionD,String correctAnswer,String subjectID) {
-        try{
+    // sends query to create answers for question
+    public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer,
+            String subjectID) {
+        try {
 
-           client.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer,subjectID);
-        }
-        catch (Exception e){
+            client.CreateAnswers(optionA, optionB, optionC, optionD, correctAnswer, subjectID);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -143,23 +130,17 @@ public class ClientController implements ChatIF {
 
     /**
      * Method to send question information to DataBase
+     * 
      * @param test the test to add
      */
     public void sendTestToDatabase(Test test) {
 
-        String query = "INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('" + test.getId() + "','" + test.getDuration() + "', '" + test.getTestComments() + "', '" + test.getAuthor() + "', '" + test.getTestCode() + "', '" + test.getDate().getValue().toString() + "','" + test.getTime() + "', '" + test.getQuesitonsInTest() + "');";
+        String query = "INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('"
+                + test.getId() + "','" + test.getDuration() + "', '" + test.getTestComments() + "', '"
+                + test.getAuthor() + "', '" + test.getTestCode() + "', '" + test.getDate().getValue().toString() + "','"
+                + test.getTime() + "', '" + test.getQuesitonsInTest() + "');";
         client.sendTestToDatabase(query);
     }
-
-    /*public void getAnswersForQuestion(ArrayList<String> idList) {
-        try {
-            client.getAnswersForQuestion(idList);
-        } catch ( Exception e) {
-            e.printStackTrace();
-        }
-        
-    }*/
-
 
     /**
      * This method overrides the method in the ChatIF interface. It displays a

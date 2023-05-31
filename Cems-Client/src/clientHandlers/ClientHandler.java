@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import clientControllers.CreateQuestionController;
-import clientControllers.DBQController;
 import clientControllers.LecturerController;
 import logic.Question;
 import logic.QuestionModel;
@@ -59,7 +58,7 @@ public class ClientHandler extends AbstractClient {
 
 		if (severMessage instanceof Integer) {
 			if ((Integer) severMessage == 1)
-				System.out.println("Update was successful");
+				System.out.println("Update was successful");	
 			else
 				System.out.println("Update wasnt so successful");
 		} 
@@ -90,17 +89,6 @@ public class ClientHandler extends AbstractClient {
 			else {
 				list = ((ArrayList<String>) severMessage);
 
-				// Checks if the msg from server is the answers to the questions
-				/*if (list.get(0).equals("answers")) {
-					for (int i = 1 ; i < list.size() ; i+=5) {
-						DBQController.getQuestionsToAdd().get(i).setOptionA(list.get(i));
-						DBQController.getQuestionsToAdd().get(i).setOptionB(list.get(i + 1));
-						DBQController.getQuestionsToAdd().get(i).setOptionC(list.get(i + 2));
-						DBQController.getQuestionsToAdd().get(i).setOptionD(list.get(i + 3));
-						DBQController.getQuestionsToAdd().get(i).setAnswer(list.get(i + 4));
-					}
-				}*/
-
 				if (list.get(0).equals("lecturersubjects")) {
 					subjectArray = list.get(1).split(",");
 					for (String s : subjectArray) {
@@ -118,16 +106,26 @@ public class ClientHandler extends AbstractClient {
 
 		}
 
-		else if (severMessage.toString().equals("Not Found")) {
+		// Handles the error of user not found.
+		else if (severMessage.toString().equals("User Not Found")) {
 			System.out.println("Not Found in handler");
 			user.setIsFound(false);
 		}
 
-		// Gets all the subject for lecturer
-		else if (severMessage.toString().contains("allsubjects")) {
-			subjectArray = ((String) severMessage).toString().split(",");
-			for (int i = 1; i < subjectArray.length; i++)
-				LecturerController.subjectsList.add(subjectArray[i].toUpperCase());
+		// Handles the error the the question already exist with that id.
+		else if (severMessage.toString().contains("Question Exists")) {
+
+
+		}
+
+		// Handles the error of Not Found
+		else if (severMessage.toString().contains("Not Found")) {
+
+		}
+
+		// Handles the error of Id Exists
+		else if (severMessage.toString().contains("Id Exists")) {
+
 		}
 
 		else {
@@ -223,9 +221,12 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	// TODO
-	// UPDATE `projecton`.`questions` SET `questiontext` = 'sas', `questionnumber`
-	// ='ass' WHERE (`id` = '01001');
+	/**
+	 * Method to create query to edit existing question
+	 * @param newBody
+	 * @param newQNumber
+	 * @param originalId
+	 */
 	public void EditQuestion(String newBody, String newQNumber, String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
 		String s = originalId.substring(0, 2) + newQNumber;
@@ -243,6 +244,14 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	/**
+	 * Method that creates query for creating a question and 
+	 * Passes it to server.
+	 * @param Id
+	 * @param subject
+	 * @param Body
+	 * @param QNumber
+	 */
 	public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("createquestion");
@@ -258,6 +267,15 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	/**
+	 * Method that creates query for insering answers to database.
+	 * @param optionA
+	 * @param optionB
+	 * @param optionC
+	 * @param optionD
+	 * @param correctAnswer
+	 * @param subjectID
+	 */
 	public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer,
 			String subjectID) {
 		ArrayList<String> list = new ArrayList<String>();
@@ -276,6 +294,10 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	/**
+	 * Method for sending the test to the data base.
+	 * @param query 
+	 */
 	public void sendTestToDatabase(String query) {
 		ArrayList<String> listToSend = new ArrayList<String>();
 		listToSend.add("Addtesttodata");
@@ -288,10 +310,10 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	/**
-	 * 
 	 * create a new arraylist subject, add an identifier "getSubjectID" so the
 	 * Echoserver idenrtifies it,
 	 * the second cell should contain 'subjectname' for the server to parse
+	 * @param subjectname the subject to whom the search is for.
 	 */
 	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
 		ArrayList<String> subject = new ArrayList<String>();
@@ -304,31 +326,7 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-
-	/**
-	 * A method to get answers for question given their id .
-	 * 
-	 * @param idList the id list of questions to get answers to.
-	 * 
-	 
-	public void getAnswersForQuestion(ArrayList<String> idList) {
-		ArrayList<String> qIdList = new ArrayList<String>();
-		qIdList.add("getanswers");
-		for (String s : idList) {
-			qIdList.add("SELECT optionA,optionB,optionC,optionD,correctAnswer FROM `projecton`.`answers` WHERE (`questionid` = '" + s + "');");
-		}
-		try {
-			sendToServer((Object) qIdList);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}*/
-
-	/**
-	 * This method overrites super method that handles what happans when connection
-	 * is closed
-	 * with the server.
-	 */
+	
 	protected void connectionClosed() {
 		System.out.println("Connection Lost, press login to regain connection.");
 	}
