@@ -86,7 +86,8 @@ public class DBQController extends BasicController {
 	@FXML
 	void backPressed(ActionEvent event) {
 		// open Create Tests 
-		openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
+		CreateTestController ctc = (CreateTestController)openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
+		ctc.setTest(testToReturn);
 	}
 
 	@FXML

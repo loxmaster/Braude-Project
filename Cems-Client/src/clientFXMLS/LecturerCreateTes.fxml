@@ -104,7 +104,10 @@
                   <Font name="Calibri Bold" size="24.0" />
                </font>
             </Label>
-            <TextArea fx:id="qBody" layoutX="14.0" layoutY="34.0" prefHeight="323.0" prefWidth="494.0" style="-fx-border-color: black;" />
+            <TextArea fx:id="qBody" editable="false" layoutX="14.0" layoutY="34.0" prefHeight="323.0" prefWidth="494.0" style="-fx-border-color: black;">
+               <font>
+                  <Font size="18.0" />
+               </font></TextArea>
             <TextArea fx:id="OptionD" layoutX="573.0" layoutY="54.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" />
             <Label layoutX="529.0" prefHeight="41.0" prefWidth="459.0" text="Make sure one of the options is selected as true : ">
                <font>
@@ -154,6 +157,16 @@
             <TextArea fx:id="OptionC" layoutX="573.0" layoutY="128.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" />
             <TextArea fx:id="OptionB" layoutX="573.0" layoutY="209.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" />
             <TextArea fx:id="OptionA" layoutX="573.0" layoutY="290.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" />
+            <TextField id="qID" fx:id="qID" alignment="CENTER" layoutX="1080.0" layoutY="7.0" prefHeight="30.0" prefWidth="68.0">
+               <font>
+                  <Font name="Calibri" size="16.0" />
+               </font>
+            </TextField>
+            <Text layoutX="1048.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID: " wrappingWidth="39.0">
+               <font>
+                  <Font name="Calibri Bold Italic" size="24.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
       <ComboBox id="subjectComboBox" fx:id="subjectComboBox" layoutX="1017.0" layoutY="174.0" prefHeight="35.0" prefWidth="207.0" style="-fx-background-color: #c6bebe;" />

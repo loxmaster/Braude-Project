@@ -34,7 +34,6 @@ public class EditQuestionController extends BasicController {
 
 	//load question details under 'Edit Question'
 	public void loadQuestion(QuestionModel question, String id) {
-		// TODO
 		body.setText(question.getQuestiontext());
 
 		ArrayList<String> subjectArray = new ArrayList<String>();

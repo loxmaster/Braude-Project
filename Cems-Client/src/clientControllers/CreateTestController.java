@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -26,6 +25,9 @@ public class CreateTestController extends BasicController {
 
 	@FXML
 	private CheckBox A, B, C, D;
+	
+	@FXML
+    private TextField qID;
 
 	@FXML
 	private TextArea OptionA, OptionB, OptionC, OptionD;
@@ -92,7 +94,7 @@ public class CreateTestController extends BasicController {
 	public void setTest(Test test) {
 		this.test = test;
 
-		// test.getAuthor(ClientHandler.user.getpName());
+		test.setAuthor(ClientHandler.user.getUsername());
 		// loads the subjects in the subjects combobox
 		load();
 		subjectComboBox.setValue(test.getSubject());
@@ -116,12 +118,13 @@ public class CreateTestController extends BasicController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				qBody.setText(question.getQuestiontext());
 
+				qBody.setText(question.getQuestiontext());
 				OptionA.setText(question.getOptionA());
 				OptionB.setText(question.getOptionB());
 				OptionC.setText(question.getOptionC());
 				OptionD.setText(question.getOptionD());
+				qID.setText(question.getId());
 
 				A.setSelected(false);
 				B.setSelected(false);
@@ -150,7 +153,7 @@ public class CreateTestController extends BasicController {
 		// questionInTestButton.setId("questionbutton");
 		questionInTestButton.setPrefWidth(70);
 		questionInTestButton.setPrefHeight(10);
-		questionInTestButton.setPadding(new Insets(20, 0, 20, 0));
+		//questionInTestButton.setPadding(new Insets(20, 0, 20, 0));
 		question.setEdit(questionInTestButton);
 		return questionInTestButton;
 	}

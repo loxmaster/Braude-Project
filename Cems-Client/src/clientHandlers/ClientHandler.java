@@ -36,14 +36,9 @@ public class ClientHandler extends AbstractClient {
 		openConnection();
 	}
 
-	// Logic Methods ****************************************************
-
-	// clear client data
-	public static void resetClientData() {
-		user = new User();
-		LecturerController.subjectsList = new ArrayList<String>();
-		LecturerController.questions = new ArrayList<QuestionModel>();
-	}
+	////////////////////////////////////////////////////////////
+	/////////////// HANDLE MESSAGHE FROM SERVER ///////////////
+	//////////////////////////////////////////////////////////
 
 	/**
 	 * This method handles all data that comes in from the server.
@@ -56,6 +51,7 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> list;
 		ArrayList<Question> questionList;
 
+		// TODO add a comment here
 		if (severMessage instanceof Integer) {
 			if ((Integer) severMessage == 1)
 				System.out.println("Update was successful");	
@@ -70,7 +66,8 @@ public class ClientHandler extends AbstractClient {
 				ArrayList<QuestionModel> listToAdd = new ArrayList<>();
 
 				for (int i = 0; i < questionList.size(); i++) {
-					listToAdd.add(new QuestionModel(questionList.get(i).getId(), 
+					listToAdd.add( new QuestionModel(
+							questionList.get(i).getId(), 
 							questionList.get(i).getSubject(),
 							questionList.get(i).getCoursename(),
 							questionList.get(i).getQuestiontext(), 
@@ -108,7 +105,7 @@ public class ClientHandler extends AbstractClient {
 
 		// Handles the error of user not found.
 		else if (severMessage.toString().equals("User Not Found")) {
-			System.out.println("Not Found in handler");
+			System.err.println("Not Found in handler");
 			user.setIsFound(false);
 		}
 
@@ -162,10 +159,11 @@ public class ClientHandler extends AbstractClient {
 	 * @param password password entered.
 	 */
 	public void handleMessageFromLoginUI(Object username, Object password) {
-
 		ArrayList<String> credentials = new ArrayList<String>();
+
 		String query = "SELECT * FROM users  WHERE (`username` = '" + username + "');";
 		credentials.addAll(Arrays.asList(query, (String) username, (String) password));
+
 		try {
 			sendToServer((Object) credentials);
 		} catch (IOException e) {
@@ -179,10 +177,9 @@ public class ClientHandler extends AbstractClient {
 	 * subjects.
 	 */
 	public void handleMessageFromLecturerUI() {
-		String query = "SELECT DISTINCT subjectname FROM subjectcourses;";
 		// SELECT courses FROM projecton.lecturer WHERE (`username` = 'noah');
 		try {
-			sendToServer((Object) query);
+			sendToServer((Object) "SELECT DISTINCT subjectname FROM subjectcourses;");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -193,15 +190,20 @@ public class ClientHandler extends AbstractClient {
 	 * subjects for the lecturer.
 	 */
 	public void handleMessageFromLecturerUI(Object username) {
-		String query = "SELECT courses FROM projecton.lecturer WHERE (`username` = '" + (String) username + "');";
 		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList("lecturersubjects", query));
+		list.addAll(Arrays.asList("lecturersubjects",
+				"SELECT courses FROM projecton.lecturer WHERE (`username` = '" + (String) username + "');"));
+
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
+	///////////////////////////////////////////////////
+	////////////////// LOGIC METHODS /////////////////
+	/////////////////////////////////////////////////
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
@@ -212,8 +214,8 @@ public class ClientHandler extends AbstractClient {
 		 * try { openConnection(); } catch (IOException e1) { System.out.println(1); }
 		 */
 		ArrayList<String> list = new ArrayList<String>();
-		list.add("lecturerquestions");
-		list.add("SELECT * FROM projecton.questions where ( `lecturer` = '" + username + "' );");
+		list.addAll(Arrays.asList("lecturerquestions",
+				"SELECT * FROM projecton.questions where ( `lecturer` = '" + username + "' );"));
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
@@ -229,13 +231,30 @@ public class ClientHandler extends AbstractClient {
 	 */
 	public void EditQuestion(String newBody, String newQNumber, String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
-		String s = originalId.substring(0, 2) + newQNumber;
-		list.add("editquestion");
 
-		// Construct the UPDATE query to edit the question
-		String query = "UPDATE `projecton`.`questions` SET `id` = '" + s + "', `questiontext` = '" + newBody
-				+ "', `questionnumber` = '" + newQNumber + "' WHERE (`id` = '" + originalId + "');";
-		list.add(query);
+		// ugly will stay ugly <3
+		list.addAll(Arrays.asList("editquestion",
+				"UPDATE `projecton`.`questions` SET `id` = '" + originalId.substring(0, 2) + newQNumber
+						+ "', `questiontext` = '" + newBody
+						+ "', `questionnumber` = '" + newQNumber + "' WHERE (`id` = '" + originalId + "');"));
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// return a list of grades where [testGrades, passed grades, failed grades]
+	// query that selects PASSED and FAILED grades --> echoserver to parse
+	// parse: [testGrades(echoServer identifier), passed(query), failed(query)]
+	public void GetTestGrades_StatisticalInformation(String testID) {
+		ArrayList<String> list = new ArrayList<String>();
+
+		// FIXME fix this query
+		String query_passed = "SELECT grade from projecton.testResults WHERE grade>=55";
+		String query_failed = "SELECT grade from projecton.testResults WHERE grade<55";
+		list.addAll(Arrays.asList("testGrades", query_passed, query_failed));
 
 		try {
 			sendToServer((Object) list);
@@ -254,11 +273,12 @@ public class ClientHandler extends AbstractClient {
 	 */
 	public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
 		ArrayList<String> list = new ArrayList<String>();
-		list.add("createquestion");
+
 		// Construct the INSERT query to create a new question
-		String query = "INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
-				+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername() + "');";
-		list.add(query);
+		list.addAll(Arrays.asList("createquestion",
+				"INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
+						+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername()
+						+ "');"));
 
 		try {
 			sendToServer((Object) list);
@@ -279,8 +299,6 @@ public class ClientHandler extends AbstractClient {
 	public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer,
 			String subjectID) {
 		ArrayList<String> list = new ArrayList<String>();
-		list.add("createanswers");
-
 		// Construct the INSERT query to create a new answer
 		String query = "INSERT INTO `projecton`.`answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
 				+ optionA + "', '" + optionB + "', '" + optionC + "', '" + optionD + "', '" + correctAnswer + "', '"
@@ -316,17 +334,26 @@ public class ClientHandler extends AbstractClient {
 	 * @param subjectname the subject to whom the search is for.
 	 */
 	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
-		ArrayList<String> subject = new ArrayList<String>();
-		subject.add("getSubjectID");
+		ArrayList<String> list = new ArrayList<String>();
+		list.addAll(Arrays.asList("getSubjectID",
+				"SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subjectname + "' );"));
 
-		subject.add("SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subjectname + "' );");
 		try {
-			sendToServer((Object) subject);
+			sendToServer((Object) list);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	////////////////////////////////////////////////////////////
+	/////////////////////// CLIENT NATIVE /////////////////////
+	//////////////////////////////////////////////////////////
+
+	/**
+	 * This method overrites super method that handles what happans when connection
+	 * is closed
+	 * with the server.
+	 */
 	protected void connectionClosed() {
 		System.out.println("Connection Lost, press login to regain connection.");
 	}
@@ -343,10 +370,11 @@ public class ClientHandler extends AbstractClient {
 		// System.exit(0);
 	}
 
-	/**
-	 * This method is called by garbage collection.
-	 */
-	protected void finalize() {
-		quit();
+	// clear client data
+	public static void resetClientData() {
+		user = new User();
+		LecturerController.subjectsList = new ArrayList<String>();
+		LecturerController.questions = new ArrayList<QuestionModel>();
 	}
+
 }

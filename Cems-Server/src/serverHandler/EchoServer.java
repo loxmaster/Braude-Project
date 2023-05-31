@@ -46,6 +46,11 @@ public class EchoServer extends AbstractServer {
 	private static Connection conn = null;
 	private Statement stmt;
 
+	/////////////////////////////////////////////////////////////////
+	////////////////// SERVER CONFIGURATION METHODS ////////////////
+	///////////////////////////////////////////////////////////////
+
+
 	// Constructors ****************************************************
 
 	/**
@@ -66,14 +71,11 @@ public class EchoServer extends AbstractServer {
 		return serverInstance;
 	}
 
-	// Main ****************************************************
-
+	////////////// MAIN//////////////
 	/**
-	 * Responsible for the creation of the server instance (there is no UI in this
-	 * phase).
-	 *
-	 * @param args[0] The port number to listen on. Defaults to 5555 if no argument
-	 *                is entered.
+	 * Responsible for the creation of the server instance
+	 * 
+	 * @param args[0] port to listen on. Default: 5555 if not given argument
 	 */
 	public static void main(String[] args) {
 
@@ -86,13 +88,10 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 
-	// Methods ************************************************
-
 	/**
-	 * This method handles any messages received from the client.
-	 *
-	 * @param msg    The message received from the client.
-	 * @param client The connection from which the message originated.
+	 * This method overrites the method from AbstractServer where this method is
+	 * called when a client has disconnected. Removes the client from client list
+	 * table in UI.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
@@ -210,10 +209,13 @@ public class EchoServer extends AbstractServer {
 
 			while (result.next()) {
 				// while threres Questions in result , adding them into result array
-				Question q = new Question(result.getString(1),
-						result.getString(2), result.getString(3),
-						result.getString(4), result.getString(5),
-						result.getString(6));
+				Question q = new Question(
+						result.getString(1),
+						result.getString(2), 
+						result.getString(3),
+						result.getString(4), 
+						result.getString(5),
+						result.getString(6) );
 
 				Statement answerstmt = conn.createStatement();
 				ResultSet answers = answerstmt.executeQuery(
@@ -344,21 +346,34 @@ public class EchoServer extends AbstractServer {
 	 * }
 	 */
 
-	/**
-	 * This method overrites the method from AbstractServer where this method is
-	 * called when a client has disconnected. Removes the client from client list
-	 * table in UI.
-	 */
-	@Override
-	synchronized protected void clientDisconnected(ConnectionToClient client) {
-		ServerUI.sController.RemoveFromTable(client);
+	// query_passed: select passed students
+	// grade_index - position of the grade field
+	private ArrayList<String> TestGrades_PassedGrades(String query_passed, int grade_index) throws SQLException {
+		ArrayList<String> outputList = new ArrayList<String>();
+		stmt = conn.createStatement();
+		ArrayList<ResultSet> res = new ArrayList<>();
+		ResultSet queryResult = stmt.executeQuery(query_passed);
+
+		// outputList.addAll((String)queryResult.getString(query_passed));
+		while (queryResult.next()) {
+			outputList.add(queryResult.getString(grade_index));
+		}
+		return outputList;
 	}
 
-	/**
-	 * This method overrides the one in the superclass. Called when the server stops
-	 * listening for connections.
-	 */
-	protected void serverStopped() {
-		System.out.println("Server has stopped listening for connections.");
+	// query_failed: select failed students query
+	// grade_index - position of the grade field
+	private ArrayList<String> testGrades_failed_Query(String query_failed, int grade_index) throws SQLException {
+		ArrayList<String> outputList = new ArrayList<String>();
+		stmt = conn.createStatement();
+		ArrayList<ResultSet> res = new ArrayList<>();
+		ResultSet queryResult = stmt.executeQuery(query_failed);
+
+		// outputList.addAll((String)queryResult.getString(query_passed));
+		while (queryResult.next()) {
+			outputList.add(queryResult.getString(grade_index));
+		}
+		return outputList;
 	}
+
 }
