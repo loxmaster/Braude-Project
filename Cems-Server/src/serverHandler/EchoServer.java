@@ -99,62 +99,65 @@ public class EchoServer extends AbstractServer {
 
 		System.out.println("Message received: " + msg + " from " + client);
 
-		// If gets InetAddress then it means he`s finished
-		if (msg instanceof InetAddress)
-			clientDisconnected(client);
 
-		else
-			try {
-				if (msg instanceof ArrayList) {
+		try {
+			switch (msg.getClass().getSimpleName()) {
+
+				// if gets InetAddress then it means hes finished
+				case "Inet4Address":
+					clientDisconnected(client);
+					break;
+				case "ArrayList":
 					ArrayList<String> list = (ArrayList<String>) msg;
+					switch (list.get(0)) {
+						case "getSubjectID":
+							// send query to be executed along with the identifier
+							ArrayList<String> resultList = getDataFromDB(list.get(1), "getSubjectID");
+							// result list should have arraylist = {identifier, subjectId}
+							// if we got no results: send notFound signal
+							if (resultList == null)
+								client.sendToClient((Object) notFound);
+							// else return the subjectID result we got from the query
+							else
+								client.sendToClient(resultList);
+							break;
 
-					// Gets the subject id to build the question id
-					if (list.get(0).equals("getSubjectID")) {
-						// send query to be executed along with the identifier
-						ArrayList<String> resultList = getDataFromDB(list.get(1), "getSubjectID");
-						// result list should have arraylist = {identifier, subjectId}
+						case "createquestion":
+						case "createanswers":
+						case "editquestion":
+						case "Addtesttodata":
+							int flag = executeMyQuery(list.get(1));
+							client.sendToClient(flag == 0 ? idExists : flag);
+							break;
 
-						// if we got no results: send notFound signal
-						if (resultList == null)
-							client.sendToClient((Object) notFound);
-						// else return the subjectID result we got from the query
-						else
-							client.sendToClient(resultList);
+						case "lecturersubjects":
+							ArrayList<String> resStringList = getDataFromDB(list.get(1), "lecturersubjects");
+							client.sendToClient(resStringList == null ? (Object) notFound : (Object) resStringList);
+							break;
 
+						case "lecturerquestions":
+							ArrayList<Question> resQuestionList = getQuestionsFromDBForLecturer(list.get(1));
+							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
+							break;
+
+						case "testGrades":
+							ArrayList<String> resList = TestGrades_PassedGrades(list.get(1), 1);
+							client.sendToClient(resList == null ? (Object) notFound : (Object) resList);
+							System.out.println("Server: TestGrades_PassedGrades --> " + resList.toArray());
+							break;
+
+						// default is user login
+						default:
+							// user login authentication
+							loginVarification(list, client);
+							break;
 					}
-
-					else if (list.get(0).equals("editquestion") || list.get(0).equals("Addtesttodata")
-							|| list.get(0).equals("createanswers") || list.get(0).equals("createquestion")) {
-						int isReturned = executeMyQuery(list.get(1));
-						if (isReturned == 0)
-							client.sendToClient((Object) idExists);
-						client.sendToClient((Object) isReturned);
-					}
-
-					// gets lecturer subjects
-					else if (list.get(0).equals("lecturersubjects")) {
-						ArrayList<String> resList = getDataFromDB(list.get(1), "lecturersubjects");
-						if (resList == null)
-							client.sendToClient((Object) notFound);
-						client.sendToClient((Object) resList);
-					}
-
-					// gets all lecturer Questions from db
-					else if (list.get(0).equals("lecturerquestions")) {
-						ArrayList<Question> resList = getQuestionsFromDBForLecturer(list.get(1));
-						if (resList == null)
-							client.sendToClient((Object) notFound);
-						System.out.println("Server: " + resList.toArray());
-						client.sendToClient((Object) resList);
-					}
-
-					// user login authentication
-					else
-						loginVarification(list, client);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 
 	// User Login Varification
@@ -196,6 +199,7 @@ public class EchoServer extends AbstractServer {
 			int res = stmt.executeUpdate(query);
 			return res;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			return 0;
 		}
 	}
@@ -356,7 +360,9 @@ public class EchoServer extends AbstractServer {
 	 * }
 	 */
 
-	 /* TODO see if piechart is needed
+	  
+	 
+	// TODO see if piechart is needed
 	// query_passed: select passed students
 	// grade_index - position of the grade field
 	private ArrayList<String> TestGrades_PassedGrades(String query_passed, int grade_index) throws SQLException {
@@ -372,6 +378,7 @@ public class EchoServer extends AbstractServer {
 		return outputList;
 	}
 
+	/*
 	// query_failed: select failed students query
 	// grade_index - position of the grade field
 	private ArrayList<String> testGrades_failed_Query(String query_failed, int grade_index) throws SQLException {
