@@ -275,8 +275,7 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// Construct the INSERT query to create a new question
-		list.addAll(Arrays.asList("createquestion",
-				"INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
+		list.addAll(Arrays.asList("createquestion", "INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
 						+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername()
 						+ "');"));
 
@@ -303,6 +302,7 @@ public class ClientHandler extends AbstractClient {
 		String query = "INSERT INTO `projecton`.`answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
 				+ optionA + "', '" + optionB + "', '" + optionC + "', '" + optionD + "', '" + correctAnswer + "', '"
 				+ subjectID + "');";
+		list.add("createanswers");
 		list.add(query);
 
 		try {

@@ -1,10 +1,14 @@
 package logic;
 
+import clientControllers.BasicController;
+import clientControllers.GraphController;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
-public class Statistics {
+public class Statistics extends BasicController {
     private String Average, Course, Date, Median, TestID;
-    private Button viewGraph;
+    private Button distribution;
 
     public Statistics(String average, String course, String date, String median, String testID) {
         Average = average;
@@ -12,7 +16,6 @@ public class Statistics {
         Date = date;
         Median = median;
         TestID = testID;
-        viewGraph = new Button("Distribution");
     }
 
     public String getAverage() {
@@ -27,12 +30,27 @@ public class Statistics {
         return Course;
     }
 
-    public Button getViewGraph() {
-        return viewGraph;
+    public Button getDistribution() {
+        distribution = new Button("Distribution");
+
+		distribution.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+                GraphController lsc = (GraphController) openScreen("/clientFXMLS/LecturerStatistical_GraphView.fxml", "CEMS System - Viewing Graph", event);
+		        lsc.initialize_BarChart(TestID);
+			}
+		});
+
+		// questionInTestButton.setId("questionbutton");
+		distribution.setPrefWidth(120);
+		distribution.setPrefHeight(10);
+
+		return distribution;
     }
 
-    public void setViewGraph(Button viewGraph) {
-        this.viewGraph = viewGraph;
+    public void setDistribution(Button distribution) {
+        this.distribution = distribution;
     }
 
     public void setCourse(String course) {

@@ -31,7 +31,7 @@
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="qA" alignment="CENTER" layoutX="93.0" layoutY="403.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="210.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" />
+      <TextField fx:id="qA" layoutX="93.0" layoutY="403.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="210.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" />
       <TextField fx:id="qB" layoutX="93.0" layoutY="451.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="160.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" />
       <TextField fx:id="qC" layoutX="93.0" layoutY="502.0" maxWidth="630.0" prefHeight="40.0" prefWidth="629.0" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" />
       <TextField fx:id="qD" layoutX="93.0" layoutY="555.0" prefHeight="40.0" prefWidth="630.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" />
@@ -102,6 +102,6 @@
             <Font name="Calibri Bold" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="body" alignment="CENTER" layoutX="130.0" layoutY="262.0" prefHeight="158.0" prefWidth="1145.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="260.0" />
+      <TextField fx:id="body" alignment="TOP_LEFT" layoutX="130.0" layoutY="262.0" prefHeight="158.0" prefWidth="1145.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="260.0" />
 </children>
 </AnchorPane>

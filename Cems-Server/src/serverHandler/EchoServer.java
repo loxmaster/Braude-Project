@@ -321,6 +321,16 @@ public class EchoServer extends AbstractServer {
 		// startTimerTask();
 	}
 
+	/**
+	 * This method overrites the method from AbstractServer where this method is
+	 * called when a client has disconnected. Removes the client from client list
+	 * table in UI.
+	 */
+	@Override
+	synchronized protected void clientDisconnected(ConnectionToClient client) {
+		ServerUI.sController.RemoveFromTable(client);
+	}
+
 	/*
 	 * private void startTimerTask() {
 	 * timer.schedule(new TimerTask() {
@@ -346,6 +356,7 @@ public class EchoServer extends AbstractServer {
 	 * }
 	 */
 
+	 /* TODO see if piechart is needed
 	// query_passed: select passed students
 	// grade_index - position of the grade field
 	private ArrayList<String> TestGrades_PassedGrades(String query_passed, int grade_index) throws SQLException {
@@ -374,6 +385,6 @@ public class EchoServer extends AbstractServer {
 			outputList.add(queryResult.getString(grade_index));
 		}
 		return outputList;
-	}
+	}*/
 
 }
