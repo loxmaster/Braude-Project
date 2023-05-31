@@ -1,9 +1,9 @@
 package logic;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 public class Test {
-    private ArrayList<Question> quesitonsInTest;
+    //private ArrayList<Question> quesitonsInTest;
     private String id, subject, author;
     private String duration, TestComments, testCode;
     private String date, time;

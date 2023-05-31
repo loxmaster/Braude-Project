@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+@SuppressWarnings("all")
+
 /**
  * An instance of this class is created by the server when a client connects. It
  * accepts messages coming from the client and is responsible for sending data

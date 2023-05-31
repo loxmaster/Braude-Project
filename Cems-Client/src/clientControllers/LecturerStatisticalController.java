@@ -12,7 +12,6 @@ public class LecturerStatisticalController extends BasicController {
 
 	@FXML
 	private Button backToLecturer;
-	private Button backButton;
 
 	@FXML
 	void backtoLecturerMain(ActionEvent event) {
