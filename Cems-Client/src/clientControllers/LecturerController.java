@@ -79,7 +79,8 @@ public class LecturerController extends BasicController {
 	@FXML
 	void StatisticalInfoPressed(ActionEvent event) {
 		// open Statistical information
-		openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Lecturer - Statistical Information", event);
+		LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Lecturer - Statistical Information", event);
+		lsc.load();
 	}
 
 	public static ArrayList<String> getSubjectsList() {
