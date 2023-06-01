@@ -1,9 +1,9 @@
 package logic;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 public class Test {
-    private ArrayList<QuestionModel> quesitonsInTest;
+    //private ArrayList<Question> quesitonsInTest;
     private String id, subject, author;
     private String duration, TestComments, testCode;
     private String date, time;
@@ -31,13 +31,13 @@ public class Test {
         this.time = time;
     }
 
-    public ArrayList<QuestionModel> getQuesitonsInTest() {
+    /*public ArrayList<QuestionModel> getQuesitonsInTest() {
         return quesitonsInTest;
     }
 
     public void setQuesitonsInTest(ArrayList<QuestionModel> quesitonsInTest) {
         this.quesitonsInTest = quesitonsInTest;
-    }
+    }*/
 
     public String getId() {
         return id;
@@ -102,4 +102,5 @@ public class Test {
     public void setTime(String time) {
         this.time = time;
     }
+
 }

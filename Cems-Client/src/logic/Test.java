@@ -20,7 +20,8 @@ public class Test {
         testCode = new String();
         time = new String();
         dateString = new String();
-     }
+        quesitonsInTest = new ArrayList<QuestionModel>();
+    }
 
     public Test(String id, String subject, String author, String duration, String testComments, String testCode,
             String dateString, String time) {
@@ -32,6 +33,7 @@ public class Test {
         this.testCode = testCode;
         this.dateString = dateString;
         this.time = time;
+        quesitonsInTest = new ArrayList<QuestionModel>();
     }
 
     public ArrayList<QuestionModel> getQuesitonsInTest() {
@@ -112,5 +114,11 @@ public class Test {
 
     public DatePicker getDate() {
         return date;
+    }
+
+    public void addToQuestions(ArrayList<QuestionModel> list) {
+        for (QuestionModel q : list)
+            if(!quesitonsInTest.contains(q))
+                quesitonsInTest.add(q);
     }
 }

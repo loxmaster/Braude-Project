@@ -4,6 +4,8 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 
+@SuppressWarnings("all")
+
 /**
  * This class acts as a subclass of AbstractServer
  * and is also an Observable class.

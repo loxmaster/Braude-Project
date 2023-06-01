@@ -17,6 +17,7 @@ import logic.QuestionModel;
 import logic.Test;
 
 public class DBQController extends BasicController {
+
 	private Test testToReturn;
 	
 	@FXML
@@ -57,20 +58,26 @@ public class DBQController extends BasicController {
         }
 	}
 
+	/**
+	 * Method to reurn to create test screen with the selected questions.
+	 * @param event
+	 */
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
+
 		// Remembers the questions that needs to be added
 		ObservableList<QuestionModel> tempQuestionList = table.getItems();
-		ArrayList<QuestionModel> questionsToAdd = new ArrayList<QuestionModel>();
+		ArrayList<QuestionModel> questionsToAdd = new ArrayList<>();
 
-		for (int i = 0 ; i < tempQuestionList.size() ; i++) {
-			//System.out.println(tempQuestionList.get(i));
-			//if(Check.getCellObservableValue(tempQuestionList.get(i)).getValue().isSelected())
-				//questionsToAdd.add(tempQuestionList.get(i));
-		}
+		for (int i = 0 ; i < tempQuestionList.size() ; i++) 
+			if(Check.getCellObservableValue(tempQuestionList.get(i)).getValue().isSelected())
+				if (!testToReturn.getQuesitonsInTest().contains(tempQuestionList.get(i)))
+					questionsToAdd.add(tempQuestionList.get(i));
 
 
-		testToReturn.setQuesitonsInTest(LecturerController.getQuestions());
+		// Adds the questions to the current test to return.
+		testToReturn.addToQuestions(questionsToAdd);
+
 		// open Create Tests back with already updated test
 		CreateTestController ctc = (CreateTestController)openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
 		ctc.setTest(testToReturn);
@@ -79,7 +86,8 @@ public class DBQController extends BasicController {
 	@FXML
 	void backPressed(ActionEvent event) {
 		// open Create Tests 
-		openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
+		CreateTestController ctc = (CreateTestController)openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
+		ctc.setTest(testToReturn);
 	}
 
 	@FXML

@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.LecturerController;
+import logic.Question;
 import logic.QuestionModel;
 import logic.User;
 import ocsf.client.AbstractClient;
@@ -36,45 +37,6 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	////////////////////////////////////////////////////////////
-	/////////////////////// CLIENT NATIVE /////////////////////
-	//////////////////////////////////////////////////////////
-
-	/**
-	 * This method overrites super method that handles what happans when connection
-	 * is closed
-	 * with the server.
-	 */
-	protected void connectionClosed() {
-		System.out.println("Connection Lost, press login to regain connection.");
-	}
-
-	/**
-	 * This method terminates the client.
-	 */
-	public void quit() {
-		try {
-			sendToServer((Object) this.getInetAddress());
-			closeConnection();
-		} catch (IOException e) {
-		}
-		// System.exit(0);
-	}
-
-	/**
-	 * This method is called by garbage collection.
-	 */
-	protected void finalize() {
-		quit();
-	}
-
-	// clear client data
-	public static void resetClientData() {
-		user = new User();
-		LecturerController.subjectsList = new ArrayList<String>();
-		LecturerController.questions = new ArrayList<QuestionModel>();
-	}
-
-	////////////////////////////////////////////////////////////
 	/////////////// HANDLE MESSAGHE FROM SERVER ///////////////
 	//////////////////////////////////////////////////////////
 
@@ -87,27 +49,43 @@ public class ClientHandler extends AbstractClient {
 		System.out.println("got message: " + severMessage);
 		String[] subjectArray;
 		ArrayList<String> list;
-		ArrayList<QuestionModel> questionList;
+		ArrayList<Question> questionList;
 
 		// TODO add a comment here
 		if (severMessage instanceof Integer) {
 			if ((Integer) severMessage == 1)
-				System.out.println("Update was successful");
+				System.out.println("Update was successful");	
 			else
 				System.out.println("Update wasnt so successful");
+		} 
+		
+		else if (severMessage instanceof ArrayList) {
+			
+			if (((ArrayList<?>) severMessage).get(0) instanceof Question) {
+				questionList = (ArrayList<Question>) severMessage;
+				ArrayList<QuestionModel> listToAdd = new ArrayList<>();
 
-		} else if (severMessage instanceof ArrayList) {
-			if (((ArrayList<?>) severMessage).get(0) instanceof QuestionModel) {
-				questionList = (ArrayList<QuestionModel>) severMessage;
-				// for (int i = 0 ; i<questionList.size() ; i++) {
+				for (int i = 0; i < questionList.size(); i++) {
+					listToAdd.add( new QuestionModel(
+							questionList.get(i).getId(), 
+							questionList.get(i).getSubject(),
+							questionList.get(i).getCoursename(),
+							questionList.get(i).getQuestiontext(), 
+							questionList.get(i).getQuestionnumber(),
+							questionList.get(i).getLecturer(),
+							questionList.get(i).getOptionA(),
+							questionList.get(i).getOptionB(),
+							questionList.get(i).getOptionC(),
+							questionList.get(i).getOptionD(),
+							questionList.get(i).getAnswer()));
+				}
 
-				// }
-				// sd
-				LecturerController.setQuestions(questionList);
+				LecturerController.setQuestions(listToAdd);
 			}
 
 			else {
 				list = ((ArrayList<String>) severMessage);
+
 				if (list.get(0).equals("lecturersubjects")) {
 					subjectArray = list.get(1).split(",");
 					for (String s : subjectArray) {
@@ -125,29 +103,38 @@ public class ClientHandler extends AbstractClient {
 
 		}
 
-		else if (severMessage.toString().equals("Not Found")) {
+		// Handles the error of user not found.
+		else if (severMessage.toString().equals("User Not Found")) {
 			System.err.println("Not Found in handler");
 			user.setIsFound(false);
 		}
 
-		else if (severMessage.toString().contains("allsubjects")) {
-			subjectArray = ((String) severMessage).toString().split(",");
-			for (int i = 1; i < subjectArray.length; i++)
-				LecturerController.subjectsList.add(subjectArray[i].toUpperCase());
+		// Handles the error the the question already exist with that id.
+		else if (severMessage.toString().contains("Question Exists")) {
+
+
+		}
+
+		// Handles the error of Not Found
+		else if (severMessage.toString().contains("Not Found")) {
+
+		}
+
+		// Handles the error of Id Exists
+		else if (severMessage.toString().contains("Id Exists")) {
+
 		}
 
 		else {
-			// ["str","asd"]
+			// Here we recieve the confirmation of the client login
 			subjectArray = ((String) severMessage).toString().split("\\s");
 			user.setUsername(subjectArray[0]);
 			user.setPassword(subjectArray[1]);
 			user.setType(subjectArray[2]);
-			// rest of the shit in the table
+			// rest of the stuff in the table
 			user.setIsFound(true);
 		}
 
-		// notify the client to wake him up to tell him that the handler is done
-		// client.notify();
 		System.out.println("--> messageFromServerHandled");
 	}
 
@@ -237,13 +224,10 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	/**
-	 * construct a query to edit question
-	 * UPDATE `projecton`.`questions` SET `questiontext` = 'sas', `questionnumber`
-	 * ='ass' WHERE (`id` = '01001');
-	 * 
-	 * @param newBody    question body
-	 * @param newQNumber question number
-	 * @param originalId question original ID
+	 * Method to create query to edit existing question
+	 * @param newBody
+	 * @param newQNumber
+	 * @param originalId
 	 */
 	public void EditQuestion(String newBody, String newQNumber, String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
@@ -279,12 +263,19 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	/**
+	 * Method that creates query for creating a question and 
+	 * Passes it to server.
+	 * @param Id
+	 * @param subject
+	 * @param Body
+	 * @param QNumber
+	 */
 	public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// Construct the INSERT query to create a new question
-		list.addAll(Arrays.asList("createquestion",
-				"INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
+		list.addAll(Arrays.asList("createquestion", "INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
 						+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername()
 						+ "');"));
 
@@ -295,26 +286,25 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	/**
+	 * Method that creates query for insering answers to database.
+	 * @param optionA
+	 * @param optionB
+	 * @param optionC
+	 * @param optionD
+	 * @param correctAnswer
+	 * @param subjectID
+	 */
 	public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer,
 			String subjectID) {
 		ArrayList<String> list = new ArrayList<String>();
 		// Construct the INSERT query to create a new answer
-		list.addAll(Arrays.asList("createanswers",
-				"INSERT INTO `projecton`.`answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
-						+ optionA + "', '" + optionB + "', '" + optionC + "', '" + optionD + "', '" + correctAnswer
-						+ "', '"
-						+ subjectID + "');"));
+		String query = "INSERT INTO `projecton`.`answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
+				+ optionA + "', '" + optionB + "', '" + optionC + "', '" + optionD + "', '" + correctAnswer + "', '"
+				+ subjectID + "');";
+		list.add("createanswers");
+		list.add(query);
 
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void sendTestToDatabase(String query) {
-		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList("Addtesttodata", query));
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
@@ -323,10 +313,25 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	/**
-	 * 
+	 * Method for sending the test to the data base.
+	 * @param query 
+	 */
+	public void sendTestToDatabase(String query) {
+		ArrayList<String> listToSend = new ArrayList<String>();
+		listToSend.add("Addtesttodata");
+		listToSend.add(query);
+		try {
+			sendToServer((Object) listToSend);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * create a new arraylist subject, add an identifier "getSubjectID" so the
 	 * Echoserver idenrtifies it,
 	 * the second cell should contain 'subjectname' for the server to parse
+	 * @param subjectname the subject to whom the search is for.
 	 */
 	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
 		ArrayList<String> list = new ArrayList<String>();
@@ -338,6 +343,38 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	////////////////////////////////////////////////////////////
+	/////////////////////// CLIENT NATIVE /////////////////////
+	//////////////////////////////////////////////////////////
+
+	/**
+	 * This method overrites super method that handles what happans when connection
+	 * is closed
+	 * with the server.
+	 */
+	protected void connectionClosed() {
+		System.out.println("Connection Lost, press login to regain connection.");
+	}
+
+	/**
+	 * This method terminates the client.
+	 */
+	public void quit() {
+		try {
+			sendToServer((Object) this.getInetAddress());
+			closeConnection();
+		} catch (IOException e) {
+		}
+		// System.exit(0);
+	}
+
+	// clear client data
+	public static void resetClientData() {
+		user = new User();
+		LecturerController.subjectsList = new ArrayList<String>();
+		LecturerController.questions = new ArrayList<QuestionModel>();
 	}
 
 }

@@ -8,13 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import logic.ClientModel;
-import logic.QuestionModel;
+import logic.Question;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import serverUI.ServerUI;
@@ -38,6 +34,11 @@ public class EchoServer extends AbstractServer {
 	// The default port to listen on.
 	final public static int DEFAULT_PORT = 5555;
 
+	// Errors Strings
+	private String userNotFound = "User Not Found";
+	private String idExists = "Id Exists";
+	private String notFound = "Not Found";
+
 	// Instance of the server
 	private static EchoServer serverInstance;
 
@@ -49,9 +50,6 @@ public class EchoServer extends AbstractServer {
 	////////////////// SERVER CONFIGURATION METHODS ////////////////
 	///////////////////////////////////////////////////////////////
 
-	/**
-	 * The default port to listen on.
-	 */
 
 	// Constructors ****************************************************
 
@@ -81,14 +79,6 @@ public class EchoServer extends AbstractServer {
 	 */
 	public static void main(String[] args) {
 
-		int port; // Port to listen on
-
-		try {
-			port = Integer.parseInt(args[0]); // Get port from command line
-		} catch (Throwable t) {
-			port = DEFAULT_PORT; // Set port to 5555
-		}
-
 		serverInstance = getServerInstance();
 
 		try {
@@ -103,19 +93,192 @@ public class EchoServer extends AbstractServer {
 	 * called when a client has disconnected. Removes the client from client list
 	 * table in UI.
 	 */
-	@Override
-	synchronized protected void clientDisconnected(ConnectionToClient client) {
-		ServerUI.sController.RemoveFromTable(client);
+	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
+
+		// lastMessageTimes.put(client, System.currentTimeMillis());
+
+		System.out.println("Message received: " + msg + " from " + client);
+
+
+		try {
+			switch (msg.getClass().getSimpleName()) {
+
+				// if gets InetAddress then it means hes finished
+				case "Inet4Address":
+					clientDisconnected(client);
+					break;
+				case "ArrayList":
+					ArrayList<String> list = (ArrayList<String>) msg;
+					switch (list.get(0)) {
+						case "getSubjectID":
+							// send query to be executed along with the identifier
+							ArrayList<String> resultList = getDataFromDB(list.get(1), "getSubjectID");
+							// result list should have arraylist = {identifier, subjectId}
+							// if we got no results: send notFound signal
+							if (resultList == null)
+								client.sendToClient((Object) notFound);
+							// else return the subjectID result we got from the query
+							else
+								client.sendToClient(resultList);
+							break;
+
+						case "createquestion":
+						case "createanswers":
+						case "editquestion":
+						case "Addtesttodata":
+							int flag = executeMyQuery(list.get(1));
+							client.sendToClient(flag == 0 ? idExists : flag);
+							break;
+
+						case "lecturersubjects":
+							ArrayList<String> resStringList = getDataFromDB(list.get(1), "lecturersubjects");
+							client.sendToClient(resStringList == null ? (Object) notFound : (Object) resStringList);
+							break;
+
+						case "lecturerquestions":
+							ArrayList<Question> resQuestionList = getQuestionsFromDBForLecturer(list.get(1));
+							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
+							break;
+
+						case "testGrades":
+							ArrayList<String> resList = TestGrades_PassedGrades(list.get(1), 1);
+							client.sendToClient(resList == null ? (Object) notFound : (Object) resList);
+							System.out.println("Server: TestGrades_PassedGrades --> " + resList.toArray());
+							break;
+
+						// default is user login
+						default:
+							// user login authentication
+							loginVarification(list, client);
+							break;
+					}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+	}
+
+	// User Login Varification
+	private void loginVarification(ArrayList<String> list, ConnectionToClient client) {
+		try {
+
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(list.get(0));
+			if (result.next()) {
+				// check if the password in the DB is the same as user input
+				if (result.getString(2).equals(list.get(2))) {
+					String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
+					System.out.println("Message sent back: " + res);
+					client.sendToClient((Object) res);
+				}
+			} else {
+				// The user is not in the database (not registered)
+				// or incorrect password
+				System.out.println("user has not been found!");
+				client.sendToClient((Object) userNotFound);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 
 	/**
-	 * This method overrides the one in the superclass. Called when the server stops
-	 * listening for connections.
+	 * Method for executing Update queries .
+	 * 
+	 * @param query the query to execute.
+	 * @return returns how many rows affected , 0 upon failure.
 	 */
-	protected void serverStopped() {
-		System.out.println("Server has stopped listening for connections.");
+	private int executeMyQuery(String query) {
+		try {
+			stmt = conn.createStatement();
+			int res = stmt.executeUpdate(query);
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
+	// gets Questions from db
+	private ArrayList<Question> getQuestionsFromDBForLecturer(String query) {
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			ArrayList<Question> res = new ArrayList<Question>();
+
+			while (result.next()) {
+				// while threres Questions in result , adding them into result array
+				Question q = new Question(
+						result.getString(1),
+						result.getString(2), 
+						result.getString(3),
+						result.getString(4), 
+						result.getString(5),
+						result.getString(6) );
+
+				Statement answerstmt = conn.createStatement();
+				ResultSet answers = answerstmt.executeQuery(
+						"SELECT optionA,optionB,optionC,optionD,correctAnswer FROM `projecton`.`answers` WHERE (`questionid` = '"
+								+ q.getId() + "');");
+				while (answers.next()) {
+					q.setOptionA(answers.getString(1));
+					q.setOptionB(answers.getString(2));
+					q.setOptionC(answers.getString(3));
+					q.setOptionD(answers.getString(4));
+					q.setAnswer(answers.getString(5));
+				}
+				answers.close();
+				res.add(q);
+			}
+			System.out.println("Message sent back: " + res);
+			if (res.size() == 0)
+				return null;
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Method to get data from database.
+	 * 
+	 * @param query
+	 * @param out   the out String , first in the list.
+	 * @return
+	 * @throws SQLException
+	 */
+	private ArrayList<String> getDataFromDB(String query, String out) {
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			ArrayList<String> res = new ArrayList<String>();
+			res.add(out);
+			if (result.next()) {
+				res.add(result.getString(1));
+				System.out.println("Message sent back: " + res);
+				return res;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * Method to start the server connection with MySQL WorkBench.
+	 * 
+	 * @param DBname
+	 * @param username
+	 * @param Password
+	 */
 	public static void startServer(String DBname, String username, String Password) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
@@ -162,6 +325,16 @@ public class EchoServer extends AbstractServer {
 		// startTimerTask();
 	}
 
+	/**
+	 * This method overrites the method from AbstractServer where this method is
+	 * called when a client has disconnected. Removes the client from client list
+	 * table in UI.
+	 */
+	@Override
+	synchronized protected void clientDisconnected(ConnectionToClient client) {
+		ServerUI.sController.RemoveFromTable(client);
+	}
+
 	/*
 	 * private void startTimerTask() {
 	 * timer.schedule(new TimerTask() {
@@ -187,206 +360,9 @@ public class EchoServer extends AbstractServer {
 	 * }
 	 */
 
-	/////////////////////////////////////////////////////////////////
-	///////////////////////////// METHODS //////////////////////////
-	///////////////////////////////////////////////////////////////
-
-	/**
-	 * This method handles any messages received from the client.
-	 *
-	 * @param msg    The message received from the client.
-	 * @param client The connection from which the message originated.
-	 */
-	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-
-		// lastMessageTimes.put(client, System.currentTimeMillis());
-
-		System.out.println("Message received: " + msg + " from " + client);
-		ResultSet result;
-		String res;
-
-		switch (msg.getClass().getSimpleName()) {
-			case "InetAddress": // if gets InetAddress then it means hes finished
-				clientDisconnected(client);
-				break;
-			case "ArrayList":
-				ArrayList<String> list = (ArrayList<String>) msg;
-
-				switch (list.get(0)) {
-
-					case "getSubjectID":
-						try {
-							stmt = conn.createStatement();
-							ResultSet queryResult = stmt.executeQuery(list.get(1));
-							if (queryResult.next())
-								list.add(queryResult.getString(1));// send column 1 of the result
-							client.sendToClient(list);
-
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						break;
-
-					case "createquestion":
-					case "createanswers":
-					case "editQuestion":
-					case "Addtesttodata":
-
-						try {
-							int flag = executeMyQuery(list.get(1));
-							client.sendToClient(flag == 0 ? "Not Found" : flag);
-
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						}
-						break;
-
-					case "lecturersubjects":
-
-						try {
-							ArrayList<String> resList = getSubjectsFromDB_Lecturer(list.get(1), "lecturersubjects");
-							client.sendToClient(resList == null ? (Object) "Not Found" : (Object) resList);
-							System.out.println("Server: getSubjectsFromDB_Lecturer --> " + resList.toArray());
-
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						} catch (IOException e2) {
-							e2.printStackTrace();
-						}
-						break;
-
-					case "lecturerquestions":
-
-						try {
-							ArrayList<QuestionModel> resList = getQuestionsFromDB_Lecturer(list.get(1));
-							client.sendToClient(resList == null ? (Object) "Not Found" : (Object) resList);
-							System.out.println("Server: getQuestionsFromDB_Lecturer --> " + resList.toArray());
-
-						} catch (SQLException e) {
-							e.printStackTrace();
-						} catch (IOException eq) {
-							eq.printStackTrace();
-						}
-						break;
-
-					case "testGrades":
-
-						try {
-							ArrayList<String> resList = TestGrades_PassedGrades(list.get(1), 1);
-							client.sendToClient(resList == null ? (Object) "Not Found" : (Object) resList);
-							System.out.println("Server: TestGrades_PassedGrades --> " + resList.toArray());
-
-						} catch (SQLException e) {
-							e.printStackTrace();
-						} catch (IOException eq) {
-							eq.printStackTrace();
-						}
-						break;
-
-					default: // default is user login
-						try {
-							// user login authentication
-							stmt = conn.createStatement();
-							result = stmt.executeQuery(list.get(0));
-							if (result.next()) {
-								// check if the password in the DB is the same as user input
-								if (result.getString(2).equals(list.get(2))) {
-									res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
-									System.out.println("Message sent back: " + res);
-									client.sendToClient((Object) res);
-								}
-							} else {
-								// The user is not in the database (not registered)
-								// or incorrect password
-								System.out.println("user has not been found!");
-								client.sendToClient((Object) "Not Found");
-							}
-						} catch (SQLException e) {
-							e.printStackTrace();
-						} catch (IOException ioe) {
-							ioe.printStackTrace();
-						}
-						break;
-				}
-				break;
-
-			case "String":
-
-				String query = (String) msg;
-				res = "allsubjects,";
-				boolean hasFound = false;
-				try {
-					stmt = conn.createStatement();
-					result = stmt.executeQuery(query);
-					while (result.next()) {
-						hasFound = true;
-						res += result.getString(1) + ",";
-					}
-					if (!hasFound) {
-						client.sendToClient((Object) "Not Found");
-					}
-					System.out.println("Sent back: " + res);
-					client.sendToClient((Object) res);
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				break;
-
-			default:
-				try {
-					System.out.println("Server: unknown message type");
-					client.sendToClient(msg);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				break;
-		}
-
-	}
-
-	// Funtion for executing queries, return number of rows affected.
-	private int executeMyQuery(String query) throws SQLException {
-		stmt = conn.createStatement();
-		return stmt.executeUpdate(query);
-	}
-	// gets Questions from db
-
-	private ArrayList<QuestionModel> getQuestionsFromDB_Lecturer(String query) throws SQLException {
-		stmt = conn.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		ArrayList<QuestionModel> res = new ArrayList<QuestionModel>();
-		while (result.next()) {
-			// while threres Questions in result , adding them into result array
-			QuestionModel q = new QuestionModel(result.getString(1), result.getString(2), result.getString(3),
-					result.getString(4), result.getString(5), result.getString(6));
-			res.add(q);
-		}
-		System.out.println("Message sent back: " + res);
-		if (res.size() == 0)
-			return null;
-		return res;
-	}
-
-	// gets subjects from db
-	private ArrayList<String> getSubjectsFromDB_Lecturer(String query, String out) throws SQLException {
-		stmt = conn.createStatement();
-		ResultSet result = stmt.executeQuery(query);
-		ArrayList<String> res = new ArrayList<String>();
-		res.add(out);
-		if (result.next()) {
-			// check if the password in the DB is the same as user input
-			res.add(result.getString(1));
-			System.out.println("Message sent back: " + res);
-			return res;
-		} else {
-			return null;
-		}
-	}
-
+	  
+	 
+	// TODO see if piechart is needed
 	// query_passed: select passed students
 	// grade_index - position of the grade field
 	private ArrayList<String> TestGrades_PassedGrades(String query_passed, int grade_index) throws SQLException {
@@ -402,6 +378,7 @@ public class EchoServer extends AbstractServer {
 		return outputList;
 	}
 
+	/*
 	// query_failed: select failed students query
 	// grade_index - position of the grade field
 	private ArrayList<String> testGrades_failed_Query(String query_failed, int grade_index) throws SQLException {
@@ -415,6 +392,6 @@ public class EchoServer extends AbstractServer {
 			outputList.add(queryResult.getString(grade_index));
 		}
 		return outputList;
-	}
+	}*/
 
 }

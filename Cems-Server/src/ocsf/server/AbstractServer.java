@@ -4,6 +4,8 @@ import java.net.*;
 import java.util.*;
 import java.io.*;
 
+@SuppressWarnings("all")
+
 /**
 * @see ocsf.server.ConnectionToClient
 */

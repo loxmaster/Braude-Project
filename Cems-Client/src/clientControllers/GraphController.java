@@ -4,6 +4,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
@@ -32,7 +33,8 @@ public class GraphController extends BasicController{
 
     @FXML
     void backtoStatistical(ActionEvent event) {
-
+        LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Lecturer - Statistical Information", event);
+		lsc.load();
     }
 
 	public void initialize_PieChart() {// pass data as argument (?)
@@ -52,43 +54,12 @@ public class GraphController extends BasicController{
 		
 	}
 
-	public void initialize_BarChart() {// pass data as argument (?)
+    // TODO pass data as argument 
+	public void initialize_BarChart(String testID) {
 
-		/*CategoryAxis xAxis = new CategoryAxis();
-        
-        // Create a NumberAxis for the y-axis
-        NumberAxis yAxis = new NumberAxis();
-        
-        // Create a BarChart with String as the x-axis type and Number as the y-axis type
-        barchart = new BarChart<>(xAxis, yAxis);
-		barchart.setTitle("Example Bar Chart");
-		
-		ObservableList<XYChart.Data<String, Number>> data = FXCollections.observableArrayList(
-                new XYChart.Data<>("Entry 1", 10),
-                new XYChart.Data<>("Entry 2", 20),
-                new XYChart.Data<>("Entry 3", 15),
-                new XYChart.Data<>("Entry 4", 5),
-                new XYChart.Data<>("Entry 5", 30),
-                new XYChart.Data<>("Entry 6", 25),
-                new XYChart.Data<>("Entry 7", 12),
-                new XYChart.Data<>("Entry 8", 18),
-                new XYChart.Data<>("Entry 9", 22),
-                new XYChart.Data<>("Entry 10", 8)
-        );
-
-		XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setData(data);
-        
-        // Add the series to the bar chart
-        barchart.getData().add(series);
-
-        
-		System.out.println(1);
-
-		*/
         XYChart.Series series1 = new XYChart.Series<>();
 
-		series1.setName("Test ID - 020302");
+		series1.setName("Test ID - " + testID);
 		series1.getData().add(new XYChart.Data("0-50", 46));
 		series1.getData().add(new XYChart.Data("55-59", 17));
 		series1.getData().add(new XYChart.Data("60-70", 46));

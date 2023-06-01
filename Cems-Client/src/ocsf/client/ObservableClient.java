@@ -8,6 +8,8 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 
+@SuppressWarnings("all")
+
 /**
  * This class acts as a subclass of <code>AbstractClient</code>
  * and is also an <code>Observable</code> class.

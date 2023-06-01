@@ -19,26 +19,28 @@ import javafx.scene.layout.VBox;
 import logic.QuestionModel;
 import logic.Test;
 
-
 public class CreateTestController extends BasicController {
 
 	private Test test = new Test();
 
 	@FXML
 	private CheckBox A, B, C, D;
+	
+	@FXML
+    private TextField qID;
 
 	@FXML
-	private TextField optionA, optionB, optionC, optionD;
+	private TextArea OptionA, OptionB, OptionC, OptionD;
 
 	@FXML
 	private TextArea qBody;
 
 	@FXML
-    private TextField code, duration, startTime, totalPoints;
+	private TextField code, duration, startTime, totalPoints;
 
-    @FXML
-    private DatePicker date;
-	
+	@FXML
+	private DatePicker date;
+
 	@FXML
 	private VBox questionTracker;
 
@@ -51,18 +53,19 @@ public class CreateTestController extends BasicController {
 	@FXML
 	private Button savebutton;
 
-    @FXML
-    private ComboBox<String> subjectComboBox;
+	@FXML
+	private ComboBox<String> subjectComboBox;
 
 	public void load() {
 		ObservableList<String> subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
 		subjectComboBox.getItems().removeAll();
 		subjectComboBox.setItems(subjectList);
+
 	}
 
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
-		
+
 		test.setAuthor(ClientHandler.user.getpName());
 		test.setSubject(subjectComboBox.getValue());
 		test.setTestCode(code.getText());
@@ -72,7 +75,7 @@ public class CreateTestController extends BasicController {
 		System.out.println(date.getValue());
 
 		test.setDuration(duration.getText());
-		//test.setId(null);
+		// test.setId(null);
 
 		// Gets all the questions from DataBase
 		LecturerController.setQuestions(new ArrayList<QuestionModel>());
@@ -80,18 +83,18 @@ public class CreateTestController extends BasicController {
 		ClientUI.chat.GetLecturersQuestions(ClientHandler.user.getUsername());
 
 		// Opens the Question DataBase
-		DBQController dbq = (DBQController) openScreen("/clientFXMLS/LecturerDBQ.fxml", "CEMS System - Lecturer - Create Test - Question Data Base", event);
+		DBQController dbq = (DBQController) openScreen("/clientFXMLS/LecturerDBQ.fxml",
+				"CEMS System - Lecturer - Create Test - Question Data Base", event);
 		dbq.load(test);
 	}
 
 	/**
 	 * Method to set the test we were working on when returning to this screen.
-	 */ 
+	 */
 	public void setTest(Test test) {
 		this.test = test;
 
-		
-		//test.getAuthor(ClientHandler.user.getpName());
+		test.setAuthor(ClientHandler.user.getUsername());
 		// loads the subjects in the subjects combobox
 		load();
 		subjectComboBox.setValue(test.getSubject());
@@ -101,7 +104,7 @@ public class CreateTestController extends BasicController {
 		date.setValue(test.getDate().getValue());
 
 		ArrayList<QuestionModel> tempQuestionList = test.getQuesitonsInTest();
-		int index=1;
+		int index = 1;
 		for (QuestionModel question : tempQuestionList) {
 			questionTracker.getChildren().add(createQuestionInTestButton(question, index));
 			index++;
@@ -109,34 +112,59 @@ public class CreateTestController extends BasicController {
 	}
 
 	private Button createQuestionInTestButton(QuestionModel question, int index) {
-        Button questionInTestButton = new Button("Q: " + index);
+		Button questionInTestButton = new Button("Q: " + index);
 
-        questionInTestButton.setOnAction(new EventHandler<ActionEvent>() {
+		questionInTestButton.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event) {
+			@Override
+			public void handle(ActionEvent event) {
+
 				qBody.setText(question.getQuestiontext());
-                //optionA.setText(null);
-				//optionB.setText(null);
-				//optionC.setText(null);
-				//optionD.setText(null);
-                
-            }
-        });
+				qBody.setWrapText(true);
+				OptionA.setText(question.getOptionA());
+				OptionB.setText(question.getOptionB());
+				OptionC.setText(question.getOptionC());
+				OptionD.setText(question.getOptionD());
+				qID.setText(question.getId());
 
-        //questionInTestButton.setId("questionbutton");
-        questionInTestButton.setPrefWidth(60);
-        questionInTestButton.setPrefHeight(20);
+				A.setSelected(false);
+				B.setSelected(false);
+				C.setSelected(false);
+				D.setSelected(false);
+
+				switch (question.getAnswer()) {
+					case "a":
+						A.setSelected(true);
+						break;
+					case "b":
+						B.setSelected(true);
+						break;
+					case "c":
+						C.setSelected(true);
+						break;
+					case "d":
+						D.setSelected(true);
+						break;
+
+				}
+
+			}
+		});
+
+		// questionInTestButton.setId("questionbutton");
+		questionInTestButton.setPrefWidth(70);
+		questionInTestButton.setPrefHeight(10);
+		//questionInTestButton.setPadding(new Insets(20, 0, 20, 0));
 		question.setEdit(questionInTestButton);
 		return questionInTestButton;
-    }
+	}
 
 	@FXML
 	void helpPressed(ActionEvent event) {
 
 	}
 
-	// INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('sd', 'sd', 'sd', 'sd', 'sd', 'sd', 'sd', 'sd');
+
 	@FXML
 	void savePressed(ActionEvent event) {
 		test.setAuthor(ClientHandler.user.getpName());
@@ -145,7 +173,7 @@ public class CreateTestController extends BasicController {
 		test.setTime(startTime.getText());
 		test.setDate(date);
 		test.setDuration(duration.getText());
-		//test.setId(null);
+		// TODO test.setId();
 
 		ClientUI.chat.sendTestToDatabase(test);
 

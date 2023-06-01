@@ -1,8 +1,11 @@
 package ocsf.client;
 
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
+
+@SuppressWarnings("unused")
 
 /**
 * The AbstractClient contains all the
