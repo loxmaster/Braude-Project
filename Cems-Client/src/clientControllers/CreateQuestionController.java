@@ -11,9 +11,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.RadioButton;
+
 
 public class CreateQuestionController extends BasicController {
 	// TODO noah: check if this works lul
@@ -21,7 +23,7 @@ public class CreateQuestionController extends BasicController {
 
 
 	@FXML
-	private CheckBox A, B, C, D;
+	private RadioButton A, B, C, D;
 
 	@FXML
     private ToggleGroup CorectAnswer;
