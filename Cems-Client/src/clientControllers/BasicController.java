@@ -24,7 +24,7 @@ public class BasicController {
 	 * @param fxml fxml path
 	 * @param title title of the screen
 	 * @param event the triger event
-	 */ 
+	**/ 
 	public BasicController openScreen(String fxml, String title ,ActionEvent event) {
 		if(event != null){
 			((Node) event.getSource()).getScene().getWindow().hide();

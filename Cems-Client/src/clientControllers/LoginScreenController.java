@@ -32,13 +32,13 @@ public class LoginScreenController extends BasicController {
 
 	@FXML
 	void pressedLogin(ActionEvent event) throws IOException {
-		
+
 		// Opens connection if closed
 		ClientUI.chat.openConnection();
 
-		// gest text from fields
-		//username = emailTextbox.getText();
-		// // password = passTextbox.getText();
+		// gets text from fields
+		// username = emailTextbox.getText();
+		// password = passTextbox.getText();
 		// emailTextbox.setText("noah");
 		// passTextbox.setText("123456");
 		username = "noah";
@@ -57,9 +57,10 @@ public class LoginScreenController extends BasicController {
 				try {
 					Thread.sleep(250);
 					cap--;
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+				}
 			}
-			
+
 			if (!ClientHandler.user.getIsFound()) {
 				setVisibleFalse();
 				System.out.println("user not found! (loginscreencontroller)");
@@ -67,28 +68,24 @@ public class LoginScreenController extends BasicController {
 				// if found loading the corresponding screen
 				switch (ClientHandler.user.getType()) {
 					case "student": {
-            			StudentScreenController ssc = (StudentScreenController) openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student", event);
-						ssc.loadStudent(ClientHandler.user);
-						System.out.println("Opening Student screen...");
+						studentLogin(event);
 						break;
 					}
 
 					case "lecturer": {
-            			LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
-						lc.loadLecturer(ClientHandler.user);
-						System.out.println("Opening Lecturer screen...");
+						lecturerLogin(event);
 						break;
 					}
 
 					case "hod": {
-            			HODController hoc = (HODController) openScreen("/clientFXMLS/HOD.fxml", "CEMS System - Head Of The Department", event);
-						hoc.loadHOD(ClientHandler.user);
+						hodLogin(event);
 						break;
 					}
 
 					// If the type isnt ok
 					default: {
-						JOptionPane.showMessageDialog(null, "Something wrong with database !", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Something wrong with database !", "Error",
+								JOptionPane.ERROR_MESSAGE);
 					}
 
 				}
@@ -97,11 +94,35 @@ public class LoginScreenController extends BasicController {
 		}
 	}
 
+	private void studentLogin(ActionEvent event) {
+		StudentScreenController ssc = (StudentScreenController) openScreen("/clientFXMLS/StudentScreen.fxml",
+				"CEMS System - Student", event);
+		ssc.loadStudent(ClientHandler.user);
+		System.out.println("Opening Student screen...");
+
+	}
+
+	private void lecturerLogin(ActionEvent event) {
+		LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer",
+				event);
+		lc.loadLecturer(ClientHandler.user);
+		System.out.println("Opening Lecturer screen...");
+
+	}
+
+	private void hodLogin(ActionEvent event) {
+		HODController hoc = (HODController) openScreen("/clientFXMLS/HOD.fxml", "CEMS System - Head Of The Department",
+				event);
+		hoc.loadHOD(ClientHandler.user);
+		System.out.println("Opening Head Of Department screen...");
+
+	}
+
 	void setVisibleFalse() {
 		wrongLabel.setVisible(true);
 	}
 
 	public void start(Stage stage) throws IOException {
-		openScreen("/clientFXMLS/LoginScreen.fxml", "CEMS - Login", null) ;
+		openScreen("/clientFXMLS/LoginScreen.fxml", "CEMS - Login", null);
 	}
 }
