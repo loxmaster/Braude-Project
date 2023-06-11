@@ -7,15 +7,26 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 public class Statistics extends BasicController {
-    private String Average, Course, Date, Median, TestID;
+    private String Average, Course, Date, Median, TestID, Grade;
+
+
     private Button distribution;
 
     public Statistics(String average, String course, String date, String median, String testID) {
-        Average = average;
-        Course = course;
-        Date = date;
-        Median = median;
-        TestID = testID;
+        this.Average = average;
+        this.Course = course;
+        this.Date = date;
+        this.Median = median;
+        this.TestID = testID;
+    }
+
+    public Statistics(String average, String course, String date, String median, String testID, String Grade) {
+        this.Average = average;
+        this.Course = course;
+        this.Date = date;
+        this.Median = median;
+        this.TestID = testID;
+        this.Grade = Grade;
     }
 
     public String getAverage() {
@@ -54,7 +65,7 @@ public class Statistics extends BasicController {
     }
 
     public void setCourse(String course) {
-        Course = course;
+        this.Course = course;
     }
 
     public String getDate() {
@@ -62,7 +73,7 @@ public class Statistics extends BasicController {
     }
 
     public void setDate(String date) {
-        Date = date;
+       this. Date = date;
     }
 
     public String getMedian() {
@@ -70,7 +81,7 @@ public class Statistics extends BasicController {
     }
 
     public void setMedian(String median) {
-        Median = median;
+        this.Median = median;
     }
 
     public String getTestID() {
@@ -78,7 +89,14 @@ public class Statistics extends BasicController {
     }
 
     public void setTestID(String testID) {
-        TestID = testID;
+        this.TestID = testID;
+    }
+    public String getGrade() {
+        return Grade;
+    }
+
+    public void setGrade(String grade) {
+        Grade = grade;
     }
 
 }

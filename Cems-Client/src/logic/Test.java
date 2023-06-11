@@ -10,6 +10,31 @@ public class Test {
     private String duration, TestComments, testCode;
     private String time, dateString;
     private DatePicker date;
+    private String StudentsName,StudentID,Grade;
+
+    public String getGrade() {
+        return Grade;
+    }
+
+    public void setGrade(String grade) {
+        Grade = grade;
+    }
+
+    public String getStudentID() {
+        return StudentID;
+    }
+
+    public void setStudentID(String studentID) {
+        StudentID = studentID;
+    }
+
+    public String getStudentsName() {
+        return StudentsName;
+    }
+
+    public void setStudentsName(String studentsName) {
+        StudentsName = studentsName;
+    }
 
     public Test() {
         id = new String();
@@ -21,6 +46,14 @@ public class Test {
         time = new String();
         dateString = new String();
         quesitonsInTest = new ArrayList<QuestionModel>();
+    }
+
+    public Test(String id,String subject,String StudentsName,String StudentID,String Grade) {
+        this.id = id;
+        this.subject = subject;
+        this.StudentsName = StudentsName;
+        this.StudentID = StudentID;
+        this.Grade = Grade;
     }
 
     public Test(String id, String subject, String author, String duration, String testComments, String testCode,

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="270.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TestCardController">
+   <children>
+      <Label layoutX="228.0" layoutY="14.0" text="code course:" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="5.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="107.0" layoutY="48.0" prefHeight="23.0" prefWidth="62.0" text="name:" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="50.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="85.0" prefHeight="23.0" prefWidth="62.0" text="grade:" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="90.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Text fx:id="code_Exam" layoutX="117.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="7.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="test_name" layoutX="78.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="test name" AnchorPane.leftAnchor="78.0" AnchorPane.rightAnchor="108.904296875" AnchorPane.topAnchor="52.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="grade" layoutX="78.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="not graded" AnchorPane.leftAnchor="78.0" AnchorPane.rightAnchor="100.359375" AnchorPane.topAnchor="92.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>
