@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -26,7 +28,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="120.0" layoutY="184.0" prefHeight="30.0" prefWidth="95.0" text="Subject:" textAlignment="CENTER" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="150.0">
+      <Label layoutX="120.0" layoutY="184.0" prefHeight="30.0" prefWidth="80.0" text="Subject:" textAlignment="CENTER" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="150.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
@@ -40,52 +42,12 @@
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Text>
-      <Text layoutX="30.0" layoutY="500.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" textAlignment="CENTER" AnchorPane.bottomAnchor="215.0" AnchorPane.leftAnchor="70.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="24.0" />
-         </font>
-      </Text>
-      <Text layoutX="31.0" layoutY="548.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" textAlignment="CENTER" AnchorPane.bottomAnchor="165.0" AnchorPane.leftAnchor="70.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="24.0" />
-         </font>
-      </Text>
-      <Text layoutX="30.0" layoutY="600.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C" AnchorPane.bottomAnchor="115.984375" AnchorPane.leftAnchor="70.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="24.0" />
-         </font>
-      </Text>
-      <Text layoutX="30.0" layoutY="652.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="70.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="24.0" />
-         </font>
-      </Text>
-      <CheckBox fx:id="D" layoutX="110.0" layoutY="629.0" mnemonicParsing="false">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </CheckBox>
-      <CheckBox fx:id="C" layoutX="110.0" layoutY="579.0" mnemonicParsing="false">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </CheckBox>
-      <CheckBox fx:id="B" layoutX="110.0" layoutY="529.0" mnemonicParsing="false">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </CheckBox>
-      <CheckBox fx:id="A" layoutX="110.0" layoutY="479.0" mnemonicParsing="false">
-         <font>
-            <Font size="16.0" />
-         </font>
-      </CheckBox>
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="200.0" layoutY="128.0" prefHeight="41.0" prefWidth="240.0" text="Create Question" textAlignment="CENTER" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="128.0">
          <font>
             <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
-      <ComboBox fx:id="subjectCombobox" layoutX="268.0" layoutY="182.0" prefHeight="30.0" prefWidth="244.0" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="825.0" />
+      <ComboBox fx:id="subjectCombobox" layoutX="234.0" layoutY="210.0" prefHeight="30.0" prefWidth="200.0" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="234.0" />
       <Label layoutX="609.0" layoutY="178.0" prefHeight="30.0" prefWidth="190.0" text="Question Number:" AnchorPane.bottomAnchor="480.0" AnchorPane.rightAnchor="150.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
@@ -115,5 +77,38 @@
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </TextField>
+      <Label layoutX="478.0" layoutY="210.0" prefHeight="30.0" prefWidth="95.0" text="Courses:" textAlignment="CENTER" AnchorPane.bottomAnchor="480.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="24.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="coursesCombobox" layoutX="573.0" layoutY="210.0" prefHeight="30.0" prefWidth="200.0" AnchorPane.bottomAnchor="480.0" />
+      <VBox layoutX="76.0" layoutY="478.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="185.0" prefWidth="71.0" spacing="18.0">
+         <children>
+            <RadioButton fx:id="A" mnemonicParsing="false" text="A">
+               <toggleGroup>
+                  <ToggleGroup fx:id="CorectAnswer" />
+               </toggleGroup>
+               <font>
+                  <Font name="Calibri Bold Italic" size="24.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="B" mnemonicParsing="false" text="B" toggleGroup="$CorectAnswer">
+               <font>
+                  <Font name="Calibri Bold Italic" size="24.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="C" mnemonicParsing="false" text="C" toggleGroup="$CorectAnswer">
+               <font>
+                  <Font name="Calibri Bold Italic" size="24.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="D" mnemonicParsing="false" text="D" toggleGroup="$CorectAnswer">
+               <font>
+                  <Font name="Calibri Bold Italic" size="24.0" />
+               </font>
+            </RadioButton>
+         </children>
+      </VBox>
 </children>
 </AnchorPane>

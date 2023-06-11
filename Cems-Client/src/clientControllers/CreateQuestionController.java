@@ -11,28 +11,34 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.RadioButton;
+
 
 public class CreateQuestionController extends BasicController {
 	// TODO noah: check if this works lul
 	public static String subjectID;
 
-	@FXML
-	private TextField qNumber;
 
 	@FXML
-	private CheckBox A, B, C, D;
+	private RadioButton A, B, C, D;
+
+	@FXML
+    private ToggleGroup CorectAnswer;
 
 	@FXML
 	private Button savebutton;
 
 	@FXML
-	private TextField body, qA, qB, qC, qD;
+	private TextField body, qA, qB, qC, qD,qNumber;
 
 	@FXML
 	private ComboBox<String> subjectCombobox;
+
+    @FXML
+    private ComboBox<String> coursesCombobox;
 
 	public static void setSubjectID(String subjectID) {
 		CreateQuestionController.subjectID = subjectID;
@@ -145,6 +151,7 @@ public class CreateQuestionController extends BasicController {
 					qC.getText(), qD.getText(), correctAnswer);
 			correctAnswer = null;
 			subjectCombobox.setValue("");
+			qNumber.setText("");
 			body.setText("");
 			qA.setText("");
 			qB.setText("");
