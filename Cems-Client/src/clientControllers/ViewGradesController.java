@@ -1,5 +1,6 @@
 package clientControllers;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,32 +37,36 @@ public class ViewGradesController extends BasicController {
         openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student", event);
     }
 
-    @FXML
-    void ExamLoad(){
-        Exams = new ArrayList<>(Examstoadd());
-        int column=0;
-        int row=1;
+@FXML
+void ExamLoad() {
+    Exams = new ArrayList<>(Examstoadd());
+    int column=0;
+    int row=1;
     try {
         for(Test test : Exams){
-           FXMLLoader fxmlLoader = new FXMLLoader();
-           AnchorPane testcard = fxmlLoader.load(getClass().getResource("/clientFXMLS/StudentTestCard.fxml").openStream()); 
-           TestCardController cardController = fxmlLoader.getController();
-           cardController.setCard(test);
-           if(column == 4)
-           {
-            column = 0;
-            ++row;
-           }
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            URL url = getClass().getResource("/clientFXMLS/StudentTestCard.fxml");
+            if(url == null) {
+                System.out.println("Resource not found. Exiting...");
+                return;
+            }
+            AnchorPane testcard = fxmlLoader.load(url.openStream()); 
+            TestCardController cardController = fxmlLoader.getController();
+            cardController.setCard(test);
+            if(column == 4) {
+                column = 0;
+                ++row;
+            }
 
-           ExamContainer.add(testcard, column++, row);
-           GridPane.setMargin(testcard, new Insets(10));
-           
+            ExamContainer.add(testcard, column++, row);
+            GridPane.setMargin(testcard, new Insets(10));
         }
     } catch (Exception e) {
+        System.out.println("An error occurred:");
         e.printStackTrace();
     }
+}
 
-    }
 
     private List<Test> Examstoadd(){
         List<Test> ls = new ArrayList<>();
