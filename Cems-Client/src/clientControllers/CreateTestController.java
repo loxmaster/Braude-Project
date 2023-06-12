@@ -20,7 +20,7 @@ import logic.QuestionModel;
 import logic.Test;
 
 public class CreateTestController extends BasicController {
-
+private int totalpointCounter;
 	private Test test = new Test();
 
 	@FXML
@@ -56,7 +56,8 @@ public class CreateTestController extends BasicController {
 	@FXML
 	private ComboBox<String> subjectComboBox;
 
-	public void load() {
+	//who is this?
+	public void loadsubjectsCombobox() {
 		ObservableList<String> subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
 		subjectComboBox.getItems().removeAll();
 		subjectComboBox.setItems(subjectList);
@@ -96,7 +97,7 @@ public class CreateTestController extends BasicController {
 
 		test.setAuthor(ClientHandler.user.getUsername());
 		// loads the subjects in the subjects combobox
-		load();
+		loadsubjectsCombobox();
 		subjectComboBox.setValue(test.getSubject());
 		code.setText(test.getTestCode());
 		startTime.setText(test.getTime());
@@ -106,8 +107,8 @@ public class CreateTestController extends BasicController {
 		ArrayList<QuestionModel> tempQuestionList = test.getQuesitonsInTest();
 		int index = 1;
 		for (QuestionModel question : tempQuestionList) {
-			questionTracker.getChildren().add(createQuestionInTestButton(question, index));
-			index++;
+			questionTracker.getChildren().add(createQuestionInTestButton(question, index++));
+			//index++;
 		}
 	}
 
@@ -164,7 +165,7 @@ public class CreateTestController extends BasicController {
 
 	}
 
-
+//save changes ; write to db changes
 	@FXML
 	void savePressed(ActionEvent event) {
 		test.setAuthor(ClientHandler.user.getpName());
