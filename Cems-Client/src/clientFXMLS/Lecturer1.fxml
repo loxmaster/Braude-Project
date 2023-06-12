@@ -72,7 +72,7 @@
          </cursor>
       </VBox>
       <ImageView fitHeight="102.0" fitWidth="223.0" layoutX="252.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="logo" layoutX="529.0" layoutY="11.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="logo" layoutX="529.0" layoutY="11.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>

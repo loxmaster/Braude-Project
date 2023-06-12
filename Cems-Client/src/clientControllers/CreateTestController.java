@@ -18,23 +18,24 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import logic.QuestionModel;
 import logic.Test;
 
 public class CreateTestController extends BasicController {
 
 
-	// ###################### Local Variables ##########################
+	// ############################### Local Variables #################################################################
 
 
 	private Test test = new Test();
 
 	private int pointsInTest = 0;
 
-	private ChangeListener<? super String> qPointsListener;
+	private ChangeListener<? super String> questionPointsListener; // Listener for points TextBox
 
 
-	// ###################### FXML Variables ###########################
+	// ############################### FXML Variables ###################################################################
 
 
 	@FXML
@@ -74,8 +75,26 @@ public class CreateTestController extends BasicController {
 	private ComboBox<String> subjectComboBox;
 
 
-	// ######################### FXML Methods ###########################
+	// ############################### FXML Methods #######################################################################
 
+
+	/**
+	 * Method handeling the pressing of 'Add Test Comments' button .
+	 * @param event
+	 */
+	@FXML
+    void editCommentsPressed(ActionEvent event) {
+		
+		// Opens the comment screen and waits for it too be closed. when closed
+		// get the comment using the controller that is returned.
+		//BasicController basicCtrl = new CreateTestController();
+		openPopupCommentScreen( "/clientFXMLS/TestComments.fxml" , "Add Comments", this, test.getTestComments());
+		
+		// Because we've sent this instance of CreateTestController as the parameter for the FXMLoader , 
+		// the 'comment' value changes accordingly here . (See the code at the end for refrence)
+		test.setTestComments(comment);
+		System.out.println("CreateTese: The Comments: " + comment);
+    }
 
 	/**
 	 * Method handeling the pressing of 'Add Questions' button .
@@ -137,10 +156,12 @@ public class CreateTestController extends BasicController {
 	}
 
 
-	//######################### Local Methods ##############################
+	// ############################### Local Methods ########################################################################
 
-/**
-	 * Hook method , called when this screen is opened.
+	/**
+	 * Hook method , called when this screen is opened and sets the subject
+	 * ComboBox . P.S. Since the subjectList is static we can access it and
+	 * no parameters needed when calling this function.
 	 */
 	public void load() {
 		
@@ -154,6 +175,7 @@ public class CreateTestController extends BasicController {
 
 	/**
 	 * Method to set the test we were working on when returning to this screen.
+	 * @param test the test to add. Of instance Test.
 	 */
 	public void setTest(Test test) {
 
@@ -182,9 +204,9 @@ public class CreateTestController extends BasicController {
 
 	/**
 	 * Method to create a question button in a VBox at the test screen.
-	 * @param question the QuestionModel where all the data
-	 * @param index	number of the question in the list
-	 * @return Button
+	 * @param question the QuestionModel where all the data.
+	 * @param index of the question in the list.
+	 * @return Button.
 	 */
 	private Button createQuestionInTestButton(QuestionModel question, int index) {
 		Button questionInTestButton = new Button("Q: " + index);
@@ -197,10 +219,10 @@ public class CreateTestController extends BasicController {
 
 				// Defining the total points field listener
 				// Removes the current listener
-				if (qPointsListener != null)
-					qPoints.textProperty().removeListener(qPointsListener); 
-				// Creates new listener for this question and puts it in qPointsListener
-				qPointsListener = new ChangeListener<String>() {
+				if (questionPointsListener != null)
+					qPoints.textProperty().removeListener(questionPointsListener); 
+				// Creates new listener for this question and puts it in questionPointsListener
+				questionPointsListener = new ChangeListener<String>() {
 					@Override
 					public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 						try {
@@ -216,7 +238,7 @@ public class CreateTestController extends BasicController {
 					}
 				};
 				// Inserts the Listener to the qPoints field
-				qPoints.textProperty().addListener(qPointsListener);
+				qPoints.textProperty().addListener(questionPointsListener);
 				
 				// Updates the view for the user
 				qBody.setText(question.getQuestiontext());
@@ -271,5 +293,64 @@ public class CreateTestController extends BasicController {
 			totalPoints += question.getPoints();
 		pointsInTest = totalPoints;
 	}
+
+	
+	// ############################### Controller for comment screen ########################################################
+	
+	/**
+	 * Since this controller is incharge of the comment screen also , this part will 
+	 * serve as implementation for his controller.
+	 */
+
+
+	// Local variable for comment in test.
+	private String comment;
+
+	// FXML variable for the text box.
+	@FXML
+    private TextArea commentsBox;
+
+	/**
+	 * Method for setting the comment. Should be Called from BasicController -> openPopupCommentScreen(...) 
+	 * after opening the screen to set the current existing comment in the test .
+	 * @param comment the comment to add. If null not added.
+	 */
+	public void setComments(String comment) {
+		this.comment = comment;
+		if(comment != null)
+			commentsBox.setText(comment);
+	}
+
+
+	/** TODO maybe for future refrence
+	 * Method returning the string that is in the comment TextBox. 
+	 * Called by the controller that opened this popup.
+	private String getComment() {
+		return comment;
+	}*/
+
+
+	/**
+	 * Method Handeling the pressing of 'Cancel' button in comment creen.
+	 * Closes the creen and returns to previous screen.
+	 * @param event
+	 */
+    @FXML
+    void cancelComments(ActionEvent event) {
+		Stage popupStage = (Stage) commentsBox.getScene().getWindow();
+    	popupStage.close();
+    }
+
+	/**
+	 * Method Handeling the pressing of 'Save' button in comment creen.
+	 * Remembers the text in the TextBox and returning to the previous window.
+	 * @param event
+	 */
+    @FXML
+    void saveComments(ActionEvent event) {
+		comment = commentsBox.getText();
+		Stage popupStage = (Stage) commentsBox.getScene().getWindow();
+    	popupStage.close();
+    }
 
 }

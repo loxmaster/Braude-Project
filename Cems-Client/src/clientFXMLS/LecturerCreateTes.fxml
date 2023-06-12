@@ -16,9 +16,9 @@
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="/gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CreateTestController">
    <children>
-      <Button layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#backToLecturer" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Button layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#backToLecturer" prefHeight="46.0" prefWidth="133.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
+            <Font name="Calibri Bold Italic" size="27.0" />
          </font>
       </Button>
       <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitPressed" prefHeight="30.0" prefWidth="120.0" text="EXIT" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
@@ -104,11 +104,14 @@
                   <Font name="Calibri Bold" size="24.0" />
                </font>
             </Label>
-            <TextArea fx:id="qBody" editable="false" layoutX="14.0" layoutY="48.0" prefHeight="323.0" prefWidth="494.0" style="-fx-border-color: black;">
+            <TextArea fx:id="qBody" editable="false" layoutX="14.0" layoutY="48.0" prefHeight="323.0" prefWidth="494.0" style="-fx-border-color: black;" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font></TextArea>
-            <TextArea fx:id="OptionD" layoutX="570.0" layoutY="68.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" />
+            <TextArea fx:id="OptionD" layoutX="570.0" layoutY="68.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font></TextArea>
             <Label layoutX="570.0" layoutY="21.0" prefHeight="34.0" prefWidth="174.0" text="Question Points :">
                <font>
                   <Font name="Calibri Bold Italic" size="24.0" />
@@ -154,9 +157,18 @@
                   <Font size="16.0" />
                </font>
             </CheckBox>
-            <TextArea fx:id="OptionC" layoutX="570.0" layoutY="142.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" />
-            <TextArea fx:id="OptionB" layoutX="570.0" layoutY="223.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" />
-            <TextArea fx:id="OptionA" layoutX="570.0" layoutY="304.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" />
+            <TextArea fx:id="OptionC" layoutX="570.0" layoutY="142.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font></TextArea>
+            <TextArea fx:id="OptionB" layoutX="570.0" layoutY="223.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font></TextArea>
+            <TextArea fx:id="OptionA" layoutX="570.0" layoutY="304.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font></TextArea>
             <Text layoutX="968.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question ID: " wrappingWidth="152.0">
                <font>
                   <Font name="Calibri Bold Italic" size="24.0" />
@@ -180,5 +192,10 @@
             <VBox fx:id="questionTracker" alignment="CENTER" prefHeight="376.0" prefWidth="122.0" style="-fx-border-color: black; -fx-background-color: white;" />
          </content>
       </ScrollPane>
+      <Button layoutX="611.0" layoutY="666.0" mnemonicParsing="false" onAction="#editCommentsPressed" prefHeight="34.0" prefWidth="200.0" text="Edit Test Comments">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
