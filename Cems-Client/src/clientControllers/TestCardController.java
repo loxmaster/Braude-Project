@@ -27,9 +27,6 @@ public class TestCardController {
         code_Exam.setText(test.getId());
         test_name.setText(test.getSubject());
         grade.setText(test.getGrade());
-        // code_Exam.setText("020301");
-        // test_name.setText("algebra1");
-        // grade.setText("69");
         studentexamcard.setStyle("-fx-background-color: #"+colors[(int)Math.random()*colors.length]
         +";"+ "-fx-background-radius: 15;"+"-fx-effect: dropShadown(three-pass-box, rgba(0,0,0,1),10,0,0,10);");
 

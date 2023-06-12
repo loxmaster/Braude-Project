@@ -26,7 +26,7 @@ public class ViewGradesController extends BasicController {
     private Button logo;
 
     @FXML
-    private ToggleButton backButton;
+    private Button backButton;
 
     @FXML
     private List<Test> Exams;
