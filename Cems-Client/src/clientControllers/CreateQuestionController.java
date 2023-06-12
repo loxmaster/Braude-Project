@@ -16,7 +16,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class CreateQuestionController extends BasicController {
-	// TODO noah: check if this works lul
 	public static String subjectID;
 
 	@FXML

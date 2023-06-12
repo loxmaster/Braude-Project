@@ -16,6 +16,7 @@ import logic.User;
 public class LecturerController extends BasicController {
 
 	public static ArrayList<String> subjectsList;
+	public static ArrayList<String> coursesList;
 	public static ArrayList<QuestionModel> questions;
 
 	@FXML
@@ -32,7 +33,7 @@ public class LecturerController extends BasicController {
 	 * TODO change to name and not username.
 	 */
 	public void setWelcomeLabel() {
-		welcomeLabel.setText(welcomeLabel.getText() + " " + ClientHandler.user.getUsername().toUpperCase() + " !");
+		welcomeLabel.setText(welcomeLabel.getText() + " " + ClientHandler.user.getUsername().toUpperCase() + "!");
 	}
 
 	public void loadLecturer(User user) {
@@ -67,7 +68,7 @@ public class LecturerController extends BasicController {
 	void CreateTestsPressed(ActionEvent event) {
 		// open Create Tests
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
-		ctc.load();
+		ctc.loadsubjectsCombobox();
 	}
 
 	@FXML
@@ -87,8 +88,16 @@ public class LecturerController extends BasicController {
 		return subjectsList;
 	}
 
+	public static ArrayList<String> getCoursesList() {
+		return coursesList;
+	}
+
 	public static void setSubjectsList(ArrayList<String> subjectsList) {
 		LecturerController.subjectsList = subjectsList;
+	}
+
+	public static void setCoursesList(ArrayList<String> subjectsList) {
+		LecturerController.coursesList = coursesList;
 	}
 
 	public static ArrayList<QuestionModel> getQuestions() {

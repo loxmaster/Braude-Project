@@ -54,23 +54,23 @@ public class ClientHandler extends AbstractClient {
 		// TODO add a comment here
 		if (severMessage instanceof Integer) {
 			if ((Integer) severMessage == 1)
-				System.out.println("Update was successful");	
+				System.out.println("Update was successful");
 			else
 				System.out.println("Update wasnt so successful");
-		} 
-		
+		}
+
 		else if (severMessage instanceof ArrayList) {
-			
+
 			if (((ArrayList<?>) severMessage).get(0) instanceof Question) {
 				questionList = (ArrayList<Question>) severMessage;
 				ArrayList<QuestionModel> listToAdd = new ArrayList<>();
 
 				for (int i = 0; i < questionList.size(); i++) {
-					listToAdd.add( new QuestionModel(
-							questionList.get(i).getId(), 
+					listToAdd.add(new QuestionModel(
+							questionList.get(i).getId(),
 							questionList.get(i).getSubject(),
 							questionList.get(i).getCoursename(),
-							questionList.get(i).getQuestiontext(), 
+							questionList.get(i).getQuestiontext(),
 							questionList.get(i).getQuestionnumber(),
 							questionList.get(i).getLecturer(),
 							questionList.get(i).getOptionA(),
@@ -111,7 +111,6 @@ public class ClientHandler extends AbstractClient {
 
 		// Handles the error the the question already exist with that id.
 		else if (severMessage.toString().contains("Question Exists")) {
-
 
 		}
 
@@ -209,13 +208,18 @@ public class ClientHandler extends AbstractClient {
 	 * Handles the message received from the lecturer user interface gets all the
 	 * questions for the lecturer.
 	 */
-	public void GetLeturersQuestions(String username) {
+	public void GetLecturersQuestions_Handler(String username) {
 		/*
 		 * try { openConnection(); } catch (IOException e1) { System.out.println(1); }
 		 */
 		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList("lecturerquestions",
-				"SELECT * FROM projecton.questions where ( `lecturer` = '" + username + "' );"));
+
+		// '*' returns every question, it's used in CreateTestController
+		if (username == "*")
+			list.addAll(Arrays.asList("lecturerquestions", "SELECT * FROM projecton.questions;"));
+		else
+			list.addAll(Arrays.asList("lecturerquestions",
+					"SELECT * FROM projecton.questions where ( `lecturer` = '" + username + "' );"));
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
@@ -225,6 +229,7 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Method to create query to edit existing question
+	 * 
 	 * @param newBody
 	 * @param newQNumber
 	 * @param originalId
@@ -264,8 +269,9 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	/**
-	 * Method that creates query for creating a question and 
+	 * Method that creates query for creating a question and
 	 * Passes it to server.
+	 * 
 	 * @param Id
 	 * @param subject
 	 * @param Body
@@ -275,7 +281,8 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// Construct the INSERT query to create a new question
-		list.addAll(Arrays.asList("createquestion", "INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
+		list.addAll(Arrays.asList("createquestion",
+				"INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
 						+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername()
 						+ "');"));
 
@@ -288,6 +295,7 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Method that creates query for insering answers to database.
+	 * 
 	 * @param optionA
 	 * @param optionB
 	 * @param optionC
@@ -314,7 +322,8 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Method for sending the test to the data base.
-	 * @param query 
+	 * 
+	 * @param query
 	 */
 	public void sendTestToDatabase(String query) {
 		ArrayList<String> listToSend = new ArrayList<String>();
@@ -331,6 +340,7 @@ public class ClientHandler extends AbstractClient {
 	 * create a new arraylist subject, add an identifier "getSubjectID" so the
 	 * Echoserver idenrtifies it,
 	 * the second cell should contain 'subjectname' for the server to parse
+	 * 
 	 * @param subjectname the subject to whom the search is for.
 	 */
 	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
@@ -344,7 +354,7 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-	
+
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////
 	//////////////////////////////////////////////////////////
