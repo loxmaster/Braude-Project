@@ -1,7 +1,6 @@
 package serverHandler;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -368,7 +367,7 @@ public class EchoServer extends AbstractServer {
 	private ArrayList<String> TestGrades_PassedGrades(String query_passed, int grade_index) throws SQLException {
 		ArrayList<String> outputList = new ArrayList<String>();
 		stmt = conn.createStatement();
-		ArrayList<ResultSet> res = new ArrayList<>();
+		//ArrayList<ResultSet> res = new ArrayList<>();
 		ResultSet queryResult = stmt.executeQuery(query_passed);
 
 		// outputList.addAll((String)queryResult.getString(query_passed));

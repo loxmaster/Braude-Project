@@ -179,10 +179,10 @@
             </Text>
          </children>
       </Pane>
-      <ComboBox id="subjectComboBox" fx:id="subjectComboBox" editable="true" layoutX="223.0" layoutY="228.0" prefHeight="35.0" prefWidth="207.0" style="-fx-background-color: tranparent; -fx-background-radius: 10; -fx-background-radius: 10; -fx-border-radius: 10;" />
-      <ScrollPane layoutX="8.0" layoutY="271.0" prefHeight="374.0" prefWidth="126.0">
+      <ComboBox id="subjectComboBox" fx:id="subjectComboBox" editable="true" layoutX="223.0" layoutY="228.0" prefHeight="35.0" prefWidth="207.0" style="-fx-background-color: transparent; -fx-background-radius: 10; -fx-background-radius: 10; -fx-border-radius: 10;" />
+      <ScrollPane layoutX="8.0" layoutY="271.0" prefHeight="374.0" prefWidth="126.0" style="-fx-background-color: transparent;">
          <content>
-            <VBox fx:id="questionTracker" alignment="CENTER" prefHeight="376.0" prefWidth="122.0" style="-fx-border-color: black; -fx-background-color: white; -fx-background-radius: 9; -fx-border-radius: 9;" />
+            <VBox fx:id="questionTracker" alignment="CENTER" prefHeight="369.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-radius: 9; -fx-border-color: black; -fx-border-radius: 9;" />
          </content>
       </ScrollPane>
    </children>

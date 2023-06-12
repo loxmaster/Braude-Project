@@ -20,14 +20,13 @@ import logic.QuestionModel;
 import logic.Test;
 
 public class CreateTestController extends BasicController {
-private int totalpointCounter;
 	private Test test = new Test();
 
 	@FXML
 	private CheckBox A, B, C, D;
-	
+
 	@FXML
-    private TextField qID;
+	private TextField qID;
 
 	@FXML
 	private TextArea OptionA, OptionB, OptionC, OptionD;
@@ -56,7 +55,7 @@ private int totalpointCounter;
 	@FXML
 	private ComboBox<String> subjectComboBox;
 
-	//who is this?
+	// who is this?
 	public void loadsubjectsCombobox() {
 		ObservableList<String> subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
 		subjectComboBox.getItems().removeAll();
@@ -66,6 +65,8 @@ private int totalpointCounter;
 
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
+		// test is current test
+		// set all information so when we come back we
 
 		test.setAuthor(ClientHandler.user.getpName());
 		test.setSubject(subjectComboBox.getValue());
@@ -80,8 +81,17 @@ private int totalpointCounter;
 
 		// Gets all the questions from DataBase
 		LecturerController.setQuestions(new ArrayList<QuestionModel>());
-		// TODO withdraw question from subject not lecturer name
-		ClientUI.chat.GetLecturersQuestions(ClientHandler.user.getUsername());
+
+		// FIXME fix the query in 
+		//ClientHandler/GetLeturersQuestions_Handler so it returns only the
+		// courses the username's courses
+		// for example: lecturer noah does MATH and TOHNA, it should only have access to
+		// the questions written by these subject\departments
+		// and not show stuff from mech engineer
+
+		// @kookmao - changed to it returns every question in the database,
+		ClientUI.chat.GetLecturersQuestions("*");
+		// ClientUI.chat.getSubjectsForLecturer(ClientHandler.user.getUsername());
 
 		// Opens the Question DataBase
 		DBQController dbq = (DBQController) openScreen("/clientFXMLS/LecturerDBQ.fxml",
@@ -108,7 +118,7 @@ private int totalpointCounter;
 		int index = 1;
 		for (QuestionModel question : tempQuestionList) {
 			questionTracker.getChildren().add(createQuestionInTestButton(question, index++));
-			//index++;
+			// index++;
 		}
 	}
 
@@ -155,7 +165,7 @@ private int totalpointCounter;
 		// questionInTestButton.setId("questionbutton");
 		questionInTestButton.setPrefWidth(70);
 		questionInTestButton.setPrefHeight(10);
-		//questionInTestButton.setPadding(new Insets(20, 0, 20, 0));
+		// questionInTestButton.setPadding(new Insets(20, 0, 20, 0));
 		question.setEdit(questionInTestButton);
 		return questionInTestButton;
 	}
@@ -165,7 +175,7 @@ private int totalpointCounter;
 
 	}
 
-//save changes ; write to db changes
+	// save changes ; write to db changes
 	@FXML
 	void savePressed(ActionEvent event) {
 		test.setAuthor(ClientHandler.user.getpName());
