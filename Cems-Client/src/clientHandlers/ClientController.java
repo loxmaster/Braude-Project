@@ -113,7 +113,7 @@ public class ClientController implements ChatIF {
     // gets all of specific lecturer questions
     public void GetLecturersQuestions(Object object) {
         try {
-            client.GetLeturersQuestions_Handler((String) object);
+            client.GetLecturersQuestions_Handler((String) object);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -208,7 +208,7 @@ public class ClientHandler extends AbstractClient {
 	 * Handles the message received from the lecturer user interface gets all the
 	 * questions for the lecturer.
 	 */
-	public void GetLeturersQuestions_Handler(String username) {
+	public void GetLecturersQuestions_Handler(String username) {
 		/*
 		 * try { openConnection(); } catch (IOException e1) { System.out.println(1); }
 		 */

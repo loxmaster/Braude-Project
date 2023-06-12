@@ -54,17 +54,10 @@ public class DBQController extends BasicController {
 	@FXML
 	private ComboBox<String> subjectComboBox;
 
-	// who is this?
-	public void loadFilterComboboxes() {
-		subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
-		subjectComboBox.getItems().removeAll();
-		subjectComboBox.setItems(subjectList);
+	@FXML
+	private ComboBox<String> courseComboBox;
 
-		subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
-		subjectComboBox.getItems().removeAll();
-		subjectComboBox.setItems(subjectList);
-	}
-
+	// load the table - table has filter, filter updatePredicate handles the filter
 	public void load(Test test) {
 		testToReturn = test;
 		// noah- added load lect assigned courses\subjects
@@ -72,7 +65,6 @@ public class DBQController extends BasicController {
 
 		Check.setCellValueFactory(new PropertyValueFactory<>("CheckBox"));
 		LecturerName.setCellValueFactory(new PropertyValueFactory<>("Lecturer"));
-		//SubjectName.setCellValueFactory(new PropertyValueFactory<>("Subject"));
 		Question.setCellValueFactory(new PropertyValueFactory<>("Questiontext"));
 		QuestionID.setCellValueFactory(new PropertyValueFactory<>("Id"));
 
@@ -83,42 +75,43 @@ public class DBQController extends BasicController {
 					.observableArrayList(LecturerController.questions);
 			FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
 			table.setItems(filteredList);
-			// || selectedSubject.isEmpty()
-			// listener - this will update the table to the filtered combobox selection
+
+			// listener - this will update the table to the filtered COMBOBOX SUBJECT
 			subjectComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-				filteredList.setPredicate(questionModel -> {
-					String selectedSubject = subjectComboBox.getValue();
-					String searchAuthor = QuestionAuthorField.getText().trim().toLowerCase();
-					return (selectedSubject == null
-							|| questionModel.getSubject().toUpperCase().contains(selectedSubject)
-							|| questionModel.getSubject().toLowerCase().contains(selectedSubject)&& (searchAuthor.isEmpty() || questionModel.getLecturer().toLowerCase().contains(searchAuthor)));
-				});
+				updatePredicate(filteredList);
+			});
+
+			// listener - this will update the table to the filtered TEXTFIELD AUTHOR
+			QuestionAuthorField.textProperty().addListener((observable, oldValue, newValue) -> {
+				updatePredicate(filteredList);
 			});
 		}
 	}
 
-	// public void load(Test test) {
+	// load subject contents into the combobox
+	public void loadFilterComboboxes() {
+		subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
+		subjectComboBox.getItems().removeAll();
+		subjectComboBox.setItems(subjectList);
+	}
 
-	// testToReturn = test;
-	// //noah- added load lect assigned courses\subjects
-	// loadsubjectsCombobox();
-	// //FilteredList<String> filteredList = new FilteredList<>(subjectList);
+	private void updatePredicate(FilteredList<QuestionModel> filteredList) {
+		String selectedSubject = subjectComboBox.getValue();
+		String authorFilterField = QuestionAuthorField.getText().trim().toLowerCase();
 
-	// Check.setCellValueFactory(new PropertyValueFactory<>("CheckBox"));
-	// LecturerName.setCellValueFactory(new PropertyValueFactory<>("Lecturer"));
-	// Question.setCellValueFactory(new PropertyValueFactory<>("Questiontext"));
-	// QuestionID.setCellValueFactory(new PropertyValueFactory<>("Id"));
+		// add new filters here as needed, dont forget to add a new listener
+		filteredList.setPredicate(questionModel -> {
+			boolean matchesSubject = selectedSubject == null || selectedSubject.isEmpty()
+					|| questionModel.getSubject().toUpperCase().contains(selectedSubject)
+					|| questionModel.getSubject().toLowerCase().contains(selectedSubject);
 
-	// if (LecturerController.questions.isEmpty()) {
-	// JOptionPane.showMessageDialog(null, "Error getting the question!", "Error",
-	// JOptionPane.ERROR_MESSAGE);
-	// } else {
+			boolean matchesLecturer = authorFilterField.isEmpty()
+					|| questionModel.getLecturer().toLowerCase().contains(authorFilterField)
+					|| questionModel.getLecturer().toUpperCase().contains(authorFilterField);
 
-	// ObservableList<QuestionModel> questionList =
-	// FXCollections.observableArrayList(LecturerController.questions);
-	// table.setItems(questionList);
-	// }
-	// }
+			return matchesSubject && matchesLecturer;
+		});
+	}
 
 	/**
 	 * Method to reurn to create test screen with the selected questions.

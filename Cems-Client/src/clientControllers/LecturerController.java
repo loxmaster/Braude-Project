@@ -16,6 +16,7 @@ import logic.User;
 public class LecturerController extends BasicController {
 
 	public static ArrayList<String> subjectsList;
+	public static ArrayList<String> coursesList;
 	public static ArrayList<QuestionModel> questions;
 
 	@FXML
@@ -87,8 +88,16 @@ public class LecturerController extends BasicController {
 		return subjectsList;
 	}
 
+	public static ArrayList<String> getCoursesList() {
+		return coursesList;
+	}
+
 	public static void setSubjectsList(ArrayList<String> subjectsList) {
 		LecturerController.subjectsList = subjectsList;
+	}
+
+	public static void setCoursesList(ArrayList<String> subjectsList) {
+		LecturerController.coursesList = coursesList;
 	}
 
 	public static ArrayList<QuestionModel> getQuestions() {
