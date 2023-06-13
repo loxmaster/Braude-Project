@@ -78,7 +78,7 @@ public class CreateTestController extends BasicController {
 		ObservableList<String> subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
 		subjectComboBox.getItems().removeAll();
 		subjectComboBox.setItems(subjectList);
-
+	}
 
 	/**
 	 * Method handeling the pressing of 'Add Questions' button .
