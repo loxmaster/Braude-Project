@@ -7,11 +7,12 @@ import clientHandlers.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * Super Class for controllers to save some codespace
@@ -21,9 +22,9 @@ public class BasicController {
 	/**
 	 * Method for opening a screen from given fxml path and title.
 	 * 
-	 * @param fxml fxml path
-	 * @param title title of the screen
-	 * @param event the triger event
+	 * @param fxml fxml path.
+	 * @param title title of the screen.
+	 * @param event the triger event.
 	 */ 
 	public BasicController openScreen(String fxml, String title ,ActionEvent event) {
 		if(event != null){
@@ -44,6 +45,42 @@ public class BasicController {
 		currentStage.setTitle(title);
 		currentStage.show();
 		return loader.getController();
+	}
+
+	/**
+	 * Method for opening a popup screen from given fxml path and title.
+	 * @param fxml fxml path.
+	 * @param title title of the screen.
+	 * @param shouldBeBasicCtrl the controller incharge of the screen.
+	 * @param currentComment the comment currently saved.
+	 */
+	public void openPopupCommentScreen(String fxml, String title, CreateTestController shouldBeBasicCtrl, String currentComment) { //TODO
+		
+		// Load the FXML file for the pop-up window
+		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+		try {
+			//CreateTestController ctc = (CreateTestController) shouldBeBasicCtrl;
+			
+			loader.setController(shouldBeBasicCtrl);
+			AnchorPane root = loader.load();
+			shouldBeBasicCtrl.setComments(currentComment);
+
+			// Create a new stage for the pop-up window
+			Stage popupStage = new Stage();
+			popupStage.initModality(Modality.APPLICATION_MODAL);
+			popupStage.setTitle(title);
+			
+			// Set the scene with the loaded FXML layout
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/gui/Stylesheet.css").toExternalForm());
+			popupStage.setScene(scene);
+	
+			// Show the pop-up window and wait until it finishes
+			popupStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// logout method is same for everyone, goes back to the main login screen.
@@ -67,4 +104,5 @@ public class BasicController {
         ClientHandler.resetClientData();
 		ClientUI.chat.quit();
 	}
+
 }

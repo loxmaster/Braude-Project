@@ -7,7 +7,7 @@ import javafx.scene.control.DatePicker;
 public class Test {
     private ArrayList<QuestionModel> quesitonsInTest;
     private String id, subject, author;
-    private String duration, TestComments, testCode;
+    private String duration, testComment, testCode;
     private String time, dateString;
     private DatePicker date;
     private int totalPoints;
@@ -17,7 +17,7 @@ public class Test {
         subject = new String();
         author = new String();
         duration = new String();
-        TestComments = new String();
+        testComment = new String();
         testCode = new String();
         time = new String();
         dateString = new String();
@@ -25,13 +25,13 @@ public class Test {
         quesitonsInTest = new ArrayList<QuestionModel>();
     }
 
-    public Test(String id, String subject, String author, String duration, String testComments, String testCode,
+    public Test(String id, String subject, String author, String duration, String testComment, String testCode,
             String dateString, String time) {
         this.id = id;
         this.subject = subject;
         this.author = author;
         this.duration = duration;
-        TestComments = testComments;
+        this.testComment = testComment;
         this.testCode = testCode;
         this.dateString = dateString;
         this.time = time;
@@ -92,11 +92,11 @@ public class Test {
     }
 
     public String getTestComments() {
-        return TestComments;
+        return testComment;
     }
 
-    public void setTestComments(String testComments) {
-        TestComments = testComments;
+    public void setTestComments(String testComment) {
+        this.testComment = testComment;
     }
 
     public String getTestCode() {
