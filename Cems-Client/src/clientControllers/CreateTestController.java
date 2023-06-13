@@ -12,11 +12,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.QuestionModel;
@@ -33,13 +34,13 @@ public class CreateTestController extends BasicController {
 	private int pointsInTest = 0;
 
 	private ChangeListener<? super String> questionPointsListener; // Listener for points TextBox
-
+	private ToggleGroup correctAnswer;
 
 	// ############################### FXML Variables ###################################################################
 
 
 	@FXML
-	private CheckBox A, B, C, D;
+	private RadioButton A, B, C, D;
 
 	@FXML
 	private TextField qID;
