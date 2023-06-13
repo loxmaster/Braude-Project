@@ -10,6 +10,7 @@ public class Test {
     private String duration, TestComments, testCode;
     private String time, dateString;
     private DatePicker date;
+    private int totalPoints;
 
     public Test() {
         id = new String();
@@ -20,6 +21,7 @@ public class Test {
         testCode = new String();
         time = new String();
         dateString = new String();
+        totalPoints = 0;
         quesitonsInTest = new ArrayList<QuestionModel>();
     }
 
@@ -33,6 +35,7 @@ public class Test {
         this.testCode = testCode;
         this.dateString = dateString;
         this.time = time;
+        totalPoints = 0;
         quesitonsInTest = new ArrayList<QuestionModel>();
     }
 
@@ -120,5 +123,13 @@ public class Test {
         for (QuestionModel q : list)
             if(!quesitonsInTest.contains(q))
                 quesitonsInTest.add(q);
+    }
+
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(int totalPoints) {
+        this.totalPoints = totalPoints;
     }
 }
