@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import logic.Test;
@@ -36,7 +35,7 @@ public class ViewGradesController extends BasicController {
         // Loading student main screen 
         openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student", event);
     }
-
+    
 @FXML
 void ExamLoad() {
     Exams = new ArrayList<>(Examstoadd());

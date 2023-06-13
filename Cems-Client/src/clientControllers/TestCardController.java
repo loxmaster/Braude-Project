@@ -1,16 +1,19 @@
 package clientControllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import logic.Statistics;
 import logic.Test;
 
 public class TestCardController {
 
     @FXML
     private Text code_Exam;
+
+    @FXML
+    private Button ReviewExam;
 
     @FXML
     private Text grade;
