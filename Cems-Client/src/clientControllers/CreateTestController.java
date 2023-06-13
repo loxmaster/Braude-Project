@@ -145,7 +145,9 @@ public class CreateTestController extends BasicController {
 		test.setDate(date);
 		test.setDuration(duration.getText());
 		test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
-		// TODO test.setId();
+		
+		// TODO add course to build
+		test.setId( buildIdForTest( test.getSubject(), "01"));
 		
 		// Sends the test to the database using the ClientController 'chat' in the ClientUI
 		ClientUI.chat.sendTestToDatabase(test);
@@ -294,7 +296,18 @@ public class CreateTestController extends BasicController {
 		pointsInTest = totalPoints;
 	}
 
-	
+	/**
+	 * Method to create test id from given subject and course.
+	 * @param subject of the test.
+	 * @param course of the test.
+	 * @return the string representing the test id.
+	 */
+	public String buildIdForTest(String subject, String course) {
+		//TODO get subject+course id string + number of test
+		return "010102";
+	}
+
+
 	// ############################### Controller for comment screen ########################################################
 	
 	/**
