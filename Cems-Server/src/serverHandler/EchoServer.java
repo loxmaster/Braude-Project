@@ -126,6 +126,7 @@ public class EchoServer extends AbstractServer {
 						case "createanswers":
 						case "editquestion":
 						case "Addtesttodata":
+						//executeMyQuery will execute a basic UPDATE query
 							int flag = executeMyQuery(list.get(1));
 							client.sendToClient(flag == 0 ? idExists : flag);
 							break;
@@ -133,6 +134,11 @@ public class EchoServer extends AbstractServer {
 						case "lecturersubjects":
 							ArrayList<String> resStringList = getDataFromDB(list.get(1), "lecturersubjects");
 							client.sendToClient(resStringList == null ? (Object) notFound : (Object) resStringList);
+							break;
+
+						case "SAMPLE":
+							ArrayList<String> unique = SAMPLE(list.get(1), "SAMPLE");
+							client.sendToClient(unique == null ? (Object) notFound : (Object) unique);
 							break;
 
 						case "lecturerquestions":
@@ -254,6 +260,25 @@ public class EchoServer extends AbstractServer {
 	 * @throws SQLException
 	 */
 	private ArrayList<String> getDataFromDB(String query, String out) {
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			ArrayList<String> res = new ArrayList<String>();
+			res.add(out);
+			if (result.next()) {
+				res.add(result.getString(1));
+				System.out.println("Message sent back: " + res);
+				return res;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> SAMPLE(String query, String out) {
 		try {
 			stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
