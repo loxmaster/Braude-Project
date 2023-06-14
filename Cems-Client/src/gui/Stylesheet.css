@@ -53,22 +53,9 @@
 	-fx-background-image: url('question_exit_logo2.png');
 	-fx-background-size:contain;
 	-fx-background-repeat: no-repeat;
+	-fx-background-color: transparent;
 
-
-	-fx-padding: 12px 24px;
-	-fx-font-size: 16px;
-	-fx-font-weight: bold;
-	-fx-text-align: center;
-	-fx-text-decoration: none;
-	-fx-text-transform: uppercase;
-	-fx-text-fill: rgb(0, 0, 0);
-	-fx-background-color:
-		#c3c4c4,
-		linear-gradient(#b8edf7 50%, rgb(91, 175, 243) 100%),
-		radial-gradient(center 50% -40%, radius 200%, #ffffff 45%, rgba(230, 230, 230, 0) 50%);
-	-fx-background-radius: 50px;
-	-fx-border-color: transparent;
-	-fx-border-radius: 50px;
+	
 	-fx-transition-duration: 0.3s;
 	-fx-cursor: hand;
 }
@@ -167,8 +154,9 @@
 }
 
 #questionDeleteInTest {
+	-fx-background-color: transparent;
 	-fx-background: transparent;
-	-fx-background-image: url('question_exit_logo2.png');
+	-fx-background-image: url('removeQ.png');
 	-fx-background-size: contain;
 
 }

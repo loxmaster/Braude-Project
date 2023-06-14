@@ -14,14 +14,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="/gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CreateTestController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="/gui/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CreateTestController">
    <children>
       <Button layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#backToLecturer" prefHeight="46.0" prefWidth="133.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="27.0" />
          </font>
       </Button>
-      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitPressed" prefHeight="30.0" prefWidth="120.0" text="EXIT" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="exitbutton" layoutX="1294.0" layoutY="14.0" maxHeight="41.0" mnemonicParsing="false" onAction="#exitPressed" textAlignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
@@ -197,5 +197,11 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
+      <Label layoutX="430.0" layoutY="233.0" prefHeight="30.0" prefWidth="84.0" text="Subject:" textAlignment="CENTER">
+         <font>
+            <Font name="Calibri Bold Italic" size="24.0" />
+         </font>
+      </Label>
+      <ComboBox id="subjectComboBox" fx:id="courseComboBox" editable="true" layoutX="513.0" layoutY="228.0" prefHeight="35.0" prefWidth="207.0" style="-fx-background-color: transparent; -fx-background-radius: 10; -fx-background-radius: 10; -fx-border-radius: 10;" />
    </children>
 </AnchorPane>

@@ -31,7 +31,8 @@ public class CreateTestController extends BasicController {
 
 
 	// ############################### Local Variables #################################################################
-
+	ObservableList<String> subjectList;
+	ObservableList<String> courseList;
 
 	private Test test = new Test();
 
@@ -80,6 +81,8 @@ public class CreateTestController extends BasicController {
 
 	@FXML
 	private ComboBox<String> subjectComboBox;
+	@FXML
+	private ComboBox<String> courseComboBox;
 
 
 // ############################### FXML Methods #######################################################################
@@ -88,11 +91,17 @@ public class CreateTestController extends BasicController {
 /**
  * Method called by controller when this screen opens 
  */
-	public void loadsubjectsCombobox() {
-		ObservableList<String> subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
-		subjectComboBox.getItems().removeAll();
-		subjectComboBox.setItems(subjectList);
-	}
+public void loadFilterComboboxes() {
+	subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
+	courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
+
+	subjectComboBox.getItems().removeAll();
+	subjectComboBox.setItems(subjectList);
+
+	courseComboBox.getItems().removeAll();
+	courseComboBox.setItems(courseList);
+	
+}
 
 	/**
 	 * Method handeling the pressing of 'Add Test Comments' button .
@@ -259,7 +268,7 @@ public class CreateTestController extends BasicController {
 	public void setTest(Test test) {
 
 		// loads the subjects in the subjects combobox
-		loadsubjectsCombobox();
+		loadFilterComboboxes();
 
 		// Updates the current test and sets the view for the client
 		this.test = test;

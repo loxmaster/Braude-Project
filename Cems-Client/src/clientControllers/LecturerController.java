@@ -71,7 +71,7 @@ public class LecturerController extends BasicController {
 	void CreateTestsPressed(ActionEvent event) {
 		// open Create Tests
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
-		ctc.loadsubjectsCombobox();
+		ctc.loadFilterComboboxes();
 	}
 
 	@FXML
