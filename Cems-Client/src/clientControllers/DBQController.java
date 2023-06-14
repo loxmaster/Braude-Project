@@ -22,7 +22,7 @@ import logic.Test;
 public class DBQController extends BasicController {
 
 	private Test testToReturn;
-	ObservableList<String> subjectList;
+	ObservableList<String> subjectList,courseList;
 
 	@FXML
 	private TableColumn<QuestionModel, CheckBox> Check;
@@ -30,8 +30,8 @@ public class DBQController extends BasicController {
 	@FXML
 	private TableColumn<QuestionModel, String> LecturerName;
 
-	// @FXML
-	// private TableColumn<QuestionModel, String> SubjectName;
+	@FXML
+	private TableColumn<QuestionModel, String> SubjectName;
 
 	@FXML
 	private TableColumn<QuestionModel, String> Question;
@@ -91,8 +91,12 @@ public class DBQController extends BasicController {
 	// load subject contents into the combobox
 	public void loadFilterComboboxes() {
 		subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
+		courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
+		
 		subjectComboBox.getItems().removeAll();
 		subjectComboBox.setItems(subjectList);
+		courseComboBox.getItems().removeAll();
+		courseComboBox.setItems(courseList);
 	}
 
 	private void updatePredicate(FilteredList<QuestionModel> filteredList) {
