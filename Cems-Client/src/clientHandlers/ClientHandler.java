@@ -3,11 +3,15 @@ package clientHandlers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.LecturerController;
+import clientControllers.OngoingTestController;
 import logic.Question;
 import logic.QuestionModel;
+import logic.Test;
 import logic.User;
 import ocsf.client.AbstractClient;
 
@@ -17,6 +21,7 @@ import ocsf.client.AbstractClient;
  * in order to give more functionality to the client.
  */
 public class ClientHandler extends AbstractClient {
+	private static ArrayList<Test> ongoingTests;
 
 	/**
 	 * @param client       interface type variable. It allows the implementation of
@@ -50,7 +55,16 @@ public class ClientHandler extends AbstractClient {
 		String[] subjectArray;
 		ArrayList<String> list;
 		ArrayList<Question> questionList;
+		ArrayList<Test> TestsList;
+		
 
+		if (severMessage instanceof ArrayList) {
+
+			if (((ArrayList<?>) severMessage).get(0) instanceof Question)
+			System.out.println("instance of Question");
+			else if (((ArrayList<?>) severMessage).get(0) instanceof Test)
+			System.out.println("instance of Test");
+		}
 		// TODO add a comment here
 		if (severMessage instanceof Integer) {
 			if ((Integer) severMessage == 1)
@@ -82,7 +96,19 @@ public class ClientHandler extends AbstractClient {
 
 				LecturerController.setQuestions(listToAdd);
 			}
-
+			else if (((ArrayList<?>) severMessage).get(0) instanceof Test) {
+				TestsList = (ArrayList<Test>) severMessage;
+					System.out.println("we catched instance of Test");
+		            ArrayList<Test> tests = (ArrayList<Test>) TestsList;
+		            // Setting the tests in the ClientHandler
+		            //setOngoingTests(tests);
+		            LecturerController.setOngoingTests(tests);
+		            OngoingTestController.setOngoingTests(tests);
+		            // Notify the OngoingTestController that new data is available
+		            //OngoingTestController.newTestDataAvailable();
+		        }
+		    
+	
 			else {
 				list = ((ArrayList<String>) severMessage);
 
@@ -100,8 +126,8 @@ public class ClientHandler extends AbstractClient {
 					CreateQuestionController.setSubjectID(list.get(1));
 				}
 			}
-
 		}
+		
 
 		// Handles the error of user not found.
 		else if (severMessage.toString().equals("User Not Found")) {
@@ -204,6 +230,26 @@ public class ClientHandler extends AbstractClient {
 	///////////////////////////////////////////////////
 	////////////////// LOGIC METHODS /////////////////
 	/////////////////////////////////////////////////
+	   public void fetchOngoingTests() {
+	        ArrayList<String> request = new ArrayList<>();
+	        request.add("fetchOngoingTests");
+	        try {
+	            sendToServer((Object)request);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    // Call this method when the server sends back the tests
+	    public void handleFetchedTests(ArrayList<Test> tests) {
+	        ongoingTests = tests;
+	        // Inform the OngoingTestController that new data arrived
+	        //OngoingTestController.newTestDataAvailable();
+	    }
+	   
+	    public static void setOngoingTests(List<Test> tests) {
+	        ongoingTests.clear();
+	        ongoingTests.addAll(tests);
+	    }
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
@@ -222,7 +268,10 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-
+    public static List<Test> getOngoingTests() {
+        // We return a copy of the list to prevent external modification
+        return new ArrayList<>(ongoingTests);
+    }
 	/**
 	 * Method to create query to edit existing question
 	 * @param newBody
