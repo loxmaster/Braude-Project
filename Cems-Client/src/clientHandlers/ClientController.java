@@ -71,6 +71,15 @@ public class ClientController implements ChatIF {
         }
     }
 
+    // gets all subject available for lecturer
+    public void getcompletedTestsList() {
+        try {
+            client.getcompletedTestsList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // gets the id of the subject given
     public void GetSubjectIDfromSubjectCourses(String subjectname) {
         try {
@@ -78,7 +87,6 @@ public class ClientController implements ChatIF {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     // gets all subject available for lecturer
@@ -140,6 +148,10 @@ public class ClientController implements ChatIF {
                 + test.getAuthor() + "', '" + test.getTestCode() + "', '" + test.getDate().getValue().toString() + "','"
                 + test.getTime() + "', '" + test.getQuesitonsInTest() + "');";
         client.sendTestToDatabase(query);
+    }
+
+    public void sendCompletedTestToDatabase(Test test) {
+
     }
 
     /**

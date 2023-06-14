@@ -6,8 +6,10 @@ import java.util.Arrays;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.LecturerController;
+import clientControllers.ViewGradesController;
 import logic.Question;
 import logic.QuestionModel;
+import logic.Test;
 import logic.User;
 import ocsf.client.AbstractClient;
 
@@ -50,27 +52,30 @@ public class ClientHandler extends AbstractClient {
 		String[] subjectArray;
 		ArrayList<String> list;
 		ArrayList<Question> questionList;
+		ArrayList<Test> CompletedTestList;
+
+		ArrayList<Test> completedTests;
 
 		// TODO add a comment here
 		if (severMessage instanceof Integer) {
 			if ((Integer) severMessage == 1)
-				System.out.println("Update was successful");	
+				System.out.println("Update was successful");
 			else
 				System.out.println("Update wasnt so successful");
-		} 
-		
+		}
+
 		else if (severMessage instanceof ArrayList) {
-			
+
 			if (((ArrayList<?>) severMessage).get(0) instanceof Question) {
 				questionList = (ArrayList<Question>) severMessage;
 				ArrayList<QuestionModel> listToAdd = new ArrayList<>();
 
 				for (int i = 0; i < questionList.size(); i++) {
-					listToAdd.add( new QuestionModel(
-							questionList.get(i).getId(), 
+					listToAdd.add(new QuestionModel(
+							questionList.get(i).getId(),
 							questionList.get(i).getSubject(),
 							questionList.get(i).getCoursename(),
-							questionList.get(i).getQuestiontext(), 
+							questionList.get(i).getQuestiontext(),
 							questionList.get(i).getQuestionnumber(),
 							questionList.get(i).getLecturer(),
 							questionList.get(i).getOptionA(),
@@ -99,6 +104,32 @@ public class ClientHandler extends AbstractClient {
 					System.out.println("Client Handler: " + list.get(1));
 					CreateQuestionController.setSubjectID(list.get(1));
 				}
+
+				// assign subjectID that we've got from the server
+				else if (list.get(0).equals("completedtestsForStudentGrades")) {
+					// subjectArray = list.get(1).split(",");
+					System.out.println("Client Handler: " + list.get(1));
+				ArrayList<Test> listToAdd = new ArrayList<>();
+				CompletedTestList = (ArrayList<Test>) severMessage;
+
+				for (int i = 0; i < CompletedTestList.size(); i++) {
+					listToAdd.add(new Test(
+						CompletedTestList.get(1).getId(),
+						CompletedTestList.get(2).getStudentID(),
+						CompletedTestList.get(3).getGrade(),
+						CompletedTestList.get(4).getAuthor(),
+						CompletedTestList.get(5).getTestCode(),
+						CompletedTestList.get(6).getDateString(),
+						CompletedTestList.get(7).getTime(),
+						CompletedTestList.get(8).getDuration(),
+						CompletedTestList.get(9).getQuestionsString(),
+						CompletedTestList.get(10).getType(),
+						CompletedTestList.get(11).getStatus(),
+						CompletedTestList.get(12).getTested()));
+				}
+//amir assign the new CompletedTestList into static variable under ViewGradesController to save it there.
+					ViewGradesController.setCompletedTestsList(listToAdd);
+				}
 			}
 
 		}
@@ -111,7 +142,6 @@ public class ClientHandler extends AbstractClient {
 
 		// Handles the error the the question already exist with that id.
 		else if (severMessage.toString().contains("Question Exists")) {
-
 
 		}
 
@@ -154,13 +184,16 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Handles the message received from the client login user interface
-	 *
+	 * NOTE: this method does not have a unique ideintifier
+	 * EchoServer is configured that the default of the switch case goes to this
+	 * method
+	 * 
 	 * @param username username entered.
 	 * @param password password entered.
 	 */
 	public void handleMessageFromLoginUI(Object username, Object password) {
 		ArrayList<String> credentials = new ArrayList<String>();
-
+		// create a query to grab username requested
 		String query = "SELECT * FROM users  WHERE (`username` = '" + username + "');";
 		credentials.addAll(Arrays.asList(query, (String) username, (String) password));
 
@@ -174,7 +207,7 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
-	 * subjects.
+	 * subjects.//TODO please check what this method do and if it's relevant
 	 */
 	public void handleMessageFromLecturerUI() {
 		// SELECT courses FROM projecton.lecturer WHERE (`username` = 'noah');
@@ -188,6 +221,12 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * subjects for the lecturer.
+	 * //TODO OPTIONAL: collect any "constructors" for lecturer here
+	 * for example: grabbing all the courses of a lecturer AND courses
+	 * and whatever the lecturer will need to pre-load
+	 * 
+	 * currently- this method creates a query to get the lecturers (currently logged
+	 * in lecturer) courses.
 	 */
 	public void handleMessageFromLecturerUI(Object username) {
 		ArrayList<String> list = new ArrayList<String>();
@@ -223,8 +262,22 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	public void getcompletedTestsList() {
+
+		ArrayList<String> list = new ArrayList<String>();
+		// FIXME change query here amir
+		list.addAll(Arrays.asList("completedtestsForStudentGrades",
+				"SELECT * FROM projecton.completed_tests WHERE student_id=234 AND test_type='computer' AND status='completed' AND tested=true;"));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Method to create query to edit existing question
+	 * 
 	 * @param newBody
 	 * @param newQNumber
 	 * @param originalId
@@ -264,8 +317,9 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	/**
-	 * Method that creates query for creating a question and 
+	 * Method that creates query for creating a question and
 	 * Passes it to server.
+	 * 
 	 * @param Id
 	 * @param subject
 	 * @param Body
@@ -275,7 +329,8 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// Construct the INSERT query to create a new question
-		list.addAll(Arrays.asList("createquestion", "INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
+		list.addAll(Arrays.asList("createquestion",
+				"INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
 						+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername()
 						+ "');"));
 
@@ -288,6 +343,7 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Method that creates query for insering answers to database.
+	 * 
 	 * @param optionA
 	 * @param optionB
 	 * @param optionC
@@ -314,7 +370,8 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Method for sending the test to the data base.
-	 * @param query 
+	 * 
+	 * @param query
 	 */
 	public void sendTestToDatabase(String query) {
 		ArrayList<String> listToSend = new ArrayList<String>();
@@ -331,6 +388,7 @@ public class ClientHandler extends AbstractClient {
 	 * create a new arraylist subject, add an identifier "getSubjectID" so the
 	 * Echoserver idenrtifies it,
 	 * the second cell should contain 'subjectname' for the server to parse
+	 * 
 	 * @param subjectname the subject to whom the search is for.
 	 */
 	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
@@ -344,7 +402,7 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-	
+
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////
 	//////////////////////////////////////////////////////////
