@@ -1,6 +1,9 @@
 package clientControllers;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
+
+import javax.swing.JOptionPane;
 
 import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
@@ -13,13 +16,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.QuestionModel;
@@ -36,13 +38,15 @@ public class CreateTestController extends BasicController {
 	private int pointsInTest = 0;
 
 	private ChangeListener<? super String> questionPointsListener; // Listener for points TextBox
-	private ToggleGroup correctAnswer;
 
+	private static final Pattern TIME_PATTERN = Pattern.compile("^\\d{2}:\\d{2}$");
+
+	
 	// ############################### FXML Variables ###################################################################
 
 
 	@FXML
-	private RadioButton A, B, C, D;
+	private CheckBox A, B, C, D;
 
 	@FXML
 	private TextField qID;
@@ -161,17 +165,56 @@ public class CreateTestController extends BasicController {
 	 */
 	@FXML
 	void savePressed(ActionEvent event) {
+		
 		test.setAuthor(ClientHandler.user.getUsername()); // TODO change to pName and not username
 		test.setSubject(subjectComboBox.getValue());
 		test.setTestCode(code.getText());
-		test.setTime(startTime.getText());
-		test.setDate(date);
-		test.setDuration(duration.getText());
-		test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
+		
+		
 		
 		// TODO add course to build
 		test.setId( buildIdForTest( test.getSubject(), "01"));
-		
+		System.out.println(totalPoints.getText());
+
+		// Checks if the test points are in order has been picked
+		if(totalPoints.getText().equals("100")) {
+			totalPoints.setStyle("-fx-background-color: transparent;");
+			test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
+		} else {
+			totalPoints.setStyle("-fx-background-color: red;"); // Set red background color
+			JOptionPane.showMessageDialog(null, "Points dont add up to 100 !", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Checks if the date has been picked
+		if(date.getValue() != null) {
+			date.setStyle("-fx-background-color: transparent;");
+			test.setDate(date);
+		} else {
+			date.setStyle("-fx-background-color: red;"); // Set red background color
+			JOptionPane.showMessageDialog(null, "Date Not Picked !", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Checks if the Start time matches the wanted style
+		if (TIME_PATTERN.matcher(startTime.getText()).matches()) {
+				startTime.setStyle("-fx-background-color: transparent;");
+                test.setTime(startTime.getText());
+        } else {
+            startTime.setStyle("-fx-background-color: red;"); // Set red background color
+			JOptionPane.showMessageDialog(null, "Please insert time in a HH:MM format !", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		if (TIME_PATTERN.matcher(duration.getText()).matches()) {
+				duration.setStyle("-fx-background-color: transparent;");
+                test.setDuration(duration.getText());
+        } else {
+            duration.setStyle("-fx-background-color: red;"); // Set red background color
+			JOptionPane.showMessageDialog(null, "Please insert duration in a HH:MM format !", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
 		// Sends the test to the database using the ClientController 'chat' in the ClientUI
 		ClientUI.chat.sendTestToDatabase(test);
 
@@ -359,7 +402,7 @@ public class CreateTestController extends BasicController {
 	 */
 	public String buildIdForTest(String subject, String course) {
 		//TODO get subject+course id string + number of test
-		return "010102";
+		return "010103";
 	}
 
 
