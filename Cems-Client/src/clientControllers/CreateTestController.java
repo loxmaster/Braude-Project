@@ -167,16 +167,22 @@ public class CreateTestController extends BasicController {
 	void savePressed(ActionEvent event) {
 		
 		test.setAuthor(ClientHandler.user.getUsername()); // TODO change to pName and not username
-		test.setSubject(subjectComboBox.getValue());
 		test.setTestCode(code.getText());
-		
-		
 		
 		// TODO add course to build
 		test.setId( buildIdForTest( test.getSubject(), "01"));
-		System.out.println(totalPoints.getText());
 
-		// Checks if the test points are in order has been picked
+		// Checks if the subject has been picked
+		if(subjectComboBox.getValue() != null) {
+			subjectComboBox.setStyle("-fx-background-color: transparent;");
+			test.setSubject(subjectComboBox.getValue());
+		} else {
+			subjectComboBox.setStyle("-fx-background-color: red;"); // Set red background color
+			JOptionPane.showMessageDialog(null, "Please select related subject !", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Checks if the test points are in order 
 		if(totalPoints.getText().equals("100")) {
 			totalPoints.setStyle("-fx-background-color: transparent;");
 			test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
@@ -206,12 +212,17 @@ public class CreateTestController extends BasicController {
 			return;
 		}
 
-		if (TIME_PATTERN.matcher(duration.getText()).matches()) {
+		if (TIME_PATTERN.matcher(duration.getText()).matches() && !duration.getText().equals("00:00")) {
 				duration.setStyle("-fx-background-color: transparent;");
                 test.setDuration(duration.getText());
         } else {
             duration.setStyle("-fx-background-color: red;"); // Set red background color
-			JOptionPane.showMessageDialog(null, "Please insert duration in a HH:MM format !", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Please insert duration in a HH:MM format and above 0 !", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		if(test.getQuesitonsInTest().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please add questions !", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
@@ -402,7 +413,7 @@ public class CreateTestController extends BasicController {
 	 */
 	public String buildIdForTest(String subject, String course) {
 		//TODO get subject+course id string + number of test
-		return "010103";
+		return "010104";
 	}
 
 
