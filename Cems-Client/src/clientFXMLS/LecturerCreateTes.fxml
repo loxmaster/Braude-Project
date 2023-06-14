@@ -187,9 +187,9 @@
          </children>
       </Pane>
       <ComboBox id="subjectComboBox" fx:id="subjectComboBox" editable="true" layoutX="223.0" layoutY="228.0" prefHeight="35.0" prefWidth="207.0" style="-fx-background-color: transparent; -fx-background-radius: 10; -fx-background-radius: 10; -fx-border-radius: 10;" />
-      <ScrollPane layoutX="8.0" layoutY="271.0" prefHeight="374.0" prefWidth="126.0" style="-fx-background-color: transparent;">
+      <ScrollPane layoutX="8.0" layoutY="265.0" prefHeight="401.0" prefWidth="126.0" style="-fx-background-color: transparent;">
          <content>
-            <VBox fx:id="questionTracker" alignment="CENTER" prefHeight="369.0" prefWidth="122.0" style="-fx-background-color: transparent; -fx-background-radius: 9; -fx-border-color: black; -fx-border-radius: 9;" />
+            <VBox fx:id="questionTracker" alignment="CENTER" prefHeight="383.0" prefWidth="124.0" style="-fx-background-color: transparent; -fx-background-radius: 9; -fx-border-color: black; -fx-border-radius: 9;" />
          </content>
       </ScrollPane>
       <Button layoutX="611.0" layoutY="666.0" mnemonicParsing="false" onAction="#editCommentsPressed" prefHeight="34.0" prefWidth="200.0" text="Edit Test Comments">

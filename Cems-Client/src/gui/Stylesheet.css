@@ -153,6 +153,12 @@
 	-fx-translate-y: 1px;
   }
   
+#questionDeleteInTest {
+	-fx-background: transparent;
+	-fx-background-image: url('question_exit_logo.jpg');
+	-fx-background-size: contain ;
+	
+}
 
 
 /* ............................TABLES................................ */

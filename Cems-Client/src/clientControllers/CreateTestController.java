@@ -11,12 +11,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.QuestionModel;
@@ -73,8 +75,14 @@ public class CreateTestController extends BasicController {
 
 	@FXML
 	private ComboBox<String> subjectComboBox;
+
+
 // ############################### FXML Methods #######################################################################
-	// who is this?
+	
+
+/**
+ * Method called by controller when this screen opens 
+ */
 	public void loadsubjectsCombobox() {
 		ObservableList<String> subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
 		subjectComboBox.getItems().removeAll();
@@ -224,7 +232,11 @@ public class CreateTestController extends BasicController {
 	 * @param index of the question in the list.
 	 * @return Button.
 	 */
-	private Button createQuestionInTestButton(QuestionModel question, int index) {
+	private HBox createQuestionInTestButton(QuestionModel question, int index) {
+		// HBox for the question button and the corresponding delete button
+		HBox hBox = new HBox();
+		
+		// Creating the question button
 		Button questionInTestButton = new Button("Q: " + index);
 
 		// Handle what happens when you press the button
@@ -289,12 +301,40 @@ public class CreateTestController extends BasicController {
 			}
 		});
 
-		// questionInTestButton.setId("questionbutton");
 		questionInTestButton.setPrefWidth(70);
 		questionInTestButton.setPrefHeight(10);
 		// questionInTestButton.setPadding(new Insets(20, 0, 20, 0));
+		// Sets the button to the question 'Edit' field
 		question.setEdit(questionInTestButton);
-		return questionInTestButton;
+
+		// adds the button to the HBox
+		hBox.getChildren().add(0, questionInTestButton);
+
+		// Creates a delete button for this question
+		Button deleteButton = new Button();
+		deleteButton.setId("questionDeleteInTest");
+		deleteButton.setPrefWidth(30);
+		deleteButton.setPrefHeight(10);
+		//deleteButton.set
+		// Handles what happens wheb you press the button
+		deleteButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				// Removes the question from the questionTracker (VBox of questions)
+				questionTracker.getChildren().remove(hBox);
+				// Removes the corresponding question from the current test
+				ArrayList<QuestionModel> tempQuestionList = test.getQuesitonsInTest();
+				tempQuestionList.remove(question);
+				test.setQuesitonsInTest(tempQuestionList);
+			}
+			
+		});
+
+		// Adds the button to the HBox
+		hBox.getChildren().add(1, deleteButton);
+		hBox.setAlignment(Pos.CENTER);
+
+		return hBox;
 	}
 
 	/**
