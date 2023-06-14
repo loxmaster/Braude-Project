@@ -195,7 +195,7 @@ public class ClientHandler extends AbstractClient {
 	 * subjects for the lecturer.
 	 * @return 
 	 */ 
-	//FIXME fix the query
+	
 	public synchronized void handleMessageFromLecturerUI(Object username) {
 		ArrayList<String> subjectList = new ArrayList<String>();
 		ArrayList<String> courseList = new ArrayList<String>();

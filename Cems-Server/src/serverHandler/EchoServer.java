@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -131,7 +132,7 @@ public class EchoServer extends AbstractServer {
 							ArrayList<String> resSubjectsList = getData_db(list.get(1), "lecturersubjects");
 							client.sendToClient(resSubjectsList == null ? (Object) notFound : (Object) resSubjectsList);
 							break;
-
+//
 						case "lecturercourses":
 							ArrayList<String> resCoursesList = getCourses_db(list.get(1), "lecturercourses");
 							client.sendToClient(resCoursesList == null ? (Object) notFound : (Object) resCoursesList);
@@ -276,30 +277,24 @@ public class EchoServer extends AbstractServer {
 	}
 
 	private ArrayList<String> getCourses_db(String query, String out) {
+		Boolean flag = false;
+		ArrayList<String> res = new ArrayList<String>();
+
 		try {
 			stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
-
-			while (result.next()) {
-				for (int i = 1; i <= columnsNumber; i++) {
-					if (i > 1) System.out.print(",  ");
-					String columnValue = result.getString(i);
-					System.out.print(columnValue + " " + rsmd.getColumnName(i));
-				}
-
-			ArrayList<String> res = new ArrayList<String>();
 			res.add(out);
-			if (result.next()) {
+			while (result.next()) {
 				res.add(result.getString(1));
 				System.out.println("Message sent back: " + res);
-				return res;
-			} else {
-				return null;
+				flag = true;
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return flag ? res : null;
+
 	}
 
 	/**

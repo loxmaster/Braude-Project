@@ -95,6 +95,7 @@ public class DBQController extends BasicController {
 		
 		subjectComboBox.getItems().removeAll();
 		subjectComboBox.setItems(subjectList);
+		
 		courseComboBox.getItems().removeAll();
 		courseComboBox.setItems(courseList);
 	}
