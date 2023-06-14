@@ -22,7 +22,7 @@ import logic.Test;
 public class DBQController extends BasicController {
 
 	private Test testToReturn;
-	ObservableList<String> subjectList;
+	ObservableList<String> subjectList, courseList;
 
 	@FXML
 	private TableColumn<QuestionModel, CheckBox> Check;
@@ -30,8 +30,8 @@ public class DBQController extends BasicController {
 	@FXML
 	private TableColumn<QuestionModel, String> LecturerName;
 
-	// @FXML
-	// private TableColumn<QuestionModel, String> SubjectName;
+	@FXML
+	private TableColumn<QuestionModel, String> SubjectName;
 
 	@FXML
 	private TableColumn<QuestionModel, String> Question;
@@ -81,6 +81,11 @@ public class DBQController extends BasicController {
 				updatePredicate(filteredList);
 			});
 
+			// listener - this will update the table to the filtered COMBOBOX SUBJECT
+			courseComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+				updatePredicate(filteredList);
+			});
+
 			// listener - this will update the table to the filtered TEXTFIELD AUTHOR
 			QuestionAuthorField.textProperty().addListener((observable, oldValue, newValue) -> {
 				updatePredicate(filteredList);
@@ -91,12 +96,18 @@ public class DBQController extends BasicController {
 	// load subject contents into the combobox
 	public void loadFilterComboboxes() {
 		subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
+		courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
+
 		subjectComboBox.getItems().removeAll();
 		subjectComboBox.setItems(subjectList);
+
+		courseComboBox.getItems().removeAll();
+		courseComboBox.setItems(courseList);
 	}
 
 	private void updatePredicate(FilteredList<QuestionModel> filteredList) {
 		String selectedSubject = subjectComboBox.getValue();
+		String selectedCourse = courseComboBox.getValue();
 		String authorFilterField = QuestionAuthorField.getText().trim().toLowerCase();
 
 		// add new filters here as needed, dont forget to add a new listener
@@ -105,11 +116,15 @@ public class DBQController extends BasicController {
 					|| questionModel.getSubject().toUpperCase().contains(selectedSubject)
 					|| questionModel.getSubject().toLowerCase().contains(selectedSubject);
 
+			boolean matchesCourse = selectedCourse == null || selectedCourse.isEmpty()
+					|| questionModel.getCoursename().toUpperCase().contains(selectedCourse)
+					|| questionModel.getCoursename().toLowerCase().contains(selectedCourse);
+
 			boolean matchesLecturer = authorFilterField.isEmpty()
 					|| questionModel.getLecturer().toLowerCase().contains(authorFilterField)
 					|| questionModel.getLecturer().toUpperCase().contains(authorFilterField);
 
-			return matchesSubject && matchesLecturer;
+			return matchesSubject && matchesLecturer && matchesCourse;
 		});
 	}
 
