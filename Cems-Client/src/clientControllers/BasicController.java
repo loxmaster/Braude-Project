@@ -30,9 +30,10 @@ public class BasicController {
 		if(event != null){
 			((Node) event.getSource()).getScene().getWindow().hide();
 		}
+		final double[] offsets = new double[2];
 		AnchorPane root = null;
 		Stage currentStage = new Stage();
-		currentStage.initStyle(StageStyle.UNDECORATED); 
+		currentStage.initStyle(StageStyle.UNDECORATED); // Removes the windows top panel bar
 		FXMLLoader loader = new FXMLLoader();
 		try {
 			root = loader.load(getClass().getResource(fxml).openStream());
@@ -41,6 +42,18 @@ public class BasicController {
 		}
 		Scene scene = new Scene(root);
 		scene.getStylesheets().add(getClass().getResource("/gui/Stylesheet.css").toExternalForm());
+		
+        // Add mouse event handlers for window movement
+        root.setOnMousePressed(mouseEvent -> {
+            offsets[0] = mouseEvent.getSceneX();
+            offsets[1] = mouseEvent.getSceneY();
+        });
+
+        root.setOnMouseDragged(mouseEvent -> {
+            currentStage.setX(mouseEvent.getScreenX() - offsets[0]);
+            currentStage.setY(mouseEvent.getScreenY() - offsets[1]);
+        });
+
 		currentStage.setScene(scene);
 		currentStage.setTitle(title);
 		currentStage.show();
