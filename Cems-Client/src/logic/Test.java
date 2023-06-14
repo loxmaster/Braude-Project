@@ -1,40 +1,21 @@
 package logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 
-public class Test {
+public class Test implements Serializable{
     private ArrayList<QuestionModel> quesitonsInTest;
     private String id, subject, author;
     private String duration, TestComments, testCode;
+	Button LockTest;
     private String time, dateString;
+	Button AddTime;
     private DatePicker date;
-    private String StudentsName,StudentID,Grade;
-
-    public String getGrade() {
-        return Grade;
-    }
-
-    public void setGrade(String grade) {
-        Grade = grade;
-    }
-
-    public String getStudentID() {
-        return StudentID;
-    }
-
-    public void setStudentID(String studentID) {
-        StudentID = studentID;
-    }
-
-    public String getStudentsName() {
-        return StudentsName;
-    }
-
-    public void setStudentsName(String studentsName) {
-        StudentsName = studentsName;
-    }
+	private String TimeLeft;
+    private String grade;
 
     public Test() {
         id = new String();
@@ -46,14 +27,6 @@ public class Test {
         time = new String();
         dateString = new String();
         quesitonsInTest = new ArrayList<QuestionModel>();
-    }
-
-    public Test(String id,String subject,String StudentsName,String StudentID,String Grade) {
-        this.id = id;
-        this.subject = subject;
-        this.StudentsName = StudentsName;
-        this.StudentID = StudentID;
-        this.Grade = Grade;
     }
 
     public Test(String id, String subject, String author, String duration, String testComments, String testCode,
@@ -153,5 +126,27 @@ public class Test {
         for (QuestionModel q : list)
             if(!quesitonsInTest.contains(q))
                 quesitonsInTest.add(q);
+    }
+
+	public void setAddTime(Button AddTime) {
+        this.AddTime = AddTime;
+		
+	}
+
+	public void setLockTest(Button LockTest) {
+        this.LockTest = LockTest;
+		
+	}
+
+	public String getTimeLeft() {
+		return TimeLeft;
+	}
+
+	public void setTimeLeft(String timeLeft) {
+		TimeLeft = timeLeft;
+	}
+
+    public String getGrade() {
+        return grade;
     }
 }

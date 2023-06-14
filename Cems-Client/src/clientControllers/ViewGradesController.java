@@ -35,47 +35,47 @@ public class ViewGradesController extends BasicController {
         // Loading student main screen 
         openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student", event);
     }
-    
-@FXML
-void ExamLoad() {
-    Exams = new ArrayList<>(Examstoadd());
-    int column=0;
-    int row=1;
-    try {
-        for(Test test : Exams){
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            URL url = getClass().getResource("/clientFXMLS/StudentTestCard.fxml");
-            if(url == null) {
-                System.out.println("Resource not found. Exiting...");
-                return;
-            }
-            AnchorPane testcard = fxmlLoader.load(url.openStream()); 
-            TestCardController cardController = fxmlLoader.getController();
-            cardController.setCard(test);
-            if(column == 4) {
-                column = 0;
-                ++row;
-            }
-
-            ExamContainer.add(testcard, column++, row);
-            GridPane.setMargin(testcard, new Insets(10));
-        }
-    } catch (Exception e) {
-        System.out.println("An error occurred:");
-        e.printStackTrace();
-    }
 }
+// @FXML
+// void ExamLoad() {
+//     Exams = new ArrayList<>(Examstoadd());
+//     int column=0;
+//     int row=1;
+//     try {
+//         for(Test test : Exams){
+//             FXMLLoader fxmlLoader = new FXMLLoader();
+//             URL url = getClass().getResource("/clientFXMLS/StudentTestCard.fxml");
+//             if(url == null) {
+//                 System.out.println("Resource not found. Exiting...");
+//                 return;
+//             }
+//             AnchorPane testcard = fxmlLoader.load(url.openStream()); 
+//             TestCardController cardController = fxmlLoader.getController();
+//             cardController.setCard(test);
+//             if(column == 4) {
+//                 column = 0;
+//                 ++row;
+//             }
+
+//             ExamContainer.add(testcard, column++, row);
+//             GridPane.setMargin(testcard, new Insets(10));
+//         }
+//     } catch (Exception e) {
+//         System.out.println("An error occurred:");
+//         e.printStackTrace();
+//     }
+// }
 
 
-    private List<Test> Examstoadd(){
-        List<Test> ls = new ArrayList<>();
-        Test test = new Test("020301","algebra1","misha","020211","69");  
-        ls.add(test);
-        test = new Test("020301","algebra1","misha2","0211","6");  
-        ls.add(test);
-        test = new Test("020301","algebra1","misha3","056411","100");  
-        ls.add(test);
-        return ls;
-  }
+//     private List<Test> Examstoadd(){
+//         List<Test> ls = new ArrayList<>();
+//         Test test = new Test("020301","algebra1","misha","020211","69");  
+//         ls.add(test);
+//         test = new Test("020301","algebra1","misha2","0211","6");  
+//         ls.add(test);
+//         test = new Test("020301","algebra1","misha3","056411","100");  
+//         ls.add(test);
+//         return ls;
+//   }
 
-}
+// }

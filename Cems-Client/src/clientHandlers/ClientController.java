@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import logic.Test;
 
@@ -118,7 +119,14 @@ public class ClientController implements ChatIF {
             e.printStackTrace();
         }
     }
-
+	   public void GetOngoingTests() {
+	        try {
+	            client.fetchOngoingTests();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+		   
+	    }
     // Sends question to data base and updating existing one
     public void EditQuestion(String newBody, String newQNumber, String originalId) {
         try {

@@ -1,12 +1,26 @@
 package logic;
 
-//import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.ArrayList;
 
-public class Test {
-    //private ArrayList<Question> quesitonsInTest;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+
+public class Test implements Serializable{
+//    private String id, subject, author;
+//    private String duration, TestComments, testCode;
+//	Button LockTest;
+//    private String time, dateString;
+//	Button AddTime;
+//    private DatePicker date;
+//	private String TimeLeft;
     private String id, subject, author;
     private String duration, TestComments, testCode;
-    private String date, time;
+    transient Button LockTest;
+    private String time, dateString;
+    transient Button AddTime;
+    transient DatePicker date;
+    private String TimeLeft;
 
     public Test() {
         id = new String();
@@ -15,29 +29,25 @@ public class Test {
         duration = new String();
         TestComments = new String();
         testCode = new String();
-        date = new String();
         time = new String();
-     }
+        dateString = new String();
+    }
 
     public Test(String id, String subject, String author, String duration, String testComments, String testCode,
-            String date, String time) {
+            String dateString, String time) {
         this.id = id;
         this.subject = subject;
         this.author = author;
         this.duration = duration;
         TestComments = testComments;
         this.testCode = testCode;
-        this.date = date;
+        this.dateString = dateString;
         this.time = time;
     }
 
-    /*public ArrayList<QuestionModel> getQuesitonsInTest() {
-        return quesitonsInTest;
-    }
 
-    public void setQuesitonsInTest(ArrayList<QuestionModel> quesitonsInTest) {
-        this.quesitonsInTest = quesitonsInTest;
-    }*/
+
+
 
     public String getId() {
         return id;
@@ -45,6 +55,18 @@ public class Test {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public void setDate(DatePicker date) {
+        this.date = date;
     }
 
     public String getSubject() {
@@ -87,14 +109,6 @@ public class Test {
         this.testCode = testCode;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getTime() {
         return time;
     }
@@ -103,4 +117,23 @@ public class Test {
         this.time = time;
     }
 
+    public DatePicker getDate() {
+        return date;
+    }
+
+
+	public void setAddTime(Button AddTime) {
+        this.AddTime = AddTime;
+		
+	}
+
+	public void setLockTest(Button LockTest) {
+        this.LockTest = LockTest;
+		
+	}
+
+	public void setTimeLeft(String TimeLeft) {
+		 this.TimeLeft = TimeLeft;
+				
+	}
 }
