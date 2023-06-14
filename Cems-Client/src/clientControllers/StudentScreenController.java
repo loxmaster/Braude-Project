@@ -37,10 +37,10 @@ public class StudentScreenController extends BasicController {
 		openScreen("/clientFXMLS/EnterCodeForTestPreforming.fxml", "CEMS System - Student - Enter Test Code", event);
 	}
 
-	@FXML
-	void showGrades(ActionEvent event) {
-		// Opening Show Grades screen
-		ViewGradesController vgc = (ViewGradesController) openScreen("/clientFXMLS/ViewGrades.fxml", "CEMS System - Student Grades", event);
-		vgc.ExamLoad();
-	}
-}
+// 	@FXML
+// 	void showGrades(ActionEvent event) {
+// 		// Opening Show Grades screen
+// 		ViewGradesController vgc = (ViewGradesController) openScreen("/clientFXMLS/ViewGrades.fxml", "CEMS System - Student Grades", event);
+// 		vgc.ExamLoad();
+// 	}
+ }

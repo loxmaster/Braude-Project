@@ -7,10 +7,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import logic.ClientModel;
 import logic.Question;
+import logic.Test;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import serverUI.ServerUI;
@@ -126,7 +129,6 @@ public class EchoServer extends AbstractServer {
 						case "createanswers":
 						case "editquestion":
 						case "Addtesttodata":
-						//executeMyQuery will execute a basic UPDATE query
 							int flag = executeMyQuery(list.get(1));
 							client.sendToClient(flag == 0 ? idExists : flag);
 							break;
@@ -136,16 +138,21 @@ public class EchoServer extends AbstractServer {
 							client.sendToClient(resStringList == null ? (Object) notFound : (Object) resStringList);
 							break;
 
-						case "SAMPLE":
-							ArrayList<String> unique = SAMPLE(list.get(1), "SAMPLE");
-							client.sendToClient(unique == null ? (Object) notFound : (Object) unique);
-							break;
-
 						case "lecturerquestions":
 							ArrayList<Question> resQuestionList = getQuestionsFromDBForLecturer(list.get(1));
 							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
 							break;
-
+							
+						case "fetchOngoingTests":
+						try {
+							ArrayList<Test> ongoingTests = fetchOngoingTestsFromDB(); 
+							client.sendToClient((Object) ongoingTests);
+							//client.sendToClient(ongoingTests == null ? (Object) notFound : (Object) ongoingTests);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+							break;
 						case "testGrades":
 							ArrayList<String> resList = TestGrades_PassedGrades(list.get(1), 1);
 							client.sendToClient(resList == null ? (Object) notFound : (Object) resList);
@@ -209,7 +216,54 @@ public class EchoServer extends AbstractServer {
 			return 0;
 		}
 	}
+	private ArrayList<Test> fetchOngoingTestsFromDB() {
+	    ArrayList<Test> tests = new ArrayList<>();
+	    try {
+	        Statement statement = conn.createStatement();
+	        ResultSet resultSet = statement.executeQuery("SELECT * FROM tests WHERE date = CURDATE()");
+	        while(resultSet.next()) {
+	            Test test = new Test();
+	            test.setId(resultSet.getString("id"));
+	            test.setDuration(resultSet.getString("duration"));
+	            test.setTestComments(resultSet.getString("testcomments"));
+	            test.setAuthor(resultSet.getString("authorsname"));
+	            test.setTestCode(resultSet.getString("code"));
+	            test.setDateString(resultSet.getString("date"));
+	            test.setTime(resultSet.getString("time"));
 
+	            // Calculate time left
+	            LocalTime testTime = LocalTime.parse(test.getTime());
+	            LocalTime now = LocalTime.now();
+
+	            // Parse duration which is in HH:mm format
+	            String[] durationParts = test.getDuration().split(":");
+	            int hours = Integer.parseInt(durationParts[0]);
+	            int minutes = Integer.parseInt(durationParts[1]);
+	            Duration testDuration = Duration.ofHours(hours).plusMinutes(minutes);
+	            
+	            LocalTime testEndTime = testTime.plus(testDuration);
+	            Duration durationToEnd = Duration.between(now, testEndTime);
+
+	            // If the test has already finished, we'll ignore it
+	            if (durationToEnd.isNegative()) continue;
+
+	            test.setTimeLeft(durationToEnd.toString());
+	            //resultSet.close();///////
+
+	            tests.add(test);
+				System.out.println("Message sent back: " + tests);
+				if (tests.size() == 0)
+					return null;
+	        }
+	    } catch (SQLException | NumberFormatException e) {
+	        e.printStackTrace();
+	    }
+	    return tests;
+	}
+
+
+	
+	
 	// gets Questions from db
 	private ArrayList<Question> getQuestionsFromDBForLecturer(String query) {
 		try {
@@ -260,25 +314,6 @@ public class EchoServer extends AbstractServer {
 	 * @throws SQLException
 	 */
 	private ArrayList<String> getDataFromDB(String query, String out) {
-		try {
-			stmt = conn.createStatement();
-			ResultSet result = stmt.executeQuery(query);
-			ArrayList<String> res = new ArrayList<String>();
-			res.add(out);
-			if (result.next()) {
-				res.add(result.getString(1));
-				System.out.println("Message sent back: " + res);
-				return res;
-			} else {
-				return null;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private ArrayList<String> SAMPLE(String query, String out) {
 		try {
 			stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
