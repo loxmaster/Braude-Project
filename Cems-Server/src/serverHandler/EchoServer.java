@@ -286,13 +286,13 @@ public class EchoServer extends AbstractServer {
 			res.add(out);
 			while (result.next()) {
 				res.add(result.getString(1));
-				System.out.println("Message sent back: " + res);
 				flag = true;
 			}
-
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Message sent back: " + res);
 		return flag ? res : null;
 
 	}

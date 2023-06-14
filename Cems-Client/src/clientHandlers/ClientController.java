@@ -92,7 +92,7 @@ public class ClientController implements ChatIF {
     // gets all courses available for lecturer
     public void getCoursesForLecturer(Object username) {
         try {
-            client.handleMessageFromLecturerUI(username);
+            client.handle_test_MessageFromLecturerUI(username);
         } catch (Exception e) {
             e.printStackTrace();
         }

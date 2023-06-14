@@ -93,10 +93,9 @@ public class ClientHandler extends AbstractClient {
 				}
 
 				if (list.get(0).equals("lecturercourses")) {
-					subjectArray = list.get(1).split(",");
-					for (String s : subjectArray) {
-						LecturerController.getCoursesList().add(s.toUpperCase());
-					}
+					list.remove(0);
+					list.replaceAll(String::toUpperCase);
+					LecturerController.getCoursesList().addAll(list);
 				}
 
 				// assign subjectID that we've got from the server
@@ -196,15 +195,38 @@ public class ClientHandler extends AbstractClient {
 	 * @return 
 	 */ 
 	
+	// public synchronized void handleMessageFromLecturerUI(Object username) {
+	// 	ArrayList<String> subjectList = new ArrayList<String>();
+	// 	ArrayList<String> courseList = new ArrayList<String>();
+	// 	subjectList.addAll(Arrays.asList("lecturersubjects",
+	// 			"SELECT courses FROM projecton.lecturer WHERE (`username` = '" + (String) username + "');"));
+				
+	// 	courseList.addAll(Arrays.asList("lecturercourses", "SELECT sc.coursename FROM lecturer l JOIN subjectcourses sc ON find_in_set( sc.subjectname, l.courses) WHERE (l.username =  '" + (String) username + "' );"));
+	// 	try {
+	// 		sendToServer((Object) subjectList);
+	// 		sendToServer((Object) courseList);
+	// 	} catch (IOException e) {
+	// 		e.printStackTrace();
+	// 	}
+	// }
 	public synchronized void handleMessageFromLecturerUI(Object username) {
 		ArrayList<String> subjectList = new ArrayList<String>();
-		ArrayList<String> courseList = new ArrayList<String>();
+		
 		subjectList.addAll(Arrays.asList("lecturersubjects",
 				"SELECT courses FROM projecton.lecturer WHERE (`username` = '" + (String) username + "');"));
 				
-		courseList.addAll(Arrays.asList("lecturercourses", "SELECT sc.coursename FROM lecturer l JOIN subjectcourses sc ON find_in_set( sc.subjectname, l.courses) WHERE (l.username =  '" + (String) username + "' );"));
 		try {
 			sendToServer((Object) subjectList);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public synchronized void handle_test_MessageFromLecturerUI(Object username) {
+		ArrayList<String> courseList = new ArrayList<String>();
+				
+		courseList.addAll(Arrays.asList("lecturercourses", "SELECT sc.coursename FROM lecturer l JOIN subjectcourses sc ON find_in_set( sc.subjectname, l.courses) WHERE (l.username =  '" + (String) username + "' );"));
+		try {
 			sendToServer((Object) courseList);
 		} catch (IOException e) {
 			e.printStackTrace();

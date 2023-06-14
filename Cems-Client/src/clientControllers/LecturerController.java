@@ -40,6 +40,9 @@ public class LecturerController extends BasicController {
 		// get all the subjects for lecturer
 		setSubjectsList(new ArrayList<String>());
 		ClientUI.chat.getSubjectsForLecturer((Object) ClientHandler.user.getUsername());
+		setCoursesList(new ArrayList<String>());
+		ClientUI.chat.getCoursesForLecturer((Object) ClientHandler.user.getUsername());
+
 		// Sets the welcome label
 		setWelcomeLabel();
 	}
@@ -96,7 +99,7 @@ public class LecturerController extends BasicController {
 		LecturerController.subjectsList = subjectsList;
 	}
 
-	public static void setCoursesList(ArrayList<String> subjectsList) {
+	public static void setCoursesList(ArrayList<String> coursesList) {
 		LecturerController.coursesList = coursesList;
 	}
 
