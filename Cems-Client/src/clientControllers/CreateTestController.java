@@ -199,7 +199,7 @@ public class CreateTestController extends BasicController {
 		if (totalPoints.getText().equals("100")) {
 			totalPoints.setStyle("-fx-background-color: transparent;");
 			test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
-			
+
 		} else {
 			totalPoints.setStyle("-fx-background-color: red;"); // Set red background color
 			JOptionPane.showMessageDialog(null, "Points dont add up to 100!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -211,7 +211,7 @@ public class CreateTestController extends BasicController {
 		if (date.getValue() != null) {
 			date.setStyle("-fx-background-color: transparent;");
 			test.setDate(date);
-			
+
 		} else {
 			date.setStyle("-fx-background-color: red;"); // Set red background color
 			JOptionPane.showMessageDialog(null, "Date Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -246,10 +246,10 @@ public class CreateTestController extends BasicController {
 		if (TIME_PATTERN.matcher(startTime.getText()).matches()) {
 			startTime.setStyle("-fx-background-color: transparent;");
 			test.setTime(startTime.getText());
-			
+
 		} else {
 			startTime.setStyle("-fx-background-color: red;"); // Set red background color
-			JOptionPane.showMessageDialog(null, "Please insert time in a HH:MM format !", "Error",
+			JOptionPane.showMessageDialog(null, "Please insert time in a HH:MM format!", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			flag = false;
 			return;
@@ -258,20 +258,20 @@ public class CreateTestController extends BasicController {
 		if (TIME_PATTERN.matcher(duration.getText()).matches() && !duration.getText().equals("00:00")) {
 			duration.setStyle("-fx-background-color: transparent;");
 			test.setDuration(duration.getText());
-			
+
 		} else {
 			duration.setStyle("-fx-background-color: red;"); // Set red background color
-			JOptionPane.showMessageDialog(null, "Please insert duration in a HH:MM format and above 0 !", "Error",
+			JOptionPane.showMessageDialog(null, "Please insert duration in a HH:MM format and above 0!", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			flag = false;
 			return;
 		}
 
 		if (test.getQuesitonsInTest().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Please add questions !", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Please add questions!", "Error", JOptionPane.ERROR_MESSAGE);
 			flag = false;
 			return;
-		} 
+		}
 		if (flag)
 			JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
 
@@ -283,9 +283,9 @@ public class CreateTestController extends BasicController {
 		// TODO show some prompt of finishing or preview of what is gonna be sent
 		backToLecturer(event);
 	}
-
-	// ############################### Local Methods
-	// ########################################################################
+	// #########################################################
+	// ######################### Local Methods #################
+	// #########################################################
 
 	/**
 	 * Method to set the test we were working on when returning to this screen.
