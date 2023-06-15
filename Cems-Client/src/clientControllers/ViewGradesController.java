@@ -12,11 +12,13 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import logic.Test;
 
 public class ViewGradesController extends BasicController {
 
     public static ArrayList<Test> completedTestsList;
+    private static ArrayList<String> SubjectCourse;
 
     @FXML
     private GridPane ExamContainer;
@@ -34,19 +36,30 @@ public class ViewGradesController extends BasicController {
     private List<Test> Exams;
 
     @FXML
+    private Text Student_ID_Text;
+
+    @FXML
     void backButtonPressed(ActionEvent event) {
         // Loading student main screen
         openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student", event);
     }
-    
-//comments here 
+
+
+    // comments here
     @FXML
     void ExamLoad() {
-        ClientUI.chat.getcompletedTestsList();       
+        ClientUI.chat.getcompletedTestsList();
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Student_ID_Text.setText("Student ID: "+completedTestsList.get(0).getStudentID());
         int column = 0;
         int row = 1;
         try {
             for (Test test : completedTestsList) {
+                ClientUI.chat.getCourseForTest(test.getId());
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 URL url = getClass().getResource("/clientFXMLS/StudentTestCard.fxml");
                 if (url == null) {
@@ -55,7 +68,7 @@ public class ViewGradesController extends BasicController {
                 }
                 AnchorPane testcard = fxmlLoader.load(url.openStream());
                 TestCardController cardController = fxmlLoader.getController();
-                cardController.setCard(test);
+                cardController.setCard(test, SubjectCourse);
                 if (column == 4) {
                     column = 0;
                     ++row;
@@ -74,21 +87,14 @@ public class ViewGradesController extends BasicController {
         return completedTestsList;
     }
 
-
     public static void setCompletedTestsList(ArrayList<Test> completedTests) {
         completedTestsList = completedTests;
     }
 
+    public static void setSubjectsCoursesList(ArrayList<String> SubjectandCourse) {
+        SubjectCourse = SubjectandCourse;
+    }
 
-    // private List<Test> studentsExamsLoad() {
 
-    //     List<Test> ls = new ArrayList<>();
-    //     //Test test = ls.add(test);
-    //     test = new Test("020301", "algebra1", "misha2", "0211", "6");
-    //     ls.add(test);
-    //     test = new Test("020301", "algebra1", "misha3", "056411", "100");
-    //     ls.add(test);
-    //     return ls;
-    // }
 
 }

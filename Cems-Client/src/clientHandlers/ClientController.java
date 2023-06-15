@@ -80,6 +80,15 @@ public class ClientController implements ChatIF {
         }
     }
 
+        // gets all subject available for lecturer
+    public void getCourseForTest(Object id) {
+        try {
+            client.getCourseForTest((String)id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // gets the id of the subject given
     public void GetSubjectIDfromSubjectCourses(String subjectname) {
         try {

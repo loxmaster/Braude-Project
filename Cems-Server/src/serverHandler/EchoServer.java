@@ -136,11 +136,19 @@ public class EchoServer extends AbstractServer {
 							break;
 
 						case "completedtestsForStudentGrades":
-							ArrayList<String> resCompletedTests = getCompletedTests_db(list.get(1), "completedtestsForStudentGrades");
+							ArrayList<String> resCompletedTests = getCompletedTests_db(list.get(1),
+									"completedtestsForStudentGrades");
 							client.sendToClient(
 									resCompletedTests == null ? (Object) notFound : (Object) resCompletedTests);
 							break;
 
+						case "getSubjectsCourseForTest":
+							ArrayList<String> resSubjectsCoursesList = getSubjectsCoursesList(list.get(1),
+									"getSubjectsCourseForTest");
+							client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
+									: (Object) resSubjectsCoursesList);
+							break;
+							
 						case "lecturerquestions":
 							ArrayList<Question> resQuestionList = getQuestionsFromDBForLecturer(list.get(1));
 							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
@@ -176,7 +184,7 @@ public class EchoServer extends AbstractServer {
 				// check if the password in the DB is the same as user input
 				if (result.getString(2).equals(list.get(2))) {
 					String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3)
-					+ " " + result.getString(4) + " " + result.getString(5) + " " + result.getString(6);
+							+ " " + result.getString(4) + " " + result.getString(5) + " " + result.getString(6);
 					System.out.println("Message sent back: " + res);
 					client.sendToClient((Object) res);
 				}
@@ -280,8 +288,8 @@ public class EchoServer extends AbstractServer {
 	}
 
 	private ArrayList<String> getCompletedTests_db(String query, String out) {
-			ArrayList<String> res = new ArrayList<String>();
-			res.add(out); //add a new identifier
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
 		try {
 			stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
@@ -290,12 +298,31 @@ public class EchoServer extends AbstractServer {
 					res.add(result.getString(index));
 				}
 			}
-			return res; //res size is 13 where in first index is indentifier
+			return res; // res size is 13 where in first index is indentifier
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
+
+private ArrayList<String> getSubjectsCoursesList(String query, String out) {
+    ArrayList<String> res = new ArrayList<String>();
+    res.add(out); // add a new identifier
+    try {
+        stmt = conn.createStatement();
+        ResultSet result = stmt.executeQuery(query);
+        while (result.next()) { // This will move the cursor to the next row
+            for (int index = 1; index <= 4; index++) {
+                res.add(result.getString(index));
+            }
+        }
+        return res; // res size is 5 where in first index is indentifier
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
 
 	/**
 	 * Method to start the server connection with MySQL WorkBench.

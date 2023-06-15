@@ -1,9 +1,10 @@
 package clientControllers;
 
+import java.util.ArrayList;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import logic.Test;
 
@@ -24,14 +25,39 @@ public class TestCardController {
     @FXML
     private Text test_name;
 
-    private String [] colors = {"B9E5FF","BDB2FE","FB9AA8","FF5056"};
+    @FXML
+    private Text test_date;
 
-    public void setCard(Test  test){
+    public void setCard(Test test, ArrayList<String> SubjectCourse) {
         code_Exam.setText(test.getId());
-        test_name.setText(test.getSubject());
+        test_name.setText(SubjectCourse.get(2));
+        if (Integer.parseInt(test.getGrade()) < 55) {
+            grade.setStyle("-fx-fill: red;");
+        }
         grade.setText(test.getGrade());
-        studentexamcard.setStyle("-fx-background-color: #"+colors[(int)Math.random()*colors.length]
-        +";"+ "-fx-background-radius: 15;"+"-fx-effect: dropShadown(three-pass-box, rgba(0,0,0,1),10,0,0,10);");
+        test_date.setText(test.getDateString());
+        switch ((int) ((Math.random() * 17)%3)) {
 
+            case 1:
+                studentexamcard.setStyle("-fx-background-color: #B9E5FF"
+                        + ";" + "-fx-background-radius: 15;"
+                        + "-fx-effect: dropShadown(three-pass-box, rgba(0,0,0,1),10,0,0,10);");
+                break;
+            case 2:
+                studentexamcard.setStyle("-fx-background-color: #BDB2FE"
+                        + ";" + "-fx-background-radius: 15;"
+                        + "-fx-effect: dropShadown(three-pass-box, rgba(0,0,0,1),10,0,0,10);");
+                break;
+            case 3:
+                studentexamcard.setStyle("-fx-background-color: #FB9AA8"
+                        + ";" + "-fx-background-radius: 15;"
+                        + "-fx-effect: dropShadown(three-pass-box, rgba(0,0,0,1),10,0,0,10);");
+                break;
+            default:
+                studentexamcard.setStyle("-fx-background-color: #5490a9"
+                        + ";" + "-fx-background-radius: 15;"
+                        + "-fx-effect: dropShadown(three-pass-box, rgba(0,0,0,1),10,0,0,10);");
+                break;
+        }
     }
 }

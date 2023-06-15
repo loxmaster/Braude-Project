@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DisplacementMap?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.FloatMap?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.ViewGradesController">
    <children>
-      <Label alignment="CENTER" layoutX="200.0" layoutY="134.0" text="View Grades" textAlignment="CENTER" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="134.0">
+      <Label alignment="CENTER" layoutX="231.0" layoutY="134.0" prefHeight="46.0" prefWidth="914.0" text="View Grades" textAlignment="CENTER" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="134.0">
          <font>
             <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
-      <Button fx:id="logo" layoutX="550.0" layoutY="37.0" mnemonicParsing="false" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="logo" layoutX="550.0" layoutY="37.0" mnemonicParsing="false" onAction="#backButtonPressed" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="EXIT" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitPressed" prefHeight="30.0" prefWidth="120.0" text="EXIT" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
@@ -30,7 +39,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <ScrollPane layoutX="10.0" layoutY="195.0" prefHeight="525.0" prefWidth="1325.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="195.0">
+      <ScrollPane blendMode="MULTIPLY" layoutX="10.0" layoutY="229.0" prefHeight="480.0" prefWidth="1325.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="229.0">
          <content>
             <GridPane fx:id="ExamContainer">
                <rowConstraints>
@@ -38,6 +47,57 @@
                </rowConstraints>
             </GridPane>
          </content>
+         <effect>
+            <DropShadow height="74.98" radius="21.2975" spread="0.13" width="12.21">
+               <input>
+                  <DisplacementMap>
+                     <mapData>
+                        <FloatMap />
+                     </mapData>
+                  </DisplacementMap>
+               </input>
+            </DropShadow>
+         </effect>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
       </ScrollPane>
+      <Text fx:id="Student_ID_Text" layoutX="20.0" layoutY="178.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Student ID: " wrappingWidth="251.849609375" AnchorPane.bottomAnchor="510.0" AnchorPane.leftAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="24.0" />
+         </font>
+         <stroke>
+            <LinearGradient endX="0.6113744075829384" endY="1.0" startX="0.5118483412322276">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.43421053886413574" green="0.24122807383537292" blue="0.24122807383537292" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.10599415004253387" green="0.1629507839679718" blue="0.7894737124443054" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </stroke>
+         <fill>
+            <RadialGradient centerX="0.48895027624309395" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.43421053886413574" green="0.24122807383537292" blue="0.24122807383537292" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.02290448360145092" green="0.07253086566925049" blue="0.6184210777282715" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Text>
    </children>
 </AnchorPane>

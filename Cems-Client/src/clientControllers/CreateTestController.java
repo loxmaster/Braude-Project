@@ -67,7 +67,7 @@ public class CreateTestController extends BasicController {
 	void addQuestionPressed(ActionEvent event) {
 
 		test.setAuthor(ClientHandler.user.getpName());
-		test.setSubject(subjectComboBox.getValue());
+		test.setCourse(subjectComboBox.getValue());
 		test.setTestCode(code.getText());
 		test.setTime(startTime.getText());
 		test.setDate(date);
@@ -97,7 +97,7 @@ public class CreateTestController extends BasicController {
 		test.setAuthor(ClientHandler.user.getUsername());
 		// loads the subjects in the subjects combobox
 		load();
-		subjectComboBox.setValue(test.getSubject());
+		subjectComboBox.setValue(test.getCourse());
 		code.setText(test.getTestCode());
 		startTime.setText(test.getTime());
 		duration.setText(test.getDuration());
@@ -168,7 +168,7 @@ public class CreateTestController extends BasicController {
 	@FXML
 	void savePressed(ActionEvent event) {
 		test.setAuthor(ClientHandler.user.getpName());
-		test.setSubject(subjectComboBox.getValue());
+		test.setCourse(subjectComboBox.getValue());
 		test.setTestCode(code.getText());
 		test.setTime(startTime.getText());
 		test.setDate(date);

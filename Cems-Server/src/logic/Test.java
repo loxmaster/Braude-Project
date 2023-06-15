@@ -7,7 +7,7 @@ import javafx.scene.control.DatePicker;
 public class Test {
 
     private ArrayList<QuestionModel> quesitonsInTest;
-    private String id, subject, author;
+    private String id, course, author;
     private String duration, TestComments, testCode;
     private String time, dateString;
     private DatePicker date;
@@ -16,7 +16,7 @@ public class Test {
 
     public Test() {
         id = new String();
-        subject = new String();
+        course = new String();
         author = new String();
         duration = new String();
         TestComments = new String();
@@ -28,7 +28,7 @@ public class Test {
 
     public Test(String id, String subject, String StudentsName, String StudentID, String Grade) {
         this.id = id;
-        this.subject = subject;
+        this.course = subject;
         this.StudentsName = StudentsName;
         this.StudentID = StudentID;
         this.Grade = Grade;
@@ -37,7 +37,7 @@ public class Test {
     public Test(String id, String subject, String author, String duration, String testComments, String testCode,
             String dateString, String time) {
         this.id = id;
-        this.subject = subject;
+        this.course = subject;
         this.author = author;
         this.duration = duration;
         TestComments = testComments;
@@ -105,8 +105,8 @@ public class Test {
         return dateString;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getCourse() {
+        return course;
     }
 
     public String getAuthor() {
@@ -177,8 +177,8 @@ public class Test {
         this.date = date;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setCourse(String subject) {
+        this.course = subject;
     }
 
     public void setAuthor(String author) {

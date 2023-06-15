@@ -3,6 +3,9 @@ package clientHandlers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import javax.print.DocFlavor.STRING;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.LecturerController;
@@ -52,7 +55,7 @@ public class ClientHandler extends AbstractClient {
 		String[] subjectArray;
 		ArrayList<String> list;
 		ArrayList<Question> questionList;
-		ArrayList<Test> CompletedTestList;
+		// ArrayList<Test> CompletedTestList;
 
 		ArrayList<Test> completedTests;
 
@@ -105,32 +108,41 @@ public class ClientHandler extends AbstractClient {
 					CreateQuestionController.setSubjectID(list.get(1));
 				}
 
-				// assign subjectID that we've got from the server
+				// getting a list of completed test the are computerized,completed and have been
+				// tested by lecturer
 				else if (list.get(0).equals("completedtestsForStudentGrades")) {
-					// subjectArray = list.get(1).split(",");
 					System.out.println("Client Handler: " + list.get(0));
 					ArrayList<Test> listToAdd = new ArrayList<>();
-					CompletedTestList = (ArrayList<Test>) severMessage;
+					// CompletedTestList = (ArrayList<Test>) severMessage;
 					int i = 1;
 					while (i < list.size()) {
 						listToAdd.add(new Test(
 								list.get(i),
-								list.get(i+1),
-								list.get(i+2),
-								list.get(i+3),
-								list.get(i+4),
-								list.get(i+5),
-								list.get(i+6),
-								list.get(i+7),
-								list.get(i+8),
-								list.get(i+9),
-								list.get(i+10),
-								list.get(i+11)));
-						i+=12;
+								list.get(i + 1),
+								list.get(i + 2),
+								list.get(i + 3),
+								list.get(i + 4),
+								list.get(i + 5),
+								list.get(i + 6),
+								list.get(i + 7),
+								list.get(i + 8),
+								list.get(i + 9),
+								list.get(i + 10),
+								list.get(i + 11)));
+						i += 12;
 					}
-					// amir assign the new CompletedTestList into static variable under
-					// ViewGradesController to save it there.
 					ViewGradesController.setCompletedTestsList(listToAdd);
+				}
+
+				else if (list.get(0).equals("getSubjectsCourseForTest")) {
+					System.out.println("Client Handler: " + list.get(0));
+					ArrayList<String> listToAdd = new ArrayList<>();
+					int i = 1;
+					while (i < list.size()) {
+						listToAdd.add(list.get(i));
+						i++;
+					}
+					ViewGradesController.setSubjectsCoursesList(listToAdd);
 				}
 			}
 
@@ -270,8 +282,7 @@ public class ClientHandler extends AbstractClient {
 	public void getcompletedTestsList() {
 
 		ArrayList<String> list = new ArrayList<String>();
-		// FIXME change query here amir
-		String studentId = "234";
+		String studentId = user.getUser_id();
 		String testType = "computer";
 		String status = "completed";
 		String tested = "true";
@@ -281,6 +292,22 @@ public class ClientHandler extends AbstractClient {
 		list.addAll(Arrays.asList("completedtestsForStudentGrades", query));
 		try {
 			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getCourseForTest(String id) {
+
+		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
+		String subjectid = id.substring(0, 2);
+		String courseid = id.substring(2, 4);
+		String query = String.format(
+				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+				subjectid, courseid);
+		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTest", query));
+		try {
+			sendToServer((Object) subjectcoursenameofcompletedtest);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
