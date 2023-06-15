@@ -11,21 +11,28 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 
 public class CreateQuestionController extends BasicController {
 	public static String subjectID;
+
+	ObservableList<String> subjectList;
+	ObservableList<String> courseList;
 
 	@FXML
 	private TextField qNumber;
 
 	@FXML
-	private CheckBox A, B, C, D;
+	private RadioButton A, B, C, D;
 
 	@FXML
-	private Button savebutton;
+    private ToggleGroup CorectAnswer;
+
+	@FXML
+	private Button savebutton,cancelbutton,exitbutton, logo;
 
 	@FXML
 	private TextField body, qA, qB, qC, qD;
@@ -33,14 +40,23 @@ public class CreateQuestionController extends BasicController {
 	@FXML
 	private ComboBox<String> subjectCombobox;
 
+	@FXML
+    private ComboBox<String> courseCombobox;
+
 	public static void setSubjectID(String subjectID) {
 		CreateQuestionController.subjectID = subjectID;
 	}
 
-	public void loadSubjects(ArrayList<String> list) {
-		ObservableList<String> subjectList = FXCollections.observableArrayList(list);
+	public void loadFilterComboboxes() {
+		subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
+		courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
+
 		subjectCombobox.getItems().removeAll();
 		subjectCombobox.setItems(subjectList);
+
+		courseCombobox.getItems().removeAll();
+		courseCombobox.setItems(courseList);
+
 	}
 
 	@FXML
