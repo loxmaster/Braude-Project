@@ -11,6 +11,7 @@ public class QuestionModel implements Serializable {
     private String questiontext, questionnumber, lecturer;
     private String optionA, optionB, optionC, optionD;
     private String answer;
+    private int points = 0;
     private Button edit;
     private CheckBox checkBox;
 
@@ -28,6 +29,14 @@ public class QuestionModel implements Serializable {
         this.optionD = optionD;
         this.answer = answer;
         checkBox = new CheckBox();
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 
     public String getOptionA() {

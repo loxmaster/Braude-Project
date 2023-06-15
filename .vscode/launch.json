@@ -1,0 +1,34 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+
+		{
+			"type": "java",
+			"name": "ServerUI",
+			"request": "launch",
+			"mainClass": "serverUI.ServerUI",
+			"projectName": "CEMS-Server"
+		},
+		{
+			"type": "java",
+			"name": "ClientUI",
+			"request": "launch",
+			"mainClass": "clientHandlers.ClientUI",
+			"projectName": "CEMS-client"
+		},
+	],"tasks": {
+		"delay": {
+		  "label": "Delay",
+		  "type": "shell",
+		  "command": "Start-Sleep -Seconds 5",
+		  "group": {
+			"kind": "build",
+			"isDefault": true
+		  }
+		}
+	  }
+	
+}

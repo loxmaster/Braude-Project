@@ -1,10 +1,10 @@
 package serverHandler;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -49,7 +49,6 @@ public class EchoServer extends AbstractServer {
 	/////////////////////////////////////////////////////////////////
 	////////////////// SERVER CONFIGURATION METHODS ////////////////
 	///////////////////////////////////////////////////////////////
-
 
 	// Constructors ****************************************************
 
@@ -99,7 +98,6 @@ public class EchoServer extends AbstractServer {
 
 		System.out.println("Message received: " + msg + " from " + client);
 
-
 		try {
 			switch (msg.getClass().getSimpleName()) {
 
@@ -112,7 +110,7 @@ public class EchoServer extends AbstractServer {
 					switch (list.get(0)) {
 						case "getSubjectID":
 							// send query to be executed along with the identifier
-							ArrayList<String> resultList = getDataFromDB(list.get(1), "getSubjectID");
+							ArrayList<String> resultList = getData_db(list.get(1), "getSubjectID");
 							// result list should have arraylist = {identifier, subjectId}
 							// if we got no results: send notFound signal
 							if (resultList == null)
@@ -131,24 +129,30 @@ public class EchoServer extends AbstractServer {
 							break;
 
 						case "lecturersubjects":
-							ArrayList<String> resStringList = getDataFromDB(list.get(1), "lecturersubjects");
-							client.sendToClient(resStringList == null ? (Object) notFound : (Object) resStringList);
+							ArrayList<String> resSubjectsList = getData_db(list.get(1), "lecturersubjects");
+							client.sendToClient(resSubjectsList == null ? (Object) notFound : (Object) resSubjectsList);
+							break;
+//
+						case "lecturercourses":
+							ArrayList<String> resCoursesList = getCourses_db(list.get(1), "lecturercourses");
+							client.sendToClient(resCoursesList == null ? (Object) notFound : (Object) resCoursesList);
 							break;
 
 						case "lecturerquestions":
-							ArrayList<Question> resQuestionList = getQuestionsFromDBForLecturer(list.get(1));
+							ArrayList<Question> resQuestionList = getQuestionsForLecturer_db(list.get(1));
 							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
 							break;
 
+						// TODO needs to be implemented
 						case "testGrades":
-							ArrayList<String> resList = TestGrades_PassedGrades(list.get(1), 1);
-							client.sendToClient(resList == null ? (Object) notFound : (Object) resList);
-							System.out.println("Server: TestGrades_PassedGrades --> " + resList.toArray());
+							ArrayList<String> resGradesList = TestGrades_PassedGrades(list.get(1), 1);
+							client.sendToClient(
+									resGradesList == null ? (Object) notFound : (Object) resGradesList);
+							System.out.println("Server: TestGrades_PassedGrades --> " + resGradesList.toArray());
 							break;
 
-						// default is user login
+						// default is user login authentication
 						default:
-							// user login authentication
 							loginVarification(list, client);
 							break;
 					}
@@ -205,7 +209,7 @@ public class EchoServer extends AbstractServer {
 	}
 
 	// gets Questions from db
-	private ArrayList<Question> getQuestionsFromDBForLecturer(String query) {
+	private ArrayList<Question> getQuestionsForLecturer_db(String query) {
 		try {
 			stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
@@ -215,11 +219,11 @@ public class EchoServer extends AbstractServer {
 				// while threres Questions in result , adding them into result array
 				Question q = new Question(
 						result.getString(1),
-						result.getString(2), 
+						result.getString(2),
 						result.getString(3),
-						result.getString(4), 
+						result.getString(4),
 						result.getString(5),
-						result.getString(6) );
+						result.getString(6));
 
 				Statement answerstmt = conn.createStatement();
 				ResultSet answers = answerstmt.executeQuery(
@@ -253,7 +257,7 @@ public class EchoServer extends AbstractServer {
 	 * @return
 	 * @throws SQLException
 	 */
-	private ArrayList<String> getDataFromDB(String query, String out) {
+	private ArrayList<String> getData_db(String query, String out) {
 		try {
 			stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
@@ -270,6 +274,27 @@ public class EchoServer extends AbstractServer {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private ArrayList<String> getCourses_db(String query, String out) {
+		Boolean flag = false;
+		ArrayList<String> res = new ArrayList<String>();
+
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			res.add(out);
+			while (result.next()) {
+				res.add(result.getString(1));
+				flag = true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		System.out.println("Message sent back: " + res);
+		return flag ? res : null;
+
 	}
 
 	/**
@@ -360,15 +385,13 @@ public class EchoServer extends AbstractServer {
 	 * }
 	 */
 
-	  
-	 
 	// TODO see if piechart is needed
 	// query_passed: select passed students
 	// grade_index - position of the grade field
 	private ArrayList<String> TestGrades_PassedGrades(String query_passed, int grade_index) throws SQLException {
 		ArrayList<String> outputList = new ArrayList<String>();
 		stmt = conn.createStatement();
-		ArrayList<ResultSet> res = new ArrayList<>();
+		// ArrayList<ResultSet> res = new ArrayList<>();
 		ResultSet queryResult = stmt.executeQuery(query_passed);
 
 		// outputList.addAll((String)queryResult.getString(query_passed));
@@ -379,19 +402,21 @@ public class EchoServer extends AbstractServer {
 	}
 
 	/*
-	// query_failed: select failed students query
-	// grade_index - position of the grade field
-	private ArrayList<String> testGrades_failed_Query(String query_failed, int grade_index) throws SQLException {
-		ArrayList<String> outputList = new ArrayList<String>();
-		stmt = conn.createStatement();
-		ArrayList<ResultSet> res = new ArrayList<>();
-		ResultSet queryResult = stmt.executeQuery(query_failed);
-
-		// outputList.addAll((String)queryResult.getString(query_passed));
-		while (queryResult.next()) {
-			outputList.add(queryResult.getString(grade_index));
-		}
-		return outputList;
-	}*/
+	 * // query_failed: select failed students query
+	 * // grade_index - position of the grade field
+	 * private ArrayList<String> testGrades_failed_Query(String query_failed, int
+	 * grade_index) throws SQLException {
+	 * ArrayList<String> outputList = new ArrayList<String>();
+	 * stmt = conn.createStatement();
+	 * ArrayList<ResultSet> res = new ArrayList<>();
+	 * ResultSet queryResult = stmt.executeQuery(query_failed);
+	 * 
+	 * // outputList.addAll((String)queryResult.getString(query_passed));
+	 * while (queryResult.next()) {
+	 * outputList.add(queryResult.getString(grade_index));
+	 * }
+	 * return outputList;
+	 * }
+	 */
 
 }

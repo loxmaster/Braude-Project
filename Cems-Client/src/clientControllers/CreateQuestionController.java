@@ -18,7 +18,6 @@ import javafx.scene.control.RadioButton;
 
 
 public class CreateQuestionController extends BasicController {
-	// TODO noah: check if this works lul
 	public static String subjectID;
 
 
