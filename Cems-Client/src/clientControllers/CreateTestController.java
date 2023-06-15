@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
@@ -17,11 +21,12 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -34,6 +39,7 @@ public class CreateTestController extends BasicController {
 	// #################################################################
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
+	public static String testCount;
 
 	private Test test = new Test();
 
@@ -47,7 +53,10 @@ public class CreateTestController extends BasicController {
 	// ###################################################################
 
 	@FXML
-	private CheckBox A, B, C, D;
+	private ToggleGroup toggleGroup;
+
+	@FXML
+	private RadioButton A, B, C, D;
 
 	@FXML
 	private TextField qID;
@@ -180,20 +189,99 @@ public class CreateTestController extends BasicController {
 
 	}
 
+	Boolean flag = true;
+	private final Lock lock = new ReentrantLock();
+
 	/**
 	 * Method handeling the pressing of 'Save' button .
 	 * 
 	 * @param event
+	 * @return
 	 */
 	@FXML
 	void savePressed(ActionEvent event) {
-		Boolean flag = true;
 		test.setAuthor(ClientHandler.user.getUsername()); // TODO change to pName and not username
 		test.setTestCode(code.getText());
 
-		// TODO add course to build
-		test.setId(buildIdForTest(test.getSubject(), "01"));
-		// test.setId(buildIdForTest(test.getSubject(), test.getCourse()));
+		// grab course values from the combobox and get course id from db
+		ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
+		try {
+			Thread.sleep(400);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String courseid = CreateQuestionController.courseID;
+
+		// grab subject values from the combobox and get subject id from db
+		ClientUI.chat.GetSubjectIDfromSubjectCourses(subjectComboBox.getValue());
+		try {
+			Thread.sleep(400);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String subjectid = CreateQuestionController.getSubjectID();
+
+		// grab concat values of subjectid and courseid get the next test number from db
+
+		ClientUI.chat.getNextFreeTestNumber(subjectid + courseid);
+		try {
+			Thread.sleep(400);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String nextTestNumber = CreateQuestionController.testcount;
+		// String nextTestNumber = subjectid + courseid + "03";
+
+		// send all three so set a new testID
+		String numberid =subjectid + courseid + nextTestNumber; 
+		test.setId(numberid);
+
+	// 	test.setAuthor(ClientHandler.user.getUsername()); // TODO change to pName and not username
+    // test.setTestCode(code.getText());
+
+    // String courseid = null;
+    // String subjectid = null;
+    // String nextTestNumber = null;
+
+    // try {
+    //     // group 1
+	// 	ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
+    //     lock.lock();
+    //     try {
+    //         courseid = CreateQuestionController.getCourseID();
+    //     } finally {
+    //         lock.unlock();
+    //     }
+
+    //     // group 2
+	// 	ClientUI.chat.GetSubjectIDfromSubjectCourses(subjectComboBox.getValue());
+    //     lock.lock();
+    //     try {
+    //         subjectid = CreateQuestionController.getSubjectID();
+    //     } finally {
+    //         lock.unlock();
+    //     }
+
+    //     // group 3
+	// 	ClientUI.chat.getNextFreeTestNumber(subjectid + courseid);
+    //     lock.lock();
+    //     try {
+    //         nextTestNumber = CreateQuestionController.testcount;
+    //     } finally {
+    //         lock.unlock();
+    //     }
+    // } finally {
+    //     // Set the new testID using the acquired values
+    //     lock.lock();
+    //     try {
+    //         test.setId(subjectid + courseid + nextTestNumber);
+    //     } finally {
+    //         lock.unlock();
+    //     }
+    // }
 
 		// Checks if the test points are in order
 		if (totalPoints.getText().equals("100")) {
@@ -202,7 +290,7 @@ public class CreateTestController extends BasicController {
 
 		} else {
 			totalPoints.setStyle("-fx-background-color: red;"); // Set red background color
-			JOptionPane.showMessageDialog(null, "Points dont add up to 100!", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Points should be equal to 100!", "Error", JOptionPane.ERROR_MESSAGE);
 			flag = false;
 			return;
 		}
@@ -272,8 +360,9 @@ public class CreateTestController extends BasicController {
 			flag = false;
 			return;
 		}
-		if (flag)
-			JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
+
+		// if (flag)
+		// 	JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
 
 		// Sends the test to the database using the ClientController 'chat' in the
 		// ClientUI

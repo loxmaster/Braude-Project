@@ -16,7 +16,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class CreateQuestionController extends BasicController {
-	public static String subjectID;
+	public static String testcount;
+
+	public static String subjectID, courseID;
 
 	@FXML
 	private TextField qNumber;
@@ -33,8 +35,20 @@ public class CreateQuestionController extends BasicController {
 	@FXML
 	private ComboBox<String> subjectCombobox;
 
-	public static void setSubjectID(String subjectID) {
-		CreateQuestionController.subjectID = subjectID;
+	public static void setSubjectID(String subject) {
+		CreateQuestionController.subjectID = subject;
+	}
+
+	public static String getSubjectID() {
+		return subjectID;
+	}
+
+	public static void setCourseID(String course) {
+		CreateQuestionController.courseID = course;
+	}
+
+	public static String getCourseID() {
+		return courseID;
 	}
 
 	public void loadSubjects(ArrayList<String> list) {
@@ -101,7 +115,7 @@ public class CreateQuestionController extends BasicController {
 		System.out.println("CreateQuestion: " + subjectID);
 		subjectID += qnumber;
 		ClientUI.chat.CreateQuestion(subjectID, subject, qBody, qnumber);
-		ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer,subjectID);
+		ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD, correctAnswer, subjectID);
 	}
 
 	@FXML

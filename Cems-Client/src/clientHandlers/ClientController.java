@@ -150,6 +150,22 @@ public class ClientController implements ChatIF {
         client.sendTestToDatabase(query);
     }
 
+    public void getNextFreeTestNumber(Object coursename){
+
+        try {
+            client.getNextFreeTestNumber(coursename);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void GetCourseIDfromSubjectCourses(Object coursename){
+        try {
+            client.GetCourseIDfromSubjectCourses(coursename);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * This method overrides the method in the ChatIF interface. It displays a
      * message onto the screen.
