@@ -88,9 +88,12 @@ public class CreateTestController extends BasicController {
 // ############################### FXML Methods #######################################################################
 	
 
-/**
- * Method called by controller when this screen opens 
- */
+
+  /**
+	 * Hook method , called when this screen is opened and sets the subject
+	 * ComboBox . P.S. Since the subjectList is static we can access it and
+	 * no parameters needed when calling this function.
+	 */ 
 public void loadFilterComboboxes() {
 	subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
 	courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
@@ -246,20 +249,7 @@ public void loadFilterComboboxes() {
 
 	// ############################### Local Methods ########################################################################
 
-	/**
-	 * Hook method , called when this screen is opened and sets the subject
-	 * ComboBox . P.S. Since the subjectList is static we can access it and
-	 * no parameters needed when calling this function.
-	 */
-	public void load() {
-		
-		// Getting the subjects from the static subject list 
-		ObservableList<String> subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
-		
-		// Defining the ComboBox for subjects
-		subjectComboBox.getItems().removeAll();
-		subjectComboBox.setItems(subjectList);
-	}
+	
 
 	/**
 	 * Method to set the test we were working on when returning to this screen.
