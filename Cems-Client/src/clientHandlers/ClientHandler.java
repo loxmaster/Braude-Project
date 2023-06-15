@@ -108,26 +108,28 @@ public class ClientHandler extends AbstractClient {
 				// assign subjectID that we've got from the server
 				else if (list.get(0).equals("completedtestsForStudentGrades")) {
 					// subjectArray = list.get(1).split(",");
-					System.out.println("Client Handler: " + list.get(1));
-				ArrayList<Test> listToAdd = new ArrayList<>();
-				CompletedTestList = (ArrayList<Test>) severMessage;
-
-				for (int i = 0; i < CompletedTestList.size(); i++) {
-					listToAdd.add(new Test(
-						CompletedTestList.get(1).getId(),
-						CompletedTestList.get(2).getStudentID(),
-						CompletedTestList.get(3).getGrade(),
-						CompletedTestList.get(4).getAuthor(),
-						CompletedTestList.get(5).getTestCode(),
-						CompletedTestList.get(6).getDateString(),
-						CompletedTestList.get(7).getTime(),
-						CompletedTestList.get(8).getDuration(),
-						CompletedTestList.get(9).getQuestionsString(),
-						CompletedTestList.get(10).getType(),
-						CompletedTestList.get(11).getStatus(),
-						CompletedTestList.get(12).getTested()));
-				}
-//amir assign the new CompletedTestList into static variable under ViewGradesController to save it there.
+					System.out.println("Client Handler: " + list.get(0));
+					ArrayList<Test> listToAdd = new ArrayList<>();
+					CompletedTestList = (ArrayList<Test>) severMessage;
+					int i = 1;
+					while (i < list.size()) {
+						listToAdd.add(new Test(
+								list.get(i),
+								list.get(i+1),
+								list.get(i+2),
+								list.get(i+3),
+								list.get(i+4),
+								list.get(i+5),
+								list.get(i+6),
+								list.get(i+7),
+								list.get(i+8),
+								list.get(i+9),
+								list.get(i+10),
+								list.get(i+11)));
+						i+=12;
+					}
+					// amir assign the new CompletedTestList into static variable under
+					// ViewGradesController to save it there.
 					ViewGradesController.setCompletedTestsList(listToAdd);
 				}
 			}
@@ -161,6 +163,9 @@ public class ClientHandler extends AbstractClient {
 			user.setUsername(subjectArray[0]);
 			user.setPassword(subjectArray[1]);
 			user.setType(subjectArray[2]);
+			user.setUser_id(subjectArray[3]);
+			user.setEmail(subjectArray[4]);
+			user.setDepartment(subjectArray[5]);
 			// rest of the stuff in the table
 			user.setIsFound(true);
 		}
@@ -266,8 +271,14 @@ public class ClientHandler extends AbstractClient {
 
 		ArrayList<String> list = new ArrayList<String>();
 		// FIXME change query here amir
-		list.addAll(Arrays.asList("completedtestsForStudentGrades",
-				"SELECT * FROM projecton.completed_tests WHERE student_id=234 AND test_type='computer' AND status='completed' AND tested=true;"));
+		String studentId = "234";
+		String testType = "computer";
+		String status = "completed";
+		String tested = "true";
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND test_type='%s' AND status='%s' AND tested='%s';",
+				studentId, testType, status, tested);
+		list.addAll(Arrays.asList("completedtestsForStudentGrades", query));
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {

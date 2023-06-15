@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javafx.scene.control.DatePicker;
 
 public class Test {
+
+    private ArrayList<QuestionModel> quesitonsInTest;
     private String id, subject, author;
     private String duration, TestComments, testCode;
     private String time, dateString;
@@ -21,7 +23,7 @@ public class Test {
         testCode = new String();
         time = new String();
         dateString = new String();
-        
+        quesitonsInTest = new ArrayList<QuestionModel>();
     }
 
     public Test(String id, String subject, String StudentsName, String StudentID, String Grade) {
@@ -42,7 +44,7 @@ public class Test {
         this.testCode = testCode;
         this.dateString = dateString;
         this.time = time;
-        
+        quesitonsInTest = new ArrayList<QuestionModel>();
     }
 
     //////is this the one u looking for???
@@ -61,6 +63,7 @@ public class Test {
         this.status = status;
         this.tested = tested;
     }
+   
 
     public String getStatus() {
         return status;
@@ -92,6 +95,10 @@ public class Test {
 
     public String getStudentsName() {
         return StudentsName;
+    }
+
+    public ArrayList<QuestionModel> getQuesitonsInTest() {
+        return quesitonsInTest;
     }
 
     public String getDateString() {
@@ -154,6 +161,10 @@ public class Test {
         StudentsName = studentsName;
     }
 
+    public void setQuesitonsInTest(ArrayList<QuestionModel> quesitonsInTest) {
+        this.quesitonsInTest = quesitonsInTest;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -188,5 +199,11 @@ public class Test {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public void addToQuestions(ArrayList<QuestionModel> list) {
+        for (QuestionModel q : list)
+            if (!quesitonsInTest.contains(q))
+                quesitonsInTest.add(q);
     }
 }

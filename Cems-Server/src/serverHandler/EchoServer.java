@@ -175,7 +175,8 @@ public class EchoServer extends AbstractServer {
 			if (result.next()) {
 				// check if the password in the DB is the same as user input
 				if (result.getString(2).equals(list.get(2))) {
-					String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
+					String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3)
+					+ " " + result.getString(4) + " " + result.getString(5) + " " + result.getString(6);
 					System.out.println("Message sent back: " + res);
 					client.sendToClient((Object) res);
 				}
@@ -279,28 +280,15 @@ public class EchoServer extends AbstractServer {
 	}
 
 	private ArrayList<String> getCompletedTests_db(String query, String out) {
-			ArrayList<String> res = new ArrayList<>();
+			ArrayList<String> res = new ArrayList<String>();
 			res.add(out); //add a new identifier
 		try {
 			stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
 			while (result.next()) {
-				for (int index = 0; index < 12; index++) {
+				for (int index = 1; index <= 12; index++) {
 					res.add(result.getString(index));
 				}
-				// Test exams = new Test(
-				// 		result.getString(1),
-				// 		result.getString(2),
-				// 		result.getString(3),
-				// 		result.getString(4),
-				// 		result.getString(5),
-				// 		result.getString(6),
-				// 		result.getString(7),
-				// 		result.getString(8),
-				// 		result.getString(9),
-				// 		result.getString(10),
-				// 		result.getString(11));
-				// res.add(exams);
 			}
 			return res; //res size is 13 where in first index is indentifier
 		} catch (SQLException e) {

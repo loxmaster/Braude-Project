@@ -46,7 +46,7 @@ public class ViewGradesController extends BasicController {
         int column = 0;
         int row = 1;
         try {
-            for (Test test : Exams) {
+            for (Test test : completedTestsList) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 URL url = getClass().getResource("/clientFXMLS/StudentTestCard.fxml");
                 if (url == null) {
@@ -80,15 +80,15 @@ public class ViewGradesController extends BasicController {
     }
 
 
-    private List<Test> studentsExamsLoad() {
+    // private List<Test> studentsExamsLoad() {
 
-        List<Test> ls = new ArrayList<>();
-        //Test test = ls.add(test);
-        test = new Test("020301", "algebra1", "misha2", "0211", "6");
-        ls.add(test);
-        test = new Test("020301", "algebra1", "misha3", "056411", "100");
-        ls.add(test);
-        return ls;
-    }
+    //     List<Test> ls = new ArrayList<>();
+    //     //Test test = ls.add(test);
+    //     test = new Test("020301", "algebra1", "misha2", "0211", "6");
+    //     ls.add(test);
+    //     test = new Test("020301", "algebra1", "misha3", "056411", "100");
+    //     ls.add(test);
+    //     return ls;
+    // }
 
 }
