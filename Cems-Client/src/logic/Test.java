@@ -12,9 +12,15 @@ public class Test {
     private DatePicker date;
     private int totalPoints;
 
+//noah - added getters and setters for course - not yet updated in the sql - talk to me
+   private String course;
+
     public Test() {
         id = new String();
         subject = new String();
+//noah - added getters and setters for course - not yet updated in the sql - talk to me
+        course = new String();
+       
         author = new String();
         duration = new String();
         testComment = new String();
@@ -24,6 +30,14 @@ public class Test {
         totalPoints = 0;
         quesitonsInTest = new ArrayList<QuestionModel>();
     }
+//noah - added getters and setters for course - not yet updated in the sql - talk to me
+     public String getCourse() {
+         return course;
+     }
+//noah - added getters and setters for course - not yet updated in the sql - talk to me
+     public void setCourse(String course) {
+         this.course = course;
+     }
 
     public Test(String id, String subject, String author, String duration, String testComment, String testCode,
             String dateString, String time) {
