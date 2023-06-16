@@ -40,13 +40,10 @@ public class CreateTestController extends BasicController {
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
 	public static String testCount;
-
+	private static String nextTestNumber;
 	private Test test = new Test();
-
 	private int pointsInTest = 0;
-
 	private ChangeListener<? super String> questionPointsListener; // Listener for points TextBox
-
 	private static final Pattern TIME_PATTERN = Pattern.compile("^\\d{2}:\\d{2}$");
 
 	// ############################### FXML Variables
@@ -54,46 +51,33 @@ public class CreateTestController extends BasicController {
 
 	@FXML
 	private ToggleGroup toggleGroup;
-
 	@FXML
 	private RadioButton A, B, C, D;
-
 	@FXML
 	private TextField qID;
-
 	@FXML
 	private TextArea OptionA, OptionB, OptionC, OptionD;
-
 	@FXML
 	private TextArea qBody;
-
 	@FXML
 	private TextField code, duration, startTime, totalPoints;
-
 	@FXML
 	private DatePicker date;
-
 	@FXML
 	private VBox questionTracker;
-
 	@FXML
 	private Button exitbutton;
-
 	@FXML
 	private Button logo;
-
 	@FXML
 	private Button savebutton;
-
 	@FXML
 	private TextArea qPoints;
-
 	@FXML
 	private ComboBox<String> subjectComboBox;
 	@FXML
 	private ComboBox<String> courseComboBox;
-
-	private static String nextTestNumber;
+	
 	// ############################### FXML Methods
 	// #######################################################################
 
@@ -148,6 +132,9 @@ public class CreateTestController extends BasicController {
 	 * 
 	 * @param event
 	 */
+
+
+	 
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
 		// test is current test
@@ -187,19 +174,6 @@ public class CreateTestController extends BasicController {
 				"CEMS System - Lecturer - Create Test - Question Data Base", event);
 		dbq.load(test);
 	}
-
-	/**
-	 * Method handeling the pressing of 'Help' button .
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void helpPressed(ActionEvent event) {
-
-	}
-
-	
-	private final Lock lock = new ReentrantLock();
 
 	/**
 	 * Method handeling the pressing of 'Save' button .
