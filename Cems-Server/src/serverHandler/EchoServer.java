@@ -135,11 +135,21 @@ public class EchoServer extends AbstractServer {
 							client.sendToClient(resStringList == null ? (Object) notFound : (Object) resStringList);
 							break;
 
-						case "completedtestsForStudentGrades":
-							ArrayList<String> resCompletedTests = getCompletedTests_db(list.get(1),
-									"completedtestsForStudentGrades");
+						case "completedTestsForStudent":
+							ArrayList<String> resCompletedTestsForStudent = getCompletedTestsForStudent_db(list.get(1),
+									"completedTestsForStudent");
 							client.sendToClient(
-									resCompletedTests == null ? (Object) notFound : (Object) resCompletedTests);
+									resCompletedTestsForStudent == null ? (Object) notFound
+											: (Object) resCompletedTestsForStudent);
+							break;
+
+						case "completedTestsForLecturer":
+							ArrayList<String> resCompletedTestsForLecturer = getCompletedTestsForLecturer_db(
+									list.get(1),
+									"completedTestsForLecturer");
+							client.sendToClient(
+									resCompletedTestsForLecturer == null ? (Object) notFound
+											: (Object) resCompletedTestsForLecturer);
 							break;
 
 						case "getSubjectsCourseForTest":
@@ -148,7 +158,14 @@ public class EchoServer extends AbstractServer {
 							client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
 									: (Object) resSubjectsCoursesList);
 							break;
-							
+
+						case "getSubjectsCourseForTestLec":
+							ArrayList<String> resSubjectsCoursesListLec = getSubjectsCoursesList(list.get(1),
+									"getSubjectsCourseForTestLec");
+							client.sendToClient(resSubjectsCoursesListLec == null ? (Object) notFound
+									: (Object) resSubjectsCoursesListLec);
+							break;
+
 						case "lecturerquestions":
 							ArrayList<Question> resQuestionList = getQuestionsFromDBForLecturer(list.get(1));
 							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
@@ -287,7 +304,7 @@ public class EchoServer extends AbstractServer {
 		return null;
 	}
 
-	private ArrayList<String> getCompletedTests_db(String query, String out) {
+	private ArrayList<String> getCompletedTestsForStudent_db(String query, String out) {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(out); // add a new identifier
 		try {
@@ -305,24 +322,59 @@ public class EchoServer extends AbstractServer {
 		return null;
 	}
 
-private ArrayList<String> getSubjectsCoursesList(String query, String out) {
-    ArrayList<String> res = new ArrayList<String>();
-    res.add(out); // add a new identifier
-    try {
-        stmt = conn.createStatement();
-        ResultSet result = stmt.executeQuery(query);
-        while (result.next()) { // This will move the cursor to the next row
-            for (int index = 1; index <= 4; index++) {
-                res.add(result.getString(index));
-            }
-        }
-        return res; // res size is 5 where in first index is indentifier
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return null;
-}
+	private ArrayList<String> getCompletedTestsForLecturer_db(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) {
+				for (int index = 1; index <= 12; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 13 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
+	private ArrayList<String> getSubjectsCoursesList(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) { // This will move the cursor to the next row
+				for (int index = 1; index <= 4; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 5 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> getSubjectsCoursesListLec(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) { // This will move the cursor to the next row
+				for (int index = 1; index <= 4; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 5 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	/**
 	 * Method to start the server connection with MySQL WorkBench.

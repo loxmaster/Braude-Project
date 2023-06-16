@@ -9,9 +9,11 @@ import javax.print.DocFlavor.STRING;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.LecturerController;
+import clientControllers.LecturerStatisticalController;
 import clientControllers.ViewGradesController;
 import logic.Question;
 import logic.QuestionModel;
+import logic.Statistics;
 import logic.Test;
 import logic.User;
 import ocsf.client.AbstractClient;
@@ -110,7 +112,7 @@ public class ClientHandler extends AbstractClient {
 
 				// getting a list of completed test the are computerized,completed and have been
 				// tested by lecturer
-				else if (list.get(0).equals("completedtestsForStudentGrades")) {
+				else if (list.get(0).equals("completedTestsForStudent")) {
 					System.out.println("Client Handler: " + list.get(0));
 					ArrayList<Test> listToAdd = new ArrayList<>();
 					// CompletedTestList = (ArrayList<Test>) severMessage;
@@ -131,7 +133,31 @@ public class ClientHandler extends AbstractClient {
 								list.get(i + 11)));
 						i += 12;
 					}
-					ViewGradesController.setCompletedTestsList(listToAdd);
+					ViewGradesController.setcompletedTestsForStudentList(listToAdd);
+				}
+
+				else if (list.get(0).equals("completedTestsForLecturer")) {
+					System.out.println("Client Handler: " + list.get(0));
+					ArrayList<Test> listToAdd = new ArrayList<>();
+					// CompletedTestList = (ArrayList<Test>) severMessage;
+					int i = 1;
+					while (i < list.size()) {
+						listToAdd.add(new Test(
+								list.get(i),
+								list.get(i + 1),
+								list.get(i + 2),
+								list.get(i + 3),
+								list.get(i + 4),
+								list.get(i + 5),
+								list.get(i + 6),
+								list.get(i + 7),
+								list.get(i + 8),
+								list.get(i + 9),
+								list.get(i + 10),
+								list.get(i + 11)));
+						i += 12;
+					}
+					LecturerStatisticalController.setcompletedTestsForLecturerList(listToAdd);
 				}
 
 				else if (list.get(0).equals("getSubjectsCourseForTest")) {
@@ -143,6 +169,16 @@ public class ClientHandler extends AbstractClient {
 						i++;
 					}
 					ViewGradesController.setSubjectsCoursesList(listToAdd);
+
+				} else if (list.get(0).equals("getSubjectsCourseForTestLec")) {
+					System.out.println("Client Handler: " + list.get(0));
+					ArrayList<String> listToAdd = new ArrayList<>();
+					int i = 1;
+					while (i < list.size()) {
+						listToAdd.add(list.get(i));
+						i++;
+					}
+					LecturerStatisticalController.setSubjectsCoursesListLec(listToAdd);
 				}
 			}
 
@@ -279,17 +315,35 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	public void getcompletedTestsList() {
+	public void getcompletedTestsForStudentList() {
 
 		ArrayList<String> list = new ArrayList<String>();
-		String studentId = user.getUser_id();
+		String key = user.getUser_id();
 		String testType = "computer";
 		String status = "completed";
 		String tested = "true";
 		String query = String.format(
 				"SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND test_type='%s' AND status='%s' AND tested='%s';",
-				studentId, testType, status, tested);
-		list.addAll(Arrays.asList("completedtestsForStudentGrades", query));
+				key, testType, status, tested);
+
+		list.addAll(Arrays.asList("completedTestsForStudent", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getcompletedTestsForLecturerList() {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String status = "completed";
+		String tested = "true";
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
+				user.getUsername(), status, tested);
+
+		list.addAll(Arrays.asList("completedTestsForLecturer", query));
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
@@ -306,6 +360,22 @@ public class ClientHandler extends AbstractClient {
 				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
 				subjectid, courseid);
 		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTest", query));
+		try {
+			sendToServer((Object) subjectcoursenameofcompletedtest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+		public void getCourseForTestLec(String id) {
+
+		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
+		String subjectid = id.substring(0, 2);
+		String courseid = id.substring(2, 4);
+		String query = String.format(
+				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+				subjectid, courseid);
+		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTestLec", query));
 		try {
 			sendToServer((Object) subjectcoursenameofcompletedtest);
 		} catch (IOException e) {

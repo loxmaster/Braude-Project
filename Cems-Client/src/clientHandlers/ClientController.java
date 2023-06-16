@@ -72,22 +72,40 @@ public class ClientController implements ChatIF {
     }
 
     // gets all subject available for lecturer
-    public void getcompletedTestsList() {
+    public void getcompletedTestsForStudentList() {
         try {
-            client.getcompletedTestsList();
+            client.getcompletedTestsForStudentList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getcompletedTestsForLecturerList() {
+        try {
+            client.getcompletedTestsForLecturerList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // gets all subject available for lecturer
+    public void getCourseForTest(Object id) {
+        try {
+            client.getCourseForTest((String) id);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
         // gets all subject available for lecturer
-    public void getCourseForTest(Object id) {
+    public void getCourseForTestLec(Object id) {
         try {
-            client.getCourseForTest((String)id);
+            client.getCourseForTestLec((String) id);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     // gets the id of the subject given
     public void GetSubjectIDfromSubjectCourses(String subjectname) {

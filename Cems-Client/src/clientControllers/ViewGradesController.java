@@ -48,7 +48,7 @@ public class ViewGradesController extends BasicController {
     // comments here
     @FXML
     void ExamLoad() {
-        ClientUI.chat.getcompletedTestsList();
+        ClientUI.chat.getcompletedTestsForStudentList();
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -83,11 +83,11 @@ public class ViewGradesController extends BasicController {
         }
     }
 
-    public static ArrayList<Test> getCompletedTestsList() {
+    public static ArrayList<Test> getcompletedTestsForStudentList() {
         return completedTestsList;
     }
 
-    public static void setCompletedTestsList(ArrayList<Test> completedTests) {
+    public static void setcompletedTestsForStudentList(ArrayList<Test> completedTests) {
         completedTestsList = completedTests;
     }
 
