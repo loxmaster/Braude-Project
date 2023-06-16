@@ -18,7 +18,7 @@ public class EnterCodeForTestController extends BasicController {
 	@FXML
 	void SubmitPressed(ActionEvent event) {
 		// Opens Student Give ID screen
-		openScreen("/clientFXMLS/StudentGivesID.fxml", "CEMS - Enter ID For Exam", event);
+		openScreen("/clientFXMLS/EnterCodeForTestPreforming.fxml", "CEMS - Enter ID For Exam", event);
 	}
 
 }
