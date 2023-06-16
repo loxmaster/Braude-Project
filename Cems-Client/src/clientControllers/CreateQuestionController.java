@@ -182,6 +182,9 @@ public class CreateQuestionController extends BasicController {
 		}
 		System.out.println("CreateQuestion: " + subjectID);
 		subjectID += qnumber;
+		subject = subject.toLowerCase();
+        course = course.toLowerCase();
+		correctAnswer = correctAnswer.toLowerCase();
 		ClientUI.chat.CreateQuestion(subjectID, subject,course, qBody, qnumber);
 		ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer,subjectID);
 	}

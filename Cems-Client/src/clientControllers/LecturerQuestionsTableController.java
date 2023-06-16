@@ -122,9 +122,21 @@ public class LecturerQuestionsTableController extends BasicController {
                 ((Node) event.getSource()).getScene().getWindow().hide();
                 AnchorPane root = null;
                 Stage currentStage = new Stage();
+
+
                 FXMLLoader loader = new FXMLLoader();
                 try {
-                    root = loader.load(getClass().getResource("/clientFXMLS/EditQuestion.fxml").openStream());
+                        final double[] offsets = new double[2];
+                        root = loader.load(getClass().getResource("/clientFXMLS/EditQuestion.fxml").openStream());
+                        root.setOnMousePressed(mouseEvent -> {
+                            offsets[0] = mouseEvent.getSceneX();
+                            offsets[1] = mouseEvent.getSceneY();
+                        });
+                
+                        root.setOnMouseDragged(mouseEvent -> {
+                            currentStage.setX(mouseEvent.getScreenX() - offsets[0]);
+                            currentStage.setY(mouseEvent.getScreenY() - offsets[1]);
+                        });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

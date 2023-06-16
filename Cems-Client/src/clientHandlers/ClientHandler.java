@@ -304,14 +304,35 @@ public class ClientHandler extends AbstractClient {
 	 * @param newQNumber
 	 * @param originalId
 	 */
-	public void EditQuestion(String newBody, String newQNumber, String originalId) {
+	public void EditQuestion(String NewID, String subject,String course, String qBody, String qnumber , String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// ugly will stay ugly <3
 		list.addAll(Arrays.asList("editquestion",
-				"UPDATE `projecton`.`questions` SET `id` = '" + originalId.substring(0, 2) + newQNumber
-						+ "', `questiontext` = '" + newBody
-						+ "', `questionnumber` = '" + newQNumber + "' WHERE (`id` = '" + originalId + "');"));
+				"UPDATE `projecton`.`questions` SET `id` = '" + NewID
+						+ "', `lecturer` = '" + user.getUsername()
+						+ "', `subject` = '" + subject
+						+ "', `coursename` = '" + course
+						+ "', `questiontext` = '" + qBody
+						+ "', `questionnumber` = '" + qnumber + "' WHERE (`id` = '" + originalId + "');"));
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+		public void EditAnswers(String subjectid, String qA,String qB, String qC, String qD , String correctAnswer) {
+		ArrayList<String> list = new ArrayList<String>();
+
+		// ugly will stay ugly <3
+		list.addAll(Arrays.asList("editquestion",
+				"UPDATE `projecton`.`answers` SET `optionA` = '" + qA
+						+ "', `optionB` = '" + qB
+						+ "', `optionC` = '" + qC
+						+ "', `optionD` = '" + qD
+						+ "', `correctAnswer` = '" + correctAnswer + "' WHERE (`questionid` = '" + subjectid + "');"));
 
 		try {
 			sendToServer((Object) list);

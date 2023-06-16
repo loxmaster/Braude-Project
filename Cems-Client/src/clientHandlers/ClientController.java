@@ -103,10 +103,8 @@ public class ClientController implements ChatIF {
     // sends query to create qeustion with data
     public void CreateQuestion(String Id, String subject, String course, String Body, String QNumber) {
         try {
-            String lowercaseSubject = subject.toLowerCase();
-            String lowercaseCourse = course.toLowerCase();
-        
-            client.CreateQuestion(Id, lowercaseSubject, lowercaseCourse, Body, QNumber);
+
+            client.CreateQuestion(Id, subject, course, Body, QNumber);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -114,8 +112,7 @@ public class ClientController implements ChatIF {
 
 
     // sends query to create answers for question
-    public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer,
-            String subjectID) {
+    public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer, String subjectID) {
         try {
 
             client.CreateAnswers(optionA, optionB, optionC, optionD, correctAnswer, subjectID);
@@ -134,14 +131,21 @@ public class ClientController implements ChatIF {
     }
 
     // Sends question to data base and updating existing one
-    public void EditQuestion(String newBody, String newQNumber, String originalId) {
+    public void EditQuestion(String NewID, String subject,String course, String qBody, String qnumber , String originalId) {
         try {
-            client.EditQuestion(newBody, newQNumber, originalId);
+            client.EditQuestion(NewID, subject,course ,qBody,qnumber, originalId);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    public void EditAnswers(String subjectid, String qA,String qB,String  qC ,String qD, String correctAnswer){
+        try {
+            
+            client.EditAnswers(subjectid, qA, qB, qC, qD, correctAnswer);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * Method to send question information to DataBase
      * 
