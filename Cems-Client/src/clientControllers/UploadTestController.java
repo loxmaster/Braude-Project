@@ -1,5 +1,6 @@
 package clientControllers;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,70 +19,70 @@ public class UploadTestController extends BasicController {
 
 	private String filePath = "none";
 
-    @FXML
-    private TextField TextPath;
-
-    @FXML
-    private Button exitbutton;
-
-    @FXML
-    private Button logo;
-
-    @FXML
-    private Button chooseFile;
-
-    @FXML
-    private Button Upload;
+	@FXML
+	private TextField TextPath;
 
 	@FXML
-    private TextField testID;
+	private Button exitbutton;
 
+	@FXML
+	private Button logo;
 
+	@FXML
+	private Button chooseFile;
 
+	@FXML
+	private Button Upload;
 
-    @FXML
-    void OpenFileMenu(ActionEvent event) {
+	@FXML
+	private TextField testID;
+
+	@FXML
+	void OpenFileMenu(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose a file");
-        Stage stage = (Stage) chooseFile.getScene().getWindow();
-        File selectedFile = fileChooser.showOpenDialog(stage);
-        if (selectedFile != null) {
-            filePath = selectedFile.getAbsolutePath();
-            TextPath.setText(filePath);
-        }
+		fileChooser.setTitle("Choose a file");
+		Stage stage = (Stage) chooseFile.getScene().getWindow();
+		File selectedFile = fileChooser.showOpenDialog(stage);
+		if (selectedFile != null) {
+			filePath = selectedFile.getAbsolutePath();
+			TextPath.setText(filePath);
+		}
 
-    }
+	}
 
-    @FXML
-    void UploadPressed(ActionEvent event) {
-		if (!filePath.isEmpty() && !(filePath=="none") && (!testID.getText().isEmpty())) {
+	@FXML
+	void UploadPressed(ActionEvent event) {
+		if (!filePath.isEmpty() && !(filePath == "none") && (!testID.getText().isEmpty())) {
 			try {
 				File selectedFile = new File(filePath);
-				
+
 				// Create the output stream and object output stream
-				FileOutputStream fileOut = new FileOutputStream("Cems-Server/TestFiles/Testid" + testID.getText() );
-				ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-				
+				FileOutputStream fileOut = new FileOutputStream(selectedFile);
+				// ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+				BufferedOutputStream objectOut = new BufferedOutputStream(fileOut);
+
+				byte[] mybytearray = new byte[(int) selectedFile.length()];
+
 				// Write the selected file object to the output stream
-				objectOut.writeObject(selectedFile);
-				
+				objectOut.write(mybytearray, 0, mybytearray.length);
 				// Close the streams
 				objectOut.close();
-				fileOut.close();
-				
+
+				//sendToServer((Object)mybytearray);
+
 				System.out.println("File uploaded successfully.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		} else {
-			JOptionPane.showMessageDialog(null,"No File Chosen", "Error",JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "No File Chosen", "Error", JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
-    }
+	}
 
-    @FXML
-    void backToLecturer(ActionEvent event) {
+	@FXML
+	void backToLecturer(ActionEvent event) {
 
-    }
+	}
 
 }
