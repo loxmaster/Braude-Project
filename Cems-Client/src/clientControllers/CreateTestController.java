@@ -40,13 +40,10 @@ public class CreateTestController extends BasicController {
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
 	public static String testCount;
-
+	private static String nextTestNumber;
 	private Test test = new Test();
-
 	private int pointsInTest = 0;
-
 	private ChangeListener<? super String> questionPointsListener; // Listener for points TextBox
-
 	private static final Pattern TIME_PATTERN = Pattern.compile("^\\d{2}:\\d{2}$");
 
 	// ############################### FXML Variables
@@ -54,47 +51,43 @@ public class CreateTestController extends BasicController {
 
 	@FXML
 	private ToggleGroup toggleGroup;
-
 	@FXML
 	private RadioButton A, B, C, D;
-
 	@FXML
 	private TextField qID;
-
 	@FXML
 	private TextArea OptionA, OptionB, OptionC, OptionD;
-
 	@FXML
 	private TextArea qBody;
-
 	@FXML
 	private TextField code, duration, startTime, totalPoints;
-
 	@FXML
 	private DatePicker date;
-
 	@FXML
 	private VBox questionTracker;
-
 	@FXML
 	private Button exitbutton;
-
 	@FXML
 	private Button logo;
-
 	@FXML
 	private Button savebutton;
-
 	@FXML
 	private TextArea qPoints;
-
 	@FXML
 	private ComboBox<String> subjectComboBox;
 	@FXML
 	private ComboBox<String> courseComboBox;
-
+	
 	// ############################### FXML Methods
 	// #######################################################################
+
+	public static String getNextTestNumber() {
+		return nextTestNumber;
+	}
+
+	public static void setNextTestNumber(String nextNumber) {
+		nextTestNumber = nextNumber;
+	}
 
 	/**
 	 * Hook method , called when this screen is opened and sets the subject
@@ -139,6 +132,9 @@ public class CreateTestController extends BasicController {
 	 * 
 	 * @param event
 	 */
+
+
+	 
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
 		// test is current test
@@ -180,19 +176,6 @@ public class CreateTestController extends BasicController {
 	}
 
 	/**
-	 * Method handeling the pressing of 'Help' button .
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void helpPressed(ActionEvent event) {
-
-	}
-
-	Boolean flag = true;
-	private final Lock lock = new ReentrantLock();
-
-	/**
 	 * Method handeling the pressing of 'Save' button .
 	 * 
 	 * @param event
@@ -206,7 +189,7 @@ public class CreateTestController extends BasicController {
 		// grab course values from the combobox and get course id from db
 		ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
 		try {
-			Thread.sleep(400);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -216,7 +199,7 @@ public class CreateTestController extends BasicController {
 		// grab subject values from the combobox and get subject id from db
 		ClientUI.chat.GetSubjectIDfromSubjectCourses(subjectComboBox.getValue());
 		try {
-			Thread.sleep(400);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -224,64 +207,28 @@ public class CreateTestController extends BasicController {
 		String subjectid = CreateQuestionController.getSubjectID();
 
 		// grab concat values of subjectid and courseid get the next test number from db
-
+//020101
 		ClientUI.chat.getNextFreeTestNumber(subjectid + courseid);
 		try {
-			Thread.sleep(400);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String nextTestNumber = CreateQuestionController.testcount;
+		//String nextTestNumber = CreateQuestionController.testcount;
+		//String nextTestNumber = CreateQuestionController.getTestcount();
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// String nextTestNumber = subjectid + courseid + "03";
 
 		// send all three so set a new testID
 		String numberid =subjectid + courseid + nextTestNumber; 
 		test.setId(numberid);
 
-	// 	test.setAuthor(ClientHandler.user.getUsername()); // TODO change to pName and not username
-    // test.setTestCode(code.getText());
-
-    // String courseid = null;
-    // String subjectid = null;
-    // String nextTestNumber = null;
-
-    // try {
-    //     // group 1
-	// 	ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
-    //     lock.lock();
-    //     try {
-    //         courseid = CreateQuestionController.getCourseID();
-    //     } finally {
-    //         lock.unlock();
-    //     }
-
-    //     // group 2
-	// 	ClientUI.chat.GetSubjectIDfromSubjectCourses(subjectComboBox.getValue());
-    //     lock.lock();
-    //     try {
-    //         subjectid = CreateQuestionController.getSubjectID();
-    //     } finally {
-    //         lock.unlock();
-    //     }
-
-    //     // group 3
-	// 	ClientUI.chat.getNextFreeTestNumber(subjectid + courseid);
-    //     lock.lock();
-    //     try {
-    //         nextTestNumber = CreateQuestionController.testcount;
-    //     } finally {
-    //         lock.unlock();
-    //     }
-    // } finally {
-    //     // Set the new testID using the acquired values
-    //     lock.lock();
-    //     try {
-    //         test.setId(subjectid + courseid + nextTestNumber);
-    //     } finally {
-    //         lock.unlock();
-    //     }
-    // }
 
 		// Checks if the test points are in order
 		if (totalPoints.getText().equals("100")) {
@@ -291,7 +238,6 @@ public class CreateTestController extends BasicController {
 		} else {
 			totalPoints.setStyle("-fx-background-color: red;"); // Set red background color
 			JOptionPane.showMessageDialog(null, "Points should be equal to 100!", "Error", JOptionPane.ERROR_MESSAGE);
-			flag = false;
 			return;
 		}
 
@@ -303,7 +249,6 @@ public class CreateTestController extends BasicController {
 		} else {
 			date.setStyle("-fx-background-color: red;"); // Set red background color
 			JOptionPane.showMessageDialog(null, "Date Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
-			flag = false;
 			return;
 		}
 
@@ -311,7 +256,6 @@ public class CreateTestController extends BasicController {
 		if (courseComboBox.getValue() == "" || courseComboBox.getValue() == " " || courseComboBox.getValue() == null) {
 			courseComboBox.setStyle("-fx-background-color: red;"); // Set red background color
 			JOptionPane.showMessageDialog(null, "Course Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
-			flag = false;
 			return;
 		} else {
 			courseComboBox.setStyle("-fx-background-color: transparent;");
@@ -323,7 +267,6 @@ public class CreateTestController extends BasicController {
 				|| subjectComboBox.getValue() == null) {
 			subjectComboBox.setStyle("-fx-background-color: red;"); // Set red background color
 			JOptionPane.showMessageDialog(null, "Subject Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
-			flag = false;
 			return;
 		} else {
 			subjectComboBox.setStyle("-fx-background-color: transparent;");
@@ -339,7 +282,6 @@ public class CreateTestController extends BasicController {
 			startTime.setStyle("-fx-background-color: red;"); // Set red background color
 			JOptionPane.showMessageDialog(null, "Please insert time in a HH:MM format!", "Error",
 					JOptionPane.ERROR_MESSAGE);
-			flag = false;
 			return;
 		}
 
@@ -351,23 +293,20 @@ public class CreateTestController extends BasicController {
 			duration.setStyle("-fx-background-color: red;"); // Set red background color
 			JOptionPane.showMessageDialog(null, "Please insert duration in a HH:MM format and above 0!", "Error",
 					JOptionPane.ERROR_MESSAGE);
-			flag = false;
 			return;
 		}
 
 		if (test.getQuesitonsInTest().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Please add questions!", "Error", JOptionPane.ERROR_MESSAGE);
-			flag = false;
 			return;
 		}
 
-		// if (flag)
-		// 	JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
-
+		
+		
 		// Sends the test to the database using the ClientController 'chat' in the
-		// ClientUI
+		// ClientUI, while showing a message to the user
+		JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
 		ClientUI.chat.sendTestToDatabase(test);
-
 		// Goes to lecturer screen
 		// TODO show some prompt of finishing or preview of what is gonna be sent
 		backToLecturer(event);
@@ -606,5 +545,8 @@ public class CreateTestController extends BasicController {
 		Stage popupStage = (Stage) commentsBox.getScene().getWindow();
 		popupStage.close();
 	}
+
+	
+
 
 }

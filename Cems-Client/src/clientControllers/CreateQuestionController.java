@@ -19,6 +19,14 @@ import javafx.scene.control.ToggleGroup;
 public class CreateQuestionController extends BasicController {
 
 
+	public static String getTestcount() {
+		return testcount;
+	}
+
+	public static void setTestcount(String testcount) {
+		CreateQuestionController.testcount = testcount;
+	}
+
 	public static String subjectID, courseID;
 
 	ObservableList<String> subjectList;

@@ -68,6 +68,19 @@ public class LecturerController extends BasicController {
 		else
 			textBox.setVisible(true);
 	}
+	
+	@FXML
+    void UploadTestPressed(ActionEvent event) {
+
+    }
+
+
+    @FXML
+    void EditTestsPressed(ActionEvent event) {
+		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerTestTable.fxml", "CEMS System - Lecturer - Create Tests", event);
+		ctc.loadFilterComboboxes();
+
+    }
 
 	@FXML
 	void CreateTestsPressed(ActionEvent event) {
@@ -75,6 +88,14 @@ public class LecturerController extends BasicController {
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
 		ctc.loadFilterComboboxes();
 	}
+	
+	@FXML
+	void ManageTestsPressed(ActionEvent event) {
+		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Create Tests", event);
+		//ctc.loadFilterComboboxes();
+		
+	}
+
 
 	@FXML
 	void MenageOngoingTestsPressed(ActionEvent event) {

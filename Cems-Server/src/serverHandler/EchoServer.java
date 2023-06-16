@@ -137,6 +137,7 @@ public class EchoServer extends AbstractServer {
 						case "editquestion":
 						case "Addtesttodata":
 							int flag = executeMyQuery(list.get(1));
+							//if (flag != 0) flag=1;
 							client.sendToClient(flag == 0 ? idExists : flag);
 							break;
 
@@ -144,6 +145,7 @@ public class EchoServer extends AbstractServer {
 							ArrayList<String> restestList = getData_db(list.get(1), "testNumber");
 							// ArrayList<String> list2 = new ArrayList<>();
 							// list2.add("testNumber");
+							if(restestList==null)
 							list.remove(1);
 							client.sendToClient(restestList == null ? (Object) list : (Object) restestList);
 							break;

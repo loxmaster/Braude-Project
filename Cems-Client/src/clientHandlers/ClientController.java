@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import logic.Test;
 
@@ -89,6 +90,7 @@ public class ClientController implements ChatIF {
             e.printStackTrace();
         }
     }
+
     // gets all courses available for lecturer
     public void getCoursesForLecturer(Object username) {
         try {
@@ -151,10 +153,11 @@ public class ClientController implements ChatIF {
                 + test.getId() + "','" + test.getDuration() + "', '" + test.getTestComments() + "', '"
                 + test.getAuthor() + "', '" + test.getTestCode() + "', '" + test.getDate().getValue().toString() + "','"
                 + test.getTime() + "', '" + test.getQuesitonsInTest() + "');";
-        client.sendTestToDatabase(query);
+
+        client.sendTestToDatabase((Object) query);
     }
 
-    public void getNextFreeTestNumber(Object coursename){
+    public void getNextFreeTestNumber(Object coursename) {
 
         try {
             client.getNextFreeTestNumber(coursename);
@@ -162,7 +165,8 @@ public class ClientController implements ChatIF {
             e.printStackTrace();
         }
     }
-    public void GetCourseIDfromSubjectCourses(Object coursename){
+
+    public void GetCourseIDfromSubjectCourses(Object coursename) {
         try {
             client.GetCourseIDfromSubjectCourses(coursename);
         } catch (Exception e) {
