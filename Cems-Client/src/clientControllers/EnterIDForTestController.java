@@ -1,7 +1,9 @@
 package clientControllers;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
@@ -30,7 +32,7 @@ public class EnterIDForTestController extends BasicController {
 	private Button ManualPressed;
 
 	@FXML
-    private Button ClickDownload;
+	private Button ClickDownload;
 
 	@FXML
 	void backPressed(ActionEvent event) {
@@ -49,44 +51,45 @@ public class EnterIDForTestController extends BasicController {
 		// openScreen("/clientFXMLS/StudentTestQ.fxml", "CEMS System - Student - Exam",
 		// event);
 		openScreen("/clientFXMLS/ChooseTestType.fxml", "CEMS System - Student - Exam", event);
-		
+
 	}
-	
+
 	@FXML
 	void AutomaticPressed(ActionEvent event) {
-		
+
 	}
-	
+
 	@FXML
 	void ManualPressed(ActionEvent event) {
 		openScreen("/clientFXMLS/getTestFile.fxml", "CEMS System - Student - Exam", event);
 	}
 
-	
+	String testidAssociatedWithCode = "123";
 
-    @FXML
-    void ClickDownload(ActionEvent event) {
-		String testidAssociatedWithCode = "123";
+	@FXML
+	void ClickDownload(ActionEvent event) {
+
+		File receivedFile = null;
 		try {
-			// Create the input stream and object input stream
-			FileInputStream fileIn = new FileInputStream("Testid"+testidAssociatedWithCode);
-			ObjectInputStream objectIn = new ObjectInputStream(fileIn);
-			
-			// Read the file object from the input stream
-			File uploadedFile = (File) objectIn.readObject();
-			
-			// Process the uploaded file as needed
-			// For example, display the file path
-			String filePath = uploadedFile.getAbsolutePath();
-			System.out.println("Accepted file: " + filePath);
-			
-			// Close the streams
-			objectIn.close();
-			fileIn.close();
-		} catch (IOException | ClassNotFoundException e) {
+			/*
+			 * check test id and validate from db
+			 * it exists as an uploaded file
+			 * if so, concat the 'Testid' with the id
+			 */
+			File newFile = new File("Cems-Server/TestFiles/Testid" + "123");
+			byte[] mybytearray = new byte[(int) newFile.length()];
+			FileOutputStream fis = new FileOutputStream(newFile);
+			fis.write(mybytearray);
+
+			// bufferedIn.write(fis);
+
+			// bufferedIn.read(mybytearray,0,mybytearray.length);
+
+			System.out.println("File received from server.");
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		// return receivedFile;
 
-    }
-
+	}
 }
