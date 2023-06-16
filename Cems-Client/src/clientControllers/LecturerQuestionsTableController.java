@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,14 +15,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import logic.QuestionModel;
 
 public class LecturerQuestionsTableController extends BasicController {
+
+    ObservableList<String> courseList;
 
     @FXML
     private Button BtnInfo;
@@ -50,7 +55,27 @@ public class LecturerQuestionsTableController extends BasicController {
     @FXML
     private TableColumn<QuestionModel, Button> edit;
 
+    @FXML
+    private ComboBox<String> courseComboBox;
+
+    public void loadFilterComboboxes() {
+        courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
+        courseComboBox.getItems().removeAll();
+        courseComboBox.setItems(courseList);
+    }
+
+    private void updatePredicate(FilteredList<QuestionModel> filteredList) {
+		String selectedCourse = courseComboBox.getValue();
+
+		// add new filters here as needed, dont forget to add a new listener
+		filteredList.setPredicate(questionModel -> {
+			return selectedCourse == null || selectedCourse.isEmpty()
+					|| questionModel.getCoursename().toUpperCase().contains(selectedCourse)
+					|| questionModel.getCoursename().toLowerCase().contains(selectedCourse);
+		});}
+
     public void loadTable() {
+        loadFilterComboboxes();
 
         id.setCellValueFactory(new PropertyValueFactory<>("Id"));
         subject.setCellValueFactory(new PropertyValueFactory<>("Subject"));
@@ -66,15 +91,23 @@ public class LecturerQuestionsTableController extends BasicController {
             try {
                 Thread.sleep(250);
                 cap--;
-            } catch (InterruptedException e) { }
+            } catch (InterruptedException e) {
+            }
         }
         if (LecturerController.questions.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error getting the question!", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            ObservableList<QuestionModel> questionList = FXCollections.observableArrayList(LecturerController.questions);
+        } 
+        else {
+            ObservableList<QuestionModel> questionList = FXCollections
+                    .observableArrayList(LecturerController.questions);
             for (QuestionModel question : questionList)
                 question.setEdit(createEditButton(question));
-            table.setItems(questionList);
+            FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
+            table.setItems(filteredList);
+            // listener - this will update the table to the filtered COMBOBOX SUBJECT
+            courseComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                updatePredicate(filteredList);
+            });
         }
     }
 
@@ -97,9 +130,10 @@ public class LecturerQuestionsTableController extends BasicController {
                 }
                 EditQuestionController eqc = loader.getController();
                 eqc.loadQuestion(question.getQuestion(), question.getId());
-                System.out.println("opening edit question");
+                System.out.println("opening edit question" + question.getId());
                 Scene scene = new Scene(root);
                 scene.getStylesheets().add(getClass().getResource("/gui/Stylesheet.css").toExternalForm());
+                currentStage.initStyle(StageStyle.UNDECORATED);
                 currentStage.setScene(scene);
                 currentStage.setTitle("CEMS System - Lecturer - Edit Question");
                 currentStage.show();

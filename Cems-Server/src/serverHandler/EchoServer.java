@@ -120,6 +120,18 @@ public class EchoServer extends AbstractServer {
 								client.sendToClient(resultList);
 							break;
 
+						case "getCourseID":
+							// send query to be executed along with the identifier
+							ArrayList<String> resultCourseID = getData_db(list.get(1), "getCourseID");
+							// result list should have arraylist = {identifier, subjectId}
+							// if we got no results: send notFound signal
+							if (resultCourseID == null)
+								client.sendToClient((Object) notFound);
+							// else return the subjectID result we got from the query
+							else
+								client.sendToClient(resultCourseID);
+							break;
+
 						case "createquestion":
 						case "createanswers":
 						case "editquestion":
@@ -128,11 +140,19 @@ public class EchoServer extends AbstractServer {
 							client.sendToClient(flag == 0 ? idExists : flag);
 							break;
 
+						case "testNumber":
+							ArrayList<String> restestList = getData_db(list.get(1), "testNumber");
+							// ArrayList<String> list2 = new ArrayList<>();
+							// list2.add("testNumber");
+							list.remove(1);
+							client.sendToClient(restestList == null ? (Object) list : (Object) restestList);
+							break;
+
 						case "lecturersubjects":
 							ArrayList<String> resSubjectsList = getData_db(list.get(1), "lecturersubjects");
 							client.sendToClient(resSubjectsList == null ? (Object) notFound : (Object) resSubjectsList);
 							break;
-//
+						//
 						case "lecturercourses":
 							ArrayList<String> resCoursesList = getCourses_db(list.get(1), "lecturercourses");
 							client.sendToClient(resCoursesList == null ? (Object) notFound : (Object) resCoursesList);
@@ -290,7 +310,7 @@ public class EchoServer extends AbstractServer {
 				res.add(result.getString(1));
 				flag = true;
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -17,7 +17,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 
 public class CreateQuestionController extends BasicController {
-	public static String subjectID;
+
+
+	public static String subjectID, courseID;
+
+	ObservableList<String> subjectList;
+	ObservableList<String> courseList;
 
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
@@ -40,11 +45,20 @@ public class CreateQuestionController extends BasicController {
 	@FXML
 	private ComboBox<String> subjectCombobox;
 
-	@FXML
-    private ComboBox<String> courseCombobox;
+	public static void setSubjectID(String subject) {
+		CreateQuestionController.subjectID = subject;
+	}
 
-	public static void setSubjectID(String subjectID) {
-		CreateQuestionController.subjectID = subjectID;
+	public static String getSubjectID() {
+		return subjectID;
+	}
+
+	public static void setCourseID(String course) {
+		CreateQuestionController.courseID = course;
+	}
+
+	public static String getCourseID() {
+		return courseID;
 	}
 
 	public void loadFilterComboboxes() {

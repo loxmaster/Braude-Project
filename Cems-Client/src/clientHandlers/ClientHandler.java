@@ -7,6 +7,7 @@ import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 import clientControllers.CreateQuestionController;
+import clientControllers.CreateTestController;
 import clientControllers.LecturerController;
 import logic.Question;
 import logic.QuestionModel;
@@ -45,6 +46,7 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * This method handles all data that comes in from the server.
 	 * HANDLE MESSAGES RECEIVED FROM THE SERVER
+	 * 
 	 * @param severMessage The message from the server.
 	 */
 	public void handleMessageFromServer(Object severMessage) {
@@ -106,6 +108,27 @@ public class ClientHandler extends AbstractClient {
 					System.out.println("Client Handler: " + list.get(1));
 					CreateQuestionController.setSubjectID(list.get(1));
 				}
+
+				// assign subjectID that we've got from the server
+				else if (list.get(0).equals("getCourseID")) {
+					// subjectArray = list.get(1).split(",");
+					System.out.println("Client Handler: got course ID " + list.get(1)+ "from the database");
+					CreateQuestionController.setCourseID(list.get(1));
+				}
+				
+				// assign subjectID that we've got from the server
+				else if (list.get(0).equals("testNumber")) {
+					// if we got null, we start a new test number starting from 01
+					// for example: 0101 doesn't exist; add 010100
+					if (list.size()==1) {
+						CreateQuestionController.testcount = "01";
+						System.out.println("Client Handler: got test number, " + list.get(1)+ "from the database: making a new test");
+					} else {
+						CreateQuestionController.testcount = list.get(1).substring(2, 4);
+					}
+
+					System.out.println("Client Handler: " + list.get(1));
+				}
 			}
 
 		}
@@ -143,7 +166,8 @@ public class ClientHandler extends AbstractClient {
 
 		System.out.println("--> messageFromServerHandled");
 	}
-//ClientHandler /// <see cref="Fully.Qualified.Type.Name"/>
+
+	// ClientHandler /// <see cref="Fully.Qualified.Type.Name"/>
 	/**
 	 * This method handles all data coming from the UI
 	 *
@@ -194,29 +218,33 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * subjects for the lecturer.
-	 * @return 
-	 */ 
-	
+	 * 
+	 * @return
+	 */
+
 	// public synchronized void handleMessageFromLecturerUI(Object username) {
-	// 	ArrayList<String> subjectList = new ArrayList<String>();
-	// 	ArrayList<String> courseList = new ArrayList<String>();
-	// 	subjectList.addAll(Arrays.asList("lecturersubjects",
-	// 			"SELECT courses FROM projecton.lecturer WHERE (`username` = '" + (String) username + "');"));
-				
-	// 	courseList.addAll(Arrays.asList("lecturercourses", "SELECT sc.coursename FROM lecturer l JOIN subjectcourses sc ON find_in_set( sc.subjectname, l.courses) WHERE (l.username =  '" + (String) username + "' );"));
-	// 	try {
-	// 		sendToServer((Object) subjectList);
-	// 		sendToServer((Object) courseList);
-	// 	} catch (IOException e) {
-	// 		e.printStackTrace();
-	// 	}
+	// ArrayList<String> subjectList = new ArrayList<String>();
+	// ArrayList<String> courseList = new ArrayList<String>();
+	// subjectList.addAll(Arrays.asList("lecturersubjects",
+	// "SELECT courses FROM projecton.lecturer WHERE (`username` = '" + (String)
+	// username + "');"));
+
+	// courseList.addAll(Arrays.asList("lecturercourses", "SELECT sc.coursename FROM
+	// lecturer l JOIN subjectcourses sc ON find_in_set( sc.subjectname, l.courses)
+	// WHERE (l.username = '" + (String) username + "' );"));
+	// try {
+	// sendToServer((Object) subjectList);
+	// sendToServer((Object) courseList);
+	// } catch (IOException e) {
+	// e.printStackTrace();
+	// }
 	// }
 	public synchronized void handleMessageFromLecturerUI(Object username) {
 		ArrayList<String> subjectList = new ArrayList<String>();
-		
+
 		subjectList.addAll(Arrays.asList("lecturersubjects",
 				"SELECT courses FROM projecton.lecturer WHERE (`username` = '" + (String) username + "');"));
-				
+
 		try {
 			sendToServer((Object) subjectList);
 		} catch (IOException e) {
@@ -226,8 +254,10 @@ public class ClientHandler extends AbstractClient {
 
 	public synchronized void handle_test_MessageFromLecturerUI(Object username) {
 		ArrayList<String> courseList = new ArrayList<String>();
-				
-		courseList.addAll(Arrays.asList("lecturercourses", "SELECT sc.coursename FROM lecturer l JOIN subjectcourses sc ON find_in_set( sc.subjectname, l.courses) WHERE (l.username =  '" + (String) username + "' );"));
+
+		courseList.addAll(Arrays.asList("lecturercourses",
+				"SELECT sc.coursename FROM lecturer l JOIN subjectcourses sc ON find_in_set( sc.subjectname, l.courses) WHERE (l.username =  '"
+						+ (String) username + "' );"));
 		try {
 			sendToServer((Object) courseList);
 		} catch (IOException e) {
@@ -380,6 +410,32 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> list = new ArrayList<String>();
 		list.addAll(Arrays.asList("getSubjectID",
 				"SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subjectname + "' );"));
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void GetCourseIDfromSubjectCourses(Object coursename) {
+		ArrayList<String> list = new ArrayList<String>();
+		list.addAll(Arrays.asList("getCourseID",
+				"SELECT courseid FROM projecton.subjectcourses where ( `coursename` = '" + (String) coursename
+						+ "' );"));
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getNextFreeTestNumber(Object coursename) {
+		ArrayList<String> list = new ArrayList<String>();
+		list.addAll(Arrays.asList("testNumber",
+				"SELECT CONCAT(SUBSTRING(id, 1, 4), LPAD(MAX(CAST(SUBSTRING(id, 5, 2) AS UNSIGNED)) + 1, 2, '0')) AS next_id FROM tests WHERE SUBSTRING(id, 1, 4) = '"
+						+ (String) coursename + "' GROUP BY SUBSTRING(id, 1, 4);"));
 
 		try {
 			sendToServer((Object) list);
