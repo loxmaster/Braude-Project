@@ -99,13 +99,17 @@ public class ClientController implements ChatIF {
     }
 
     // sends query to create qeustion with data
-    public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
+    public void CreateQuestion(String Id, String subject, String course, String Body, String QNumber) {
         try {
-            client.CreateQuestion(Id, subject, Body, QNumber);
+            String lowercaseSubject = subject.toLowerCase();
+            String lowercaseCourse = course.toLowerCase();
+        
+            client.CreateQuestion(Id, lowercaseSubject, lowercaseCourse, Body, QNumber);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     // sends query to create answers for question
     public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer,

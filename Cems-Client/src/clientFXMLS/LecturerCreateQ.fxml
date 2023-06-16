@@ -47,7 +47,7 @@
             <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
-      <ComboBox fx:id="subjectCombobox" layoutX="245.0" layoutY="210.0" prefHeight="30.0" prefWidth="200.0" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="245.0" />
+      <ComboBox fx:id="subjectCombobox" layoutX="245.0" layoutY="210.0" onAction="#SelectedSubject" prefHeight="30.0" prefWidth="200.0" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="245.0" />
       <Label layoutX="609.0" layoutY="178.0" prefHeight="30.0" prefWidth="190.0" text="Question Number:" AnchorPane.bottomAnchor="480.0" AnchorPane.rightAnchor="150.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />

@@ -76,7 +76,7 @@ public class CreateQuestionController extends BasicController {
 		if (D.isSelected()) {
 			countcheck++;
 		}
-		if (subjectCombobox.getValue() == null || qNumber == null || body.getText().isEmpty() || qA.getText().isEmpty()
+		if (subjectCombobox.getValue() == null||courseCombobox.getValue() == null || qNumber == null || body.getText().isEmpty() || qA.getText().isEmpty()
 				|| qB.getText().isEmpty() || qC.getText().isEmpty() || qD.getText().isEmpty()
 				|| (!A.isSelected() && !B.isSelected() && !C.isSelected() && !D.isSelected())
 				|| countcheck != 1) {
@@ -95,7 +95,7 @@ public class CreateQuestionController extends BasicController {
 			else if (D.isSelected())
 				correctAnswer = "D";
 
-			sendQandANStoSQL(subjectCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),
+			sendQandANStoSQL(subjectCombobox.getValue(),courseCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),
 					qC.getText(), qD.getText(), correctAnswer);
 			LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml",
 					"CEMS System - Lecturer",
@@ -105,7 +105,7 @@ public class CreateQuestionController extends BasicController {
 		}
 	}
 
-	public void sendQandANStoSQL(String subject, String qBody, String qnumber, String optionA, String optionB,
+	public void sendQandANStoSQL(String subject,String course,String qBody, String qnumber, String optionA, String optionB,
 			String optionC, String optionD, String correctAnswer) {
 		// getting subject id from data
 		ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
@@ -116,7 +116,7 @@ public class CreateQuestionController extends BasicController {
 		}
 		System.out.println("CreateQuestion: " + subjectID);
 		subjectID += qnumber;
-		ClientUI.chat.CreateQuestion(subjectID, subject, qBody, qnumber);
+		ClientUI.chat.CreateQuestion(subjectID, subject,course, qBody, qnumber);
 		ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer,subjectID);
 	}
 
@@ -137,7 +137,7 @@ public class CreateQuestionController extends BasicController {
 		if (D.isSelected()) {
 			countcheck++;
 		}
-		if (subjectCombobox.getValue() == null || qNumber == null || body.getText().isEmpty() || qA.getText().isEmpty()
+		if (subjectCombobox.getValue() == null||courseCombobox.getValue() == null || qNumber == null || body.getText().isEmpty() || qA.getText().isEmpty()
 				|| qB.getText().isEmpty() || qC.getText().isEmpty() || qD.getText().isEmpty()
 				|| (!A.isSelected() && !B.isSelected() && !C.isSelected() && !D.isSelected())
 				|| countcheck != 1) {
@@ -156,11 +156,13 @@ public class CreateQuestionController extends BasicController {
 			else if (D.isSelected())
 				correctAnswer = "D";
 
-			sendQandANStoSQL(subjectCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),
+			sendQandANStoSQL(subjectCombobox.getValue(),courseCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),
 					qC.getText(), qD.getText(), correctAnswer);
 			correctAnswer = null;
 			subjectCombobox.setValue("");
+			courseCombobox.setValue("");
 			body.setText("");
+			qNumber.setText("");
 			qA.setText("");
 			qB.setText("");
 			qC.setText("");
@@ -184,5 +186,10 @@ public class CreateQuestionController extends BasicController {
 		// goes back to options screen
 		openScreen("/clientFXMLS/LecturerOptions.fxml", "CEMS System - Lecturer", event);
 	}
+
+	@FXML
+    void SelectedSubject(ActionEvent event) {
+
+    }
 
 }

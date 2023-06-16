@@ -310,14 +310,12 @@ public class ClientHandler extends AbstractClient {
 	 * @param Body
 	 * @param QNumber
 	 */
-	public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
+	public void CreateQuestion(String Id, String subject,String course, String Body, String QNumber) {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// Construct the INSERT query to create a new question
 		list.addAll(Arrays.asList("createquestion",
-				"INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
-						+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername()
-						+ "');"));
+				"INSERT INTO `projecton`.`questions` (`id`, `lecturer`, `subject`, `coursename`, `questiontext`, `questionnumber`) VALUES ('"+ Id + "','" + user.getUsername() + "', '" + subject + "', '" + course + "', '" + Body + "', '" + QNumber + "');"));
 
 		try {
 			sendToServer((Object) list);
