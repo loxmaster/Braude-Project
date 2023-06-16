@@ -110,19 +110,24 @@ public class ClientHandler extends AbstractClient {
 				// assign subjectID that we've got from the server
 				else if (list.get(0).equals("getCourseID")) {
 					// subjectArray = list.get(1).split(",");
-					System.out.println("Client Handler: got course ID " + list.get(1)+ "from the database");
+					System.out.println("Client Handler: got course ID " + list.get(1) + "from the database");
 					CreateQuestionController.setCourseID(list.get(1));
 				}
-				
+
 				// assign subjectID that we've got from the server
 				else if (list.get(0).equals("testNumber")) {
 					// if we got null, we start a new test number starting from 01
 					// for example: 0101 doesn't exist; add 010100
-					if (list.size()==1) {
+					if (list.size() == 1) {
 						CreateQuestionController.testcount = "01";
-						System.out.println("Client Handler: got test number, " + list.get(1)+ "from the database: making a new test");
+						System.out.println("Client Handler: got test number, " + list.get(1)
+						+ "from the database: making a new test");
 					} else {
-						CreateQuestionController.testcount = list.get(1).substring(2, 4);
+						int format = Integer.parseInt(list.get(1));
+						format++;
+						String format2 = "0"+ format;
+						//CreateQuestionController.testcount = format2.substring(2, 4);
+						CreateTestController.setNextTestNumber(format2);
 					}
 
 					System.out.println("Client Handler: " + list.get(1));
@@ -388,11 +393,12 @@ public class ClientHandler extends AbstractClient {
 	 * 
 	 * @param query
 	 */
-	public void sendTestToDatabase(String query) {
+	public void sendTestToDatabase(Object query) {
 		ArrayList<String> listToSend = new ArrayList<String>();
 		listToSend.add("Addtesttodata");
-		listToSend.add(query);
+		listToSend.add((String) query);
 		try {
+			this.openConnection();
 			sendToServer((Object) listToSend);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -431,12 +437,24 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	public void getNextFreeTestNumber(Object coursename) {
+	// public void getNextFreeTestNumber(Object subjectANDcourse) {
+	// 	ArrayList<String> list = new ArrayList<String>();
+	// 	list.addAll(Arrays.asList("testNumber", "SELECT CONCAT(IFNULL(SUBSTRING('id', 1, 4), '"
+	// 			+ (String) subjectANDcourse
+	// 			+ "'), LPAD(COALESCE(MAX(CAST(SUBSTRING('id', 5, 2) AS UNSIGNED)), 0) + 1, 2, '0')) AS next_id FROM 'projecton'.'tests' WHERE SUBSTRING('id', 1, 4) = '"
+	// 			+ (String) subjectANDcourse + "'"));
+	// 	try {
+	// 		sendToServer((Object) list);
+	// 	} catch (IOException e) {
+	// 		e.printStackTrace();
+	// 	}
+	//}
+// test id format: 01 02 03  subjectANDcourse format: 01 02 	returned value should be: 01 02 03
+	public void getNextFreeTestNumber(Object subjectANDcourse) {
 		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList("testNumber",
-				"SELECT CONCAT(SUBSTRING(id, 1, 4), LPAD(MAX(CAST(SUBSTRING(id, 5, 2) AS UNSIGNED)) + 1, 2, '0')) AS next_id FROM tests WHERE SUBSTRING(id, 1, 4) = '"
-						+ (String) coursename + "' GROUP BY SUBSTRING(id, 1, 4);"));
+		//String subject = (String)subjectANDcourse.substring(0,2);
 
+		list.addAll(Arrays.asList("testNumber", "SELECT MAX(CAST(SUBSTRING(id, 5, 2) AS UNSIGNED)) AS max_test_number FROM tests WHERE SUBSTRING(id, 1, 4) = '"+ (String) subjectANDcourse + "';"));
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {

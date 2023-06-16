@@ -71,8 +71,7 @@ public class DBQController extends BasicController {
 		if (LecturerController.questions.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Error getting the question!", "Error", JOptionPane.ERROR_MESSAGE);
 		} else {
-			ObservableList<QuestionModel> questionList = FXCollections
-					.observableArrayList(LecturerController.questions);
+			ObservableList<QuestionModel> questionList = FXCollections.observableArrayList(LecturerController.questions);
 			FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
 			table.setItems(filteredList);
 
@@ -120,7 +119,7 @@ public class DBQController extends BasicController {
 					|| questionModel.getCoursename().toUpperCase().contains(selectedCourse)
 					|| questionModel.getCoursename().toLowerCase().contains(selectedCourse);
 
-			boolean matchesLecturer = authorFilterField.isEmpty()
+			boolean matchesLecturer = authorFilterField.isEmpty() 
 					|| questionModel.getLecturer().toLowerCase().contains(authorFilterField)
 					|| questionModel.getLecturer().toUpperCase().contains(authorFilterField);
 

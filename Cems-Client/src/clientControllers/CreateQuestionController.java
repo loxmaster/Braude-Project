@@ -18,6 +18,14 @@ import javafx.scene.control.TextField;
 public class CreateQuestionController extends BasicController {
 	public static String testcount;
 
+	public static String getTestcount() {
+		return testcount;
+	}
+
+	public static void setTestcount(String testcount) {
+		CreateQuestionController.testcount = testcount;
+	}
+
 	public static String subjectID, courseID;
 
 	@FXML
