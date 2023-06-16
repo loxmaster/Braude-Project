@@ -1,34 +1,35 @@
 package clientControllers;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import logic.User;
 
 @SuppressWarnings("unused")
 
 public class StudentScreenController extends BasicController {
-	
+
 	private User student;
 
 	@FXML
 	private TextArea helpLabel;
 
+	@FXML
+	private Label live_time;
+
 	public void loadStudent(User student) {
 		this.student = student;
+		Timenow(live_time);
 	}
 
 	@FXML
 	void LogOutPressed(ActionEvent event) {
 		logoutPressed(event);
-	}
-
-	@FXML
-	void HelpPressed(ActionEvent event) {
-		if (helpLabel.isVisible())
-			helpLabel.setVisible(false);
-		else
-			helpLabel.setVisible(true);
 	}
 
 	@FXML
@@ -40,7 +41,9 @@ public class StudentScreenController extends BasicController {
 	@FXML
 	void showGrades(ActionEvent event) {
 		// Opening Show Grades screen
-		ViewGradesController vgc = (ViewGradesController) openScreen("/clientFXMLS/ViewGrades.fxml", "CEMS System - Student Grades", event);
+		ViewGradesController vgc = (ViewGradesController) openScreen("/clientFXMLS/ViewGrades.fxml",
+				"CEMS System - Student Grades", event);
 		vgc.ExamLoad();
 	}
+
 }

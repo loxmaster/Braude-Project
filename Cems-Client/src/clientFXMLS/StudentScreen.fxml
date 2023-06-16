@@ -24,9 +24,9 @@
             <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
-      <VBox alignment="CENTER" layoutX="200.0" layoutY="206.0" prefHeight="351.0" prefWidth="350.0" spacing="30.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="270.0">
+      <VBox alignment="CENTER" layoutX="200.0" layoutY="206.0" prefHeight="351.0" prefWidth="350.0" spacing="25.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="270.0">
          <children>
-            <Button minHeight="30.0" minWidth="250.0" mnemonicParsing="false" onAction="#OpenCodePrompt" prefHeight="30.0" prefWidth="250.0" text="Perform Test">
+            <Button maxHeight="47.0" minHeight="30.0" minWidth="250.0" mnemonicParsing="false" onAction="#OpenCodePrompt" prefHeight="47.0" prefWidth="250.0" text="Perform Test">
                <font>
                   <Font name="Calibri Bold" size="16.0" />
                </font>
@@ -39,7 +39,7 @@
                   <Font name="Calibri Bold" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="Logout" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#logoutPressed" text="Logout">
+            <Button fx:id="Logout" maxHeight="60.0" minHeight="50.0" minWidth="120.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="60.0" prefWidth="120.0" text="Logout" VBox.vgrow="ALWAYS">
                <font>
                   <Font name="Calibri Bold Italic" size="18.0" />
                </font>
@@ -52,5 +52,10 @@
             <Insets top="15.0" />
          </padding>
       </VBox>
+      <Label fx:id="live_time" layoutX="37.0" layoutY="37.0" AnchorPane.bottomAnchor="650.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="1100.0" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font name="Perpetua Titling MT Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -66,6 +66,11 @@
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </VBox>
+      <Label fx:id="live_time" layoutX="47.0" layoutY="47.0" AnchorPane.bottomAnchor="650.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="1100.0" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font name="Perpetua Titling MT Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
    <effect>
       <Blend />

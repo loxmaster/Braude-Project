@@ -356,4 +356,13 @@
 
 
 
-	/* ...........................StudentCardExam............................... */
+	/* ...........................TIMELabel............................... */
+
+	#live_time{
+		-fx-font-size: 24px;
+		-fx-font-family: "Perpetua Titling MT";
+		-fx-text-fill: #000000;
+		-fx-padding: 10px;
+		-fx-border-radius: 20px;
+		
+	}

@@ -1,9 +1,12 @@
 package clientControllers;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 
 /**
  * Super Class for controllers to save some codespace
@@ -66,5 +70,28 @@ public class BasicController {
 		((Node) event.getSource()).getScene().getWindow().hide();
         ClientHandler.resetClientData();
 		ClientUI.chat.quit();
+	}
+
+	private volatile boolean stop = false;
+
+		public void Timenow(Label live_time) {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+				while (!stop) {
+					try {
+						Thread.sleep(1000);
+					} catch (Exception e) {
+						System.out.println(e);
+					}
+					final String timenow = sdf.format(new Date());
+					Platform.runLater(() -> {
+						live_time.setText(timenow); // This is the label
+					});
+				}
+			}
+		});
+		thread.start();
 	}
 }
