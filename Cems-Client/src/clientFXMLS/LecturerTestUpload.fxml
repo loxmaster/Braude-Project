@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LecturerController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.UploadTestController">
 <children>
     <Button layoutX="10.0" layoutY="3.0" mnemonicParsing="false" onAction="#backToLecturer" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
@@ -21,20 +23,13 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="BtnInfo" layoutX="548.0" layoutY="283.0" mnemonicParsing="false" onAction="#CreateTestsPressed" prefHeight="30.0" prefWidth="250.0" text="Create A New Test">
+      <TextField layoutX="482.0" layoutY="345.0" prefHeight="30.0" prefWidth="323.0" promptText="upload a file..." />
+      <Button fx:id="Uploadfx" layoutX="792.0" layoutY="345.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="106.0" text="Choose A File" textAlignment="CENTER" />
+      <Text layoutX="480.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Upload A Test">
          <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
+            <Font name="Calibri" size="68.0" />
          </font>
-      </Button>
-      <Button fx:id="BtnInfo" layoutX="548.0" layoutY="343.0" mnemonicParsing="false" onAction="#EditTestsPressed" prefHeight="30.0" prefWidth="250.0" text="Edit A Test">
-         <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
-         </font>
-      </Button>
-      <Button fx:id="BtnInfo" layoutX="548.0" layoutY="403.0" mnemonicParsing="false" onAction="#UploadTestPressed" prefHeight="30.0" prefWidth="250.0" text="Upload A Test">
-         <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
-         </font>
-      </Button>
+      </Text>
+      <Button fx:id="UploadPressed" layoutX="629.0" layoutY="427.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="88.0" text="Upload" />
 </children>
 </AnchorPane>

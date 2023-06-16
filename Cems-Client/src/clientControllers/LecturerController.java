@@ -68,6 +68,11 @@ public class LecturerController extends BasicController {
 		else
 			textBox.setVisible(true);
 	}
+	
+	@FXML
+    void UploadTestPressed(ActionEvent event) {
+
+    }
 
 
     @FXML
