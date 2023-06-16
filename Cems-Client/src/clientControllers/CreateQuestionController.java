@@ -24,9 +24,6 @@ public class CreateQuestionController extends BasicController {
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
 
-	ObservableList<String> subjectList;
-	ObservableList<String> courseList;
-
 	@FXML
 	private TextField qNumber;
 
@@ -44,6 +41,9 @@ public class CreateQuestionController extends BasicController {
 
 	@FXML
 	private ComboBox<String> subjectCombobox;
+
+	@FXML
+	private ComboBox<String> courseCombobox;
 
 	public static void setSubjectID(String subject) {
 		CreateQuestionController.subjectID = subject;

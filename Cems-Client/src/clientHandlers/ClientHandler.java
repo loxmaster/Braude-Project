@@ -121,7 +121,7 @@ public class ClientHandler extends AbstractClient {
 					// if we got null, we start a new test number starting from 01
 					// for example: 0101 doesn't exist; add 010100
 					if (list.size()==1) {
-						CreateQuestionController.testcount = "01";
+						CreateTestController.setTestc = "01";
 						System.out.println("Client Handler: got test number, " + list.get(1)+ "from the database: making a new test");
 					} else {
 						CreateQuestionController.testcount = list.get(1).substring(2, 4);
