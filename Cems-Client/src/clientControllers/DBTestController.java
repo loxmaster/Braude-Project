@@ -47,17 +47,6 @@ public class DBTestController extends BasicController {
 	private ComboBox<String> subjectComboBox;
 	@FXML
 	private ComboBox<String> courseComboBox;
-	
-	
-	
-	
-
-
-
-
-
-
-
 	// load the table - table has filter, filter updatePredicate handles the filter
 	public void load(Test test) {
 		testToReturn = test;
