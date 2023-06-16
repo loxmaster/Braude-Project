@@ -49,29 +49,28 @@ public class LecturerController extends BasicController {
 		setWelcomeLabel();
 	}
 
+	// go to questions screen
 	@FXML
 	void QuestionPressed(ActionEvent event) throws IOException {
-		// go to options screen
 		openScreen("/clientFXMLS/LecturerOptions.fxml", "CEMS System - Lecturer", event);
 	}
 
 	@FXML
 	void CheckTheTestsPressed(ActionEvent event) {
-		// open Test Check screen
 		openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml", "CEMS System - Lecturer - Check Tests", event);
 	}
-
+	
 	@FXML
 	void HelpPressed(ActionEvent event) {
 		if (textBox.isVisible())
-			textBox.setVisible(false);
+		textBox.setVisible(false);
 		else
-			textBox.setVisible(true);
+		textBox.setVisible(true);
 	}
 	
 	@FXML
     void UploadTestPressed(ActionEvent event) {
-
+		openScreen("/clientFXMLS/LecturerTestUpload.fxml", "CEMS System - Lecturer - Upload A Test", event);
     }
 
 
@@ -79,7 +78,6 @@ public class LecturerController extends BasicController {
     void EditTestsPressed(ActionEvent event) {
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerTestTable.fxml", "CEMS System - Lecturer - Create Tests", event);
 		ctc.loadFilterComboboxes();
-
     }
 
 	@FXML

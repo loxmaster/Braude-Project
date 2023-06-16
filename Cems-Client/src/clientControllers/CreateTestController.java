@@ -103,8 +103,8 @@ public class CreateTestController extends BasicController {
 
 		courseComboBox.getItems().removeAll();
 		courseComboBox.setItems(courseList);
-
 	}
+	
 
 	/**
 	 * Method handeling the pressing of 'Add Test Comments' button .
