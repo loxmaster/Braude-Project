@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 
 public class ClientUI extends Application {
     public static ClientController chat;
+    public static int updatestatus;
  
     public static void main(String[] args) {
         launch(args);
