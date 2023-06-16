@@ -129,9 +129,6 @@ public class ClientHandler extends AbstractClient {
 		// Handles the error of Id Exists
 		else if (severMessage.toString().contains("Id Exists")) {
 			ClientUI.updatestatus = 0;
-			// ClientUI.chat.updatestatus = 0;
-			// System.out.println("if exist lol");
-			// JOptionPane.showMessageDialog(null, "doplicatedasdsad!", "Success!", JOptionPane.WARNING_MESSAGE);
 		}
 
 		else {

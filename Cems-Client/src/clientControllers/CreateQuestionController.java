@@ -244,6 +244,8 @@ public class CreateQuestionController extends BasicController {
 			correctAnswer = "C";
 		else if (D.isSelected())
 			correctAnswer = "D";
+
+		ClientUI.updatestatus =1;
 		sendQandANStoSQL(subjectCombobox.getValue(),courseCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),qC.getText(), qD.getText(), correctAnswer);
 		
 		try {
