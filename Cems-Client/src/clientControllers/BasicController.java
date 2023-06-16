@@ -2,6 +2,8 @@ package clientControllers;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
 import javafx.event.ActionEvent;
@@ -67,7 +69,7 @@ public class BasicController {
 	 * @param shouldBeBasicCtrl the controller incharge of the screen.
 	 * @param currentComment the comment currently saved.
 	 */
-	public void openPopupCommentScreen(String fxml, String title, CreateTestController shouldBeBasicCtrl, String currentComment) { //TODO
+	public void openPopupCommentScreen(String fxml, String title, CreateTestController shouldBeBasicCtrl, String currentComment) {
 		
 		// Load the FXML file for the pop-up window
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
@@ -113,9 +115,12 @@ public class BasicController {
 
 	@FXML
 	void exitPressed(ActionEvent event) {
+		if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confirmation", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
 		((Node) event.getSource()).getScene().getWindow().hide();
         ClientHandler.resetClientData();
 		ClientUI.chat.quit();
+		}
+		else return;
 	}
 
 }
