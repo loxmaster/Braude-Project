@@ -12,14 +12,17 @@ import javafx.scene.text.Text;
 import logic.Statistics;
 import logic.Test;
 
+// Extends the BasicController class
 public class GraphController extends BasicController {
 
+    // FXML variables used to interface with the UI
     @FXML
     private Text Exam_NameID;
 
     @FXML
     private Text Lecturer_Name;
 
+    // ... Other FXML variables ...
     @FXML
     private Text a_pass;
 
@@ -95,6 +98,7 @@ public class GraphController extends BasicController {
     @FXML
     private Text num_h;
 
+    // Buttons in the UI
     @FXML
     private Button backButton;
 
@@ -104,8 +108,10 @@ public class GraphController extends BasicController {
     @FXML
     private Button logo;
 
+    // List to store completed tests
     private ArrayList<Test> completedTestsList;
 
+    // Method to handle "back" button click
     @FXML
     void backtoStatistical(ActionEvent event) {
         LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen(
@@ -113,15 +119,23 @@ public class GraphController extends BasicController {
         lsc.load();
     }
 
+    // Method to populate the UI with statistics
+
     public void setData(Statistics stats, ArrayList<Test> completedTestsList) {
+        // Arrays to store the number of students and their percentage in each grade
+        // category
+
         int[] presentage_num = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         int[] presentage_precentage = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        // Populating UI elements with stats data
+
         Exam_NameID.setText(stats.getCourse() + "(" + stats.getTestID() + ")");
         date_fill.setText(stats.getDate());
         average_fill.setText(Integer.toString(stats.getAverage()));
         median_fill.setText(stats.getMedian());
-        low_fill.setText(Integer.toString(stats.getHighes()));
-        high_fill.setText(Integer.toString(stats.getLowest()));
+        high_fill.setText(Integer.toString(stats.getHighes()));
+        low_fill.setText(Integer.toString(stats.getLowest()));
+        // ... Other text elements ...
         for (Test test : completedTestsList) {
             if (test.getId().equals(stats.getTestID())) {
                 Lecturer_Name.setText(test.getAuthor());
@@ -146,9 +160,13 @@ public class GraphController extends BasicController {
                 }
             }
         }
+        // Calculating the percentage of students in each category
+
         for (int i = 0; i < presentage_num.length; i++) {
             presentage_precentage[i] = (int) ((double) presentage_num[i] / stats.getTotal_Number_of_Students() * 100);
         }
+
+        // Populating UI elements with percentage data
 
         fail_precentage_fill.setText(Integer.toString(presentage_precentage[0]));
         fail_precentage.setText(Integer.toString(presentage_precentage[0]));
@@ -170,6 +188,8 @@ public class GraphController extends BasicController {
         num_f.setText(Integer.toString(presentage_num[6]));
         num_g.setText(Integer.toString(presentage_num[7]));
         num_h.setText(Integer.toString(presentage_num[8]));
+
+        // Creating a bar series for the bar chart
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 

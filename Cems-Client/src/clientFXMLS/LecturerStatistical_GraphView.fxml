@@ -407,7 +407,7 @@
             </InnerShadow>
          </effect>
       </Text>
-      <Text layoutX="58.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highest Grase:" AnchorPane.bottomAnchor="400.0" AnchorPane.leftAnchor="50.0">
+      <Text layoutX="58.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highest Grade:" AnchorPane.bottomAnchor="400.0" AnchorPane.leftAnchor="50.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>

@@ -27,8 +27,12 @@ import logic.Statistics;
 import logic.Test;
 import javafx.scene.control.TableCell;
 
+/**
+ * This controller handles the statistics display for the lecturer.
+ * It extends from the BasicController class.
+ */
 public class LecturerStatisticalController extends BasicController {
-
+	// Define columns for the statistics table
 	@FXML
 	private TableColumn<Statistics, String> Average_Score;
 
@@ -46,7 +50,7 @@ public class LecturerStatisticalController extends BasicController {
 
 	@FXML
 	private TableColumn<Statistics, String> Total_Number_of_Students;
-
+	// Define other UI elements
 	@FXML
 	private Button exitbutton;
 
@@ -61,19 +65,29 @@ public class LecturerStatisticalController extends BasicController {
 
 	@FXML
 	private TextField course_fillter;
-
+	// Store the list of completed tests and exam statistics
 	private static ArrayList<Test> completedTestsList;
 	private static ArrayList<Statistics> diffExamsStats;
 	private static ArrayList<String> SubjectCourseLec;
 
+	/**
+	 * This function loads the statistics from the server and populates the table.
+	 */
 	public void load() {
+		// Request completed tests for the lecturer
 		ClientUI.chat.getcompletedTestsForLecturerList();
+		// Wait for the response
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
+		// Set the cell value factories for each column
+		// This tells JavaFX how to populate each cell in the column
+		// ... Cell value factories ...
+
+		// Initialize some variables for calculations
 		TestID.setCellValueFactory(new PropertyValueFactory<>("TestID"));
 		Course.setCellValueFactory(new PropertyValueFactory<>("Course"));
 		Date.setCellValueFactory(new PropertyValueFactory<>("Date"));
@@ -83,7 +97,10 @@ public class LecturerStatisticalController extends BasicController {
 		int Total_Number_of_Students = 0, Grade_Total_Sum = 0, middle, int_for_medians = 0;
 		boolean flag = false;
 		diffExamsStats = new ArrayList<>();
+		// Check if there are any completed tests
+
 		if (completedTestsList != null) {
+			// Create a new Statistics object for the first test
 			Statistics stat = new Statistics(completedTestsList.get(0).getId());
 			Grade_Total_Sum += Integer.parseInt(completedTestsList.get(0).getGrade());
 			Total_Number_of_Students++;
@@ -97,7 +114,7 @@ public class LecturerStatisticalController extends BasicController {
 				e.printStackTrace();
 			}
 			stat.setCourse(SubjectCourseLec.get(2));
-
+			// Iterate over each test
 			for (Test test : completedTestsList) {
 				if (flag) {
 					if (stat.getTestID().equals(test.getId())) {
@@ -120,6 +137,7 @@ public class LecturerStatisticalController extends BasicController {
 						} else {
 							stat.setMedian(completedTestsList.get(middle).getGrade());
 						}
+
 						stat.setTotal_Number_of_Students(Total_Number_of_Students);
 						diffExamsStats.add(stat);
 						stat = new Statistics(test.getId());
@@ -139,6 +157,9 @@ public class LecturerStatisticalController extends BasicController {
 				} else
 					flag = true;
 			}
+			// After all tests are processed, update the final Statistics object and add it
+			// to the list
+
 			stat.setAverage(Grade_Total_Sum / Total_Number_of_Students);
 			middle = (Total_Number_of_Students / 2) + int_for_medians;
 			int_for_medians += Total_Number_of_Students;
@@ -154,12 +175,15 @@ public class LecturerStatisticalController extends BasicController {
 
 		}
 
+		// Extract all test IDs for the combo box
 		Set<String> testIds = new HashSet<>();
 		for (Statistics stat : diffExamsStats) {
 			testIds.add(stat.getTestID());
 		}
 		testid_combo.getItems().addAll(testIds);
 
+		// Set the cell factory for the Distribution column
+		// This tells JavaFX how to create each cell in the column
 		Distribution.setCellFactory(new Callback<TableColumn<Statistics, Void>, TableCell<Statistics, Void>>() {
 			@Override
 			public TableCell<Statistics, Void> call(final TableColumn<Statistics, Void> param) {
@@ -169,8 +193,8 @@ public class LecturerStatisticalController extends BasicController {
 
 					{
 						btn.setOnAction((ActionEvent event) -> {
+							// Add the data to the table
 							Statistics data = getTableView().getItems().get(getIndex());
-							// Here you can put the action that the button should do
 							try {
 								FXMLLoader loader = new FXMLLoader(
 										getClass().getResource("/clientFXMLS/LecturerStatistical_GraphView.fxml"));
@@ -250,12 +274,17 @@ public class LecturerStatisticalController extends BasicController {
 		table.setItems(sortedData);
 	}
 
+	/**
+	 * This function handles the action of clicking the "Back to Lecturer Main"
+	 * button.
+	 */
 	@FXML
 	void backtoLecturerMain(ActionEvent event) {
-		// return to table view from 'Edit Question'
-		// ((Node) event.getSource()).getScene().getWindow().hide();
 		backToLecturer(event);
 	}
+
+	// Getter and setter methods for the completed tests and the subjects/courses
+	// list
 
 	public static ArrayList<Test> getcompletedTestsForLecturerList() {
 		return completedTestsList;
