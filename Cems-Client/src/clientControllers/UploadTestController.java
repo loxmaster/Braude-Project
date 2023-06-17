@@ -1,13 +1,13 @@
 package clientControllers;
 
-import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import javax.swing.JOptionPane;
 
+import clientHandlers.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,6 +18,8 @@ import javafx.stage.Stage;
 public class UploadTestController extends BasicController {
 
 	private String filePath = "none";
+	File selectedFile;
+	String filename;
 
 	@FXML
 	private TextField TextPath;
@@ -41,43 +43,43 @@ public class UploadTestController extends BasicController {
 	void OpenFileMenu(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose a file");
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Desktop"));
 		Stage stage = (Stage) chooseFile.getScene().getWindow();
-		File selectedFile = fileChooser.showOpenDialog(stage);
+		selectedFile = fileChooser.showOpenDialog(stage);
 		if (selectedFile != null) {
 			filePath = selectedFile.getAbsolutePath();
 			TextPath.setText(filePath);
+			filename = selectedFile.getName();
 		}
 
 	}
 
 	@FXML
-	void UploadPressed(ActionEvent event) {
-		if (!filePath.isEmpty() && !(filePath == "none") && (!testID.getText().isEmpty())) {
-			try {
-				File selectedFile = new File(filePath);
+	synchronized void UploadPressed(ActionEvent event) {
+		// Open file chooser dialog
 
-				// Create the output stream and object output stream
-				FileOutputStream fileOut = new FileOutputStream(selectedFile);
-				// ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-				BufferedOutputStream objectOut = new BufferedOutputStream(fileOut);
+		if (selectedFile != null) {
+			try (FileInputStream fileInputStream = new FileInputStream(selectedFile);
+					ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream()) {
 
-				byte[] mybytearray = new byte[(int) selectedFile.length()];
+				byte[] buffer = new byte[8192];
+				int bytesRead;
+				while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+					byteOutputStream.write(buffer, 0, bytesRead);
+				}
 
-				// Write the selected file object to the output stream
-				objectOut.write(mybytearray, 0, mybytearray.length);
-				// Close the streams
-				objectOut.close();
+				byte[] fileContent = byteOutputStream.toByteArray();
+				String fileId = "12345"; // Replace with the file ID entered by the client
 
-				//sendToServer((Object)mybytearray);
-
-				System.out.println("File uploaded successfully.");
+				// Send file and ID to the server
+				ClientUI.chat.uploadFile(fileId, fileContent, filename);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else {
-			JOptionPane.showMessageDialog(null, "No File Chosen", "Error", JOptionPane.INFORMATION_MESSAGE);
-			return;
-		}
+		} else
+			JOptionPane.showMessageDialog(null,
+					(String) "Something went wrong!\n File not found! try picking the file again.", (String) "Error!",
+					JOptionPane.ERROR_MESSAGE);
 	}
 
 	@FXML

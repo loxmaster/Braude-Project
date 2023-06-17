@@ -19,10 +19,11 @@
 }
 
 /* ............................BUTTONS................................ */
-#chooseFile:pressed{
-	-fx-translate-y: 0px	
+#chooseFile:pressed {
+	-fx-translate-y: 0px
 }
-#chooseFile{
+
+#chooseFile {
 
 	-fx-background-color: lightgrey;
 	-fx-background-size: cover;
@@ -36,21 +37,25 @@
 	-fx-font-size: 10;
 	-fx-font-style: italic;
 }
-#ClickDownload{
-	-fx-background-color: lightgrey;
+
+#ClickDownload {
+	-fx-background-color: rgb(196, 196, 196);
 	-fx-background-size: cover;
 	-fx-background-repeat: no-repeat;
 	-fx-background-position: center;
-	-fx-border-color: black;
-	-fx-border-radius: 5px;
-	-fx-background-radius: 5px;
-	-fx-min-height: 30px;
-	-fx-max-height: 30px;
-	-fx-font-size: 10;
+	-fx-blend-mode: multiply;
+	-fx-border-color: rgba(0, 0, 0, 0.351);
+	-fx-border-radius: 10px;
+	-fx-background-radius: 10px;
+	-fx-height: auto;
+	-fx-height: auto;
+	-fx-max-height: auto;
+	-fx-font-size: 15;
 }
 
 
 .button {
+	
 	-fx-padding: 8px 16px;
 	-fx-font-size: 12px;
 	-fx-font-weight: bold;
@@ -81,11 +86,11 @@
 
 #exitbutton {
 	-fx-background-image: url('question_exit_logo2.png');
-	-fx-background-size:contain;
+	-fx-background-size: contain;
 	-fx-background-repeat: no-repeat;
 	-fx-background-color: transparent;
 
-	
+
 	-fx-transition-duration: 0.3s;
 	-fx-cursor: hand;
 }
@@ -129,6 +134,15 @@
 
 #loginbutton:pressed {
 	-fx-translate-y: 4px;
+}
+
+#onlineTest {
+	-fx-image: url('onlineTest.png');
+
+}
+
+#download {
+	-fx-image: url('download.png');
 }
 
 #Logout {
