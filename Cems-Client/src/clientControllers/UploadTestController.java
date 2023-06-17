@@ -84,7 +84,12 @@ public class UploadTestController extends BasicController {
 
 	@FXML
 	void backToLecturer(ActionEvent event) {
-		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Create Tests", event);
+		openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer - Main Screen ", event);
 	}
+	@FXML
+	void backPressed(ActionEvent event) {
+		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Manage Test", event);
+	}
+
 
 }
