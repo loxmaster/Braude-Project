@@ -247,7 +247,9 @@ public class ClientHandler extends AbstractClient {
 	public void handleMessageFromLoginUI(Object username, Object password) {
 		ArrayList<String> credentials = new ArrayList<String>();
 		// create a query to grab username requested
-		String query = "SELECT * FROM users  WHERE (`username` = '" + username + "');";
+		String key = (String)username;
+		String query = String.format("SELECT * FROM users  WHERE username = '%s';",
+		key);
 		credentials.addAll(Arrays.asList(query, (String) username, (String) password));
 
 		try {

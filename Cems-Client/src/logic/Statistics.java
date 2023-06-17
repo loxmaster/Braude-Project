@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.ArrayList;
+
 import clientControllers.BasicController;
 import clientControllers.GraphController;
 import javafx.event.ActionEvent;
@@ -10,7 +12,6 @@ public class Statistics extends BasicController {
     private String Course, Date, Median, TestID, Grade;
     private int Average,Total_Number_of_Students, Highes, Lowest, Number_of_Students_Above_Average;
     private int Number_of_Students_Below_Average, Pass_Rate, Fail_Rate, Grade_Distribution;
-    private Button distribution;
 
     public Statistics(String TestID) {
         this.TestID = TestID;
@@ -107,30 +108,6 @@ public class Statistics extends BasicController {
 
     public String getCourse() {
         return Course;
-    }
-
-    public Button getDistribution() {
-        distribution = new Button("Distribution");
-
-        distribution.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                GraphController lsc = (GraphController) openScreen("/clientFXMLS/LecturerStatistical_GraphView.fxml",
-                        "CEMS System - Viewing Graph", event);
-                lsc.initialize_BarChart(TestID);
-            }
-        });
-
-        // questionInTestButton.setId("questionbutton");
-        distribution.setPrefWidth(120);
-        distribution.setPrefHeight(10);
-
-        return distribution;
-    }
-
-    public void setDistribution(Button distribution) {
-        this.distribution = distribution;
     }
 
     public void setCourse(String course) {
