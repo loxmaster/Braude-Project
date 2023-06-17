@@ -129,7 +129,6 @@ public class ClientHandler extends AbstractClient {
 
 						case "lecturercourses":
 							list.remove(0);
-							list.replaceAll(String::toUpperCase);
 							LecturerController.getCoursesList().addAll(list);
 							break;
 
@@ -182,6 +181,8 @@ public class ClientHandler extends AbstractClient {
 					case "Question Exists":
 					case "Not Found":
 					case "Id Exists":
+						ClientUI.updatestatus = 0;
+						break;
 					default:
 						// Here we recieve the confirmation of the client login
 						subjectArray = ((String) serverMessage).toString().split("\\s");

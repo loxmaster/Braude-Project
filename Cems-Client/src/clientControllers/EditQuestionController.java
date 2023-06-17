@@ -221,15 +221,12 @@ public class EditQuestionController extends BasicController {
 		subjectid = CreateQuestionController.getSubjectID();
 		System.out.println("CreateQuestion: " + subjectid);
 		subjectid += qnumber;
-		subject = subject.toLowerCase();
-        course = course.toLowerCase();
 		ClientUI.chat.EditQuestion(subjectid, subject,course, qBody, qnumber,originalId);
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		correctAnswer = correctAnswer.toLowerCase();
 		ClientUI.chat.EditAnswers(subjectid, optionA,optionB, optionC ,optionD, correctAnswer);
 	}
 
