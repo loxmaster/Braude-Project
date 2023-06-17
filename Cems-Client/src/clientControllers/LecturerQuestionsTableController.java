@@ -70,8 +70,8 @@ public class LecturerQuestionsTableController extends BasicController {
 		// add new filters here as needed, dont forget to add a new listener
 		filteredList.setPredicate(questionModel -> {
 			return selectedCourse == null || selectedCourse.isEmpty()
-					|| questionModel.getCoursename().toUpperCase().contains(selectedCourse)
-					|| questionModel.getCoursename().toLowerCase().contains(selectedCourse);
+					|| questionModel.getCoursename().contains(selectedCourse)
+					|| questionModel.getCoursename().contains(selectedCourse);
 		});}
 
     public void loadTable() {

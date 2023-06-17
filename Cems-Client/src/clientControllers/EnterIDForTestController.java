@@ -17,7 +17,12 @@ import logic.FileDownloadMessage;
 
 public class EnterIDForTestController extends BasicController {
 
-	public String test_code;
+	public static String test_code;
+
+	public static void setTest_code(String code) {
+		test_code = code;
+	}
+
 
 	private static FileDownloadMessage downloadMessage;
 
@@ -56,6 +61,12 @@ public class EnterIDForTestController extends BasicController {
 
 	@FXML
     void AutomaticPressed(ActionEvent event) {
+
+		try {
+			ClientUI.chat.isStudentTakingCourse();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
     }
 	

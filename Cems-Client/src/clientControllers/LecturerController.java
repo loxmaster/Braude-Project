@@ -32,7 +32,7 @@ public class LecturerController extends BasicController {
 	 * Method for setting the name of the user.
 	 */
 	public void setWelcomeLabel() {
-		welcomeLabel.setText(welcomeLabel.getText() + " " + ClientHandler.user.getUsername().toUpperCase() + "!");
+		welcomeLabel.setText(welcomeLabel.getText() + " " + ClientHandler.user.getUsername() + "!");
 	}
 
 	public void loadLecturer(User user) {

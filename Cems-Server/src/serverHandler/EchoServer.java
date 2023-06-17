@@ -105,7 +105,8 @@ public class EchoServer extends AbstractServer {
 			if (msg instanceof FileUploadMessage) {
 				FileUploadMessage uploadMessage = (FileUploadMessage) msg;
 				// Save the file in the database (e.g., using JDBC)
-				if (saveFileToDatabase(uploadMessage.getFileId(), uploadMessage.getFileContent(),uploadMessage.getFilename()))
+				if (saveFileToDatabase(uploadMessage.getFileId(), uploadMessage.getFileContent(),
+						uploadMessage.getFilename()))
 					client.sendToClient("File Uploaded Successfully!");
 				else
 					client.sendToClient("Error! File Upload Failed!");
@@ -118,7 +119,7 @@ public class EchoServer extends AbstractServer {
 				downloadMessage.setFileContent(fileContent.getFileContent());
 				downloadMessage.setFilename(fileContent.getFilename());
 				client.sendToClient(downloadMessage);
-				//}
+				// }
 			}
 
 			switch (msg.getClass().getSimpleName()) {
@@ -162,6 +163,9 @@ public class EchoServer extends AbstractServer {
 							// if (flag != 0) flag=1;
 							client.sendToClient(flag == 0 ? idExists : flag);
 							break;
+						case "isStudentTakingCourse":
+							ArrayList<String> testcode = getTestCodeFromUsername(list.get(1));
+							client.sendToClient(testcode == null ? notFound : testcode);
 
 						case "testNumber":
 							ArrayList<String> restestList = getData_db(list.get(1), "testNumber");
@@ -208,6 +212,22 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 
+	private ArrayList<String> getTestCodeFromUsername(String query) {
+		ArrayList<String> output = new ArrayList<>();
+		output.add("isStudentTakingCourse");
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			if (result.next()) {
+				output.add((String) result.getString("code"));
+				return output;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private FileDownloadMessage getFileFromDatabase(String fileId) {
 		FileDownloadMessage fileContent = new FileDownloadMessage(fileId);
 		fileContent.setFileContent(null);
@@ -230,7 +250,7 @@ public class EchoServer extends AbstractServer {
 		return fileContent;
 	}
 
-	private boolean saveFileToDatabase(String fileId, byte[] fileContent,String filename) {
+	private boolean saveFileToDatabase(String fileId, byte[] fileContent, String filename) {
 		// Implement your logic to save the file content to the database (e.g., using
 		// JDBC)
 		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/projecton?serverTimezone=IST",

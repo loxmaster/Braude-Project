@@ -66,20 +66,20 @@ public class EditQuestionController extends BasicController {
 		HashSet<String> courseUpdated = new HashSet<>();
 
 		subjectUpdated.addAll(LecturerController.subjectsList);
-		subjectUpdated.add(question.getSubject().toUpperCase());
+		subjectUpdated.add(question.getSubject());
 
 		courseUpdated.addAll(LecturerController.coursesList);
-		courseUpdated.add(question.getCoursename().toUpperCase());
+		courseUpdated.add(question.getCoursename());
 
 		subjectList = FXCollections.observableArrayList(subjectUpdated);
 		courseList = FXCollections.observableArrayList(courseUpdated);
 
 		courseComboBox.setItems(courseList);
-		courseComboBox.setValue(question.getCoursename().toUpperCase());
+		courseComboBox.setValue(question.getCoursename());
 	
 
 		subjectCombobox.setItems(subjectList);
-		subjectCombobox.setValue(question.getSubject().toUpperCase());
+		subjectCombobox.setValue(question.getSubject());
 
 		qA.setText(question.getOptionA());
 		qB.setText(question.getOptionB());

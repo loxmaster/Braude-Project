@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
@@ -219,7 +220,6 @@ public class ClientController implements ChatIF {
             //openConnection();
             client.sendToServer(new FileUploadMessage(fileId, fileContent,filename));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -228,11 +228,13 @@ public class ClientController implements ChatIF {
         try {
             client.sendToServer(new FileDownloadMessage(fileId));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-      
-    
-    
+
+    public void isStudentTakingCourse() throws IOException {
+        ArrayList<String> sendToServer = new ArrayList<>();
+        sendToServer.add("isStudentTakingCourse");
+        client.isStudentTakingCourse(sendToServer);
+    }
 }

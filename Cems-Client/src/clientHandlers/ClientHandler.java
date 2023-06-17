@@ -30,7 +30,8 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * @param client       interface type variable. It allows the implementation of
 	 *                     the comunication with the client .
-	 * @param User         static variable to remember localy the data about the user .
+	 * @param User         static variable to remember localy the data about the
+	 *                     user .
 	 * @param subjectsList static arrayList of all the subjects available .
 	 */
 	ChatIF client;
@@ -39,6 +40,7 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * Contructor for this instance of ClientHandler. Also, opens a connection
 	 * to the server (If connection already open does nothing) .
+	 * 
 	 * @param host
 	 * @param port
 	 * @param client
@@ -69,69 +71,76 @@ public class ClientHandler extends AbstractClient {
 			FileDownloadMessage downloadMessage = (FileDownloadMessage) serverMessage;
 			EnterIDForTestController.setDownloadMessage(downloadMessage);
 			// Pass the downloaded file message to the client controller
-			
+
 		}
 		// Switch function on the name of the class that message was the sent .
-		switch(serverMessage.getClass().getSimpleName()) {
-			
+		switch (serverMessage.getClass().getSimpleName()) {
+
 			// If got Integer then its a result of the UpdateQuery. If 1 then successful .
 			case "Integer":
 				if ((Integer) serverMessage == 1)
 					System.out.println("Update was successful");
 				else
 					System.out.println("Update wasnt so successful");
-			break;
-			
+				break;
+
 			// If message type ArrayList it means that data comes in , where first index (0)
 			// is reserved for destination , and second (1) index is the data itself.
 			case "ArrayList":
-				
+
 				// If first instance is Question than its a question list.
 				if (((ArrayList<?>) serverMessage).get(0) instanceof Question) {
 					questionList = (ArrayList<Question>) serverMessage;
 					ArrayList<QuestionModel> listToAdd = new ArrayList<>();
 
 					for (int i = 0; i < questionList.size(); i++) {
-							listToAdd.add(new QuestionModel(
-							questionList.get(i).getId(),
-							questionList.get(i).getSubject(),
-							questionList.get(i).getCoursename(),
-							questionList.get(i).getQuestiontext(),
-							questionList.get(i).getQuestionnumber(),
-							questionList.get(i).getLecturer(),
-							questionList.get(i).getOptionA(),
-							questionList.get(i).getOptionB(),
-							questionList.get(i).getOptionC(),
-							questionList.get(i).getOptionD(),
-							questionList.get(i).getAnswer()));				
-						}
+						listToAdd.add(new QuestionModel(
+								questionList.get(i).getId(),
+								questionList.get(i).getSubject(),
+								questionList.get(i).getCoursename(),
+								questionList.get(i).getQuestiontext(),
+								questionList.get(i).getQuestionnumber(),
+								questionList.get(i).getLecturer(),
+								questionList.get(i).getOptionA(),
+								questionList.get(i).getOptionB(),
+								questionList.get(i).getOptionC(),
+								questionList.get(i).getOptionD(),
+								questionList.get(i).getAnswer()));
+					}
 
 					LecturerController.setQuestions(listToAdd);
 				}
 
 				else {
 					list = (ArrayList<String>) serverMessage;
-					switch(list.get(0)) {
-						
+					switch (list.get(0)) {
+
 						case "lecturersubjects":
 							subjectArray = list.get(1).split(",");
-							for (String s : subjectArray) 
-								LecturerController.getSubjectsList().add(s.toUpperCase()); break;
-						
+							for (String s : subjectArray)
+								LecturerController.getSubjectsList().add(s);
+							break;
+
+						case "isStudentTakingCourse":
+							EnterIDForTestController.setTest_code(list.get(1));
+
+							break;
+
 						case "lecturercourses":
 							list.remove(0);
 							list.replaceAll(String::toUpperCase);
-							LecturerController.getCoursesList().addAll(list); break;
-						
+							LecturerController.getCoursesList().addAll(list);
+							break;
 
 						case "getSubjectID":
 							System.out.println("Client Handler: " + list.get(1));
-							CreateQuestionController.setSubjectID(list.get(1)); break;
-						
+							CreateQuestionController.setSubjectID(list.get(1));
+							break;
 
 						case "getCourseID":
 							System.out.println("Client Handler: got course ID " + list.get(1) + "from the database");
-							CreateQuestionController.setCourseID(list.get(1)); break;
+							CreateQuestionController.setCourseID(list.get(1));
+							break;
 
 						case "testNumber":
 							// if we got null, we start a new test number starting from 01
@@ -139,33 +148,35 @@ public class ClientHandler extends AbstractClient {
 							if (list.get(1) == null) {
 								CreateTestController.setNextTestNumber("01");
 								System.out.println("Client Handler: got test number, " + list.get(1)
-								+ " from the database: making a new test");
+										+ " from the database: making a new test");
 							} else {
 								int format = Integer.parseInt(list.get(1));
 								format++;
-								String format2 = "0"+ format;
-								//CreateQuestionController.testcount = format2.substring(2, 4);
+								String format2 = "0" + format;
+								// CreateQuestionController.testcount = format2.substring(2, 4);
 								CreateTestController.setNextTestNumber(format2);
 							}
 
-							System.out.println("Client Handler: " + list.get(1)); break;
-						
+							System.out.println("Client Handler: " + list.get(1));
+							break;
+
 					}
 				}
-			break;
+				break;
 
 			case "String":
-				switch((String)serverMessage) {
+				switch ((String) serverMessage) {
 					case "User Not Found":
 						System.err.println("Not Found in handler");
 						user.setIsFound(false);
-					break;
+						break;
 
 					case "File Uploaded Successfully!":
 					case "Error! File Upload Failed!":
 					case "File not Found!":
-					JOptionPane.showMessageDialog(null,(String)serverMessage, (String)serverMessage,JOptionPane.INFORMATION_MESSAGE);
-					break;
+						JOptionPane.showMessageDialog(null, (String) serverMessage, (String) serverMessage,
+								JOptionPane.INFORMATION_MESSAGE);
+						break;
 
 					case "Question Exists":
 					case "Not Found":
@@ -178,16 +189,15 @@ public class ClientHandler extends AbstractClient {
 						user.setType(subjectArray[2]);
 						// rest of the stuff in the table
 						user.setIsFound(true);
-					break;
+						break;
 				}
 
-			break;
+				break;
 		}
 
 		System.out.println("--> messageFromServerHandled");
 	}
 
-	
 	/**
 	 * This method handles all data coming from the UI
 	 *
@@ -253,7 +263,7 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	public  void handle_test_MessageFromLecturerUI(Object username) {
+	public void handle_test_MessageFromLecturerUI(Object username) {
 		ArrayList<String> courseList = new ArrayList<String>();
 
 		courseList.addAll(Arrays.asList("lecturercourses",
@@ -273,6 +283,7 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * questions for the lecturer.
+	 * 
 	 * @param username lecturers username
 	 */
 	public void GetLecturersQuestions_Handler(String username) {
@@ -338,6 +349,7 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * Method that creates query for creating a question and
 	 * Passes it to server.
+	 * 
 	 * @param Id
 	 * @param subject
 	 * @param Body
@@ -361,6 +373,7 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Method that creates query for insering answers to database.
+	 * 
 	 * @param optionA
 	 * @param optionB
 	 * @param optionC
@@ -387,6 +400,7 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Method for sending the test to the data base.
+	 * 
 	 * @param query
 	 */
 	public void sendTestToDatabase(Object query) {
@@ -405,6 +419,7 @@ public class ClientHandler extends AbstractClient {
 	 * Create a new arraylist subject, add an identifier "getSubjectID" so the
 	 * Echoserver idenrtifies it,
 	 * the second cell should contain 'subjectname' for the server to parse
+	 * 
 	 * @param subjectname the subject to whom the search is for.
 	 */
 	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
@@ -419,7 +434,6 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-
 	public void GetCourseIDfromSubjectCourses(Object coursename) {
 		ArrayList<String> list = new ArrayList<String>();
 		list.addAll(Arrays.asList("getCourseID",
@@ -433,12 +447,15 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	// test id format: 01 02 03  subjectANDcourse format: 01 02 	returned value should be: 01 02 03
+	// test id format: 01 02 03 subjectANDcourse format: 01 02 returned value should
+	// be: 01 02 03
 	public void getNextFreeTestNumber(Object subjectANDcourse) {
 		ArrayList<String> list = new ArrayList<String>();
-		//String subject = (String)subjectANDcourse.substring(0,2);
+		// String subject = (String)subjectANDcourse.substring(0,2);
 
-		list.addAll(Arrays.asList("testNumber", "SELECT MAX(CAST(SUBSTRING(id, 5, 2) AS UNSIGNED)) AS max_test_number FROM tests WHERE SUBSTRING(id, 1, 4) = '"+ (String) subjectANDcourse + "';"));
+		list.addAll(Arrays.asList("testNumber",
+				"SELECT MAX(CAST(SUBSTRING(id, 5, 2) AS UNSIGNED)) AS max_test_number FROM tests WHERE SUBSTRING(id, 1, 4) = '"
+						+ (String) subjectANDcourse + "';"));
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
@@ -447,26 +464,25 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	public void handleFileDownload(FileDownloadMessage downloadMessage) {
-        byte[] fileContent = downloadMessage.getFileContent();
-    
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save File");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
-        fileChooser.getExtensionFilters().add(extFilter);
-    
-        File file = fileChooser.showSaveDialog(null);
-        if (file != null) {
-            try (FileOutputStream fos = new FileOutputStream(file)) {
-                if (fileContent != null) {
-                    fos.write(fileContent);
-                    fos.flush();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-	}
+		byte[] fileContent = downloadMessage.getFileContent();
 
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save File");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
+		fileChooser.getExtensionFilters().add(extFilter);
+
+		File file = fileChooser.showSaveDialog(null);
+		if (file != null) {
+			try (FileOutputStream fos = new FileOutputStream(file)) {
+				if (fileContent != null) {
+					fos.write(fileContent);
+					fos.flush();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////
@@ -498,6 +514,13 @@ public class ClientHandler extends AbstractClient {
 		user = new User();
 		LecturerController.subjectsList = new ArrayList<String>();
 		LecturerController.questions = new ArrayList<QuestionModel>();
+	}
+
+	public void isStudentTakingCourse(ArrayList<String> sendtoServer) throws IOException {
+		sendtoServer.add(
+				"SELECT code FROM student s JOIN subjectcourses sc ON FIND_IN_SET(sc.coursename, s.courses) > 0 JOIN tests t ON SUBSTRING(t.id, 3, 2) = sc.courseid WHERE s.username = '"
+						+ user.getUsername() + "' AND SUBSTRING(t.id, 1, 2) = sc.subjectid;");
+		sendToServer(sendtoServer);
 	}
 
 }
