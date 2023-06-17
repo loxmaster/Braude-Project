@@ -305,6 +305,8 @@ public class CreateQuestionController extends BasicController {
 	@FXML
 	void backPressed(ActionEvent event) {
 		// goes back to options screen
+		
 		openScreen("/clientFXMLS/LecturerOptions.fxml", "CEMS System - Lecturer", event);
+		
 	}
 }

@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
@@ -32,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.QuestionModel;
 import logic.Test;
+
 
 public class CreateTestController extends BasicController {
 
@@ -103,8 +100,8 @@ public class CreateTestController extends BasicController {
 
 		courseComboBox.getItems().removeAll();
 		courseComboBox.setItems(courseList);
-
 	}
+	
 
 	/**
 	 * Method handeling the pressing of 'Add Test Comments' button .

@@ -1,75 +1,99 @@
 package clientHandlers;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
+import clientControllers.EnterIDForTestController;
 import clientControllers.LecturerController;
+import javafx.stage.FileChooser;
+import logic.FileDownloadMessage;
 import logic.Question;
 import logic.QuestionModel;
 import logic.User;
 import ocsf.client.AbstractClient;
 
 @SuppressWarnings("unchecked")
+
 /**
  * This class overrides some of the methods defined in the abstract superclass
- * in order to give more functionality to the client.
+ * AbstractClient in order to give more functionality to the client .
  */
 public class ClientHandler extends AbstractClient {
 
 	/**
 	 * @param client       interface type variable. It allows the implementation of
-	 *                     the display method in the client.
-	 * @param User         static variable to remember localy the data about user.
-	 * @param subjectsList static arrayList of all the subjects available.
+	 *                     the comunication with the client .
+	 * @param User         static variable to remember localy the data about the user .
+	 * @param subjectsList static arrayList of all the subjects available .
 	 */
-
 	ChatIF client;
 	public static User user = new User();
 
-	// Constructors ****************************************************
-
+	/**
+	 * Contructor for this instance of ClientHandler. Also, opens a connection
+	 * to the server (If connection already open does nothing) .
+	 * @param host
+	 * @param port
+	 * @param client
+	 * @throws IOException
+	 */
 	public ClientHandler(String host, int port, ChatIF client) throws IOException {
 		super(host, port);
 		this.client = client;
 		openConnection();
 	}
 
-	////////////////////////////////////////////////////////////
-	/////////////// HANDLE MESSAGHE FROM SERVER ///////////////
-	//////////////////////////////////////////////////////////
-
 	/**
-	 * This method handles all data that comes in from the server.
-	 * HANDLE MESSAGES RECEIVED FROM THE SERVER
+	 * This method handles all data that comes in from the server .
 	 * 
-	 * @param severMessage The message from the server.
+	 * @param serverMessage The message from the server .
 	 */
-	public void handleMessageFromServer(Object severMessage) {
-		System.out.println("got message: " + severMessage);
+	public void handleMessageFromServer(Object serverMessage) {
+
+		// Local parameters.
 		String[] subjectArray;
 		ArrayList<String> list;
 		ArrayList<Question> questionList;
 
-		if (severMessage instanceof Integer) {
-			if ((Integer) severMessage == 1)
-				System.out.println("Update was successful");
-			else
-				System.out.println("Update wasnt so successful");
+		// Notifice about recieving the message to console .
+		System.out.println("got message: " + serverMessage);
+
+		if (serverMessage instanceof FileDownloadMessage) {
+			FileDownloadMessage downloadMessage = (FileDownloadMessage) serverMessage;
+			EnterIDForTestController.setDownloadMessage(downloadMessage);
+			// Pass the downloaded file message to the client controller
+			
 		}
+		// Switch function on the name of the class that message was the sent .
+		switch(serverMessage.getClass().getSimpleName()) {
+			
+			// If got Integer then its a result of the UpdateQuery. If 1 then successful .
+			case "Integer":
+				if ((Integer) serverMessage == 1)
+					System.out.println("Update was successful");
+				else
+					System.out.println("Update wasnt so successful");
+			break;
+			
+			// If message type ArrayList it means that data comes in , where first index (0)
+			// is reserved for destination , and second (1) index is the data itself.
+			case "ArrayList":
+				
+				// If first instance is Question than its a question list.
+				if (((ArrayList<?>) serverMessage).get(0) instanceof Question) {
+					questionList = (ArrayList<Question>) serverMessage;
+					ArrayList<QuestionModel> listToAdd = new ArrayList<>();
 
-		else if (severMessage instanceof ArrayList) {
-
-			if (((ArrayList<?>) severMessage).get(0) instanceof Question) {
-				questionList = (ArrayList<Question>) severMessage;
-				ArrayList<QuestionModel> listToAdd = new ArrayList<>();
-
-				for (int i = 0; i < questionList.size(); i++) {
-					listToAdd.add(new QuestionModel(
+					for (int i = 0; i < questionList.size(); i++) {
+							listToAdd.add(new QuestionModel(
 							questionList.get(i).getId(),
 							questionList.get(i).getSubject(),
 							questionList.get(i).getCoursename(),
@@ -80,99 +104,91 @@ public class ClientHandler extends AbstractClient {
 							questionList.get(i).getOptionB(),
 							questionList.get(i).getOptionC(),
 							questionList.get(i).getOptionD(),
-							questionList.get(i).getAnswer()));
+							questionList.get(i).getAnswer()));				
+						}
+
+					LecturerController.setQuestions(listToAdd);
 				}
 
-				LecturerController.setQuestions(listToAdd);
-			}
+				else {
+					list = (ArrayList<String>) serverMessage;
+					switch(list.get(0)) {
+						
+						case "lecturersubjects":
+							subjectArray = list.get(1).split(",");
+							for (String s : subjectArray) 
+								LecturerController.getSubjectsList().add(s.toUpperCase()); break;
+						
+						case "lecturercourses":
+							list.remove(0);
+							list.replaceAll(String::toUpperCase);
+							LecturerController.getCoursesList().addAll(list); break;
+						
 
-			else {
-				list = ((ArrayList<String>) severMessage);
+						case "getSubjectID":
+							System.out.println("Client Handler: " + list.get(1));
+							CreateQuestionController.setSubjectID(list.get(1)); break;
+						
 
-				if (list.get(0).equals("lecturersubjects")) {
-					subjectArray = list.get(1).split(",");
-					for (String s : subjectArray) {
-						LecturerController.getSubjectsList().add(s.toUpperCase());
+						case "getCourseID":
+							System.out.println("Client Handler: got course ID " + list.get(1) + "from the database");
+							CreateQuestionController.setCourseID(list.get(1)); break;
+
+						case "testNumber":
+							// if we got null, we start a new test number starting from 01
+							// for example: 0101 doesn't exist; add 010100
+							if (list.get(1) == null) {
+								CreateTestController.setNextTestNumber("01");
+								System.out.println("Client Handler: got test number, " + list.get(1)
+								+ " from the database: making a new test");
+							} else {
+								int format = Integer.parseInt(list.get(1));
+								format++;
+								String format2 = "0"+ format;
+								//CreateQuestionController.testcount = format2.substring(2, 4);
+								CreateTestController.setNextTestNumber(format2);
+							}
+
+							System.out.println("Client Handler: " + list.get(1)); break;
+						
 					}
 				}
+			break;
 
-				if (list.get(0).equals("lecturercourses")) {
-					list.remove(0);
-					list.replaceAll(String::toUpperCase);
-					LecturerController.getCoursesList().addAll(list);
+			case "String":
+				switch((String)serverMessage) {
+					case "User Not Found":
+						System.err.println("Not Found in handler");
+						user.setIsFound(false);
+					break;
+
+					case "File Uploaded Successfully!":
+					case "Error! File Upload Failed!":
+					case "File not Found!":
+					JOptionPane.showMessageDialog(null,(String)serverMessage, (String)serverMessage,JOptionPane.INFORMATION_MESSAGE);
+					break;
+
+					case "Question Exists":
+					case "Not Found":
+					case "Id Exists":
+					default:
+						// Here we recieve the confirmation of the client login
+						subjectArray = ((String) serverMessage).toString().split("\\s");
+						user.setUsername(subjectArray[0]);
+						user.setPassword(subjectArray[1]);
+						user.setType(subjectArray[2]);
+						// rest of the stuff in the table
+						user.setIsFound(true);
+					break;
 				}
 
-				// assign subjectID that we've got from the server
-				else if (list.get(0).equals("getSubjectID")) {
-					// subjectArray = list.get(1).split(",");
-					System.out.println("Client Handler: " + list.get(1));
-					CreateQuestionController.setSubjectID(list.get(1));
-				}
-
-				// assign subjectID that we've got from the server
-				else if (list.get(0).equals("getCourseID")) {
-					// subjectArray = list.get(1).split(",");
-					System.out.println("Client Handler: got course ID " + list.get(1) + "from the database");
-					CreateQuestionController.setCourseID(list.get(1));
-				}
-
-				// assign subjectID that we've got from the server
-				else if (list.get(0).equals("testNumber")) {
-					// if we got null, we start a new test number starting from 01
-					// for example: 0101 doesn't exist; add 010100
-					if (list.get(1) == null) {
-						CreateTestController.setNextTestNumber("01");
-						System.out.println("Client Handler: got test number, " + list.get(1)
-						+ " from the database: making a new test");
-					} else {
-						int format = Integer.parseInt(list.get(1));
-						format++;
-						String format2 = "0"+ format;
-						//CreateQuestionController.testcount = format2.substring(2, 4);
-						CreateTestController.setNextTestNumber(format2);
-					}
-
-					System.out.println("Client Handler: " + list.get(1));
-				}
-			}
-
-		}
-
-		// Handles the error of user not found.
-		else if (severMessage.toString().equals("User Not Found")) {
-			System.err.println("Not Found in handler");
-			user.setIsFound(false);
-		}
-
-		// Handles the error the the question already exist with that id.
-		else if (severMessage.toString().contains("Question Exists")) {
-
-		}
-
-		// Handles the error of Not Found
-		else if (severMessage.toString().contains("Not Found")) {
-
-		}
-
-		// Handles the error of Id Exists
-		else if (severMessage.toString().contains("Id Exists")) {
-			ClientUI.updatestatus = 0;
-		}
-
-		else {
-			// Here we recieve the confirmation of the client login
-			subjectArray = ((String) severMessage).toString().split("\\s");
-			user.setUsername(subjectArray[0]);
-			user.setPassword(subjectArray[1]);
-			user.setType(subjectArray[2]);
-			// rest of the stuff in the table
-			user.setIsFound(true);
+			break;
 		}
 
 		System.out.println("--> messageFromServerHandled");
 	}
 
-	// ClientHandler /// <see cref="Fully.Qualified.Type.Name"/>
+	
 	/**
 	 * This method handles all data coming from the UI
 	 *
@@ -212,7 +228,6 @@ public class ClientHandler extends AbstractClient {
 	 * subjects.
 	 */
 	public void handleMessageFromLecturerUI() {
-		// SELECT courses FROM projecton.lecturer WHERE (`username` = 'noah');
 		try {
 			sendToServer((Object) "SELECT DISTINCT subjectname FROM subjectcourses;");
 		} catch (IOException e) {
@@ -226,25 +241,7 @@ public class ClientHandler extends AbstractClient {
 	 * 
 	 * @return
 	 */
-
-	// public synchronized void handleMessageFromLecturerUI(Object username) {
-	// ArrayList<String> subjectList = new ArrayList<String>();
-	// ArrayList<String> courseList = new ArrayList<String>();
-	// subjectList.addAll(Arrays.asList("lecturersubjects",
-	// "SELECT courses FROM projecton.lecturer WHERE (`username` = '" + (String)
-	// username + "');"));
-
-	// courseList.addAll(Arrays.asList("lecturercourses", "SELECT sc.coursename FROM
-	// lecturer l JOIN subjectcourses sc ON find_in_set( sc.subjectname, l.courses)
-	// WHERE (l.username = '" + (String) username + "' );"));
-	// try {
-	// sendToServer((Object) subjectList);
-	// sendToServer((Object) courseList);
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
-	public synchronized void handleMessageFromLecturerUI(Object username) {
+	public void handleMessageFromLecturerUI(Object username) {
 		ArrayList<String> subjectList = new ArrayList<String>();
 
 		subjectList.addAll(Arrays.asList("lecturersubjects",
@@ -257,7 +254,7 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	public synchronized void handle_test_MessageFromLecturerUI(Object username) {
+	public  void handle_test_MessageFromLecturerUI(Object username) {
 		ArrayList<String> courseList = new ArrayList<String>();
 
 		courseList.addAll(Arrays.asList("lecturercourses",
@@ -277,6 +274,7 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * questions for the lecturer.
+	 * @param username lecturers username
 	 */
 	public void GetLecturersQuestions_Handler(String username) {
 		/*
@@ -362,7 +360,6 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * Method that creates query for creating a question and
 	 * Passes it to server.
-	 * 
 	 * @param Id
 	 * @param subject
 	 * @param Body
@@ -384,7 +381,6 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Method that creates query for insering answers to database.
-	 * 
 	 * @param optionA
 	 * @param optionB
 	 * @param optionC
@@ -411,7 +407,6 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Method for sending the test to the data base.
-	 * 
 	 * @param query
 	 */
 	public void sendTestToDatabase(Object query) {
@@ -427,10 +422,9 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	/**
-	 * create a new arraylist subject, add an identifier "getSubjectID" so the
+	 * Create a new arraylist subject, add an identifier "getSubjectID" so the
 	 * Echoserver idenrtifies it,
 	 * the second cell should contain 'subjectname' for the server to parse
-	 * 
 	 * @param subjectname the subject to whom the search is for.
 	 */
 	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
@@ -445,6 +439,7 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+
 	public void GetCourseIDfromSubjectCourses(Object coursename) {
 		ArrayList<String> list = new ArrayList<String>();
 		list.addAll(Arrays.asList("getCourseID",
@@ -458,19 +453,7 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	// public void getNextFreeTestNumber(Object subjectANDcourse) {
-	// 	ArrayList<String> list = new ArrayList<String>();
-	// 	list.addAll(Arrays.asList("testNumber", "SELECT CONCAT(IFNULL(SUBSTRING('id', 1, 4), '"
-	// 			+ (String) subjectANDcourse
-	// 			+ "'), LPAD(COALESCE(MAX(CAST(SUBSTRING('id', 5, 2) AS UNSIGNED)), 0) + 1, 2, '0')) AS next_id FROM 'projecton'.'tests' WHERE SUBSTRING('id', 1, 4) = '"
-	// 			+ (String) subjectANDcourse + "'"));
-	// 	try {
-	// 		sendToServer((Object) list);
-	// 	} catch (IOException e) {
-	// 		e.printStackTrace();
-	// 	}
-	//}
-// test id format: 01 02 03  subjectANDcourse format: 01 02 	returned value should be: 01 02 03
+	// test id format: 01 02 03  subjectANDcourse format: 01 02 	returned value should be: 01 02 03
 	public void getNextFreeTestNumber(Object subjectANDcourse) {
 		ArrayList<String> list = new ArrayList<String>();
 		//String subject = (String)subjectANDcourse.substring(0,2);
@@ -482,6 +465,28 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
+
+	public void handleFileDownload(FileDownloadMessage downloadMessage) {
+        byte[] fileContent = downloadMessage.getFileContent();
+    
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
+        fileChooser.getExtensionFilters().add(extFilter);
+    
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                if (fileContent != null) {
+                    fos.write(fileContent);
+                    fos.flush();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+	}
+
 
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////
