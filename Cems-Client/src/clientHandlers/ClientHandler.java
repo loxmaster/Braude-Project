@@ -1,12 +1,19 @@
 package clientHandlers;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.JOptionPane;
+
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
+import clientControllers.EnterIDForTestController;
 import clientControllers.LecturerController;
+import javafx.stage.FileChooser;
+import logic.FileDownloadMessage;
 import logic.Question;
 import logic.QuestionModel;
 import logic.User;
@@ -58,6 +65,12 @@ public class ClientHandler extends AbstractClient {
 		// Notifice about recieving the message to console .
 		System.out.println("got message: " + serverMessage);
 
+		if (serverMessage instanceof FileDownloadMessage) {
+			FileDownloadMessage downloadMessage = (FileDownloadMessage) serverMessage;
+			EnterIDForTestController.setDownloadMessage(downloadMessage);
+			// Pass the downloaded file message to the client controller
+			
+		}
 		// Switch function on the name of the class that message was the sent .
 		switch(serverMessage.getClass().getSimpleName()) {
 			
@@ -146,6 +159,12 @@ public class ClientHandler extends AbstractClient {
 					case "User Not Found":
 						System.err.println("Not Found in handler");
 						user.setIsFound(false);
+					break;
+
+					case "File Uploaded Successfully!":
+					case "Error! File Upload Failed!":
+					case "File not Found!":
+					JOptionPane.showMessageDialog(null,(String)serverMessage, (String)serverMessage,JOptionPane.INFORMATION_MESSAGE);
 					break;
 
 					case "Question Exists":
@@ -426,6 +445,28 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
+
+	public void handleFileDownload(FileDownloadMessage downloadMessage) {
+        byte[] fileContent = downloadMessage.getFileContent();
+    
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
+        fileChooser.getExtensionFilters().add(extFilter);
+    
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                if (fileContent != null) {
+                    fos.write(fileContent);
+                    fos.flush();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+	}
+
 
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////

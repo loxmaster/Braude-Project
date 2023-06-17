@@ -1,38 +1,52 @@
 package clientControllers;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 
 import javax.swing.JOptionPane;
 
+import clientHandlers.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import logic.FileDownloadMessage;
 
 public class EnterIDForTestController extends BasicController {
 
-	@FXML
-	private Button exitbutton;
+	public String test_code;
 
-	@FXML
-	private Button logo;
+	private static FileDownloadMessage downloadMessage;
 
-	@FXML
-	private TextField ID;
+	public synchronized static FileDownloadMessage getDownloadMessage() {
+		return downloadMessage;
+	}
 
-	@FXML
-	private Button AutomaticPressed;
+	public synchronized static void setDownloadMessage(FileDownloadMessage downloadMessage) {
+		EnterIDForTestController.downloadMessage = downloadMessage;
+	}
 
-	@FXML
-	private Button ManualPressed;
+	
+    @FXML
+    private Button exitbutton;
 
-	@FXML
-	private Button ClickDownload;
+    @FXML
+    private Button logo;
+
+    @FXML
+    private TextField testCode;
+
+    @FXML
+    private Button ClickDownload;
+
+    @FXML
+    private ImageView download;
+
+    @FXML
+    private ImageView onlineTest;
 
 	@FXML
 	void backPressed(ActionEvent event) {
@@ -41,55 +55,52 @@ public class EnterIDForTestController extends BasicController {
 	}
 
 	@FXML
-	void submitPressed(ActionEvent event) {
+    void AutomaticPressed(ActionEvent event) {
 
-		/*
-		 * grab id and CODE text from text field
-		 * validate information...
-		 */
-
-		// openScreen("/clientFXMLS/StudentTestQ.fxml", "CEMS System - Student - Exam",
-		// event);
-		openScreen("/clientFXMLS/ChooseTestType.fxml", "CEMS System - Student - Exam", event);
-
-	}
-
+    }
+	
+	
 	@FXML
-	void AutomaticPressed(ActionEvent event) {
+	synchronized void ClickDownload(ActionEvent event) {
+		
+		test_code = new String(testCode.getText());
 
-	}
+		ClientUI.chat.downloadFile(test_code);
 
-	@FXML
-	void ManualPressed(ActionEvent event) {
-		openScreen("/clientFXMLS/getTestFile.fxml", "CEMS System - Student - Exam", event);
-	}
-
-	String testidAssociatedWithCode = "123";
-
-	@FXML
-	void ClickDownload(ActionEvent event) {
-
-		File receivedFile = null;
 		try {
-			/*
-			 * check test id and validate from db
-			 * it exists as an uploaded file
-			 * if so, concat the 'Testid' with the id
-			 */
-			File newFile = new File("Cems-Server/TestFiles/Testid" + "123");
-			byte[] mybytearray = new byte[(int) newFile.length()];
-			FileOutputStream fis = new FileOutputStream(newFile);
-			fis.write(mybytearray);
-
-			// bufferedIn.write(fis);
-
-			// bufferedIn.read(mybytearray,0,mybytearray.length);
-
-			System.out.println("File received from server.");
-		} catch (IOException e) {
+			Thread.sleep(1500);
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		// return receivedFile;
 
+		if (downloadMessage.getFileContent() == null) {
+		JOptionPane.showMessageDialog(null, (String) "Wrong test id!", (String) "Error!",
+		JOptionPane.ERROR_MESSAGE);
+		} else {
+		byte[] fileContent = downloadMessage.getFileContent();
+		String filename = downloadMessage.getFilename();
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Save File");
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
+		fileChooser.getExtensionFilters().add(extFilter);
+		fileChooser.setInitialFileName(filename);
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Desktop"));
+
+		File file = fileChooser.showSaveDialog(null);
+		if (file != null) {
+			try (FileOutputStream fos = new FileOutputStream(file)) {
+				if (fileContent != null) {
+					fos.write(fileContent);
+					fos.flush();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else
+			JOptionPane.showMessageDialog(null, (String) "Something went wrong!", (String) "Error!",
+					JOptionPane.ERROR_MESSAGE);
 	}
+	// }
+
+}
 }

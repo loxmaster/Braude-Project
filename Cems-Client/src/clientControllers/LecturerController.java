@@ -30,7 +30,6 @@ public class LecturerController extends BasicController {
 
 	/**
 	 * Method for setting the name of the user.
-	 * TODO change to name and not username.
 	 */
 	public void setWelcomeLabel() {
 		welcomeLabel.setText(welcomeLabel.getText() + " " + ClientHandler.user.getUsername().toUpperCase() + "!");

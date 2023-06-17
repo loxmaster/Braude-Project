@@ -42,7 +42,6 @@ public class LecturerStatisticalController extends BasicController {
     private TableView<Statistics> table;
 
 
-	// TODO need to find a way to populate the pie chart and get rid on the new
 	// "PieChart.Data(Testing, 50)"
 	// * need to add a Sleep option
 

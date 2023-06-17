@@ -1,11 +1,15 @@
 package clientHandlers;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
-import java.util.ArrayList;
 
+import javafx.stage.FileChooser;
+import logic.FileDownloadMessage;
+import logic.FileUploadMessage;
 import logic.Test;
 
 public class ClientController implements ChatIF {
@@ -209,4 +213,26 @@ public class ClientController implements ChatIF {
             e.printStackTrace();
         }
     }
+
+    public void uploadFile(String fileId, byte[] fileContent, String filename) {
+        try {
+            //openConnection();
+            client.sendToServer(new FileUploadMessage(fileId, fileContent,filename));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void downloadFile(String fileId) {
+        try {
+            client.sendToServer(new FileDownloadMessage(fileId));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+      
+    
+    
 }

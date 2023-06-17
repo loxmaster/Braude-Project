@@ -3,13 +3,15 @@ package serverHandler;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import logic.ClientModel;
+import logic.FileDownloadMessage;
+import logic.FileUploadMessage;
 import logic.Question;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -99,6 +101,26 @@ public class EchoServer extends AbstractServer {
 		System.out.println("Message received: " + msg + " from " + client);
 
 		try {
+
+			if (msg instanceof FileUploadMessage) {
+				FileUploadMessage uploadMessage = (FileUploadMessage) msg;
+				// Save the file in the database (e.g., using JDBC)
+				if (saveFileToDatabase(uploadMessage.getFileId(), uploadMessage.getFileContent(),uploadMessage.getFilename()))
+					client.sendToClient("File Uploaded Successfully!");
+				else
+					client.sendToClient("Error! File Upload Failed!");
+			} else if (msg instanceof FileDownloadMessage) {
+				FileDownloadMessage downloadMessage = (FileDownloadMessage) msg;
+				FileDownloadMessage fileContent = getFileFromDatabase(downloadMessage.getFileId());
+				// if(fileContent.getFileId()==null)
+				// client.sendToClient("File not Found!");
+				// else{
+				downloadMessage.setFileContent(fileContent.getFileContent());
+				downloadMessage.setFilename(fileContent.getFilename());
+				client.sendToClient(downloadMessage);
+				//}
+			}
+
 			switch (msg.getClass().getSimpleName()) {
 
 				// if gets InetAddress then it means hes finished
@@ -137,7 +159,7 @@ public class EchoServer extends AbstractServer {
 						case "editquestion":
 						case "Addtesttodata":
 							int flag = executeMyQuery(list.get(1));
-							//if (flag != 0) flag=1;
+							// if (flag != 0) flag=1;
 							client.sendToClient(flag == 0 ? idExists : flag);
 							break;
 
@@ -145,8 +167,8 @@ public class EchoServer extends AbstractServer {
 							ArrayList<String> restestList = getData_db(list.get(1), "testNumber");
 							// ArrayList<String> list2 = new ArrayList<>();
 							// list2.add("testNumber");
-							if(restestList==null)
-							list.remove(1);
+							if (restestList == null)
+								list.remove(1);
 							client.sendToClient(restestList == null ? (Object) list : (Object) restestList);
 							break;
 
@@ -183,6 +205,47 @@ public class EchoServer extends AbstractServer {
 			e.printStackTrace();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
+		}
+	}
+
+	private FileDownloadMessage getFileFromDatabase(String fileId) {
+		FileDownloadMessage fileContent = new FileDownloadMessage(fileId);
+		fileContent.setFileContent(null);
+		fileContent.setFilename(null);
+		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/projecton?serverTimezone=IST",
+				"root", "123456")) {
+			String sql = "SELECT file_data,file_name FROM uploadedtests WHERE test_id = ?";
+			try (PreparedStatement statement = connection.prepareStatement(sql)) {
+				statement.setString(1, fileId);
+				try (ResultSet resultSet = statement.executeQuery()) {
+					if (resultSet.next()) {
+						fileContent.setFileContent(resultSet.getBytes("file_data"));
+						fileContent.setFilename(resultSet.getString("file_name"));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return fileContent;
+	}
+
+	private boolean saveFileToDatabase(String fileId, byte[] fileContent,String filename) {
+		// Implement your logic to save the file content to the database (e.g., using
+		// JDBC)
+		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/projecton?serverTimezone=IST",
+				"root", "123456")) {
+			String sql = "INSERT INTO uploadedtests (test_id, file_data, file_name) VALUES (?, ?, ?)";
+			try (PreparedStatement statement = connection.prepareStatement(sql)) {
+				statement.setString(1, fileId);
+				statement.setBytes(2, fileContent);
+				statement.setString(3, filename);
+				statement.executeUpdate();
+				return true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 
