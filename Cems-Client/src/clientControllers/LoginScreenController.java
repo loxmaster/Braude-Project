@@ -41,7 +41,7 @@ public class LoginScreenController extends BasicController {
 		// // password = passTextbox.getText();
 		// emailTextbox.setText("noah");
 		// passTextbox.setText("123456");
-		username = "Noah_Soskha";
+		username = "michael_trifonov";
 		password = "123456";
 		System.out.println("Entered: " + username + " " + password);
 
