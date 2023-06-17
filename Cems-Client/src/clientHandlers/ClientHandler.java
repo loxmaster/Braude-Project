@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
 import clientControllers.EnterIDForTestController;
@@ -312,14 +313,35 @@ public class ClientHandler extends AbstractClient {
 	 * @param newQNumber
 	 * @param originalId
 	 */
-	public void EditQuestion(String newBody, String newQNumber, String originalId) {
+	public void EditQuestion(String NewID, String subject,String course, String qBody, String qnumber , String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// ugly will stay ugly <3
 		list.addAll(Arrays.asList("editquestion",
-				"UPDATE `projecton`.`questions` SET `id` = '" + originalId.substring(0, 2) + newQNumber
-						+ "', `questiontext` = '" + newBody
-						+ "', `questionnumber` = '" + newQNumber + "' WHERE (`id` = '" + originalId + "');"));
+				"UPDATE `projecton`.`questions` SET `id` = '" + NewID
+						+ "', `lecturer` = '" + user.getUsername()
+						+ "', `subject` = '" + subject
+						+ "', `coursename` = '" + course
+						+ "', `questiontext` = '" + qBody
+						+ "', `questionnumber` = '" + qnumber + "' WHERE (`id` = '" + originalId + "');"));
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+		public void EditAnswers(String subjectid, String qA,String qB, String qC, String qD , String correctAnswer) {
+		ArrayList<String> list = new ArrayList<String>();
+
+		// ugly will stay ugly <3
+		list.addAll(Arrays.asList("editquestion",
+				"UPDATE `projecton`.`answers` SET `optionA` = '" + qA
+						+ "', `optionB` = '" + qB
+						+ "', `optionC` = '" + qC
+						+ "', `optionD` = '" + qD
+						+ "', `correctAnswer` = '" + correctAnswer + "' WHERE (`questionid` = '" + subjectid + "');"));
 
 		try {
 			sendToServer((Object) list);
@@ -355,14 +377,12 @@ public class ClientHandler extends AbstractClient {
 	 * @param Body
 	 * @param QNumber
 	 */
-	public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
+	public void CreateQuestion(String Id, String subject,String course, String Body, String QNumber) {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// Construct the INSERT query to create a new question
 		list.addAll(Arrays.asList("createquestion",
-				"INSERT INTO `projecton`.`questions` (id, subject, questiontext, questionnumber, lecturer) VALUES ('"
-						+ Id + "', '" + subject + "', '" + Body + "', '" + QNumber + "', '" + user.getUsername()
-						+ "');"));
+				"INSERT INTO `projecton`.`questions` (`id`, `lecturer`, `subject`, `coursename`, `questiontext`, `questionnumber`) VALUES ('"+ Id + "','" + user.getUsername() + "', '" + subject + "', '" + course + "', '" + Body + "', '" + QNumber + "');"));
 
 		try {
 			sendToServer((Object) list);

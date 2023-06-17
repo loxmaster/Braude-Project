@@ -308,6 +308,8 @@ public class EchoServer extends AbstractServer {
 			int res = stmt.executeUpdate(query);
 			return res;
 		} catch (SQLException e) {
+			//if(e=="java.sql.SQLIntegrityConstraintViolationException:")
+			//return -1 ;
 			e.printStackTrace();
 			return 0;
 		}
