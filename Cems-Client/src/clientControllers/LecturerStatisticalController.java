@@ -3,13 +3,14 @@ package clientControllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javafx.util.Callback;
 import clientHandlers.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -60,9 +61,6 @@ public class LecturerStatisticalController extends BasicController {
 
 	@FXML
 	private TextField course_fillter;
-
-	@FXML
-	private TextField date_filler;
 
 	private static ArrayList<Test> completedTestsList;
 	private static ArrayList<Statistics> diffExamsStats;
@@ -213,6 +211,43 @@ public class LecturerStatisticalController extends BasicController {
 			table.getColumns().add(Distribution);
 
 		}
+
+		// Create a FilteredList wrapping the ObservableList
+		FilteredList<Statistics> filteredData = new FilteredList<>(listToAdd, p -> true);
+
+		// Set the filter Predicate whenever the filter changes.
+		testid_combo.valueProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(stat -> {
+				// If filter text is empty, display all statistics.
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+
+				// Compare TestID of every statistics with filter.
+				return stat.getTestID().equals(newValue);
+			});
+		});
+
+		course_fillter.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(stat -> {
+				// If filter text is empty, display all statistics.
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+
+				// Compare course name of every statistics with filter text.
+				return stat.getCourse().toLowerCase().contains(newValue.toLowerCase());
+			});
+		});
+
+		// Wrap the FilteredList in a SortedList.
+		SortedList<Statistics> sortedData = new SortedList<>(filteredData);
+
+		// Bind the SortedList comparator to the TableView comparator.
+		sortedData.comparatorProperty().bind(table.comparatorProperty());
+
+		// Add sorted and filtered data to the table
+		table.setItems(sortedData);
 	}
 
 	@FXML

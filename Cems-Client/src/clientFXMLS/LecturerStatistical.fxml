@@ -61,11 +61,5 @@
             <Font name="Calibri Bold Italic" size="26.0" />
          </font>
       </Text>
-      <Text layoutX="651.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" wrappingWidth="80.2470703125" AnchorPane.bottomAnchor="500.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="26.0" />
-         </font>
-      </Text>
-      <TextField fx:id="date_filler" layoutX="731.0" layoutY="191.0" AnchorPane.bottomAnchor="499.0" />
 </children>
 </AnchorPane>
