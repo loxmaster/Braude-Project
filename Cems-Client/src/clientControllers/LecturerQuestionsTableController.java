@@ -87,13 +87,13 @@ public class LecturerQuestionsTableController extends BasicController {
     public void loadTable() {
         loadFilterComboboxes();
 
+        edit.setCellValueFactory(new PropertyValueFactory<>("Edit"));
         id.setCellValueFactory(new PropertyValueFactory<>("Id"));
         lecturer.setCellValueFactory(new PropertyValueFactory<>("Lecturer"));
         subject.setCellValueFactory(new PropertyValueFactory<>("Subject"));
         coursename.setCellValueFactory(new PropertyValueFactory<>("Coursename"));
         questiontext.setCellValueFactory(new PropertyValueFactory<>("Questiontext"));
         questionnumber.setCellValueFactory(new PropertyValueFactory<>("Questionnumber"));
-        edit.setCellValueFactory(new PropertyValueFactory<>("Edit"));
 
         // Waits 5 seconds for data to be found
         int cap = 20;
@@ -110,8 +110,16 @@ public class LecturerQuestionsTableController extends BasicController {
         else {
             ObservableList<QuestionModel> questionList = FXCollections
                     .observableArrayList(LecturerController.questions);
-            for (QuestionModel question : questionList)
+            for (QuestionModel question : questionList){
                 question.setEdit(createEditButton(question));
+                System.err.println(question.getAnswer() + "ANSWER");
+                System.err.println(question.getCoursename() + "COURSE NAME");
+                System.err.println(question.getId() + "ID");
+                System.err.println(question.getLecturer() + "LECTURER");
+                System.err.println(question.getQuestionnumber() + "QUESTION NUMBER");
+                System.err.println(question.getQuestiontext() + "QUESTION TEXT");
+                System.err.println(question.getSubject() + "SUBJECT");
+            }
             FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
             table.setItems(filteredList);
             // listener - this will update the table to the filtered COMBOBOX SUBJECT

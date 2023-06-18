@@ -207,7 +207,7 @@ public class EchoServer extends AbstractServer {
 							ArrayList<String> resSubjectsList = getData_db(list.get(1), "lecturersubjects");
 							client.sendToClient(resSubjectsList == null ? (Object) notFound : (Object) resSubjectsList);
 							break;
-						//
+						
 						case "lecturercourses":
 							ArrayList<String> resCoursesList = getCourses_db(list.get(1), "lecturercourses");
 							client.sendToClient(resCoursesList == null ? (Object) notFound : (Object) resCoursesList);

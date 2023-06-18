@@ -335,7 +335,6 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * subjects for the lecturer.
-	 * //TODO OPTIONAL: collect any "constructors" for lecturer here
 	 * for example: grabbing all the courses of a lecturer AND courses
 	 * and whatever the lecturer will need to pre-load
 	 * 

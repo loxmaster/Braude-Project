@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LecturerQuestionsTableController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LecturerQuestionsTableController">
 <children>
     <Button fx:id="BtnInfo" layoutX="10.0" layoutY="3.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
@@ -33,11 +33,11 @@
       <TableView id="table" fx:id="table" layoutX="43.0" layoutY="217.0" prefHeight="507.0" prefWidth="1240.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="185.0">
         <columns>
           <TableColumn id="id" fx:id="id" prefWidth="75.0" text="Question ID" />
-            <TableColumn id="subject" fx:id="subject" prefWidth="70.0" text="Subject" />
-            <TableColumn id="coursename" fx:id="coursename" text="Course Name" />
-            <TableColumn id="questiontext" fx:id="questiontext" prefWidth="795.0" text="Question Text" />
+            <TableColumn id="lecturer" fx:id="lecturer" prefWidth="121.00003051757812" text="Lecturer" />
+            <TableColumn id="subject" fx:id="subject" prefWidth="88.0" text="Subject" />
+            <TableColumn id="coursename" fx:id="coursename" prefWidth="94.0" text="Course Name" />
+            <TableColumn id="questiontext" fx:id="questiontext" prefWidth="713.0" text="Question Text" />
             <TableColumn id="questionnumber" fx:id="questionnumber" minWidth="5.0" prefWidth="107.0" text="Question Number" />
-            <TableColumn id="lecturer" fx:id="lecturer" prefWidth="70.0" text="lecturer" />
             <TableColumn id="edit" fx:id="edit" prefWidth="90.0" text="Edit" />
         </columns>
       </TableView>

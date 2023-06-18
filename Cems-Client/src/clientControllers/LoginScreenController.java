@@ -52,7 +52,7 @@ public class LoginScreenController extends BasicController {
 		// Start the clock
 		Timenow(live_time);
 		// Add values to combo_Role
-		combo_Role.getItems().addAll("student", "lecturer", "hod");
+		combo_Role.getItems().addAll("student", "lecturer", "head_of_department");
 	}
 
 	@FXML
@@ -71,19 +71,21 @@ public class LoginScreenController extends BasicController {
 
 		System.out.println("Entered: " + username + " " + password + " " + selectedRole);
 
-		if ((username.trim().isEmpty() || password.trim().isEmpty() || selectedRole.equals("role"))) {
+		if ((username.trim().isEmpty() || password.trim().isEmpty() || selectedRole == null )) {
 			// setVisibleFalse();
 			JOptionPane.showMessageDialog(null, "your username or password are incorrect!",
 					"incorrect username or password",
 					JOptionPane.ERROR_MESSAGE);
-			if (username.isEmpty())
+			if (username.isEmpty()) {
 				emailTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);");
-			if (password.isEmpty())
+			}
+			if (password.isEmpty()) {
 				passTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);;");
+			}
 
-			if (selectedRole == null)
+			if (selectedRole == null) {
 				combo_Role.setStyle("-fx-background-color: rgb(255, 74, 74);;");
-
+			}
 			return;
 		}
 
