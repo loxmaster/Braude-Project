@@ -244,6 +244,8 @@ public class ClientHandler extends AbstractClient {
 					case "Question Exists":
 					case "Not Found":
 					case "Id Exists":
+						ClientUI.updatestatus = 0;
+						break;
 					default:
 						// Here we recieve the confirmation of the client login
 						subjectArray = ((String) serverMessage).toString().split("\\s");
@@ -616,4 +618,14 @@ public class ClientHandler extends AbstractClient {
 		sendToServer(sendToServer);
 	}
 
+    public void DeleteQuestion(String originalId) {
+		ArrayList<String> listToSend = new ArrayList<String>();
+		listToSend.add("DeleteQuestion");
+		listToSend.add("DELETE FROM `projecton`.`questions` WHERE (`id` = '" + originalId + "');");
+		try {
+			sendToServer((Object) listToSend);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
 }

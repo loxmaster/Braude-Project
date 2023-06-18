@@ -100,6 +100,8 @@ public class LecturerController extends BasicController {
 		openScreen("/clientFXMLS/LecturerOngoingTest.fxml", "CEMS System - Lecturer - Menage Tests", event);
 	}
 
+	
+
 	@FXML
 	void StatisticalInfoPressed(ActionEvent event) {
 		// open Statistical information

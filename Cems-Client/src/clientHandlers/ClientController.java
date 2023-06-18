@@ -261,4 +261,12 @@ public class ClientController implements ChatIF {
         client.getTestFromId(sendToServer);
 
     }
+
+    public void DeleteQuestion(String originalId) {
+        try {
+            client.DeleteQuestion(originalId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

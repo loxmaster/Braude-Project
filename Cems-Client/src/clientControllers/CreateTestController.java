@@ -322,6 +322,7 @@ public class CreateTestController extends BasicController {
 		this.test = test;
 		test.setAuthor(ClientHandler.user.getUsername());
 		subjectComboBox.setValue(test.getSubject());
+		courseComboBox.setValue(test.getCourse());
 		code.setText(test.getTestCode());
 		startTime.setText(test.getTime());
 		duration.setText(test.getDuration());
@@ -539,7 +540,15 @@ public class CreateTestController extends BasicController {
 		popupStage.close();
 	}
 
-	
+	@FXML
+	void backToLecturer(ActionEvent event) {
+		openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer - Main Screen ", event);
+	}
+	@FXML
+	void backPressed(ActionEvent event) {
+		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Manage Test", event);
+	}
+
 
 
 }

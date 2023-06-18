@@ -96,21 +96,21 @@ public class DBTestController extends BasicController {
 	private void updatePredicate(FilteredList<QuestionModel> filteredList) {
 		String selectedSubject = subjectComboBox.getValue();
 		String selectedCourse = courseComboBox.getValue();
-		String authorFilterField = TableAuthorField.getText().trim().toLowerCase();
+		String authorFilterField = TableAuthorField.getText().trim();
 
 		// add new filters here as needed, dont forget to add a new listener
 		filteredList.setPredicate(questionModel -> {
 			boolean matchesSubject = selectedSubject == null || selectedSubject.isEmpty()
-					|| questionModel.getSubject().toUpperCase().contains(selectedSubject)
-					|| questionModel.getSubject().toLowerCase().contains(selectedSubject);
+					|| questionModel.getSubject().contains(selectedSubject)
+					|| questionModel.getSubject().contains(selectedSubject);
 
 			boolean matchesCourse = selectedCourse == null || selectedCourse.isEmpty()
-					|| questionModel.getCoursename().toUpperCase().contains(selectedCourse)
-					|| questionModel.getCoursename().toLowerCase().contains(selectedCourse);
+					|| questionModel.getCoursename().contains(selectedCourse)
+					|| questionModel.getCoursename().contains(selectedCourse);
 
 			boolean matchesLecturer = authorFilterField.isEmpty() 
-					|| questionModel.getLecturer().toLowerCase().contains(authorFilterField)
-					|| questionModel.getLecturer().toUpperCase().contains(authorFilterField);
+					|| questionModel.getLecturer().contains(authorFilterField)
+					|| questionModel.getLecturer().contains(authorFilterField);
 
 			return matchesSubject && matchesLecturer && matchesCourse;
 		});
@@ -155,10 +155,5 @@ public class DBTestController extends BasicController {
 		// Open Create Question screen
 		openScreen("/clientFXMLS/LecturerCreateQFromDB.fxml",
 				"CEMS System - Lecturer - Create Tests - Create Questions", event);
-	}
-
-	@FXML
-	void helpPressed(ActionEvent event) {
-
 	}
 }

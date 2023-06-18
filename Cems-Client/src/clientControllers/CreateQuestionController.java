@@ -93,7 +93,7 @@ public class CreateQuestionController extends BasicController {
 			JOptionPane.showMessageDialog(null, "Course Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		} else {
-			courseCombobox.setStyle("-fx-background-color: transparent;");
+			courseCombobox.setStyle("-fx-background-color: white;");
 		}
 		if (body.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Please add questions text !", "Error", JOptionPane.ERROR_MESSAGE);
@@ -140,13 +140,15 @@ public class CreateQuestionController extends BasicController {
 
 		// checks who is the correct answer
 		if (A.isSelected())
-			correctAnswer = "A";
+			correctAnswer = "a";
 		else if (B.isSelected())
-			correctAnswer = "B";
+			correctAnswer = "b";
 		else if (C.isSelected())
-			correctAnswer = "C";
+			correctAnswer = "c";
 		else if (D.isSelected())
-			correctAnswer = "D";
+			correctAnswer = "d";
+
+		ClientUI.updatestatus = 1;
 
 		sendQandANStoSQL(subjectCombobox.getValue(),courseCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),qC.getText(), qD.getText(), correctAnswer);
 		
@@ -182,9 +184,6 @@ public class CreateQuestionController extends BasicController {
 		}
 		System.out.println("CreateQuestion: " + subjectID);
 		subjectID += qnumber;
-		subject = subject.toLowerCase();
-        course = course.toLowerCase();
-		correctAnswer = correctAnswer.toLowerCase();
 		ClientUI.chat.CreateQuestion(subjectID, subject,course, qBody, qnumber);
 		ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer,subjectID);
 	}
@@ -254,13 +253,13 @@ public class CreateQuestionController extends BasicController {
 			
 		// checks who is the correct answer
 		if (A.isSelected())
-			correctAnswer = "A";
+			correctAnswer = "a";
 		else if (B.isSelected())
-			correctAnswer = "B";
+			correctAnswer = "b";
 		else if (C.isSelected())
-			correctAnswer = "C";
+			correctAnswer = "c";
 		else if (D.isSelected())
-			correctAnswer = "D";
+			correctAnswer = "d";
 
 		ClientUI.updatestatus =1;
 		sendQandANStoSQL(subjectCombobox.getValue(),courseCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),qC.getText(), qD.getText(), correctAnswer);
@@ -309,4 +308,6 @@ public class CreateQuestionController extends BasicController {
 		openScreen("/clientFXMLS/LecturerOptions.fxml", "CEMS System - Lecturer", event);
 		
 	}
+
+	
 }

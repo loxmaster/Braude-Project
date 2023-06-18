@@ -15,9 +15,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="/gui/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CreateTestController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="/gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CreateTestController">
    <children>
-      <Button layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#backToLecturer" prefHeight="46.0" prefWidth="133.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Button layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="46.0" prefWidth="133.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="27.0" />
          </font>
@@ -109,7 +109,7 @@
                <font>
                   <Font size="18.0" />
                </font></TextArea>
-            <TextArea fx:id="OptionD" layoutX="570.0" layoutY="68.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+            <TextArea fx:id="OptionD" editable="false" layoutX="570.0" layoutY="68.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font></TextArea>
@@ -138,15 +138,15 @@
                   <Font size="16.0" />
                </font>
             </Text>
-            <TextArea fx:id="OptionC" layoutX="570.0" layoutY="142.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+            <TextArea fx:id="OptionC" editable="false" layoutX="570.0" layoutY="142.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font></TextArea>
-            <TextArea fx:id="OptionB" layoutX="570.0" layoutY="223.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+            <TextArea fx:id="OptionB" editable="false" layoutX="570.0" layoutY="223.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font></TextArea>
-            <TextArea fx:id="OptionA" layoutX="570.0" layoutY="304.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+            <TextArea fx:id="OptionA" editable="false" layoutX="570.0" layoutY="304.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
                <font>
                   <Font size="18.0" />
                </font></TextArea>
@@ -155,7 +155,7 @@
                   <Font name="Calibri Bold Italic" size="24.0" />
                </font>
             </Text>
-            <TextField id="qID" fx:id="qID" alignment="CENTER" layoutX="1095.0" layoutY="14.0" prefHeight="48.0" prefWidth="68.0">
+            <TextField id="qID" fx:id="qID" alignment="CENTER" editable="false" layoutX="1095.0" layoutY="14.0" prefHeight="48.0" prefWidth="68.0">
                <font>
                   <Font name="Calibri" size="16.0" />
                </font>
