@@ -1,8 +1,9 @@
 package logic;
+
 import java.io.Serializable;
 
 public class FileUploadMessage implements Serializable {
-    private String fileId,filename;
+    private String fileId, filename;
 
     public String getFilename() {
         return filename;

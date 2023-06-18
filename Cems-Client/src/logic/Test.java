@@ -8,7 +8,14 @@ public class Test {
 
     
     private ArrayList<QuestionModel> quesitonsInTest;
-    private String id, course, author;
+    private String id, author,subject;
+    public String getSubject() {
+        return subject;
+    }
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
     private String duration, testComment, testCode; //FIXME check TestComments var and testComment
     private String time, dateString;
     private DatePicker date;
@@ -34,10 +41,6 @@ public class Test {
         totalPoints = 0;
         quesitonsInTest = new ArrayList<QuestionModel>();
     }
-//noah - added getters and setters for course - not yet updated in the sql - talk to me
-     public String getCourse() {
-         return course;
-     }
 //noah - added getters and setters for course - not yet updated in the sql - talk to me
      public void setCourse(String course) {
          this.course = course;
@@ -143,10 +146,6 @@ public class Test {
         return testCode;
     }
 
-    public String getTestComments() {
-        return TestComments;
-    }
-
     public String getDuration() {
         return duration;
     }
@@ -195,9 +194,6 @@ public class Test {
         this.date = date;
     }
 
-    public void setCourse(String subject) {
-        this.course = subject;
-    }
 
     public void setAuthor(String author) {
         this.author = author;

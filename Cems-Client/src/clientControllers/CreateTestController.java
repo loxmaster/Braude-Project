@@ -540,21 +540,6 @@ public class CreateTestController extends BasicController {
 		popupStage.close();
 	}
 
-	@FXML
-	void savePressed(ActionEvent event) {
-		test.setAuthor(ClientHandler.user.getpName());
-		test.setCourse(subjectComboBox.getValue());
-		test.setTestCode(code.getText());
-		test.setTime(startTime.getText());
-		test.setDate(date);
-		test.setDuration(duration.getText());
-		// TODO test.setId();
-
-		ClientUI.chat.sendTestToDatabase(test);
-
-		// Goes to lecturer screen
-		backToLecturer(event);
-	}
 
 
 

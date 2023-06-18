@@ -6,25 +6,38 @@ import javafx.scene.control.DatePicker;
 
 public class Test {
 
+    
     private ArrayList<QuestionModel> quesitonsInTest;
-    private String id, course, author;
-    private String duration, TestComments, testCode;
+    private String id, author,subject;
+    private String duration, testComment, testCode; //FIXME check TestComments var and testComment
     private String time, dateString;
     private DatePicker date;
+    private int totalPoints;
+
+//noah - added getters and setters for course - not yet updated in the sql - talk to me
+   private String course;
     private String StudentsName, StudentID, Grade;
     private String status, questionsString, type, tested;
 
     public Test() {
         id = new String();
+        subject = new String();
+//noah - added getters and setters for course - not yet updated in the sql - talk to me
         course = new String();
+       
         author = new String();
         duration = new String();
-        TestComments = new String();
+        testComment = new String();
         testCode = new String();
         time = new String();
         dateString = new String();
+        totalPoints = 0;
         quesitonsInTest = new ArrayList<QuestionModel>();
     }
+//noah - added getters and setters for course - not yet updated in the sql - talk to me
+     public void setCourse(String course) {
+         this.course = course;
+     }
 
     public Test(String id, String subject, String StudentsName, String StudentID, String Grade) {
         this.id = id;
@@ -40,10 +53,11 @@ public class Test {
         this.course = subject;
         this.author = author;
         this.duration = duration;
-        TestComments = testComments;
+        this.testComment = testComment;
         this.testCode = testCode;
         this.dateString = dateString;
         this.time = time;
+        totalPoints = 0;
         quesitonsInTest = new ArrayList<QuestionModel>();
     }
 
@@ -125,10 +139,6 @@ public class Test {
         return testCode;
     }
 
-    public String getTestComments() {
-        return TestComments;
-    }
-
     public String getDuration() {
         return duration;
     }
@@ -177,9 +187,6 @@ public class Test {
         this.date = date;
     }
 
-    public void setCourse(String subject) {
-        this.course = subject;
-    }
 
     public void setAuthor(String author) {
         this.author = author;
@@ -189,8 +196,12 @@ public class Test {
         this.duration = duration;
     }
 
-    public void setTestComments(String testComments) {
-        TestComments = testComments;
+    public String getTestComments() {
+        return testComment;
+    }
+
+    public void setTestComments(String testComment) {
+        this.testComment = testComment;
     }
 
     public void setTestCode(String testCode) {
@@ -205,5 +216,13 @@ public class Test {
         for (QuestionModel q : list)
             if (!quesitonsInTest.contains(q))
                 quesitonsInTest.add(q);
+    }
+
+    public int getTotalPoints() {
+        return totalPoints;
+    }
+
+    public void setTotalPoints(int totalPoints) {
+        this.totalPoints = totalPoints;
     }
 }

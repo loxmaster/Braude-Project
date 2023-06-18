@@ -191,7 +191,8 @@ public class EchoServer extends AbstractServer {
 								list.remove(1);
 							} else
 								TestQuestionList.add(0, "getTest");
-							client.sendToClient(TestQuestionList == null ? (Object) "getTest" : (Object) TestQuestionList);
+							client.sendToClient(
+									TestQuestionList == null ? (Object) "getTest" : (Object) TestQuestionList);
 							break;
 						case "testNumber":
 							ArrayList<String> restestList = getData_db(list.get(1), "testNumber");
@@ -211,37 +212,6 @@ public class EchoServer extends AbstractServer {
 							ArrayList<String> resCoursesList = getCourses_db(list.get(1), "lecturercourses");
 							client.sendToClient(resCoursesList == null ? (Object) notFound : (Object) resCoursesList);
 							break;
-						
-						case "completedTestsForStudent":
-							ArrayList<String> resCompletedTestsForStudent = getCompletedTestsForStudent_db(list.get(1),
-									"completedTestsForStudent");
-							client.sendToClient(
-									resCompletedTestsForStudent == null ? (Object) notFound
-											: (Object) resCompletedTestsForStudent);
-							break;
-
-						case "completedTestsForLecturer":
-							ArrayList<String> resCompletedTestsForLecturer = getCompletedTestsForLecturer_db(
-									list.get(1),
-									"completedTestsForLecturer");
-							client.sendToClient(
-									resCompletedTestsForLecturer == null ? (Object) notFound
-											: (Object) resCompletedTestsForLecturer);
-							break;
-
-						case "getSubjectsCourseForTest":
-							ArrayList<String> resSubjectsCoursesList = getSubjectsCoursesList(list.get(1),
-									"getSubjectsCourseForTest");
-							client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
-									: (Object) resSubjectsCoursesList);
-							break;
-
-						case "getSubjectsCourseForTestLec":
-							ArrayList<String> resSubjectsCoursesListLec = getSubjectsCoursesList(list.get(1),
-									"getSubjectsCourseForTestLec");
-							client.sendToClient(resSubjectsCoursesListLec == null ? (Object) notFound
-									: (Object) resSubjectsCoursesListLec);
-							break;
 
 						case "completedTestsForStudent":
 							ArrayList<String> resCompletedTestsForStudent = getCompletedTestsForStudent_db(list.get(1),
@@ -260,18 +230,18 @@ public class EchoServer extends AbstractServer {
 											: (Object) resCompletedTestsForLecturer);
 							break;
 
-						case "getSubjectsCourseForTest":
-							ArrayList<String> resSubjectsCoursesList = getSubjectsCoursesList(list.get(1),
-									"getSubjectsCourseForTest");
-							client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
-									: (Object) resSubjectsCoursesList);
-							break;
-
 						case "getSubjectsCourseForTestLec":
 							ArrayList<String> resSubjectsCoursesListLec = getSubjectsCoursesList(list.get(1),
 									"getSubjectsCourseForTestLec");
 							client.sendToClient(resSubjectsCoursesListLec == null ? (Object) notFound
 									: (Object) resSubjectsCoursesListLec);
+							break;
+
+						case "getSubjectsCourseForTest":
+							ArrayList<String> resSubjectsCoursesList = getSubjectsCoursesList(list.get(1),
+									"getSubjectsCourseForTest");
+							client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
+									: (Object) resSubjectsCoursesList);
 							break;
 
 						case "lecturerquestions":
@@ -427,8 +397,8 @@ public class EchoServer extends AbstractServer {
 			int res = stmt.executeUpdate(query);
 			return res;
 		} catch (SQLException e) {
-			//if(e=="java.sql.SQLIntegrityConstraintViolationException:")
-			//return -1 ;
+			// if(e=="java.sql.SQLIntegrityConstraintViolationException:")
+			// return -1 ;
 			e.printStackTrace();
 			return 0;
 		}
@@ -501,6 +471,7 @@ public class EchoServer extends AbstractServer {
 		}
 		return null;
 	}
+
 	private ArrayList<String> getCourses_db(String query, String out) {
 		Boolean flag = false;
 		ArrayList<String> res = new ArrayList<String>();

@@ -12,7 +12,8 @@ public class Question implements Serializable {
     private String OptionA, OptionB, OptionC, OptionD, answer;
     private Button edit;
 
-    public Question(String id, String lecturer, String subject, String coursename, String questiontext, String questionnumber) {
+    public Question(String id, String subject, String coursename, String questiontext, String questionnumber,
+            String lecturer) {
         this.id = id;
         this.subject = subject;
         this.coursename = coursename;
