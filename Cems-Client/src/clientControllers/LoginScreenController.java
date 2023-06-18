@@ -52,7 +52,7 @@ public class LoginScreenController extends BasicController {
 		// Start the clock
 		Timenow(live_time);
 		// Add values to combo_Role
-		combo_Role.getItems().addAll("student", "lecturer", "head_of_department");
+		combo_Role.getItems().addAll("student", "lecturer", "hod");
 	}
 
 	@FXML
@@ -64,17 +64,31 @@ public class LoginScreenController extends BasicController {
 		// gest text from fields
 		username = emailTextbox.getText();
 		// // password = passTextbox.getText();
-		//username = "noah";
-		password = "123456";
+		// username = "noah";
+		// password = "123456";
 		String selectedRole = combo_Role.getValue();
 
 		System.out.println("Entered: " + username + " " + password + " " + selectedRole);
 
-		if ((username.trim().isEmpty() || password.trim().isEmpty() && !selectedRole.equals("role")))
+		if ((username.trim().isEmpty() || password.trim().isEmpty() && !selectedRole.equals("role"))) {
 			setVisibleFalse();
+			JOptionPane.showMessageDialog(null, "your username or password are incorrect!",
+					"incorrect username or password",
+					JOptionPane.ERROR_MESSAGE);
+			if (username.trim().isEmpty())
+				emailTextbox.setStyle("-fx-background-color: red;");
+			if (password.trim().isEmpty())
+				passTextbox.setStyle("-fx-background-color: red;");
+
+			if (!selectedRole.equals("role"))
+				combo_Role.setStyle("-fx-background-color: red;");
+
+			return;
+		}
+
 		else {
 			// Verifies students credintials from database
-			ClientUI.chat.loginVarification(username, password,selectedRole);
+			ClientUI.chat.loginVarification(username, password, selectedRole);
 
 			// Waits 5 seconds for user to be found
 			int cap = 20;
@@ -108,7 +122,6 @@ public class LoginScreenController extends BasicController {
 						break;
 					}
 
-					case "head_of_department":
 					case "hod": {
 						HODController hoc = (HODController) openScreen("/clientFXMLS/HOD.fxml",
 								"CEMS System - Head Of The Department", event);
@@ -118,7 +131,8 @@ public class LoginScreenController extends BasicController {
 
 					// If the type isnt ok
 					default: {
-						JOptionPane.showMessageDialog(null, "Something wrong with database !", "Error",
+						JOptionPane.showMessageDialog(null, "your username or password are incorrect!",
+								"incorrect username or password",
 								JOptionPane.ERROR_MESSAGE);
 					}
 
