@@ -170,6 +170,7 @@ public class DBQController extends BasicController {
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
 		ctc.setTest(testToReturn);
+		ctc.loadFilterComboboxes();
 	}
 
 	@FXML
@@ -177,10 +178,5 @@ public class DBQController extends BasicController {
 		// Open Create Question screen
 		openScreen("/clientFXMLS/LecturerCreateQFromDB.fxml",
 				"CEMS System - Lecturer - Create Tests - Create Questions", event);
-	}
-
-	@FXML
-	void helpPressed(ActionEvent event) {
-
 	}
 }
