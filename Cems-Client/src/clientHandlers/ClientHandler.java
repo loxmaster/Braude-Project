@@ -201,9 +201,14 @@ public class ClientHandler extends AbstractClient {
 							}
 							break;
 						case "lecturercourses":
-							list.remove(0);
-							LecturerController.getCoursesList().addAll(list);
+							//list.remove(0);
+							//LecturerController.getCoursesList().addAll(list);
+							//break;
+								subjectArray = list.get(1).split(",");
+							for (String s : subjectArray)
+								LecturerController.getCoursesList().add(s);
 							break;
+
 
 						case "getSubjectID":
 							System.out.println("Client Handler: " + list.get(1));
@@ -341,8 +346,7 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> subjectList = new ArrayList<String>();
 
 		subjectList.addAll(Arrays.asList("lecturersubjects",
-				"SELECT courses FROM projecton.lecturer WHERE (`username` = '" + (String) username + "');"));
-
+					"SELECT department FROM projecton.users WHERE (`username` = '" + (String) username + "');"));
 		try {
 			sendToServer((Object) subjectList);
 		} catch (IOException e) {
@@ -353,9 +357,8 @@ public class ClientHandler extends AbstractClient {
 	public void handle_test_MessageFromLecturerUI(Object username) {
 		ArrayList<String> courseList = new ArrayList<String>();
 
-		courseList.addAll(Arrays.asList("lecturercourses",
-				"SELECT sc.coursename FROM lecturer l JOIN subjectcourses sc ON find_in_set( sc.subjectname, l.courses) WHERE (l.username =  '"
-						+ (String) username + "' );"));
+
+		courseList.addAll(Arrays.asList("lecturercourses","SELECT courses FROM projecton.lecturer WHERE username = '" + (String) username + "';"));
 		try {
 			sendToServer((Object) courseList);
 		} catch (IOException e) {

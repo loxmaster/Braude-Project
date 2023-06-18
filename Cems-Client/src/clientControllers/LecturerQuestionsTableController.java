@@ -78,11 +78,11 @@ public class LecturerQuestionsTableController extends BasicController {
         loadFilterComboboxes();
 
         id.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        lecturer.setCellValueFactory(new PropertyValueFactory<>("Lecturer"));
         subject.setCellValueFactory(new PropertyValueFactory<>("Subject"));
         coursename.setCellValueFactory(new PropertyValueFactory<>("Coursename"));
         questiontext.setCellValueFactory(new PropertyValueFactory<>("Questiontext"));
         questionnumber.setCellValueFactory(new PropertyValueFactory<>("Questionnumber"));
-        lecturer.setCellValueFactory(new PropertyValueFactory<>("Lecturer"));
         edit.setCellValueFactory(new PropertyValueFactory<>("Edit"));
 
         // Waits 5 seconds for data to be found
