@@ -158,12 +158,20 @@ public class DBTestController extends BasicController {
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
 		ctc.setTest(testToReturn);
+		ctc.loadFilterComboboxes();
 	}
+
 
 	@FXML
 	void createQuestionPressed(ActionEvent event) {
-		// Open Create Question screen
-		openScreen("/clientFXMLS/LecturerCreateQFromDB.fxml",
-				"CEMS System - Lecturer - Create Tests - Create Questions", event);
+
+		if (LecturerController.subjectsList.isEmpty())
+            JOptionPane.showMessageDialog(null, "Lecturer has no subjects!", "Error", JOptionPane.ERROR_MESSAGE);
+        else {
+            // Open the CreateQuestionController and pass the subjects list
+            CreateQuestionController ctc = (CreateQuestionController) openScreen("/clientFXMLS/LecturerCreateQFromDB", "CEMS System - Lecturer - Create Question", event);
+           ctc.loadFilterComboboxes();
+        }
+
 	}
 }

@@ -49,6 +49,11 @@ public class CreateQuestionController extends BasicController {
 	@FXML
 	private Label live_time;
 
+
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
 	public static void setSubjectID(String subject) {
 		CreateQuestionController.subjectID = subject;
 	}
@@ -77,10 +82,7 @@ public class CreateQuestionController extends BasicController {
 
 	}
 
-		void initialize() {
-		// Start the clock
-		Timenow(live_time);
-	}
+	
 
 	@FXML
 	void confirmPressed(ActionEvent event) {
