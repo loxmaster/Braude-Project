@@ -58,13 +58,13 @@ public class ClientController implements ChatIF {
     /**
      * Accepts user input from the login screen.
      * 
-     * @param email    user email
+     * @param username    user username
      * @param password user password
      */
-    public void loginVarification(Object email, Object password) {
+    public void loginVarification(Object username, Object password,Object type) {
         try {
             // pass email and password to the client for authentication
-            client.handleMessageFromLoginUI(email, password);
+            client.handleMessageFromLoginUI(username, password,type);
         } catch (Exception ex) {
             System.out.println("Unexpected error while reading from UI!");
             ex.printStackTrace();

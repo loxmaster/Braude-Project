@@ -199,12 +199,11 @@ public class EchoServer extends AbstractServer {
 			ResultSet result = stmt.executeQuery(list.get(0));
 			if (result.next()) {
 				// check if the password in the DB is the same as user input
-				if (result.getString(2).equals(list.get(2))) {
-					String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3)
-							+ " " + result.getString(4) + " " + result.getString(5) + " " + result.getString(6);
-					System.out.println("Message sent back: " + res);
-					client.sendToClient((Object) res);
-				}
+				String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3)
+						+ " " + result.getString(4) + " " + result.getString(5) + " " + result.getString(6);
+				System.out.println("Message sent back: " + res);
+				client.sendToClient((Object) res);
+
 			} else {
 				// The user is not in the database (not registered)
 				// or incorrect password

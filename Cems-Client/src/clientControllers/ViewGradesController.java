@@ -103,6 +103,7 @@ public class ViewGradesController extends BasicController {
 
         // Add the "Show all" option to the ComboBox
         courseNames.add("Show all");
+        ExamLoad("Show all");
         filterComboBox.getItems().addAll(FXCollections.observableArrayList(courseNames));
 
         // Set the action to be performed when an option is selected in the ComboBox

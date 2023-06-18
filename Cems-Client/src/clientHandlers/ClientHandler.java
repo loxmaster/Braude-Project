@@ -244,13 +244,16 @@ public class ClientHandler extends AbstractClient {
 	 * @param username username entered.
 	 * @param password password entered.
 	 */
-	public void handleMessageFromLoginUI(Object username, Object password) {
+	public void handleMessageFromLoginUI(Object username, Object password, Object type) {
 		ArrayList<String> credentials = new ArrayList<String>();
 		// create a query to grab username requested
-		String key = (String)username;
-		String query = String.format("SELECT * FROM users  WHERE username = '%s';",
-		key);
-		credentials.addAll(Arrays.asList(query, (String) username, (String) password));
+		String name = (String) username;
+		String pass = (String) password;
+		String role = (String) type;
+		String query = String.format(
+				"SELECT * FROM projecton.users  WHERE username = '%s' AND password = '%s' AND type = '%s';",
+				name, pass, role);
+		credentials.addAll(Arrays.asList(query, name, pass, role));
 
 		try {
 			sendToServer((Object) credentials);
@@ -369,7 +372,7 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-		public void getCourseForTestLec(String id) {
+	public void getCourseForTestLec(String id) {
 
 		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
 		String subjectid = id.substring(0, 2);
