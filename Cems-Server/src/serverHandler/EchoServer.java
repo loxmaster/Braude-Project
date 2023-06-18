@@ -159,6 +159,7 @@ public class EchoServer extends AbstractServer {
 						case "createanswers":
 						case "editquestion":
 						case "Addtesttodata":
+						case "DeleteQuestion":
 							int flag = executeMyQuery(list.get(1));
 							// if (flag != 0) flag=1;
 							client.sendToClient(flag == 0 ? idExists : flag);

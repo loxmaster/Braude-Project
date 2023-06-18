@@ -245,4 +245,12 @@ public class ClientController implements ChatIF {
         sendToServer.add("isStudentTakingCourse");
         client.isStudentTakingCourse(sendToServer);
     }
+
+    public void DeleteQuestion(String originalId) {
+        try {
+            client.DeleteQuestion(originalId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

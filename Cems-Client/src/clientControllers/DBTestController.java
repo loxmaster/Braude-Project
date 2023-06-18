@@ -156,9 +156,4 @@ public class DBTestController extends BasicController {
 		openScreen("/clientFXMLS/LecturerCreateQFromDB.fxml",
 				"CEMS System - Lecturer - Create Tests - Create Questions", event);
 	}
-
-	@FXML
-	void helpPressed(ActionEvent event) {
-
-	}
 }

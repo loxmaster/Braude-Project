@@ -326,6 +326,7 @@ public class CreateTestController extends BasicController {
 		this.test = test;
 		test.setAuthor(ClientHandler.user.getUsername());
 		subjectComboBox.setValue(test.getSubject());
+		courseComboBox.setValue(test.getCourse());
 		code.setText(test.getTestCode());
 		startTime.setText(test.getTime());
 		duration.setText(test.getDuration());

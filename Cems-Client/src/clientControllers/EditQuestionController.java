@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import javax.swing.JOptionPane;
 
+import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -202,9 +203,13 @@ public class EditQuestionController extends BasicController {
 
 		
 
-		openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
-		// resets the question array after the update
-		LecturerController.questions = new ArrayList<QuestionModel>();
+        LecturerController.setQuestions(new ArrayList<QuestionModel>());
+        ClientUI.chat.GetLecturersQuestions(ClientHandler.user.getUsername());
+        
+        // Open the LecturerQuestionsTableController and load the questions into the table
+        LecturerQuestionsTableController lqtc = (LecturerQuestionsTableController) openScreen("/clientFXMLS/LecturerQuestionsTable.fxml", "CEMS System - Lecturer - Questions Table", event);
+        lqtc.loadTable();
+
 	}
 
 	
@@ -247,8 +252,25 @@ public class EditQuestionController extends BasicController {
 	}
 
 	@FXML
-	void helpPressed(ActionEvent event) {
+    void DeletePressed(ActionEvent event) {
+		ClientUI.updatestatus = 1;
 
-	}
+		ClientUI.chat.DeleteQuestion(originalId);
 
+		if (ClientUI.updatestatus == 0){
+		JOptionPane.showMessageDialog(null, "Question NOT Deleted! Qustion Number Exist In DB", "Fail!", JOptionPane.WARNING_MESSAGE);
+		ClientUI.updatestatus =1;
+			return;
+		}
+		JOptionPane.showMessageDialog(null, "Question Deleted!", "Success!", JOptionPane.WARNING_MESSAGE);
+
+		
+        LecturerController.setQuestions(new ArrayList<QuestionModel>());
+        ClientUI.chat.GetLecturersQuestions(ClientHandler.user.getUsername());
+        
+        // Open the LecturerQuestionsTableController and load the questions into the table
+        LecturerQuestionsTableController lqtc = (LecturerQuestionsTableController) openScreen("/clientFXMLS/LecturerQuestionsTable.fxml", "CEMS System - Lecturer - Questions Table", event);
+        lqtc.loadTable();
+
+    }
 }

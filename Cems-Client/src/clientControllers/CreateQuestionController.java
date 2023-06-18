@@ -140,13 +140,13 @@ public class CreateQuestionController extends BasicController {
 
 		// checks who is the correct answer
 		if (A.isSelected())
-			correctAnswer = "A";
+			correctAnswer = "a";
 		else if (B.isSelected())
-			correctAnswer = "B";
+			correctAnswer = "b";
 		else if (C.isSelected())
-			correctAnswer = "C";
+			correctAnswer = "c";
 		else if (D.isSelected())
-			correctAnswer = "D";
+			correctAnswer = "d";
 
 		ClientUI.updatestatus = 1;
 
@@ -253,13 +253,13 @@ public class CreateQuestionController extends BasicController {
 			
 		// checks who is the correct answer
 		if (A.isSelected())
-			correctAnswer = "A";
+			correctAnswer = "a";
 		else if (B.isSelected())
-			correctAnswer = "B";
+			correctAnswer = "b";
 		else if (C.isSelected())
-			correctAnswer = "C";
+			correctAnswer = "c";
 		else if (D.isSelected())
-			correctAnswer = "D";
+			correctAnswer = "d";
 
 		ClientUI.updatestatus =1;
 		sendQandANStoSQL(subjectCombobox.getValue(),courseCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),qC.getText(), qD.getText(), correctAnswer);

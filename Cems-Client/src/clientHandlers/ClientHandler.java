@@ -544,4 +544,14 @@ public class ClientHandler extends AbstractClient {
 		sendToServer(sendtoServer);
 	}
 
+    public void DeleteQuestion(String originalId) {
+		ArrayList<String> listToSend = new ArrayList<String>();
+		listToSend.add("DeleteQuestion");
+		listToSend.add("DELETE FROM `projecton`.`questions` WHERE (`id` = '" + originalId + "');");
+		try {
+			sendToServer((Object) listToSend);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
 }
