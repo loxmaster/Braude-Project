@@ -2,7 +2,10 @@ package clientControllers;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +24,11 @@ public class ViewGradesController extends BasicController {
 
     public static ArrayList<Test> completedTestsList;
     private static ArrayList<String> SubjectCourse;
+    public static boolean flag = false;
+    public String value;
+
+    // This object is used for synchronization
+    final Object lock = new Object();
 
     @FXML
     private GridPane ExamContainer;
@@ -47,47 +55,101 @@ public class ViewGradesController extends BasicController {
     }
 
     @FXML
-    void ExamLoad( String filterComboBox) {
+    void initialize() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ClientUI.chat.getcompletedTestsForStudentList();
+                synchronized (lock) {
+                    lock.notify();
+                }
+            }
+        }).start();
+
+        synchronized (lock) {
+            try {
+                lock.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Student_ID_Text.setText("Student ID: " + completedTestsList.get(0).getStudentID());
+        // Populate the ComboBox with course names
+        Set<String> courseNames = new HashSet<>();
+        for (Test test : completedTestsList) {
+            ClientUI.chat.getCourseForTest(test.getId());
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } // ... rest of your code ...
+            String courseName = SubjectCourse.get(2); // Assuming Test objects have a getCourseName method
+            if (!courseNames.contains(courseName)) {
+                courseNames.add(courseName);
+            }
+        }
+        courseNames.add("Show all");
+        filterComboBox.getItems().addAll(FXCollections.observableArrayList(courseNames));
+        filterComboBox.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println((String) filterComboBox.getValue());
+                ExamLoad((String) filterComboBox.getValue());
+            }
+        });
+    }
+
+    public void ExamLoad(String value) {
         // Clear the ExamContainer
         ExamContainer.getChildren().clear();
-
-        ClientUI.chat.getcompletedTestsForStudentList();
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Student_ID_Text.setText("Student ID: " + completedTestsList.get(0).getStudentID());
 
         int column = 0;
         int row = 1;
         try {
             for (Test test : completedTestsList) {
                 ClientUI.chat.getCourseForTest(test.getId());
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                URL url = getClass().getResource("/clientFXMLS/StudentTestCard.fxml");
-                if (url == null) {
-                    System.out.println("Resource not found. Exiting...");
-                    return;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                AnchorPane testcard = fxmlLoader.load(url.openStream());
-                TestCardController cardController = fxmlLoader.getController();
-                cardController.setCard(test, SubjectCourse);
+                if (value.equals("Show all")) {
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    URL url = getClass().getResource("/clientFXMLS/StudentTestCard.fxml");
+                    if (url == null) {
+                        System.out.println("Resource not found. Exiting...");
+                        return;
+                    }
+                    AnchorPane testcard = fxmlLoader.load(url.openStream());
+                    TestCardController cardController = fxmlLoader.getController();
+                    cardController.setCard(test, SubjectCourse);
+                    if (column == 4) {
+                        column = 0;
+                        ++row;
+                    }
+                    ExamContainer.add(testcard, column++, row);
+                    GridPane.setMargin(testcard, new Insets(10));
+                } else if (SubjectCourse.get(2).equals(value)) {
 
-                // Add a check here to see if the course name matches the selected ComboBox item
-                String selectedCourse = (String) filterComboBox.getValue();
-                if (selectedCourse != null && !selectedCourse.equals("Show all")
-                        && !test.getCourse().equals(selectedCourse)) {
-                    continue;
+                    FXMLLoader fxmlLoader = new FXMLLoader();
+                    URL url = getClass().getResource("/clientFXMLS/StudentTestCard.fxml");
+                    if (url == null) {
+                        System.out.println("Resource not found. Exiting...");
+                        return;
+                    }
+                    AnchorPane testcard = fxmlLoader.load(url.openStream());
+                    TestCardController cardController = fxmlLoader.getController();
+                    cardController.setCard(test, SubjectCourse);
+                    if (column == 4) {
+                        column = 0;
+                        ++row;
+                    }
+                    ExamContainer.add(testcard, column++, row);
+                    GridPane.setMargin(testcard, new Insets(10));
                 }
 
-                if (column == 4) {
-                    column = 0;
-                    ++row;
-                }
-
-                ExamContainer.add(testcard, column++, row);
-                GridPane.setMargin(testcard, new Insets(10));
             }
         } catch (Exception e) {
             System.out.println("An error occurred:");
@@ -107,38 +169,36 @@ public class ViewGradesController extends BasicController {
         SubjectCourse = SubjectandCourse;
     }
 
-    @FXML
-    void initialize() {
-        ClientUI.chat.getcompletedTestsForStudentList();
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Student_ID_Text.setText("Student ID: " + completedTestsList.get(0).getStudentID());
-        // Populate the ComboBox with course names
-        List<String> courseNames = new ArrayList<>();
-        for (Test test : completedTestsList) {
-            ClientUI.chat.getCourseForTest(test.getId());
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            String courseName = SubjectCourse.get(2); // Assuming Test objects have a getCourseName method
-            if (!courseNames.contains(courseName)) {
-                courseNames.add(courseName);
-            }
-        }
-        courseNames.add("Show all");
-        filterComboBox.setItems(FXCollections.observableArrayList(courseNames));
+    public static ArrayList<Test> getCompletedTestsList() {
+        return completedTestsList;
+    }
 
-        filterComboBox.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                ExamLoad((String) comboBox.getValue());
-            }
-        });
+    public static void setCompletedTestsList(ArrayList<Test> completedTestsList) {
+        ViewGradesController.completedTestsList = completedTestsList;
+    }
+
+    public static ArrayList<String> getSubjectCourse() {
+        return SubjectCourse;
+    }
+
+    public static void setSubjectCourse(ArrayList<String> subjectCourse) {
+        SubjectCourse = subjectCourse;
+    }
+
+    public static boolean isFlag() {
+        return flag;
+    }
+
+    public static void setFlag(boolean flag) {
+        ViewGradesController.flag = flag;
+    }
+
+    public ComboBox<String> getFilterComboBox() {
+        return filterComboBox;
+    }
+
+    public void setFilterComboBox(ComboBox<String> filterComboBox) {
+        this.filterComboBox = filterComboBox;
     }
 
 }
