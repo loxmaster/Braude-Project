@@ -27,8 +27,8 @@ public class LecturerOptionsController extends BasicController {
             JOptionPane.showMessageDialog(null, "Lecturer has no subjects!", "Error", JOptionPane.ERROR_MESSAGE);
         else {
             // Open the CreateQuestionController and pass the subjects list
-            CreateQuestionController cqc = (CreateQuestionController) openScreen("/clientFXMLS/LecturerCreateQ.fxml", "CEMS System - Lecturer - Create Question", event);
-            cqc.loadSubjects(LecturerController.subjectsList);
+            CreateQuestionController ctc = (CreateQuestionController) openScreen("/clientFXMLS/LecturerCreateQ.fxml", "CEMS System - Lecturer - Create Question", event);
+           ctc.loadFilterComboboxes();
         }
     }
  

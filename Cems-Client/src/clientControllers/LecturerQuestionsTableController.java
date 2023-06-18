@@ -122,6 +122,8 @@ public class LecturerQuestionsTableController extends BasicController {
                 ((Node) event.getSource()).getScene().getWindow().hide();
                 AnchorPane root = null;
                 Stage currentStage = new Stage();
+
+
                 FXMLLoader loader = new FXMLLoader();
                 try {
                     final double[] offsets = new double[2];
