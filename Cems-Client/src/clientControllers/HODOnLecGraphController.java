@@ -13,7 +13,7 @@ import logic.Statistics;
 import logic.Test;
 
 // Extends the BasicController class
-public class GraphController extends BasicController {
+public class HODOnLecGraphController extends BasicController {
 
     // FXML variables used to interface with the UI
     @FXML
@@ -33,7 +33,7 @@ public class GraphController extends BasicController {
     private Text b_pass;
 
     @FXML
-    private BarChart<String, Number> barchart;
+    private BarChart<String, Number> graph_barchart;
 
     @FXML
     private Text c_pass;
@@ -123,9 +123,9 @@ public class GraphController extends BasicController {
     // Method to handle "back" button click
     @FXML
     void backtoStatistical(ActionEvent event) {
-        LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen(
-                "/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Lecturer - Statistical Information", event);
-        lsc.load();
+        HODStatisticOnLecturerController Hod = (HODStatisticOnLecturerController) openScreen(
+                "/clientFXMLS/HodStatisticOnLecturer.fxml", "Statistical Informatrion On Lecturer", event);
+        Hod.load();
     }
 
     // Method to populate the UI with statistics
@@ -211,7 +211,7 @@ public class GraphController extends BasicController {
         }
 
         // Add the series to the bar chart
-        barchart.getData().add(series);
+        graph_barchart.getData().add(series);
 
         // After adding the series, change the color of bars
         for (XYChart.Data<String, Number> data : series.getData()) {

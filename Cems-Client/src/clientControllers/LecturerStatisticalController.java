@@ -26,6 +26,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import logic.Statistics;
 import logic.Test;
+import logic.User;
 import javafx.scene.control.TableCell;
 
 /**
@@ -201,28 +202,29 @@ public class LecturerStatisticalController extends BasicController {
 				final TableCell<Statistics, Void> cell = new TableCell<Statistics, Void>() {
 
 					private final Button btn = new Button("Show Distribution");
-
 					{
-						btn.setOnAction((ActionEvent event) -> {
-							// Add the data to the table
-							Statistics data = getTableView().getItems().get(getIndex());
-							try {
-								FXMLLoader loader = new FXMLLoader(
-										getClass().getResource("/clientFXMLS/LecturerStatistical_GraphView.fxml"));
-								Parent root = loader.load();
+                        btn.setOnAction((ActionEvent event) -> {
+                            // Add the data to the table
+                            Statistics data = getTableView().getItems().get(getIndex());
+                            try {
+                                FXMLLoader loader = new FXMLLoader(
+                                        getClass().getResource("/clientFXMLS/LecturerStatistical_GraphView.fxml"));
+                                Parent root = loader.load();
 
-								GraphController graphController = loader.getController();
-								graphController.setData(data, completedTestsList);
+                                GraphController graphController = loader.getController();
+                                graphController.setData(data, completedTestsList);
 
-								Stage stage = (Stage) btn.getScene().getWindow();
-								stage.setScene(new Scene(root));
-								stage.show();
+                                Stage stage = (Stage) btn.getScene().getWindow();
+                                stage.setScene(new Scene(root));
+                                stage.show();
+                                
 
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-							System.out.println("selectedData: " + data);
-						});
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            System.out.println("selectedData: " + data);
+                        });
+
 					}
 
 					@Override

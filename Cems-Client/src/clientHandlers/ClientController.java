@@ -58,13 +58,13 @@ public class ClientController implements ChatIF {
     /**
      * Accepts user input from the login screen.
      * 
-     * @param username    user username
+     * @param username user username
      * @param password user password
      */
-    public void loginVarification(Object username, Object password,Object type) {
+    public void loginVarification(Object username, Object password, Object type) {
         try {
             // pass email and password to the client for authentication
-            client.handleMessageFromLoginUI(username, password,type);
+            client.handleMessageFromLoginUI(username, password, type);
         } catch (Exception ex) {
             System.out.println("Unexpected error while reading from UI!");
             ex.printStackTrace();
@@ -88,6 +88,34 @@ public class ClientController implements ChatIF {
         }
     }
 
+    // 1 in hod
+    public void getLecturerListUnderSameDepartment() {
+        try {
+            client.getLecturerListUnderSameDepartment();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 2 in hod
+    public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
+        try {
+            client.HodGETcompletedTestsForSpecificLecturerList(userName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 3 in hod
+    public void getHodCourseForTestSpecificLec(Object id) {
+        try {
+            client.getHodCourseForTestSpecificLec((String) id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     // gets all subject available for lecturer
     public void getCourseForTest(Object id) {
         try {
@@ -97,7 +125,7 @@ public class ClientController implements ChatIF {
         }
     }
 
-        // gets all subject available for lecturer
+    // gets all subject available for lecturer
     public void getCourseForTestLec(Object id) {
         try {
             client.getCourseForTestLec((String) id);
@@ -105,7 +133,6 @@ public class ClientController implements ChatIF {
             e.printStackTrace();
         }
     }
-
 
     // gets the id of the subject given
     public void GetSubjectIDfromSubjectCourses(String subjectname) {

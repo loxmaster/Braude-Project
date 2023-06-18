@@ -8,6 +8,7 @@ import java.util.List;
 import javax.print.DocFlavor.STRING;
 
 import clientControllers.CreateQuestionController;
+import clientControllers.HODStatisticOnLecturerController;
 import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
 import clientControllers.ViewGradesController;
@@ -179,9 +180,54 @@ public class ClientHandler extends AbstractClient {
 						i++;
 					}
 					LecturerStatisticalController.setSubjectsCoursesListLec(listToAdd);
-				}
-			}
 
+				} else if (list.get(0).equals("LecturerListUnderSameDepartment")) {
+					System.out.println("Client Handler: " + list.get(0));
+					ArrayList<String> listToAdd = new ArrayList<>();
+					int i = 1;
+					while (i < list.size()) {
+						listToAdd.add(list.get(i));
+						i++;
+					}
+					HODStatisticOnLecturerController.setLecturerListUnderSameDepartment(listToAdd);
+				}
+
+				else if (list.get(0).equals("HodGETcompletedTestsForSpecificLecturerList")) {
+					System.out.println("Client Handler: " + list.get(0));
+					ArrayList<Test> listToAdd = new ArrayList<>();
+					// CompletedTestList = (ArrayList<Test>) severMessage;
+					int i = 1;
+					while (i < list.size()) {
+						listToAdd.add(new Test(
+								list.get(i),
+								list.get(i + 1),
+								list.get(i + 2),
+								list.get(i + 3),
+								list.get(i + 4),
+								list.get(i + 5),
+								list.get(i + 6),
+								list.get(i + 7),
+								list.get(i + 8),
+								list.get(i + 9),
+								list.get(i + 10),
+								list.get(i + 11)));
+						i += 12;
+					}
+					HODStatisticOnLecturerController.setcompletedTestsForSpecificLecturer(listToAdd);
+				}
+
+				else if (list.get(0).equals("getHodSubjectsCourseForTestSpecificLec")) {
+					System.out.println("Client Handler: " + list.get(0));
+					ArrayList<String> listToAdd = new ArrayList<>();
+					int i = 1;
+					while (i < list.size()) {
+						listToAdd.add(list.get(i));
+						i++;
+					}
+					HODStatisticOnLecturerController.getHodSubjectsCourseForTestSpecificLec(listToAdd);
+				}
+
+			}
 		}
 
 		// Handles the error of user not found.
@@ -356,6 +402,23 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String status = "completed";
+		String tested = "true";
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
+				userName, status, tested);
+
+		list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificLecturerList", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void getCourseForTest(String id) {
 
 		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
@@ -383,6 +446,37 @@ public class ClientHandler extends AbstractClient {
 		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTestLec", query));
 		try {
 			sendToServer((Object) subjectcoursenameofcompletedtest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getHodCourseForTestSpecificLec(String id) {
+
+		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
+		String subjectid = id.substring(0, 2);
+		String courseid = id.substring(2, 4);
+		String query = String.format(
+				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+				subjectid, courseid);
+		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodSubjectsCourseForTestSpecificLec", query));
+		try {
+			sendToServer((Object) subjectcoursenameofcompletedtest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getLecturerListUnderSameDepartment() {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String query = String.format(
+				"SELECT * FROM projecton.users  WHERE type = 'lecturer' AND department = '%s';",
+				user.getDepartment());
+
+		list.addAll(Arrays.asList("LecturerListUnderSameDepartment", query));
+		try {
+			sendToServer((Object) list);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
