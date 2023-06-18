@@ -63,25 +63,26 @@ public class LoginScreenController extends BasicController {
 
 		// gest text from fields
 		username = emailTextbox.getText();
-		// // password = passTextbox.getText();
+		password = passTextbox.getText();
 		// username = "noah";
 		// password = "123456";
 		String selectedRole = combo_Role.getValue();
+		String color = "rgb(146, 71, 71)";
 
 		System.out.println("Entered: " + username + " " + password + " " + selectedRole);
 
-		if ((username.trim().isEmpty() || password.trim().isEmpty() && !selectedRole.equals("role"))) {
-			setVisibleFalse();
+		if ((username.trim().isEmpty() || password.trim().isEmpty() || selectedRole.equals("role"))) {
+			// setVisibleFalse();
 			JOptionPane.showMessageDialog(null, "your username or password are incorrect!",
 					"incorrect username or password",
 					JOptionPane.ERROR_MESSAGE);
-			if (username.trim().isEmpty())
-				emailTextbox.setStyle("-fx-background-color: red;");
-			if (password.trim().isEmpty())
-				passTextbox.setStyle("-fx-background-color: red;");
+			if (username.isEmpty())
+				emailTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);");
+			if (password.isEmpty())
+				passTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);;");
 
-			if (!selectedRole.equals("role"))
-				combo_Role.setStyle("-fx-background-color: red;");
+			if (selectedRole==null)
+				combo_Role.setStyle("-fx-background-color: rgb(255, 74, 74);;");
 
 			return;
 		}
