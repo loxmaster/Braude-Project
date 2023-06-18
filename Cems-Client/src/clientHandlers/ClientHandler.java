@@ -92,40 +92,40 @@ public class ClientHandler extends AbstractClient {
 			// is reserved for destination , and second (1) index is the data itself.
 			case "ArrayList":
 
-				if ((String) (((ArrayList<?>) serverMessage).get(0)) instanceof String) {
-					String test;
-					test = (String) ((ArrayList<?>) serverMessage).get(0);
-					if (test.equals("getTest")) {
-						((ArrayList<?>) serverMessage).remove(0);
-						int size = ((ArrayList<?>) serverMessage).size();
-						ArrayList<QuestionModel> questionBuild = new ArrayList<>();
+				// if ((String) (((ArrayList<?>) serverMessage).get(0)) instanceof String) {
+				// 	String test;
+				// 	test = (String) ((ArrayList<?>) serverMessage).get(0);
+				// 	if (test.equals("getTest")) {
+				// 		((ArrayList<?>) serverMessage).remove(0);
+				// 		int size = ((ArrayList<?>) serverMessage).size();
+				// 		ArrayList<QuestionModel> questionBuild = new ArrayList<>();
 
-						//ArrayList<QuestionModel> copymessage = new ArrayList<>();
-						// copymessage.addAll((Collection<? extends QuestionModel>) serverMessage);
+				// 		//ArrayList<QuestionModel> copymessage = new ArrayList<>();
+				// 		// copymessage.addAll((Collection<? extends QuestionModel>) serverMessage);
 						
-						ArrayList<Question> copymessage = new ArrayList<>();
-						copymessage = (ArrayList<Question>) serverMessage;
+				// 		ArrayList<Question> copymessage = new ArrayList<>();
+				// 		copymessage = (ArrayList<Question>) serverMessage;
 
-						// questionBuild.addAll((Collection<? extends QuestionModel>) serverMessage);
+				// 		// questionBuild.addAll((Collection<? extends QuestionModel>) serverMessage);
 
-						for (int i = 0; i < size; i++) {
-							questionBuild.add(new QuestionModel(
-									copymessage.get(i).getId(),
-									copymessage.get(i).getSubject(),
-									copymessage.get(i).getCoursename(),
-									copymessage.get(i).getQuestiontext(),
-									copymessage.get(i).getQuestionnumber(),
-									copymessage.get(i).getLecturer(),
-									copymessage.get(i).getOptionA(),
-									copymessage.get(i).getOptionB(),
-									copymessage.get(i).getOptionC(),
-									copymessage.get(i).getOptionD(),
-									copymessage.get(i).getAnswer()));
-						}
-					}
-					// questionfromTestList.addAll(((ArrayList<QuestionModel>) serverMessage));
+				// 		for (int i = 0; i < size; i++) {
+				// 			questionBuild.add(new QuestionModel(
+				// 					copymessage.get(i).getId(),
+				// 					copymessage.get(i).getSubject(),
+				// 					copymessage.get(i).getCoursename(),
+				// 					copymessage.get(i).getQuestiontext(),
+				// 					copymessage.get(i).getQuestionnumber(),
+				// 					copymessage.get(i).getLecturer(),
+				// 					copymessage.get(i).getOptionA(),
+				// 					copymessage.get(i).getOptionB(),
+				// 					copymessage.get(i).getOptionC(),
+				// 					copymessage.get(i).getOptionD(),
+				// 					copymessage.get(i).getAnswer()));
+				// 		}
+				// 	}
+				// 	// questionfromTestList.addAll(((ArrayList<QuestionModel>) serverMessage));
 
-				}
+				// }
 
 				// If first instance is Question than its a question list.
 				if (((ArrayList<?>) serverMessage).get(0) instanceof Question) {
