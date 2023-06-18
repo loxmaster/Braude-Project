@@ -1,7 +1,6 @@
 package clientControllers;
 
 import java.util.ArrayList;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
@@ -28,16 +27,22 @@ public class TestCardController {
     @FXML
     private Text test_date;
 
+    // Method to set the details of the test card
     public void setCard(Test test, ArrayList<String> SubjectCourse) {
+        // Set the exam code
         code_Exam.setText(test.getId());
+        // Set the test name
         test_name.setText(SubjectCourse.get(2));
+        // If the grade is less than 55, set the text color to red
         if (Integer.parseInt(test.getGrade()) < 55) {
             grade.setStyle("-fx-fill: red;");
         }
+        // Set the grade
         grade.setText(test.getGrade());
+        // Set the test date
         test_date.setText(test.getDateString());
-        switch ((int) ((Math.random() * 17)%3)) {
-
+        // Randomly set the background color of the card
+        switch ((int) ((Math.random() * 20)%6)) {
             case 1:
                 studentexamcard.setStyle("-fx-background-color: #B9E5FF"
                         + ";" + "-fx-background-radius: 15;"
@@ -50,6 +55,16 @@ public class TestCardController {
                 break;
             case 3:
                 studentexamcard.setStyle("-fx-background-color: #FB9AA8"
+                        + ";" + "-fx-background-radius: 15;"
+                        + "-fx-effect: dropShadown(three-pass-box, rgba(0,0,0,1),10,0,0,10);");
+                break;
+            case 4:
+                studentexamcard.setStyle("-fx-background-color: #FFD700"
+                        + ";" + "-fx-background-radius: 15;"
+                        + "-fx-effect: dropShadown(three-pass-box, rgba(0,0,0,1),10,0,0,10);");
+                break;
+            case 5:
+                studentexamcard.setStyle("-fx-background-color: #ADFF2F"
                         + ";" + "-fx-background-radius: 15;"
                         + "-fx-effect: dropShadown(three-pass-box, rgba(0,0,0,1),10,0,0,10);");
                 break;
