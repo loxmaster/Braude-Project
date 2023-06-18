@@ -103,37 +103,37 @@ public class ClientHandler extends AbstractClient {
 			case "ArrayList":
 
 				// if ((String) (((ArrayList<?>) serverMessage).get(0)) instanceof String) {
-				// 	String test;
-				// 	test = (String) ((ArrayList<?>) serverMessage).get(0);
-				// 	if (test.equals("getTest")) {
-				// 		((ArrayList<?>) serverMessage).remove(0);
-				// 		int size = ((ArrayList<?>) serverMessage).size();
-				// 		ArrayList<QuestionModel> questionBuild = new ArrayList<>();
+				// String test;
+				// test = (String) ((ArrayList<?>) serverMessage).get(0);
+				// if (test.equals("getTest")) {
+				// ((ArrayList<?>) serverMessage).remove(0);
+				// int size = ((ArrayList<?>) serverMessage).size();
+				// ArrayList<QuestionModel> questionBuild = new ArrayList<>();
 
-				// 		//ArrayList<QuestionModel> copymessage = new ArrayList<>();
-				// 		// copymessage.addAll((Collection<? extends QuestionModel>) serverMessage);
-						
-				// 		ArrayList<Question> copymessage = new ArrayList<>();
-				// 		copymessage = (ArrayList<Question>) serverMessage;
+				// //ArrayList<QuestionModel> copymessage = new ArrayList<>();
+				// // copymessage.addAll((Collection<? extends QuestionModel>) serverMessage);
 
-				// 		// questionBuild.addAll((Collection<? extends QuestionModel>) serverMessage);
+				// ArrayList<Question> copymessage = new ArrayList<>();
+				// copymessage = (ArrayList<Question>) serverMessage;
 
-				// 		for (int i = 0; i < size; i++) {
-				// 			questionBuild.add(new QuestionModel(
-				// 					copymessage.get(i).getId(),
-				// 					copymessage.get(i).getSubject(),
-				// 					copymessage.get(i).getCoursename(),
-				// 					copymessage.get(i).getQuestiontext(),
-				// 					copymessage.get(i).getQuestionnumber(),
-				// 					copymessage.get(i).getLecturer(),
-				// 					copymessage.get(i).getOptionA(),
-				// 					copymessage.get(i).getOptionB(),
-				// 					copymessage.get(i).getOptionC(),
-				// 					copymessage.get(i).getOptionD(),
-				// 					copymessage.get(i).getAnswer()));
-				// 		}
-				// 	}
-				// 	// questionfromTestList.addAll(((ArrayList<QuestionModel>) serverMessage));
+				// // questionBuild.addAll((Collection<? extends QuestionModel>) serverMessage);
+
+				// for (int i = 0; i < size; i++) {
+				// questionBuild.add(new QuestionModel(
+				// copymessage.get(i).getId(),
+				// copymessage.get(i).getSubject(),
+				// copymessage.get(i).getCoursename(),
+				// copymessage.get(i).getQuestiontext(),
+				// copymessage.get(i).getQuestionnumber(),
+				// copymessage.get(i).getLecturer(),
+				// copymessage.get(i).getOptionA(),
+				// copymessage.get(i).getOptionB(),
+				// copymessage.get(i).getOptionC(),
+				// copymessage.get(i).getOptionD(),
+				// copymessage.get(i).getAnswer()));
+				// }
+				// }
+				// // questionfromTestList.addAll(((ArrayList<QuestionModel>) serverMessage));
 
 				// }
 
@@ -170,6 +170,16 @@ public class ClientHandler extends AbstractClient {
 								LecturerController.getSubjectsList().add(s);
 							break;
 
+						case "completedTestsForLecturer":
+							ArrayList<Test> tests_temp = new ArrayList<Test>();
+							for (int i = 1; i < ((ArrayList<String>) serverMessage).size(); i+=12) {
+								tests_temp.add(new Test(list.get(i), list.get(i + 1), list.get(i + 2), list.get(i + 3),
+										list.get(i + 4), list.get(i + 5), list.get(i + 6), list.get(i + 7),
+										list.get(i + 8), list.get(i + 9), list.get(i + 10), list.get(i + 11)));
+							}
+							LecturerStatisticalController.setCompletedTestsList(tests_temp);
+							break;
+
 						case "getTest":
 							if (!(list.get(1).isEmpty())) {
 								list.remove(0);
@@ -201,14 +211,13 @@ public class ClientHandler extends AbstractClient {
 							}
 							break;
 						case "lecturercourses":
-							//list.remove(0);
-							//LecturerController.getCoursesList().addAll(list);
-							//break;
-								subjectArray = list.get(1).split(",");
+							// list.remove(0);
+							// LecturerController.getCoursesList().addAll(list);
+							// break;
+							subjectArray = list.get(1).split(",");
 							for (String s : subjectArray)
 								LecturerController.getCoursesList().add(s);
 							break;
-
 
 						case "getSubjectID":
 							System.out.println("Client Handler: " + list.get(1));
@@ -345,7 +354,7 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> subjectList = new ArrayList<String>();
 
 		subjectList.addAll(Arrays.asList("lecturersubjects",
-					"SELECT department FROM projecton.users WHERE (`username` = '" + (String) username + "');"));
+				"SELECT department FROM projecton.users WHERE (`username` = '" + (String) username + "');"));
 		try {
 			sendToServer((Object) subjectList);
 		} catch (IOException e) {
@@ -356,8 +365,8 @@ public class ClientHandler extends AbstractClient {
 	public void handle_test_MessageFromLecturerUI(Object username) {
 		ArrayList<String> courseList = new ArrayList<String>();
 
-
-		courseList.addAll(Arrays.asList("lecturercourses","SELECT courses FROM projecton.lecturer WHERE username = '" + (String) username + "';"));
+		courseList.addAll(Arrays.asList("lecturercourses",
+				"SELECT courses FROM projecton.lecturer WHERE username = '" + (String) username + "';"));
 		try {
 			sendToServer((Object) courseList);
 		} catch (IOException e) {
@@ -469,7 +478,8 @@ public class ClientHandler extends AbstractClient {
 	 * @param newQNumber
 	 * @param originalId
 	 */
-	public void EditQuestion(String NewID, String subject,String course, String qBody, String qnumber , String originalId) {
+	public void EditQuestion(String NewID, String subject, String course, String qBody, String qnumber,
+			String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// ugly will stay ugly <3
@@ -488,7 +498,7 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-		public void EditAnswers(String subjectid, String qA,String qB, String qC, String qD , String correctAnswer) {
+	public void EditAnswers(String subjectid, String qA, String qB, String qC, String qD, String correctAnswer) {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// ugly will stay ugly <3
@@ -533,12 +543,14 @@ public class ClientHandler extends AbstractClient {
 	 * @param Body
 	 * @param QNumber
 	 */
-	public void CreateQuestion(String Id, String subject,String course, String Body, String QNumber) {
+	public void CreateQuestion(String Id, String subject, String course, String Body, String QNumber) {
 		ArrayList<String> list = new ArrayList<String>();
 
 		// Construct the INSERT query to create a new question
 		list.addAll(Arrays.asList("createquestion",
-				"INSERT INTO `projecton`.`questions` (`id`, `lecturer`, `subject`, `coursename`, `questiontext`, `questionnumber`) VALUES ('"+ Id + "','" + user.getUsername() + "', '" + subject + "', '" + course + "', '" + Body + "', '" + QNumber + "');"));
+				"INSERT INTO `projecton`.`questions` (`id`, `lecturer`, `subject`, `coursename`, `questiontext`, `questionnumber`) VALUES ('"
+						+ Id + "','" + user.getUsername() + "', '" + subject + "', '" + course + "', '" + Body + "', '"
+						+ QNumber + "');"));
 
 		try {
 			sendToServer((Object) list);
@@ -710,7 +722,7 @@ public class ClientHandler extends AbstractClient {
 		sendToServer(sendToServer);
 	}
 
-    public void DeleteQuestion(String originalId) {
+	public void DeleteQuestion(String originalId) {
 		ArrayList<String> listToSend = new ArrayList<String>();
 		listToSend.add("DeleteQuestion");
 		listToSend.add("DELETE FROM `projecton`.`questions` WHERE (`id` = '" + originalId + "');");
@@ -719,5 +731,5 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
+	}
 }

@@ -6,32 +6,29 @@ import javafx.scene.control.DatePicker;
 
 public class Test {
 
-    
     private ArrayList<QuestionModel> quesitonsInTest;
-    private String id, author,subject;
+    private String id, author, subject;
+
     public String getSubject() {
         return subject;
     }
+
     public void setSubject(String subject) {
         this.subject = subject;
     }
 
-    private String duration, testComment, testCode; //FIXME check TestComments var and testComment
+    private String duration, testComment, testCode; // FIXME check TestComments var and testComment
     private String time, dateString;
     private DatePicker date;
     private int totalPoints;
-
-//noah - added getters and setters for course - not yet updated in the sql - talk to me
-   private String course;
+    private String course;
     private String StudentsName, StudentID, Grade;
     private String status, questionsString, type, tested;
 
     public Test() {
         id = new String();
         subject = new String();
-//noah - added getters and setters for course - not yet updated in the sql - talk to me
         course = new String();
-       
         author = new String();
         duration = new String();
         testComment = new String();
@@ -41,10 +38,12 @@ public class Test {
         totalPoints = 0;
         quesitonsInTest = new ArrayList<QuestionModel>();
     }
-//noah - added getters and setters for course - not yet updated in the sql - talk to me
-     public void setCourse(String course) {
-         this.course = course;
-     }
+
+    // noah - added getters and setters for course - not yet updated in the sql -
+    // talk to me
+    public void setCourse(String course) {
+        this.course = course;
+    }
 
     public Test(String id, String subject, String StudentsName, String StudentID, String Grade) {
         this.id = id;
@@ -68,9 +67,9 @@ public class Test {
         quesitonsInTest = new ArrayList<QuestionModel>();
     }
 
-    //////is this the one u looking for???
+    ////// is this the one u looking for???
     public Test(String id, String StudentID, String Grade, String author, String testCode, String dateString,
-            String time,String duration, String questionsString, String type, String status, String tested) {
+            String time, String duration, String questionsString, String type, String status, String tested) {
         this.id = id;
         this.StudentID = StudentID;
         this.Grade = Grade;
@@ -84,7 +83,6 @@ public class Test {
         this.status = status;
         this.tested = tested;
     }
-   
 
     public String getStatus() {
         return status;
@@ -193,7 +191,6 @@ public class Test {
     public void setDate(DatePicker date) {
         this.date = date;
     }
-
 
     public void setAuthor(String author) {
         this.author = author;

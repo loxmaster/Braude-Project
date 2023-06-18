@@ -33,6 +33,47 @@ import javafx.scene.control.TableCell;
  * It extends from the BasicController class.
  */
 public class LecturerStatisticalController extends BasicController {
+
+// Store the list of completed tests and exam statistics
+private static ArrayList<Test> completedTestsList;
+private static ArrayList<Statistics> diffExamsStats;
+private static ArrayList<String> SubjectCourseLec;
+
+
+	public static ArrayList<Test> getCompletedTestsList() {
+	return completedTestsList;
+}
+
+
+
+public static void setCompletedTestsList(ArrayList<Test> completedTestsList) {
+	LecturerStatisticalController.completedTestsList = completedTestsList;
+}
+
+
+
+public static ArrayList<Statistics> getDiffExamsStats() {
+	return diffExamsStats;
+}
+
+
+
+public static void setDiffExamsStats(ArrayList<Statistics> diffExamsStats) {
+	LecturerStatisticalController.diffExamsStats = diffExamsStats;
+}
+
+
+
+public static ArrayList<String> getSubjectCourseLec() {
+	return SubjectCourseLec;
+}
+
+
+
+public static void setSubjectCourseLec(ArrayList<String> subjectCourseLec) {
+	SubjectCourseLec = subjectCourseLec;
+}
+
 	// Define columns for the statistics table
 	@FXML
 	private TableColumn<Statistics, String> Average_Score;
@@ -76,10 +117,7 @@ public class LecturerStatisticalController extends BasicController {
 		Timenow(live_time);
 	}
 
-	// Store the list of completed tests and exam statistics
-	private static ArrayList<Test> completedTestsList;
-	private static ArrayList<Statistics> diffExamsStats;
-	private static ArrayList<String> SubjectCourseLec;
+	
 
 	/**
 	 * This function loads the statistics from the server and populates the table.
