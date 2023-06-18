@@ -20,7 +20,15 @@ public class LecturerOptionsController extends BasicController {
 
     @FXML
     private Label welcomeLabel;
+    
+    @FXML
+	private Label live_time;
 
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
     @FXML
     void CreateQuestionPressed(ActionEvent event) throws IOException {
         if (LecturerController.subjectsList.isEmpty())

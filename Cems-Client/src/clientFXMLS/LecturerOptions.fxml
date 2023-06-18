@@ -53,5 +53,10 @@
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </VBox>
+      <Label fx:id="live_time" layoutX="46.0" layoutY="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0">
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+      </Label>
 </children>
 </AnchorPane>

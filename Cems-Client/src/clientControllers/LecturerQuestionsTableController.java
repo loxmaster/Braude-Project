@@ -16,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -58,6 +59,15 @@ public class LecturerQuestionsTableController extends BasicController {
     @FXML
     private ComboBox<String> courseComboBox;
 
+    @FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
+
     public void loadFilterComboboxes() {
         courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
         courseComboBox.getItems().removeAll();
@@ -78,11 +88,11 @@ public class LecturerQuestionsTableController extends BasicController {
         loadFilterComboboxes();
 
         id.setCellValueFactory(new PropertyValueFactory<>("Id"));
+        lecturer.setCellValueFactory(new PropertyValueFactory<>("Lecturer"));
         subject.setCellValueFactory(new PropertyValueFactory<>("Subject"));
         coursename.setCellValueFactory(new PropertyValueFactory<>("Coursename"));
         questiontext.setCellValueFactory(new PropertyValueFactory<>("Questiontext"));
         questionnumber.setCellValueFactory(new PropertyValueFactory<>("Questionnumber"));
-        lecturer.setCellValueFactory(new PropertyValueFactory<>("Lecturer"));
         edit.setCellValueFactory(new PropertyValueFactory<>("Edit"));
 
         // Waits 5 seconds for data to be found

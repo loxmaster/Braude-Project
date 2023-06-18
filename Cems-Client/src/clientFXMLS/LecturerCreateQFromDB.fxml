@@ -108,5 +108,10 @@
       <ComboBox layoutX="268.0" layoutY="203.0" prefHeight="30.0" prefWidth="250.0" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="825.0" />
       <TextField alignment="CENTER" layoutX="97.0" layoutY="266.0" prefHeight="84.0" prefWidth="630.0" AnchorPane.bottomAnchor="300.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="260.0" />
       <TextField alignment="CENTER" layoutX="673.0" layoutY="215.0" prefHeight="40.0" prefWidth="250.0" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="1200.0" AnchorPane.rightAnchor="50.0" />
+      <Label fx:id="live_time" layoutX="46.0" layoutY="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+      </Label>
 </children>
 </AnchorPane>

@@ -47,5 +47,10 @@
          </font>
       </Label>
       <ComboBox id="subjectComboBox" fx:id="courseComboBox" editable="true" layoutX="226.0" layoutY="133.0" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: transparent; -fx-background-radius: 10; -fx-background-radius: 10; -fx-border-radius: 10;" />
+      <Label fx:id="live_time" layoutX="46.0" layoutY="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0">
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+      </Label>
 </children>
 </AnchorPane>
