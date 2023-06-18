@@ -237,4 +237,20 @@ public class ClientController implements ChatIF {
         sendToServer.add("isStudentTakingCourse");
         client.isStudentTakingCourse(sendToServer);
     }
+    
+    public void isTestReady(String test_id) throws IOException {
+        ArrayList<String> sendToServer = new ArrayList<>();
+        sendToServer.add("isTestReady");
+        sendToServer.add(test_id);
+        client.isTestReady(sendToServer);
+
+    }
+
+    public void getTestFromId(String test_id) throws IOException {
+        ArrayList<String> sendToServer = new ArrayList<>();
+        sendToServer.add("getTest");
+        sendToServer.add(test_id);
+        client.getTestFromId(sendToServer);
+
+    }
 }

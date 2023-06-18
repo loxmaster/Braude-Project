@@ -68,6 +68,7 @@ public class DBQController extends BasicController {
 		Question.setCellValueFactory(new PropertyValueFactory<>("Questiontext"));
 		QuestionID.setCellValueFactory(new PropertyValueFactory<>("Id"));
 
+
 		if (LecturerController.questions.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Error getting the question!", "Error", JOptionPane.ERROR_MESSAGE);
 		} else {

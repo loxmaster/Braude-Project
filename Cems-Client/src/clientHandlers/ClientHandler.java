@@ -1,10 +1,12 @@
 package clientHandlers;
 
+import java.awt.Container;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
@@ -12,6 +14,7 @@ import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
 import clientControllers.EnterIDForTestController;
 import clientControllers.LecturerController;
+import clientControllers.StudentExamController;
 import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 import logic.Question;
@@ -88,6 +91,41 @@ public class ClientHandler extends AbstractClient {
 			// is reserved for destination , and second (1) index is the data itself.
 			case "ArrayList":
 
+				if ((String) (((ArrayList<?>) serverMessage).get(0)) instanceof String) {
+					String test;
+					test = (String) ((ArrayList<?>) serverMessage).get(0);
+					if (test.equals("getTest")) {
+						((ArrayList<?>) serverMessage).remove(0);
+						int size = ((ArrayList<?>) serverMessage).size();
+						ArrayList<QuestionModel> questionBuild = new ArrayList<>();
+
+						//ArrayList<QuestionModel> copymessage = new ArrayList<>();
+						// copymessage.addAll((Collection<? extends QuestionModel>) serverMessage);
+						
+						ArrayList<Question> copymessage = new ArrayList<>();
+						copymessage = (ArrayList<Question>) serverMessage;
+
+						// questionBuild.addAll((Collection<? extends QuestionModel>) serverMessage);
+
+						for (int i = 0; i < size; i++) {
+							questionBuild.add(new QuestionModel(
+									copymessage.get(i).getId(),
+									copymessage.get(i).getSubject(),
+									copymessage.get(i).getCoursename(),
+									copymessage.get(i).getQuestiontext(),
+									copymessage.get(i).getQuestionnumber(),
+									copymessage.get(i).getLecturer(),
+									copymessage.get(i).getOptionA(),
+									copymessage.get(i).getOptionB(),
+									copymessage.get(i).getOptionC(),
+									copymessage.get(i).getOptionD(),
+									copymessage.get(i).getAnswer()));
+						}
+					}
+					// questionfromTestList.addAll(((ArrayList<QuestionModel>) serverMessage));
+
+				}
+
 				// If first instance is Question than its a question list.
 				if (((ArrayList<?>) serverMessage).get(0) instanceof Question) {
 					questionList = (ArrayList<Question>) serverMessage;
@@ -121,14 +159,38 @@ public class ClientHandler extends AbstractClient {
 								LecturerController.getSubjectsList().add(s);
 							break;
 
-						case "isStudentTakingCourse":
-							EnterIDForTestController.setTest_code(list.get(1));
+						case "getTest":
+							if (!(list.get(1).isEmpty())) {
+								list.remove(0);
+								StudentExamController.setQuestionList(list);
+							}
 
 							break;
+						case "isStudentTakingCourse":
+							if (!(list.get(1).isEmpty())) {
+								list.remove(0);
+								EnterIDForTestController.setTest_code(list);
+							} else {
+								list.remove(0);
+								list.remove(0);
+								list.remove(0);
+								list.add("none");
+								list.add("none");
+								EnterIDForTestController.setTest_code(list);
+							}
+							break;
 
+						// get list size 2 "testid" index 1
+						case "isTestReady":
+							if (!(list.get(1).isEmpty())) {
+								list.remove(0);
+								EnterIDForTestController.setTestRunning(true);
+							} else {
+								EnterIDForTestController.setTestRunning(false);
+							}
+							break;
 						case "lecturercourses":
 							list.remove(0);
-							list.replaceAll(String::toUpperCase);
 							LecturerController.getCoursesList().addAll(list);
 							break;
 
@@ -518,9 +580,20 @@ public class ClientHandler extends AbstractClient {
 
 	public void isStudentTakingCourse(ArrayList<String> sendtoServer) throws IOException {
 		sendtoServer.add(
-				"SELECT code FROM student s JOIN subjectcourses sc ON FIND_IN_SET(sc.coursename, s.courses) > 0 JOIN tests t ON SUBSTRING(t.id, 3, 2) = sc.courseid WHERE s.username = '"
+				"SELECT code,id FROM student s JOIN subjectcourses sc ON FIND_IN_SET(sc.coursename, s.courses) > 0 JOIN tests t ON SUBSTRING(t.id, 3, 2) = sc.courseid WHERE s.username = '"
 						+ user.getUsername() + "' AND SUBSTRING(t.id, 1, 2) = sc.subjectid;");
 		sendToServer(sendtoServer);
+	}
+
+	public void isTestReady(ArrayList<String> sendToServer) throws IOException {
+		sendToServer.add("SELECT test_id FROM ongoing_tests WHERE( (SELECT id FROM tests WHERE (id = '"
+				+ sendToServer.get(1) + "' ) AND id = test_id) )");
+		sendToServer(sendToServer);
+	}
+
+	public void getTestFromId(ArrayList<String> sendToServer) throws IOException {
+		sendToServer.add("SELECT questions FROM projecton.tests WHERE (id = '" + sendToServer.get(1) + "')");
+		sendToServer(sendToServer);
 	}
 
 }

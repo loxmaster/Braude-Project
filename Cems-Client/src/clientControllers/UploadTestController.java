@@ -69,10 +69,10 @@ public class UploadTestController extends BasicController {
 				}
 
 				byte[] fileContent = byteOutputStream.toByteArray();
-				String fileId = "12345"; // Replace with the file ID entered by the client
 
-				// Send file and ID to the server
-				ClientUI.chat.uploadFile(fileId, fileContent, filename);
+
+				//REVIEW 
+				ClientUI.chat.uploadFile(testID.getText(), fileContent, filename);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

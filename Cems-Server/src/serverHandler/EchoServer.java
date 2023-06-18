@@ -13,6 +13,8 @@ import logic.ClientModel;
 import logic.FileDownloadMessage;
 import logic.FileUploadMessage;
 import logic.Question;
+import logic.QuestionModel;
+import logic.Test;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import serverUI.ServerUI;
@@ -163,10 +165,32 @@ public class EchoServer extends AbstractServer {
 							// if (flag != 0) flag=1;
 							client.sendToClient(flag == 0 ? idExists : flag);
 							break;
-						case "isStudentTakingCourse":
-							ArrayList<String> testcode = getTestCodeFromUsername(list.get(1));
-							client.sendToClient(testcode == null ? notFound : testcode);
 
+						case "isStudentTakingCourse": // list size od 2 {tag, query}
+							ArrayList<String> testcode = getTestCodeFromUsername(list.get(1));
+							if (testcode == null)
+								list.remove(1);
+							client.sendToClient(testcode == null ? list : testcode);
+							break;
+
+						case "isTestReady": // list size of 3 {tag, test_id, query}
+							ArrayList<String> test_id_ognoing = getOnGoingTest(list.get(2));
+							if (test_id_ognoing == null) {
+								list.remove(1);
+								list.remove(2);
+							}
+							client.sendToClient(test_id_ognoing == null ? list : test_id_ognoing);
+							break;
+
+						case "getTest":// list size of 3 {tag, test_id, query}
+							ArrayList<Object> TestQuestionList = getQuestionsFromTest(list.get(2));
+							if (TestQuestionList == null) {
+								list.remove(1);
+								list.remove(1);
+							} else
+								TestQuestionList.add(0, "getTest");
+							client.sendToClient(TestQuestionList == null ? (Object) "getTest" : (Object) TestQuestionList);
+							break;
 						case "testNumber":
 							ArrayList<String> restestList = getData_db(list.get(1), "testNumber");
 							// ArrayList<String> list2 = new ArrayList<>();
@@ -191,7 +215,6 @@ public class EchoServer extends AbstractServer {
 							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
 							break;
 
-						// TODO needs to be implemented
 						case "testGrades":
 							ArrayList<String> resGradesList = TestGrades_PassedGrades(list.get(1), 1);
 							client.sendToClient(
@@ -212,6 +235,37 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 
+	private ArrayList<Object> getQuestionsFromTest(String query) {
+		ArrayList<Object> output = new ArrayList<>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) {
+				output.add((Object) result.getObject(1));
+			}
+			return output;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> getOnGoingTest(String query) {
+		ArrayList<String> output = new ArrayList<>();
+		output.add("isTestReady");
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			if (result.next()) {
+				output.add((String) result.getString(1));
+				return output;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private ArrayList<String> getTestCodeFromUsername(String query) {
 		ArrayList<String> output = new ArrayList<>();
 		output.add("isStudentTakingCourse");
@@ -220,6 +274,7 @@ public class EchoServer extends AbstractServer {
 			ResultSet result = stmt.executeQuery(query);
 			if (result.next()) {
 				output.add((String) result.getString("code"));
+				output.add((String) result.getString("id"));
 				return output;
 			}
 		} catch (SQLException e) {

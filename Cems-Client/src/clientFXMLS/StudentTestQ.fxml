@@ -4,12 +4,14 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.StudentExamController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.StudentExamController">
    <children>
-      <ChoiceBox fx:id="qComboBox" layoutX="1027.0" layoutY="237.0" prefHeight="34.0" prefWidth="194.0" AnchorPane.leftAnchor="1000.0" AnchorPane.rightAnchor="20.0" />
+      <ChoiceBox fx:id="qComboBox" layoutX="1027.0" layoutY="237.0" onDragDetected="#qComboBox" prefHeight="34.0" prefWidth="194.0" AnchorPane.leftAnchor="1000.0" AnchorPane.rightAnchor="20.0" />
       <Button layoutX="1083.0" layoutY="511.0" minHeight="30.0" minWidth="130.0" mnemonicParsing="false" onAction="#submitPressed" prefHeight="34.0" prefWidth="182.0" text="Submit" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
@@ -25,12 +27,12 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="21.0" layoutY="676.0" minHeight="30.0" minWidth="130.0" mnemonicParsing="false" onAction="#submitPressed" prefHeight="34.0" prefWidth="182.0" text="Next" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
+      <Button layoutX="21.0" layoutY="676.0" minHeight="30.0" minWidth="130.0" mnemonicParsing="false" onAction="#NextQuestionPressed" prefHeight="34.0" prefWidth="182.0" text="Next" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="EXIT" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" textAlignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
@@ -45,7 +47,7 @@
             <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
-      <Label layoutX="60.0" layoutY="197.0" prefHeight="225.0" prefWidth="852.0" style="-fx-background-color: #;" text="Question Text">
+      <Label layoutX="238.0" layoutY="205.0" style="-fx-background-color: #;" text="Question">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
@@ -74,21 +76,25 @@
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
+         <toggleGroup>
+            <ToggleGroup fx:id="toggleGroup" />
+         </toggleGroup>
       </RadioButton>
-      <RadioButton layoutX="150.0" layoutY="496.0" mnemonicParsing="false" text="Answer 2" AnchorPane.bottomAnchor="192.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="20.0">
+      <RadioButton layoutX="150.0" layoutY="496.0" mnemonicParsing="false" text="Answer 2" toggleGroup="$toggleGroup" AnchorPane.bottomAnchor="192.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="150.0" layoutY="596.0" mnemonicParsing="false" text="Answer 4" AnchorPane.bottomAnchor="92.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="20.0">
+      <RadioButton layoutX="150.0" layoutY="596.0" mnemonicParsing="false" text="Answer 4" toggleGroup="$toggleGroup" AnchorPane.bottomAnchor="92.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </RadioButton>
-      <RadioButton layoutX="150.0" layoutY="546.0" mnemonicParsing="false" text="Answer 3" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="20.0">
+      <RadioButton layoutX="150.0" layoutY="546.0" mnemonicParsing="false" text="Answer 3" toggleGroup="$toggleGroup" AnchorPane.bottomAnchor="142.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </RadioButton>
+      <TextField fx:id="questionBody" editable="false" layoutX="238.0" layoutY="237.0" prefHeight="173.0" prefWidth="681.0" />
    </children>
 </AnchorPane>
