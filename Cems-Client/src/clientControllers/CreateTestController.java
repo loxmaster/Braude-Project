@@ -188,7 +188,6 @@ public class CreateTestController extends BasicController {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String courseid = CreateQuestionController.courseID;
@@ -198,7 +197,6 @@ public class CreateTestController extends BasicController {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String subjectid = CreateQuestionController.getSubjectID();
@@ -209,7 +207,6 @@ public class CreateTestController extends BasicController {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//String nextTestNumber = CreateQuestionController.testcount;
@@ -217,7 +214,6 @@ public class CreateTestController extends BasicController {
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// String nextTestNumber = subjectid + courseid + "03";
