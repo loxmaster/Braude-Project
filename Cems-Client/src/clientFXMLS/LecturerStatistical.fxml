@@ -61,5 +61,10 @@
             <Font name="Calibri Bold Italic" size="26.0" />
          </font>
       </Text>
+      <Label fx:id="live_time" layoutX="20.0" layoutY="71.0">
+         <font>
+            <Font name="Perpetua Titling MT Bold" size="24.0" />
+         </font>
+      </Label>
 </children>
 </AnchorPane>

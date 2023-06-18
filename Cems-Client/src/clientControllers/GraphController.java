@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.text.Text;
 import logic.Statistics;
 import logic.Test;
@@ -107,6 +108,15 @@ public class GraphController extends BasicController {
 
     @FXML
     private Button logo;
+
+    @FXML
+    private Label live_time;
+
+    @FXML
+    void initialize() {
+        // Start the clock
+        Timenow(live_time);
+    }
 
     // List to store completed tests
     private ArrayList<Test> completedTestsList;

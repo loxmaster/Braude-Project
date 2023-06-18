@@ -27,6 +27,15 @@ public class LecturerController extends BasicController {
 	@FXML
 	private TextArea textBox;
 
+	@FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
+
 	/**
 	 * Method for setting the name of the user.
 	 * TODO change to name and not username.
@@ -66,7 +75,8 @@ public class LecturerController extends BasicController {
 	@FXML
 	void CreateTestsPressed(ActionEvent event) {
 		// open Create Tests
-		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
+		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
+				"CEMS System - Lecturer - Create Tests", event);
 		ctc.load();
 	}
 
@@ -79,7 +89,8 @@ public class LecturerController extends BasicController {
 	@FXML
 	void StatisticalInfoPressed(ActionEvent event) {
 		// open Statistical information
-		LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Lecturer - Statistical Information", event);
+		LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen(
+				"/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Lecturer - Statistical Information", event);
 		lsc.load();
 	}
 

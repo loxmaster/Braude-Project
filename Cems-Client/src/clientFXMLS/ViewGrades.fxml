@@ -138,5 +138,10 @@
          </fill>
       </Text>
       <ComboBox fx:id="filterComboBox" editable="true" layoutX="898.0" layoutY="184.0" prefHeight="35.0" prefWidth="210.0" promptText="fillter Exams" AnchorPane.bottomAnchor="505.0" />
+      <Label fx:id="live_time" layoutX="20.0" layoutY="79.0">
+         <font>
+            <Font name="Perpetua Titling MT Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

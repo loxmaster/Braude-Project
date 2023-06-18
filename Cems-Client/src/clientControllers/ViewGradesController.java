@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -58,6 +59,9 @@ public class ViewGradesController extends BasicController {
     @FXML
     private Button filterButton;
 
+    @FXML
+    private Label live_time;
+
     // This method is called when the back button is pressed. It loads the student
     // main screen.
     @FXML
@@ -69,6 +73,8 @@ public class ViewGradesController extends BasicController {
     // view.
     @FXML
     void initialize() {
+        // Start the clock
+        Timenow(live_time);
         // Get the list of completed tests for the student
         ClientUI.chat.getcompletedTestsForStudentList();
         try {

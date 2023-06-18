@@ -18,6 +18,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -65,6 +66,16 @@ public class LecturerStatisticalController extends BasicController {
 
 	@FXML
 	private TextField course_fillter;
+
+	@FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
+
 	// Store the list of completed tests and exam statistics
 	private static ArrayList<Test> completedTestsList;
 	private static ArrayList<Statistics> diffExamsStats;
