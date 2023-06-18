@@ -3,9 +3,19 @@ package logic;
 public class User {
 
     private String username, password;
-    private String pName, lName, email, department, type;
+    private String pName, lName, email, department, type,user_id;
     private boolean isOnline, isFound;
     
+
+    
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
     public String getType() {
         return this.type;
     }

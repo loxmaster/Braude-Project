@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="studentexamcard" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="270.0" style="-fx-background-radius: 15;" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.TestCardController">
+   <children>
+      <Label layoutX="228.0" layoutY="14.0" text="Test ID:" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="5.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="10.0" layoutY="39.0" prefHeight="23.0" prefWidth="62.0" text="Name:" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="39.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="10.0" layoutY="106.0" prefHeight="23.0" prefWidth="62.0" text="Grade:" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="106.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Text fx:id="code_Exam" layoutX="117.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="7.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="test_name" layoutX="78.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="test name" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="41.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Text>
+      <Text fx:id="grade" layoutX="78.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="not graded" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="108.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Text>
+      <Button fx:id="ReviewExam" layoutX="147.0" layoutY="129.0" mnemonicParsing="false" text="Review Exam" AnchorPane.bottomAnchor="3.0" />
+      <Label layoutX="14.0" layoutY="73.0" prefHeight="23.0" prefWidth="62.0" text="Date:" AnchorPane.leftAnchor="5.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Label>
+      <Text fx:id="test_date" layoutX="82.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="test date" AnchorPane.rightAnchor="50.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="20.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

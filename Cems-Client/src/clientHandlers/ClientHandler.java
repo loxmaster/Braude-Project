@@ -10,6 +10,9 @@ import java.util.Collection;
 
 import javax.swing.JOptionPane;
 
+import java.util.List;
+
+import javax.print.DocFlavor.STRING;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
@@ -18,8 +21,12 @@ import clientControllers.LecturerController;
 import clientControllers.StudentExamController;
 import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
+import clientControllers.LecturerStatisticalController;
+import clientControllers.ViewGradesController;
 import logic.Question;
 import logic.QuestionModel;
+import logic.Statistics;
+import logic.Test;
 import logic.User;
 import ocsf.client.AbstractClient;
 
@@ -67,6 +74,9 @@ public class ClientHandler extends AbstractClient {
 		String[] subjectArray;
 		ArrayList<String> list;
 		ArrayList<Question> questionList;
+		// ArrayList<Test> CompletedTestList;
+
+		ArrayList<Test> completedTests;
 
 		// Notifice about recieving the message to console .
 		System.out.println("got message: " + serverMessage);
@@ -279,15 +289,23 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Handles the message received from the client login user interface
-	 *
+	 * NOTE: this method does not have a unique ideintifier
+	 * EchoServer is configured that the default of the switch case goes to this
+	 * method
+	 * 
 	 * @param username username entered.
 	 * @param password password entered.
 	 */
-	public void handleMessageFromLoginUI(Object username, Object password) {
+	public void handleMessageFromLoginUI(Object username, Object password, Object type) {
 		ArrayList<String> credentials = new ArrayList<String>();
-
-		String query = "SELECT * FROM users  WHERE (`username` = '" + username + "');";
-		credentials.addAll(Arrays.asList(query, (String) username, (String) password));
+		// create a query to grab username requested
+		String name = (String) username;
+		String pass = (String) password;
+		String role = (String) type;
+		String query = String.format(
+				"SELECT * FROM projecton.users  WHERE username = '%s' AND password = '%s' AND type = '%s';",
+				name, pass, role);
+		credentials.addAll(Arrays.asList(query, name, pass, role));
 
 		try {
 			sendToServer((Object) credentials);
@@ -299,7 +317,7 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
-	 * subjects.
+	 * subjects.//TODO please check what this method do and if it's relevant
 	 */
 	public void handleMessageFromLecturerUI() {
 		try {
@@ -312,8 +330,12 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * subjects for the lecturer.
+	 * //TODO OPTIONAL: collect any "constructors" for lecturer here
+	 * for example: grabbing all the courses of a lecturer AND courses
+	 * and whatever the lecturer will need to pre-load
 	 * 
-	 * @return
+	 * currently- this method creates a query to get the lecturers (currently logged
+	 * in lecturer) courses.
 	 */
 	public void handleMessageFromLecturerUI(Object username) {
 		ArrayList<String> subjectList = new ArrayList<String>();
@@ -365,6 +387,74 @@ public class ClientHandler extends AbstractClient {
 					"SELECT * FROM projecton.questions where ( `lecturer` = '" + username + "' );"));
 		try {
 			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getcompletedTestsForStudentList() {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String key = user.getUser_id();
+		String testType = "computer";
+		String status = "completed";
+		String tested = "true";
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND test_type='%s' AND status='%s' AND tested='%s';",
+				key, testType, status, tested);
+
+		list.addAll(Arrays.asList("completedTestsForStudent", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getcompletedTestsForLecturerList() {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String status = "completed";
+		String tested = "true";
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
+				user.getUsername(), status, tested);
+
+		list.addAll(Arrays.asList("completedTestsForLecturer", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getCourseForTest(String id) {
+
+		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
+		String subjectid = id.substring(0, 2);
+		String courseid = id.substring(2, 4);
+		String query = String.format(
+				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+				subjectid, courseid);
+		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTest", query));
+		try {
+			sendToServer((Object) subjectcoursenameofcompletedtest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getCourseForTestLec(String id) {
+
+		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
+		String subjectid = id.substring(0, 2);
+		String courseid = id.substring(2, 4);
+		String query = String.format(
+				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+				subjectid, courseid);
+		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTestLec", query));
+		try {
+			sendToServer((Object) subjectcoursenameofcompletedtest);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

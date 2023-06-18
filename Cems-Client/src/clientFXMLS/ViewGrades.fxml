@@ -1,45 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.effect.DisplacementMap?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.FloatMap?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.ViewGradesController">
+<AnchorPane fx:id="View_Grades_root" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.ViewGradesController">
    <children>
-      <TableView layoutY="98.0" prefHeight="490.0" prefWidth="1305.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-        <columns>
-          <TableColumn prefWidth="172.0" text="Subject" />
-          <TableColumn prefWidth="130.0" text="Date" />
-            <TableColumn prefWidth="167.0" text="Lecturer" />
-            <TableColumn prefWidth="140.0" text="Attempt" />
-            <TableColumn prefWidth="110.0" text="Grade" />
-        </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
-      <Label alignment="CENTER" layoutX="200.0" layoutY="134.0" text="View Grades" textAlignment="CENTER" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="134.0">
+      <Label alignment="CENTER" layoutX="300.0" layoutY="120.0" prefHeight="46.0" prefWidth="914.0" text="View Grades" textAlignment="CENTER" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="120.0">
          <font>
             <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
-      <Button fx:id="logo" layoutX="550.0" layoutY="37.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="logo" layoutX="529.0" layoutY="21.0" mnemonicParsing="false" onAction="#backButtonPressed" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="529.0" AnchorPane.rightAnchor="551.0" AnchorPane.topAnchor="21.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="EXIT" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitPressed" prefHeight="30.0" prefWidth="120.0" text="EXIT" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button layoutX="32.0" layoutY="35.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" text="Back" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="backButton" layoutX="32.0" layoutY="35.0" mnemonicParsing="false" onAction="#backButtonPressed" prefHeight="30.0" prefWidth="120.0" text="Back" textAlignment="CENTER" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
+      <ScrollPane blendMode="MULTIPLY" layoutX="10.0" layoutY="246.0" prefHeight="480.0" prefWidth="1325.0" AnchorPane.bottomAnchor="-6.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="246.0">
+         <content>
+            <GridPane fx:id="ExamContainer">
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+               </rowConstraints>
+            </GridPane>
+         </content>
+         <effect>
+            <DropShadow height="74.98" radius="21.2975" spread="0.13" width="12.21">
+               <input>
+                  <DisplacementMap>
+                     <mapData>
+                        <FloatMap />
+                     </mapData>
+                  </DisplacementMap>
+               </input>
+            </DropShadow>
+         </effect>
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </ScrollPane>
+      <Text fx:id="Student_ID_Text" layoutX="20.0" layoutY="178.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Student ID: " wrappingWidth="251.849609375" AnchorPane.bottomAnchor="510.0" AnchorPane.leftAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="24.0" />
+         </font>
+         <stroke>
+            <LinearGradient endX="0.6113744075829384" endY="1.0" startX="0.5118483412322276">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.43421053886413574" green="0.24122807383537292" blue="0.24122807383537292" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.10599415004253387" green="0.1629507839679718" blue="0.7894737124443054" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </stroke>
+         <fill>
+            <RadialGradient centerX="0.48895027624309395" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.43421053886413574" green="0.24122807383537292" blue="0.24122807383537292" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.02290448360145092" green="0.07253086566925049" blue="0.6184210777282715" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Text>
+      <Text fx:id="Student_ID_Text1" layoutX="564.0" layoutY="204.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose Course Name To View:" wrappingWidth="333.849609375" AnchorPane.bottomAnchor="510.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="24.0" />
+         </font>
+         <stroke>
+            <LinearGradient endX="0.6113744075829384" endY="1.0" startX="0.5118483412322276">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.43421053886413574" green="0.24122807383537292" blue="0.24122807383537292" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.10599415004253387" green="0.1629507839679718" blue="0.7894737124443054" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </stroke>
+         <fill>
+            <RadialGradient centerX="0.48895027624309395" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.43421053886413574" green="0.24122807383537292" blue="0.24122807383537292" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.02290448360145092" green="0.07253086566925049" blue="0.6184210777282715" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Text>
+      <ComboBox fx:id="filterComboBox" editable="true" layoutX="898.0" layoutY="184.0" prefHeight="35.0" prefWidth="210.0" promptText="fillter Exams" AnchorPane.bottomAnchor="505.0" />
+      <Label fx:id="live_time" layoutX="20.0" layoutY="79.0">
+         <font>
+            <Font name="Perpetua Titling MT Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

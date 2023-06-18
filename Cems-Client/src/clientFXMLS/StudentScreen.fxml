@@ -19,12 +19,12 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Label alignment="CENTER" layoutX="143.0" layoutY="141.0" prefHeight="41.0" prefWidth="464.0" text="Welcome back , User !" textAlignment="CENTER" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="170.0">
+      <Label fx:id="screen_label" alignment="CENTER" layoutX="143.0" layoutY="141.0" prefHeight="41.0" prefWidth="464.0" text="Welcome back , User !" textAlignment="CENTER" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="170.0">
          <font>
             <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
-      <VBox alignment="CENTER" layoutX="200.0" layoutY="206.0" prefHeight="351.0" prefWidth="350.0" spacing="30.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="270.0">
+      <VBox alignment="CENTER" layoutX="200.0" layoutY="206.0" prefHeight="351.0" prefWidth="350.0" spacing="25.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="270.0">
          <children>
             <Button minHeight="30.0" minWidth="245.0" mnemonicParsing="false" onAction="#OpenCodePrompt" prefHeight="35.0" prefWidth="245.0" text="Perform Test">
                <font>
@@ -52,5 +52,10 @@
             <Insets top="15.0" />
          </padding>
       </VBox>
+      <Label fx:id="live_time" layoutX="37.0" layoutY="37.0" AnchorPane.bottomAnchor="650.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="1100.0" AnchorPane.topAnchor="30.0">
+         <font>
+            <Font name="Perpetua Titling MT Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

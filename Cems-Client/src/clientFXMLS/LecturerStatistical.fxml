@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.LecturerStatisticalController">
 <children>
@@ -24,23 +28,43 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Label alignment="CENTER" layoutX="143.0" layoutY="131.0" prefHeight="41.0" prefWidth="464.0" text="Statistical Informatrion" textAlignment="CENTER" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="131.0">
+      <Label alignment="CENTER" layoutX="143.0" layoutY="120.0" prefHeight="41.0" prefWidth="464.0" text="Statistical Informatrion" textAlignment="CENTER" AnchorPane.leftAnchor="143.0" AnchorPane.rightAnchor="143.0" AnchorPane.topAnchor="120.0">
          <font>
             <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
-      <TableView fx:id="table" layoutX="161.0" layoutY="78.0" prefHeight="510.0" prefWidth="1240.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="185.0">
+      <TableView fx:id="table" layoutX="161.0" layoutY="232.0" prefHeight="468.0" prefWidth="1305.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="232.0">
         <columns>
           <TableColumn id="TestID" fx:id="TestID" prefWidth="210.0" text="Test ID" />
-          <TableColumn id="Average" fx:id="Average" prefWidth="210.0" text="Average" />
-            <TableColumn id="Median" fx:id="Median" prefWidth="210.0" text="Median" />
-            <TableColumn id="Course" fx:id="Course" prefWidth="210.0" text="Course" />
-            <TableColumn id="Date" fx:id="Date" prefWidth="200.0" text="Date" />
+          <TableColumn id="Average" fx:id="Course" prefWidth="210.0" text="Course" />
+            <TableColumn id="Median" fx:id="Date" prefWidth="210.0" text="Date" />
+            <TableColumn id="Course" fx:id="Total_Number_of_Students" prefWidth="210.0" text="Total Number of Students" />
+            <TableColumn id="Date" fx:id="Average_Score" prefWidth="200.0" text="Average Score" />
             <TableColumn id="Distribution" fx:id="Distribution" prefWidth="200.0" text="Distribution" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
+         <effect>
+            <ColorAdjust contrast="0.21" hue="-0.26" saturation="-0.17" />
+         </effect>
       </TableView>
+      <ComboBox fx:id="testid_combo" layoutX="119.0" layoutY="186.0" prefWidth="150.0" AnchorPane.bottomAnchor="500.0" />
+      <TextField fx:id="course_fillter" layoutX="408.0" layoutY="191.0" AnchorPane.bottomAnchor="499.0" />
+      <Text layoutX="20.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Test ID:" AnchorPane.bottomAnchor="500.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="26.0" />
+         </font>
+      </Text>
+      <Text layoutX="315.0" layoutY="211.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course:" AnchorPane.bottomAnchor="502.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="26.0" />
+         </font>
+      </Text>
+      <Label fx:id="live_time" layoutX="20.0" layoutY="71.0">
+         <font>
+            <Font name="Perpetua Titling MT Bold" size="24.0" />
+         </font>
+      </Label>
 </children>
 </AnchorPane>

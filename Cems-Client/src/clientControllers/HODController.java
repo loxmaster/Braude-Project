@@ -2,16 +2,26 @@ package clientControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import logic.User;
 
 @SuppressWarnings("unused")
 
 public class HODController extends BasicController {
-	private User  hod;
-	
+	private User hod;
+
+	@FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
+
 	public void loadHOD(User user) {
 		hod = user;
-    }
+	}
 
 	@FXML
 	void HodStatisticalPressed(ActionEvent event) {

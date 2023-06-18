@@ -321,7 +321,7 @@ public class CreateTestController extends BasicController {
 		// Updates the current test and sets the view for the client
 		this.test = test;
 		test.setAuthor(ClientHandler.user.getUsername());
-		subjectComboBox.setValue(test.getSubject());
+		subjectComboBox.setValue(test.getCourse());
 		courseComboBox.setValue(test.getCourse());
 		code.setText(test.getTestCode());
 		startTime.setText(test.getTime());
@@ -541,12 +541,19 @@ public class CreateTestController extends BasicController {
 	}
 
 	@FXML
-	void backToLecturer(ActionEvent event) {
-		openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer - Main Screen ", event);
-	}
-	@FXML
-	void backPressed(ActionEvent event) {
-		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Manage Test", event);
+	void savePressed(ActionEvent event) {
+		test.setAuthor(ClientHandler.user.getpName());
+		test.setCourse(subjectComboBox.getValue());
+		test.setTestCode(code.getText());
+		test.setTime(startTime.getText());
+		test.setDate(date);
+		test.setDuration(duration.getText());
+		// TODO test.setId();
+
+		ClientUI.chat.sendTestToDatabase(test);
+
+		// Goes to lecturer screen
+		backToLecturer(event);
 	}
 
 

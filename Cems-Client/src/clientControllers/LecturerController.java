@@ -28,6 +28,15 @@ public class LecturerController extends BasicController {
 	@FXML
 	private TextArea textBox;
 
+	@FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
+
 	/**
 	 * Method for setting the name of the user.
 	 */
@@ -105,7 +114,8 @@ public class LecturerController extends BasicController {
 	@FXML
 	void StatisticalInfoPressed(ActionEvent event) {
 		// open Statistical information
-		LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Lecturer - Statistical Information", event);
+		LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen(
+				"/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Lecturer - Statistical Information", event);
 		lsc.load();
 	}
 

@@ -162,6 +162,7 @@ public class EchoServer extends AbstractServer {
 						case "editquestion":
 						case "Addtesttodata":
 						case "DeleteQuestion":
+							// executeMyQuery will execute a basic UPDATE query
 							int flag = executeMyQuery(list.get(1));
 							// if (flag != 0) flag=1;
 							client.sendToClient(flag == 0 ? idExists : flag);
@@ -209,6 +210,68 @@ public class EchoServer extends AbstractServer {
 						case "lecturercourses":
 							ArrayList<String> resCoursesList = getCourses_db(list.get(1), "lecturercourses");
 							client.sendToClient(resCoursesList == null ? (Object) notFound : (Object) resCoursesList);
+							break;
+						
+						case "completedTestsForStudent":
+							ArrayList<String> resCompletedTestsForStudent = getCompletedTestsForStudent_db(list.get(1),
+									"completedTestsForStudent");
+							client.sendToClient(
+									resCompletedTestsForStudent == null ? (Object) notFound
+											: (Object) resCompletedTestsForStudent);
+							break;
+
+						case "completedTestsForLecturer":
+							ArrayList<String> resCompletedTestsForLecturer = getCompletedTestsForLecturer_db(
+									list.get(1),
+									"completedTestsForLecturer");
+							client.sendToClient(
+									resCompletedTestsForLecturer == null ? (Object) notFound
+											: (Object) resCompletedTestsForLecturer);
+							break;
+
+						case "getSubjectsCourseForTest":
+							ArrayList<String> resSubjectsCoursesList = getSubjectsCoursesList(list.get(1),
+									"getSubjectsCourseForTest");
+							client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
+									: (Object) resSubjectsCoursesList);
+							break;
+
+						case "getSubjectsCourseForTestLec":
+							ArrayList<String> resSubjectsCoursesListLec = getSubjectsCoursesList(list.get(1),
+									"getSubjectsCourseForTestLec");
+							client.sendToClient(resSubjectsCoursesListLec == null ? (Object) notFound
+									: (Object) resSubjectsCoursesListLec);
+							break;
+
+						case "completedTestsForStudent":
+							ArrayList<String> resCompletedTestsForStudent = getCompletedTestsForStudent_db(list.get(1),
+									"completedTestsForStudent");
+							client.sendToClient(
+									resCompletedTestsForStudent == null ? (Object) notFound
+											: (Object) resCompletedTestsForStudent);
+							break;
+
+						case "completedTestsForLecturer":
+							ArrayList<String> resCompletedTestsForLecturer = getCompletedTestsForLecturer_db(
+									list.get(1),
+									"completedTestsForLecturer");
+							client.sendToClient(
+									resCompletedTestsForLecturer == null ? (Object) notFound
+											: (Object) resCompletedTestsForLecturer);
+							break;
+
+						case "getSubjectsCourseForTest":
+							ArrayList<String> resSubjectsCoursesList = getSubjectsCoursesList(list.get(1),
+									"getSubjectsCourseForTest");
+							client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
+									: (Object) resSubjectsCoursesList);
+							break;
+
+						case "getSubjectsCourseForTestLec":
+							ArrayList<String> resSubjectsCoursesListLec = getSubjectsCoursesList(list.get(1),
+									"getSubjectsCourseForTestLec");
+							client.sendToClient(resSubjectsCoursesListLec == null ? (Object) notFound
+									: (Object) resSubjectsCoursesListLec);
 							break;
 
 						case "lecturerquestions":
@@ -333,11 +396,11 @@ public class EchoServer extends AbstractServer {
 			ResultSet result = stmt.executeQuery(list.get(0));
 			if (result.next()) {
 				// check if the password in the DB is the same as user input
-				if (result.getString(2).equals(list.get(2))) {
-					String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3);
-					System.out.println("Message sent back: " + res);
-					client.sendToClient((Object) res);
-				}
+				String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3)
+						+ " " + result.getString(4) + " " + result.getString(5) + " " + result.getString(6);
+				System.out.println("Message sent back: " + res);
+				client.sendToClient((Object) res);
+
 			} else {
 				// The user is not in the database (not registered)
 				// or incorrect password
@@ -438,7 +501,6 @@ public class EchoServer extends AbstractServer {
 		}
 		return null;
 	}
-
 	private ArrayList<String> getCourses_db(String query, String out) {
 		Boolean flag = false;
 		ArrayList<String> res = new ArrayList<String>();
@@ -458,6 +520,78 @@ public class EchoServer extends AbstractServer {
 		System.out.println("Message sent back: " + res);
 		return flag ? res : null;
 
+	}
+
+	private ArrayList<String> getCompletedTestsForStudent_db(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) {
+				for (int index = 1; index <= 12; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 13 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> getCompletedTestsForLecturer_db(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) {
+				for (int index = 1; index <= 12; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 13 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> getSubjectsCoursesList(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) { // This will move the cursor to the next row
+				for (int index = 1; index <= 4; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 5 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> getSubjectsCoursesListLec(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) { // This will move the cursor to the next row
+				for (int index = 1; index <= 4; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 5 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**

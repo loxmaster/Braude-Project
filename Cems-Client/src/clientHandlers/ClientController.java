@@ -64,18 +64,54 @@ public class ClientController implements ChatIF {
     /**
      * Accepts user input from the login screen.
      * 
-     * @param email    user email
+     * @param username    user username
      * @param password user password
      */
-    public void loginVarification(Object email, Object password) {
+    public void loginVarification(Object username, Object password,Object type) {
         try {
             // pass email and password to the client for authentication
-            client.handleMessageFromLoginUI(email, password);
+            client.handleMessageFromLoginUI(username, password,type);
         } catch (Exception ex) {
             System.out.println("Unexpected error while reading from UI!");
             ex.printStackTrace();
         }
     }
+
+    // gets all subject available for lecturer
+    public void getcompletedTestsForStudentList() {
+        try {
+            client.getcompletedTestsForStudentList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getcompletedTestsForLecturerList() {
+        try {
+            client.getcompletedTestsForLecturerList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // gets all subject available for lecturer
+    public void getCourseForTest(Object id) {
+        try {
+            client.getCourseForTest((String) id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+        // gets all subject available for lecturer
+    public void getCourseForTestLec(Object id) {
+        try {
+            client.getCourseForTestLec((String) id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // gets the id of the subject given
     public void GetSubjectIDfromSubjectCourses(String subjectname) {
@@ -84,7 +120,6 @@ public class ClientController implements ChatIF {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     // gets all subject available for lecturer
@@ -181,6 +216,10 @@ public class ClientController implements ChatIF {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendCompletedTestToDatabase(Test test) {
+
     }
 
     /**
