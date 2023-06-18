@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
@@ -48,6 +49,15 @@ public class StudentExamController extends BasicController {
 
     @FXML
     private TextField questionBody;
+
+    @FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
     
     //load relevant data!!
     public void load(String test_id) {

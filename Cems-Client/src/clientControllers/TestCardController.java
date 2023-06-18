@@ -3,11 +3,12 @@ package clientControllers;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import logic.Test;
 
-public class TestCardController {
+public class TestCardController extends BasicController{
 
     @FXML
     private Text code_Exam;
@@ -26,6 +27,15 @@ public class TestCardController {
 
     @FXML
     private Text test_date;
+
+    @FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
 
     // Method to set the details of the test card
     public void setCard(Test test, ArrayList<String> SubjectCourse) {

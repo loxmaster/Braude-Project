@@ -536,7 +536,7 @@
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Text>
-      <Label fx:id="live_time" layoutX="50.0" layoutY="95.0">
+      <Label fx:id="live_time" layoutX="50.0" layoutY="95.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0">
          <font>
             <Font name="Perpetua Titling MT Bold" size="24.0" />
          </font>

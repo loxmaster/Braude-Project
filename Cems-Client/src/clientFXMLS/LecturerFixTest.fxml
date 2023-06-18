@@ -45,5 +45,10 @@
          </font>
       </TextField>
       <ScrollPane layoutX="540.0" layoutY="185.0" prefHeight="465.0" prefWidth="1305.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+      <Label fx:id="live_time" layoutX="46.0" layoutY="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0">
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+      </Label>
 </children>
 </AnchorPane>

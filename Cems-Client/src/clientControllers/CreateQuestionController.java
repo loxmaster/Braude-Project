@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -45,6 +46,9 @@ public class CreateQuestionController extends BasicController {
 	@FXML
 	private ComboBox<String> courseCombobox;
 
+	@FXML
+	private Label live_time;
+
 	public static void setSubjectID(String subject) {
 		CreateQuestionController.subjectID = subject;
 	}
@@ -71,6 +75,11 @@ public class CreateQuestionController extends BasicController {
 		courseCombobox.getItems().removeAll();
 		courseCombobox.setItems(courseList);
 
+	}
+
+		void initialize() {
+		// Start the clock
+		Timenow(live_time);
 	}
 
 	@FXML

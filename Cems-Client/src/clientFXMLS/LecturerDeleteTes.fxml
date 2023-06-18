@@ -15,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="/gui/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CreateTestController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="/gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.CreateTestController">
    <children>
       <Button layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#backToLecturer" prefHeight="46.0" prefWidth="133.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
@@ -208,5 +208,10 @@
          </font>
       </Label>
       <ComboBox id="subjectComboBox" fx:id="courseComboBox" editable="true" layoutX="513.0" layoutY="218.0" prefHeight="35.0" prefWidth="207.0" style="-fx-background-color: transparent; -fx-background-radius: 10; -fx-background-radius: 10; -fx-border-radius: 10;" />
+      <Label fx:id="live_time" layoutX="46.0" layoutY="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0">
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -61,5 +61,10 @@
             <Font name="Perpetua Titling MT Bold" size="24.0" />
          </font>
       </Label>
+      <Label fx:id="live_time1" layoutX="46.0" layoutY="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+      </Label>
 </children>
 </AnchorPane>

@@ -2,8 +2,18 @@ package clientControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
 public class HODStatisticalController extends BasicController {
+
+	@FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
 
 	@FXML
 	void backPressed(ActionEvent event) {

@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -56,6 +57,15 @@ public class DBQController extends BasicController {
 
 	@FXML
 	private ComboBox<String> courseComboBox;
+
+	@FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
 
 	// load the table - table has filter, filter updatePredicate handles the filter
 	public void load(Test test) {

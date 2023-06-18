@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.StudentExamController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.StudentExamController">
    <children>
       <ChoiceBox fx:id="qComboBox" layoutX="1027.0" layoutY="237.0" onDragDetected="#qComboBox" prefHeight="34.0" prefWidth="194.0" AnchorPane.leftAnchor="1000.0" AnchorPane.rightAnchor="20.0" />
       <Button layoutX="1083.0" layoutY="511.0" minHeight="30.0" minWidth="130.0" mnemonicParsing="false" onAction="#submitPressed" prefHeight="34.0" prefWidth="182.0" text="Submit" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
@@ -96,5 +96,10 @@
          </font>
       </RadioButton>
       <TextField fx:id="questionBody" editable="false" layoutX="238.0" layoutY="237.0" prefHeight="173.0" prefWidth="681.0" />
+      <Label fx:id="live_time" layoutX="46.0" layoutY="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

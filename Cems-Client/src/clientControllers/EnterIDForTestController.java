@@ -11,12 +11,22 @@ import clientHandlers.ClientUI;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 
 public class EnterIDForTestController extends BasicController {
+	
+	@FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
 
 	public static String test_code = null;
 	public static String test_id = null;

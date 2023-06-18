@@ -2,9 +2,19 @@ package clientControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 
 public class CreateQuestionFromDBController extends CreateQuestionController {
 
+	@FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
+	
 	@Override
 	@FXML
 	void cancelPressed(ActionEvent event) {

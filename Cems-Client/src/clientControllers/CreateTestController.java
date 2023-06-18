@@ -19,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -74,6 +75,15 @@ public class CreateTestController extends BasicController {
 	private ComboBox<String> subjectComboBox;
 	@FXML
 	private ComboBox<String> courseComboBox;
+
+	@FXML
+	private Label live_time;
+
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
 	
 	// ############################### FXML Methods
 	// #######################################################################
@@ -302,7 +312,7 @@ public class CreateTestController extends BasicController {
 		ClientUI.chat.sendTestToDatabase(test);
 		// Goes to lecturer screen
 		// TODO show some prompt of finishing or preview of what is gonna be sent
-		backToLecturer(event);
+		//backToLecturer(event);
 	}
 	// #########################################################
 	// ######################### Local Methods #################
@@ -540,7 +550,13 @@ public class CreateTestController extends BasicController {
 		popupStage.close();
 	}
 
-
+	@FXML
+	void backPressed(ActionEvent event) {
+		// goes back to options screen
+		
+		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer", event);
+		
+	}
 
 
 }
