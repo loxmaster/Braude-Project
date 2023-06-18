@@ -323,7 +323,7 @@ public class EchoServer extends AbstractServer {
 		fileContent.setFilename(null);
 		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/projecton?serverTimezone=IST",
 				"root", "123456")) {
-			String sql = "SELECT file_data,file_name FROM uploadedtests WHERE test_id = ?";
+			String sql = "SELECT file_data,file_name FROM uploaded_tests WHERE test_id = ?";
 			try (PreparedStatement statement = connection.prepareStatement(sql)) {
 				statement.setString(1, fileId);
 				try (ResultSet resultSet = statement.executeQuery()) {
@@ -340,11 +340,9 @@ public class EchoServer extends AbstractServer {
 	}
 
 	private boolean saveFileToDatabase(String fileId, byte[] fileContent, String filename) {
-		// Implement your logic to save the file content to the database (e.g., using
-		// JDBC)
 		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/projecton?serverTimezone=IST",
 				"root", "123456")) {
-			String sql = "INSERT INTO uploadedtests (test_id, file_data, file_name) VALUES (?, ?, ?)";
+			String sql = "INSERT INTO uploaded_tests (test_id, file_data, file_name) VALUES (?, ?, ?)";
 			try (PreparedStatement statement = connection.prepareStatement(sql)) {
 				statement.setString(1, fileId);
 				statement.setBytes(2, fileContent);

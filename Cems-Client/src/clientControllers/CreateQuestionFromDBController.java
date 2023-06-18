@@ -1,13 +1,11 @@
 package clientControllers;
 
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
 import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -319,6 +317,7 @@ public class CreateQuestionFromDBController extends BasicController {
 		ClientUI.chat.GetLecturersQuestions("*");
 		DBQController dbq = (DBQController) openScreen("/clientFXMLS/LecturerDBQ.fxml",
 				"CEMS System - Lecturer - Create Test - Question Data Base", event);
+		
 		dbq.load(test);
 	}
 
@@ -330,5 +329,8 @@ public class CreateQuestionFromDBController extends BasicController {
 		DBQController dbq = (DBQController) openScreen("/clientFXMLS/LecturerDBQ.fxml",
 				"CEMS System - Lecturer - Create Test - Question Data Base", event);
 		dbq.load(test);
+	}
+	public void setTest(Test testToReturn) {
+		test = testToReturn;
 	}
 }

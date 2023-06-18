@@ -21,7 +21,6 @@ import logic.QuestionModel;
 import logic.Test;
 
 public class DBQController extends BasicController {
-
 	private Test testToReturn;
 	ObservableList<String> subjectList, courseList;
 
@@ -78,11 +77,11 @@ public class DBQController extends BasicController {
 		Question.setCellValueFactory(new PropertyValueFactory<>("Questiontext"));
 		QuestionID.setCellValueFactory(new PropertyValueFactory<>("Id"));
 
-
 		if (LecturerController.questions.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Error getting the question!", "Error", JOptionPane.ERROR_MESSAGE);
 		} else {
-			ObservableList<QuestionModel> questionList = FXCollections.observableArrayList(LecturerController.questions);
+			ObservableList<QuestionModel> questionList = FXCollections
+					.observableArrayList(LecturerController.questions);
 			FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
 			table.setItems(filteredList);
 
@@ -130,7 +129,7 @@ public class DBQController extends BasicController {
 					|| questionModel.getCoursename().contains(selectedCourse)
 					|| questionModel.getCoursename().contains(selectedCourse);
 
-			boolean matchesLecturer = authorFilterField.isEmpty() 
+			boolean matchesLecturer = authorFilterField.isEmpty()
 					|| questionModel.getLecturer().contains(authorFilterField)
 					|| questionModel.getLecturer().contains(authorFilterField);
 
@@ -162,6 +161,7 @@ public class DBQController extends BasicController {
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
 		ctc.setTest(testToReturn);
+		ctc.initialize();
 	}
 
 	@FXML
@@ -170,13 +170,22 @@ public class DBQController extends BasicController {
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
 		ctc.setTest(testToReturn);
-		ctc.loadFilterComboboxes();
+		ctc.initialize();
 	}
 
 	@FXML
 	void createQuestionPressed(ActionEvent event) {
 		// Open Create Question screen
-		openScreen("/clientFXMLS/LecturerCreateQFromDB.fxml",
+
+		CreateQuestionFromDBController ctcec = (CreateQuestionFromDBController) openScreen(
+				"/clientFXMLS/LecturerCreateQFromDB.fxml",
 				"CEMS System - Lecturer - Create Tests - Create Questions", event);
+		ctcec.setTest(testToReturn);
+		ctcec.loadFilterComboboxes();
+	}
+
+	@FXML
+	void helpPressed(ActionEvent event) {
+
 	}
 }

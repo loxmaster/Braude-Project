@@ -149,6 +149,7 @@ public class DBTestController extends BasicController {
 		// open Create Tests back with already updated test
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
+				ctc.initialize();
 		ctc.setTest(testToReturn);
 	}
 
@@ -157,6 +158,7 @@ public class DBTestController extends BasicController {
 		// open Create Tests
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
+				ctc.initialize();
 		ctc.setTest(testToReturn);
 		ctc.loadFilterComboboxes();
 	}

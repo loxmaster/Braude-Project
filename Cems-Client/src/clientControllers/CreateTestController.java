@@ -82,6 +82,11 @@ public class CreateTestController extends BasicController {
 	@FXML
 	void initialize() {
 		// Start the clock
+		if(test==null){
+		code.setText("XXXX");
+		duration.setText("00:00");
+		startTime.setText("8:30");
+		}
 		Timenow(live_time);
 	}
 	
@@ -311,8 +316,7 @@ public class CreateTestController extends BasicController {
 		JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
 		ClientUI.chat.sendTestToDatabase(test);
 		// Goes to lecturer screen
-		// TODO show some prompt of finishing or preview of what is gonna be sent
-		//backToLecturer(event);
+		backToLecturer(event);
 	}
 	// #########################################################
 	// ######################### Local Methods #################
