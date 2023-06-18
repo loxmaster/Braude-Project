@@ -81,7 +81,7 @@ public class LoginScreenController extends BasicController {
 			if (password.isEmpty())
 				passTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);;");
 
-			if (selectedRole==null)
+			if (selectedRole == null)
 				combo_Role.setStyle("-fx-background-color: rgb(255, 74, 74);;");
 
 			return;
@@ -122,7 +122,7 @@ public class LoginScreenController extends BasicController {
 						System.out.println("Opening Lecturer screen...");
 						break;
 					}
-
+					case "head_of_department":
 					case "hod": {
 						HODController hoc = (HODController) openScreen("/clientFXMLS/HOD.fxml",
 								"CEMS System - Head Of The Department", event);
