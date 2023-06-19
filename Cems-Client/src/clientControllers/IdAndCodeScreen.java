@@ -144,6 +144,8 @@ public class IdAndCodeScreen extends BasicController {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+
+				openScreen("/clientFXMLS/StudentExamMan.fxml", "CEMS System - Lecturer - Upload A Test", event);
 			} else
 				JOptionPane.showMessageDialog(null, (String) "Something went wrong!", (String) "Error!",
 						JOptionPane.ERROR_MESSAGE);
