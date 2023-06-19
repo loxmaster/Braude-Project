@@ -1,12 +1,6 @@
 package logic;
 
-import java.util.ArrayList;
-
 import clientControllers.BasicController;
-import clientControllers.GraphController;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
 
 public class Statistics extends BasicController {
     private String Course, Date, Median, TestID, Grade, LecturerName;

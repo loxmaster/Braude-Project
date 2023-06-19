@@ -10,15 +10,14 @@ import javax.swing.JOptionPane;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
-import clientControllers.IdAndCodeScreen;
 import clientControllers.HODStatisticOnLecturerController;
+import clientControllers.IdAndCodeScreen;
 import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
 import clientControllers.StudentExamController;
 import clientControllers.ViewGradesController;
 import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
-import clientControllers.StudentExamController;
 import logic.Question;
 import logic.QuestionModel;
 import logic.Test;
@@ -71,9 +70,6 @@ public class ClientHandler extends AbstractClient {
 		String[] subjectArray;
 		ArrayList<String> list;
 		ArrayList<Question> questionList;
-		// ArrayList<Test> CompletedTestList;
-
-		ArrayList<Test> completedTests;
 
 		// Notifice about recieving the message to console .
 		System.out.println("got message: " + serverMessage);

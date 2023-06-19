@@ -1,8 +1,5 @@
 package clientControllers;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -20,25 +17,28 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 import logic.QuestionModel;
 import logic.Test;
 
 public class StudentExamController extends BasicController {
 
 
-    /////////////////////////////// FXML variables. ///////////////////////////////
+	/////////////////////////////// Local Variables ///////////////////////////////
 
-
+	
 	// Private variable that the data from the server regarding the current
     // test will be entered to.
 	private static Test test; 
+
 	public static ArrayList<String> questionList;
+	
     private String test_id;
+
+
+    /////////////////////////////// FXML variables ////////////////////////////////
+	
 
     @FXML
     private ChoiceBox<?> qComboBox;
@@ -122,15 +122,15 @@ public class StudentExamController extends BasicController {
 
         Test localTest = getTest();
         if(localTest == null) {
-			System.out.println("No test.");
-            return; // TODO add here something
+			JOptionPane.showMessageDialog(null, "Test not found !", "Warning !", JOptionPane.WARNING_MESSAGE);
+            return; 
         } else {
             // Setts every non-editable field in the screen.
             code.setText(localTest.getTestCode());
             courseField.setText(localTest.getCourse());
             startTime.setText(localTest.getTime());
             testComments.setText(localTest.getTestComments());
-            subjectField.setText(localTest.getSubject());
+			subjectField.setText(localTest.getSubject()); // TODO FIX
 
             // Adds every question in the test to the questioinTracker , which is a VBox of question buttons.
             int index = 1; // Index for the question number (1,2,3,..)

@@ -53,7 +53,7 @@ public class Test {
         this.Grade = Grade;
     }
 
-    public Test(String id, String subject, String author, String duration, String testComments, String testCode,
+    public Test(String id, String subject, String author, String duration, String testComment, String testCode,
             String dateString, String time, ArrayList<QuestionModel> quesitonsInTest) {
         this.id = id;
         this.course = subject;
@@ -101,9 +101,6 @@ public class Test {
         return Grade;
     }
 
-    
-    
-    
     public String getTested() {
         return tested;
     }
