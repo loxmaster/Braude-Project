@@ -571,18 +571,15 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
 
-	try
+		try
 
-	{
-		sendToServer((Object) credentials);
-	}catch(
-	IOException e)
-	{
-		client.display("Could not send message to server.  Terminating client.");
-		quit();
-	}
+		{
+			sendToServer((Object) credentials);
+		} catch (IOException e) {
+			client.display("Could not send message to server.  Terminating client.");
+			quit();
+		}
 	}
 
 	/**
