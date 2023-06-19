@@ -1,7 +1,10 @@
 package clientHandlers;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
@@ -18,6 +21,7 @@ import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
 import clientControllers.StudentExamController;
 import clientControllers.ViewGradesController;
+import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 import logic.Question;
 import logic.QuestionModel;
@@ -496,15 +500,55 @@ public class ClientHandler extends AbstractClient {
 		System.out.println("--> messageFromServerHandled");
 	}
 
+	/**
+	 * This method handles all data coming from the UI
+	 *
+	 * @param message The message from the UI.
+	 */
+	public void handleMessageFromClientUI(Object message) {
+		try {
+			sendToServer(message);
+		} catch (IOException e) {
+			client.display("Could not send message to server.  Terminating client.");
+			quit();
+		}
+	}
 
 	/**
-	 * Method for passing the information to the database from the UI
-	 * @param listToSend
+	 * Handles the message received from the client login user interface
+	 * NOTE: this method does not have a unique ideintifier
+	 * EchoServer is configured that the default of the switch case goes to this
+	 * method
+	 * 
+	 * @param username username entered.
+	 * @param password password entered.
 	 */
-	public void passToServer(Object listToSend) {
+	public void handleMessageFromLoginUI(Object username, Object password, Object type) {
+		ArrayList<String> credentials = new ArrayList<String>();
+		// create a query to grab username requested
+		String name = (String) username;
+		String pass = (String) password;
+		String role = (String) type;
+		String query = String.format(
+				"SELECT * FROM projecton.users  WHERE username = '%s' AND password = '%s' AND type = '%s';",
+				name, pass, role);
+		credentials.addAll(Arrays.asList(query, name, pass, role));
+
 		try {
-			this.openConnection();
-			sendToServer(listToSend);
+			sendToServer((Object) credentials);
+		} catch (IOException e) {
+			client.display("Could not send message to server.  Terminating client.");
+			quit();
+		}
+	}
+
+	/**
+	 * Handles the message received from the lecturer user interface gets all the
+	 * subjects.//TODO please check what this method do and if it's relevant
+	 */
+	public void handleMessageFromLecturerUI() {
+		try {
+			sendToServer((Object) "SELECT DISTINCT subjectname FROM subjectcourses;");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -821,9 +865,19 @@ public void getCourseForTestLec(String id) {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}*/
+	}
 
-
+	/**
+	 * Method that creates query for creating a question and
+	 * Passes it to server.
+	 * 
+	 * @param Id
+	 * @param subject
+	 * @param Body
+	 * @param QNumber
+	 */
+	public void CreateQuestion(String Id, String subject, String course, String Body, String QNumber) {
+		ArrayList<String> list = new ArrayList<String>();	
 		// Construct the INSERT query to create a new question
 		list.addAll(Arrays.asList("createquestion",
 				"INSERT INTO `projecton`.`questions` (`id`, `lecturer`, `subject`, `coursename`, `questiontext`, `questionnumber`) VALUES ('"
@@ -836,6 +890,7 @@ public void getCourseForTestLec(String id) {
 			e.printStackTrace();
 		}
 	}
+
 
 	/**
 	 * Method that creates query for insering answers to database.

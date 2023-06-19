@@ -188,21 +188,17 @@ public class EditQuestionController extends BasicController {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		}
+		
 
 		// Check if the question number is empty
 		if (qNumber.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Please add question number !", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		}
+		
 
 		// Check if the question number is a valid number between 1 and 999
 		try {
-			int number = Integer.parseInt(qNumber.getText());
-			if (number < 1 || number > 999) {
-				JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
-						JOptionPane.ERROR_MESSAGE);
 			int number = Integer.parseInt(qNumber.getText());
 			if (number < 1 || number > 999) {
 				JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
@@ -221,9 +217,6 @@ public class EditQuestionController extends BasicController {
 				}
 			}
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
 			JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
