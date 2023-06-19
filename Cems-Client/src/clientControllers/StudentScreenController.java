@@ -67,9 +67,10 @@ public class StudentScreenController extends BasicController {
     // This method is called when the Show Grades button is pressed. It opens the
     // ViewGrades view.
     @FXML
-    void showGrades(ActionEvent event) {
-        // Open the ViewGrades view
-        ViewGradesController vgc = (ViewGradesController) openScreen("/clientFXMLS/ViewGrades.fxml",
-                "CEMS System - Student Grades", event);
-    }
+	void showGrades(ActionEvent event) {
+		// Opening Show Grades screen
+		ViewGradesController vgc = (ViewGradesController) openScreen("/clientFXMLS/ViewGrades.fxml",
+				"CEMS System - Student Grades", event);
+		vgc.initialize();
+	}
 }

@@ -2,12 +2,19 @@ package clientControllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 public class HODStatisticalController extends BasicController {
 
 	@FXML
+	private Button exitbutton;
+
+	@FXML
 	private Label live_time;
+
+	@FXML
+	private Button logo;
 
 	@FXML
 	void initialize() {
@@ -22,27 +29,26 @@ public class HODStatisticalController extends BasicController {
 	}
 
 	@FXML
-	void helpPressed(ActionEvent event) {
-
-	}
-
-	@FXML
 	void infoOnLecturerPressed(ActionEvent event) {
-		// open Student Statistic screen 
-		openScreen("/clientFXMLS/HODStatisticOnLecturer.fxml", "CEMS System - Head Of Department - Statistics On Lecturer", event);
+		// open Student Statistic screen
+		HODStatisticOnLecturerController Hlsc = (HODStatisticOnLecturerController)openScreen("/clientFXMLS/HODStatisticOnLecturer.fxml",
+				"CEMS System - Head Of Department - Statistics On Lecturer", event);
+				Hlsc.load();
 	}
 
 	@FXML
 	void infoOnStudentPressed(ActionEvent event) {
-		// open Student Statistic screen 
-		openScreen("/clientFXMLS/HODStatisticOnStudent.fxml", "CEMS System - Head Of Department - Statistics On Student", event);
+		// open Student Statistic screen
+		openScreen("/clientFXMLS/HODStatisticOnStudent.fxml",
+				"CEMS System - Head Of Department - Statistics On Student", event);
 	}
 
 	@FXML
 	void infoOnSubjectPressed(ActionEvent event) {
-		// open Subject Statistic screen 
-		openScreen("/clientFXMLS/HODStatisticOnSubject.fxml", "CEMS System - Head Of Department - Statistics On Subject", event);
-		
+		// open Subject Statistic screen
+		openScreen("/clientFXMLS/HODStatisticOnSubject.fxml",
+				"CEMS System - Head Of Department - Statistics On Subject", event);
+
 	}
 
 	@FXML

@@ -9,8 +9,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 public class Statistics extends BasicController {
-    private String Course, Date, Median, TestID, Grade;
-    private int Average,Total_Number_of_Students, Highes, Lowest, Number_of_Students_Above_Average;
+    private String Course, Date, Median, TestID, Grade, LecturerName;
+    private int Average, Total_Number_of_Students, Highes, Lowest, Number_of_Students_Above_Average;
     private int Number_of_Students_Below_Average, Pass_Rate, Fail_Rate, Grade_Distribution;
 
     public Statistics(String TestID) {
@@ -25,6 +25,15 @@ public class Statistics extends BasicController {
         this.Average = Average;
     }
 
+    public Statistics(String LecturerName,String TestID, String course, String Date, int Total_Number_of_Students, int Average) {
+        this.LecturerName = LecturerName;
+        this.TestID = TestID;
+        this.Course = course;
+        this.Date = Date;
+        this.Total_Number_of_Students = Total_Number_of_Students;
+        this.Average = Average;
+    }
+
     public Statistics(int average, String course, String date, String median, String testID, String Grade) {
         this.Average = average;
         this.Course = course;
@@ -32,6 +41,14 @@ public class Statistics extends BasicController {
         this.Median = median;
         this.TestID = testID;
         this.Grade = Grade;
+    }
+
+    public String getLecturerName() {
+        return LecturerName;
+    }
+
+    public void setLecturerName(String authorName) {
+        LecturerName = authorName;
     }
 
     public int getTotal_Number_of_Students() {

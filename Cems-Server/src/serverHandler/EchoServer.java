@@ -243,7 +243,30 @@ public class EchoServer extends AbstractServer {
 							client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
 									: (Object) resSubjectsCoursesList);
 							break;
+							case "LecturerListUnderSameDepartment":
+							ArrayList<String> resLecturerListUnderSameDepartment = getLecturerListUnderSameDepartment(
+									list.get(1),
+									"LecturerListUnderSameDepartment");
+							client.sendToClient(resLecturerListUnderSameDepartment == null ? (Object) notFound
+									: (Object) resLecturerListUnderSameDepartment);
+							break;
 
+						case "HodGETcompletedTestsForSpecificLecturerList":
+							ArrayList<String> resHodGETcompletedTestsForSpecificLecturerList = getHodGETcompletedTestsForSpecificLecturerList_db(
+									list.get(1),
+									"HodGETcompletedTestsForSpecificLecturerList");
+							client.sendToClient(
+									resHodGETcompletedTestsForSpecificLecturerList == null ? (Object) notFound
+											: (Object) resHodGETcompletedTestsForSpecificLecturerList);
+							break;
+
+						case "getHodSubjectsCourseForTestSpecificLec":
+							ArrayList<String> resHodSubjectsCourseForTestSpecificLec = getHodSubjectsCourseForTestSpecificLec_db(
+									list.get(1),
+									"getHodSubjectsCourseForTestSpecificLec");
+							client.sendToClient(resHodSubjectsCourseForTestSpecificLec == null ? (Object) notFound
+									: (Object) resHodSubjectsCourseForTestSpecificLec);
+							break;
 						case "lecturerquestions":
 							ArrayList<Question> resQuestionList = getQuestionsForLecturer_db(list.get(1));
 							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
@@ -546,6 +569,59 @@ public class EchoServer extends AbstractServer {
 	}
 
 	private ArrayList<String> getSubjectsCoursesListLec(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) { // This will move the cursor to the next row
+				for (int index = 1; index <= 4; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 5 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	private ArrayList<String> getLecturerListUnderSameDepartment(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) { // This will move the cursor to the next row
+				for (int index = 1; index <= 6; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 5 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> getHodGETcompletedTestsForSpecificLecturerList_db(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) {
+				for (int index = 1; index <= 12; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 13 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> getHodSubjectsCourseForTestSpecificLec_db(String query, String out) {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(out); // add a new identifier
 		try {

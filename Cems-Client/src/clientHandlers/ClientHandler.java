@@ -1,31 +1,25 @@
 package clientHandlers;
 
-import java.awt.Container;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 
 import javax.swing.JOptionPane;
-
-import java.util.List;
-
-import javax.print.DocFlavor.STRING;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
 import clientControllers.EnterIDForTestController;
+import clientControllers.HODStatisticOnLecturerController;
 import clientControllers.LecturerController;
+import clientControllers.LecturerStatisticalController;
 import clientControllers.StudentExamController;
+import clientControllers.ViewGradesController;
 import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
-import clientControllers.LecturerStatisticalController;
-import clientControllers.ViewGradesController;
 import logic.Question;
 import logic.QuestionModel;
-import logic.Statistics;
 import logic.Test;
 import logic.User;
 import ocsf.client.AbstractClient;
@@ -324,7 +318,7 @@ public class ClientHandler extends AbstractClient {
 										list.get(i + 11)));
 								i += 12;
 							}
-							//HODStatisticOnLecturerController.setcompletedTestsForSpecificLecturer(listToAdd);
+							HODStatisticOnLecturerController.setcompletedTestsForSpecificLecturer(listToAdd);
 							break;
 						}
 
@@ -336,7 +330,7 @@ public class ClientHandler extends AbstractClient {
 								listToAdd.add(list.get(i));
 								i++;
 							}
-							//HODStatisticOnLecturerController.getHodSubjectsCourseForTestSpecificLec(listToAdd);
+							HODStatisticOnLecturerController.getHodSubjectsCourseForTestSpecificLec(listToAdd);
 							break;
 						}
 
@@ -361,7 +355,7 @@ public class ClientHandler extends AbstractClient {
 								int format = Integer.parseInt(list.get(1));
 								format++;
 								String format2 = "0" + format;
-								// CreateQuestionController.testcount = format2.substring(2, 4);
+								//CreateQuestionController.testcount = format2.substring(2, 4);
 								CreateTestController.setNextTestNumber(format2);
 							}
 
@@ -397,6 +391,9 @@ public class ClientHandler extends AbstractClient {
 						user.setUsername(subjectArray[0]);
 						user.setPassword(subjectArray[1]);
 						user.setType(subjectArray[2]);
+						user.setUser_id(subjectArray[3]);
+						user.setEmail(subjectArray[4]);
+						user.setDepartment(subjectArray[5]);
 						// rest of the stuff in the table
 						user.setIsFound(true);
 						break;
@@ -553,6 +550,23 @@ public class ClientHandler extends AbstractClient {
 				user.getUsername(), status, tested);
 
 		list.addAll(Arrays.asList("completedTestsForLecturer", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String status = "completed";
+		String tested = "true";
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
+				userName, status, tested);
+
+		list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificLecturerList", query));
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
@@ -790,6 +804,37 @@ public class ClientHandler extends AbstractClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public void getHodCourseForTestSpecificLec(String id) {
+
+		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
+		String subjectid = id.substring(0, 2);
+		String courseid = id.substring(2, 4);
+		String query = String.format(
+				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+				subjectid, courseid);
+		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodSubjectsCourseForTestSpecificLec", query));
+		try {
+			sendToServer((Object) subjectcoursenameofcompletedtest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getLecturerListUnderSameDepartment() {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String query = String.format(
+				"SELECT * FROM projecton.users  WHERE type = 'lecturer' AND department = '%s';",
+				user.getDepartment());
+
+		list.addAll(Arrays.asList("LecturerListUnderSameDepartment", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

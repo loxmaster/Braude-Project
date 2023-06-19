@@ -93,6 +93,34 @@ public class ClientController implements ChatIF {
             e.printStackTrace();
         }
     }
+    
+ // 1 in hod
+ public void getLecturerListUnderSameDepartment() {
+    try {
+        client.getLecturerListUnderSameDepartment();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+// 2 in hod
+public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
+    try {
+        client.HodGETcompletedTestsForSpecificLecturerList(userName);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+// 3 in hod
+public void getHodCourseForTestSpecificLec(Object id) {
+    try {
+        client.getHodCourseForTestSpecificLec((String) id);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
 
     // gets all subject available for lecturer
     public void getCourseForTest(Object id) {

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-import javafx.util.Callback;
 import clientHandlers.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,14 +18,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import logic.Statistics;
 import logic.Test;
-import javafx.scene.control.TableCell;
 
 /**
  * This controller handles the statistics display for the lecturer.
@@ -116,9 +116,6 @@ public static void setSubjectCourseLec(ArrayList<String> subjectCourseLec) {
 		// Start the clock
 		Timenow(live_time);
 	}
-
-	
-
 	/**
 	 * This function loads the statistics from the server and populates the table.
 	 */
