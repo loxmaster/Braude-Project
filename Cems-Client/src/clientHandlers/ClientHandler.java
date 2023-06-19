@@ -269,7 +269,7 @@ public class ClientHandler extends AbstractClient {
 							CheckTestController.setCompletedTestsList(listToAdd);
 							break;
 						}
-						
+
 						case "getCoursesExams": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
@@ -575,7 +575,8 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> listOfCommands = new ArrayList<>();
 		listOfCommands.addAll(
 				Arrays.asList("check test",
-						"SELECT * FROM projecton.completed_tests where test_id = '" + test.getId() + "' AND student_id = '" + test.getStudentID() + "';"));
+						"SELECT * FROM projecton.completed_tests where test_id = '" + test.getId()
+								+ "' AND student_id = '" + test.getStudentID() + "';"));
 		try {
 			sendToServer((Object) listOfCommands);
 		} catch (IOException e) {
@@ -675,6 +676,26 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/*
+	 * this function will find all the test that :
+	 * 1) were made by the user
+	 * 2) are not in progress
+	 * 3)aren't finished
+	 */
+	public void getAllTestsOfLecturer() {
+		ArrayList<String> list = new ArrayList<String>();
+		String query = String.format(
+				"SELECT * FROM projecton.tests WHERE authorsname='%s' AND id NOT IN (SELECT test_id FROM projecton.completed_tests ) AND id NOT IN (SELECT test_id FROM projecton.ongoing_tests)",
+				user.getUsername());
+		list.addAll(Arrays.asList("futureTests", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
