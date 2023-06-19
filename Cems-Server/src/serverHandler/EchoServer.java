@@ -13,8 +13,6 @@ import logic.ClientModel;
 import logic.FileDownloadMessage;
 import logic.FileUploadMessage;
 import logic.Question;
-import logic.QuestionModel;
-import logic.Test;
 import logic.TestInServer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -51,10 +49,12 @@ public class EchoServer extends AbstractServer {
 	private static Connection conn = null;
 	private Statement stmt;
 
+
 	/////////////////////////////////////////////////////////////////
 	////////////////// SERVER CONFIGURATION METHODS ////////////////
 	///////////////////////////////////////////////////////////////
 
+	
 	// Constructors ****************************************************
 
 	/**

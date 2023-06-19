@@ -263,15 +263,22 @@ public class ClientController implements ChatIF {
         ArrayList<String> questionIdList = new ArrayList<>();
         ArrayList<String> SelectedQuestions = new ArrayList<>(); // This list represents the student selected questions
 
-        
-
         for (QuestionModel question : localTest.getQuesitonsInTest()) {
             questionIdList.add(question.getId());
             SelectedQuestions.add(question.getSelected());
         }
 
+        // Runs over the current test and checks it - grades it.
+        int grade = 0;
+        for( QuestionModel question : localTest.getQuesitonsInTest() ) {
+            if(question.getAnswer().equals(question.getSelected())) {
+                grade += Integer.parseInt(question.getPoints());
+                System.out.println(question.getPoints());
+            }
+        }
+    
         String query = "INSERT INTO `projecton`.`completed_tests` (`test_id`, `student_id`, `grade`, `authorsname`, `code`, `date`, `time`," +
-        " `duration`, `questions`, `test_type`, `status`,  `selected`) VALUES ('" + localTest.getId() + "', '" + ClientHandler.user.getUser_id() + "', '" + "" + 
+        " `duration`, `questions`, `test_type`, `status`,  `selected`) VALUES ('" + localTest.getId() + "', '" + ClientHandler.user.getUser_id() + "', '" + grade + 
         "', '" + localTest.getAuthor() + "', '" + localTest.getTestCode() + "', '" + "13-05-2023" + "', '" + localTest.getTime() + "', '" + localTest.getDuration() + 
         "', '" + questionIdList + "', '" + "computer" + "', '" + "completed" + "', '" + SelectedQuestions + "');";
 

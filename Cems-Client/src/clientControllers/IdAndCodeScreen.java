@@ -18,6 +18,7 @@ import logic.FileDownloadMessage;
 
 public class IdAndCodeScreen extends BasicController {
 
+	
 	/////////////////////////////// Local Variables ///////////////////////////////
 
 
@@ -26,7 +27,7 @@ public class IdAndCodeScreen extends BasicController {
 	public static String test_code = null;
 
 	public static String test_id = null;
-	
+
 	public static boolean testRunning = false;
 
 
