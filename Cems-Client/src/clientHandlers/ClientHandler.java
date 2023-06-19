@@ -116,7 +116,7 @@ public class ClientHandler extends AbstractClient {
 							question.getAnswer());
 					questionModel.setPoints(question.getPoints());
 					listOfQuestionModels.add(questionModel);
-					listOfQuestionModels.add(questionModel);
+					//listOfQuestionModels.add(questionModel);
 				}
 
 				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
@@ -125,7 +125,7 @@ public class ClientHandler extends AbstractClient {
 						testFromServer.getTime(),
 						listOfQuestionModels);
 
-				if (user.getType() == "lecturer")
+				if (user.getType().equals("lecturer"))
 					EvaluateTestController.setLocaltest(testToAdd);
 				else
 					StudentExamController.setTest(testToAdd);

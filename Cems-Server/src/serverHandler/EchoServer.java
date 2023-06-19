@@ -456,12 +456,12 @@ public class EchoServer extends AbstractServer {
 				ArrayList<Question> listOfQuestions = new ArrayList<>();
 
 				// Handles the questions ID`s array
-				String listOfIdsFromDatabase = res.getString(8);
+				String listOfIdsFromDatabase = res.getString("questions");
 				String listOfIdsTrimmed = listOfIdsFromDatabase.replace("[", "").replace("]", "").trim();
 				String[] arrayIds = listOfIdsTrimmed.split(",");
 
 				// handles the question points array
-				String questionsPoints = res.getString(9);
+				String questionsPoints = res.getString("points");
 				String listOfIdsTrimmedPoints = questionsPoints.replace("[", "").replace("]", "").trim();
 				String[] arrayPoints = listOfIdsTrimmedPoints.split(",");
 
