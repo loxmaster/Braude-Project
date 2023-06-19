@@ -48,7 +48,7 @@ public class DBTestController extends BasicController {
 	private ComboBox<String> subjectComboBox;
 	@FXML
 	private ComboBox<String> courseComboBox;
-	
+
 	@FXML
 	private Label live_time;
 
@@ -57,6 +57,7 @@ public class DBTestController extends BasicController {
 		// Start the clock
 		Timenow(live_time);
 	}
+
 	// load the table - table has filter, filter updatePredicate handles the filter
 	public void load(Test test) {
 		testToReturn = test;
@@ -70,7 +71,8 @@ public class DBTestController extends BasicController {
 		if (LecturerController.questions.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Error getting the question!", "Error", JOptionPane.ERROR_MESSAGE);
 		} else {
-			ObservableList<QuestionModel> questionList = FXCollections.observableArrayList(LecturerController.questions);
+			ObservableList<QuestionModel> questionList = FXCollections
+					.observableArrayList(LecturerController.questions);
 			FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
 			table.setItems(filteredList);
 
@@ -118,7 +120,7 @@ public class DBTestController extends BasicController {
 					|| questionModel.getCoursename().contains(selectedCourse)
 					|| questionModel.getCoursename().contains(selectedCourse);
 
-			boolean matchesLecturer = authorFilterField.isEmpty() 
+			boolean matchesLecturer = authorFilterField.isEmpty()
 					|| questionModel.getLecturer().contains(authorFilterField)
 					|| questionModel.getLecturer().contains(authorFilterField);
 
@@ -139,9 +141,10 @@ public class DBTestController extends BasicController {
 		ArrayList<QuestionModel> questionsToAdd = new ArrayList<>();
 
 		// for (int i = 0; i < tempQuestionList.size(); i++)
-		// 	if (Choose.getCellObservableValue(tempQuestionList.get(i)).getValue().isSelected())
-		// 		if (!testToReturn.getQuesitonsInTest().contains(tempQuestionList.get(i)))
-		// 			questionsToAdd.add(tempQuestionList.get(i));
+		// if
+		// (Choose.getCellObservableValue(tempQuestionList.get(i)).getValue().isSelected())
+		// if (!testToReturn.getQuesitonsInTest().contains(tempQuestionList.get(i)))
+		// questionsToAdd.add(tempQuestionList.get(i));
 
 		// Adds the questions to the current test to return.
 		testToReturn.addToQuestions(questionsToAdd);
@@ -149,7 +152,7 @@ public class DBTestController extends BasicController {
 		// open Create Tests back with already updated test
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
-				ctc.initialize();
+		ctc.initialize();
 		ctc.setTest(testToReturn);
 	}
 
@@ -158,22 +161,22 @@ public class DBTestController extends BasicController {
 		// open Create Tests
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
-				ctc.initialize();
+		ctc.initialize();
 		ctc.setTest(testToReturn);
 		ctc.loadFilterComboboxes();
 	}
-
 
 	@FXML
 	void createQuestionPressed(ActionEvent event) {
 
 		if (LecturerController.subjectsList.isEmpty())
-            JOptionPane.showMessageDialog(null, "Lecturer has no subjects!", "Error", JOptionPane.ERROR_MESSAGE);
-        else {
-            // Open the CreateQuestionController and pass the subjects list
-            CreateQuestionController ctc = (CreateQuestionController) openScreen("/clientFXMLS/LecturerCreateQFromDB", "CEMS System - Lecturer - Create Question", event);
-           ctc.loadFilterComboboxes();
-        }
+			JOptionPane.showMessageDialog(null, "Lecturer has no subjects!", "Error", JOptionPane.ERROR_MESSAGE);
+		else {
+			// Open the CreateQuestionController and pass the subjects list
+			CreateQuestionController ctc = (CreateQuestionController) openScreen("/clientFXMLS/LecturerCreateQFromDB",
+					"CEMS System - Lecturer - Create Question", event);
+			ctc.loadFilterComboboxes();
+		}
 
 	}
 }
