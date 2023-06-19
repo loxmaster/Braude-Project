@@ -188,21 +188,17 @@ public class EditQuestionController extends BasicController {
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		}
 
 		// Check if the question number is empty
-		if (qNumber.getText().isEmpty()) {
+		if (qNumber.getText().isEmpty())
+
+		{
 			JOptionPane.showMessageDialog(null, "Please add question number !", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		}
 		}
 
 		// Check if the question number is a valid number between 1 and 999
 		try {
-			int number = Integer.parseInt(qNumber.getText());
-			if (number < 1 || number > 999) {
-				JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
-						JOptionPane.ERROR_MESSAGE);
 			int number = Integer.parseInt(qNumber.getText());
 			if (number < 1 || number > 999) {
 				JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
@@ -221,9 +217,6 @@ public class EditQuestionController extends BasicController {
 				}
 			}
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
 			JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			return;
@@ -334,32 +327,38 @@ public class EditQuestionController extends BasicController {
 	}
 
 	/**
-	 * This function is called when the 'Back' button is pressed. It navigates the user back to the 'Questions Table' screen.
+	 * This function is called when the 'Back' button is pressed. It navigates the
+	 * user back to the 'Questions Table' screen.
 	 * 
 	 * @param event The event triggered by pressing the 'Back' button.
 	 */
 	@FXML
 	void backPressed(ActionEvent event) {
-		// Open the LecturerQuestionsTableController and load the questions into the table
+		// Open the LecturerQuestionsTableController and load the questions into the
+		// table
 		LecturerQuestionsTableController lqtc = (LecturerQuestionsTableController) openScreen(
 				"/clientFXMLS/LecturerQuestionsTable.fxml", "CEMS System - Lecturer - Questions Table", event);
 		lqtc.loadTable();
 	}
 
 	/**
-	 * This function is called when the 'Cancel' button is pressed. It performs the same action as the 'Back' button, navigating the user back to the 'Questions Table' screen.
+	 * This function is called when the 'Cancel' button is pressed. It performs the
+	 * same action as the 'Back' button, navigating the user back to the 'Questions
+	 * Table' screen.
 	 * 
 	 * @param event The event triggered by pressing the 'Cancel' button.
 	 */
 	@FXML
 	void cancelPressed(ActionEvent event) {
-		// Call the backPressed function to navigate back to the 'Questions Table' screen
+		// Call the backPressed function to navigate back to the 'Questions Table'
+		// screen
 		backPressed(event);
 	}
 
-
 	/**
-	 * This function is called when the 'Delete' button is pressed. It deletes the question from the database and navigates the user back to the 'Questions Table' screen.
+	 * This function is called when the 'Delete' button is pressed. It deletes the
+	 * question from the database and navigates the user back to the 'Questions
+	 * Table' screen.
 	 * 
 	 * @param event The event triggered by pressing the 'Delete' button.
 	 */
@@ -386,7 +385,8 @@ public class EditQuestionController extends BasicController {
 		// Request the updated list of questions from the server
 		ClientUI.chat.GetLecturersQuestions(ClientHandler.user.getUsername());
 
-		// Open the LecturerQuestionsTableController and load the questions into the table
+		// Open the LecturerQuestionsTableController and load the questions into the
+		// table
 		LecturerQuestionsTableController lqtc = (LecturerQuestionsTableController) openScreen(
 				"/clientFXMLS/LecturerQuestionsTable.fxml", "CEMS System - Lecturer - Questions Table", event);
 		lqtc.loadTable();
