@@ -1,7 +1,11 @@
 package clientControllers;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+
 import javax.swing.JOptionPane;
 
+import clientHandlers.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -21,23 +25,39 @@ import logic.Test;
 public class DBTestController extends BasicController {
 
 	private Test testToReturn;
+	private static ArrayList<Test> TestList;
+
+	@FXML
+	private TableColumn<Test, String> comment;
+
+	@FXML
+	private TableColumn<Test, String> course;
+
+	@FXML
+	private TableColumn<Test, String> date;
+
+	@FXML
+	private TableColumn<Test, String> department;
+
+	@FXML
+	private TableColumn<Test, String> duration;
 
 	ObservableList<String> subjectList, courseList;
 
 	@FXML
-	private TableColumn<Test, String> TestID;
+	private Button EditTestPressed;
 
 	@FXML
-	private TableColumn<Test, String> Department;
+	private TableColumn<Test, String> testID;
+
+	@FXML
+	private TableColumn<Test, String> time;
 
 	@FXML
 	private TableColumn<Test, String> Author;
 
 	@FXML
-	private TableColumn<Test, String> CourseName;
-
-	@FXML
-	private TableColumn<Test, RadioButton> Choose;
+	private TableColumn<Test, RadioButton> choose;
 
 	@FXML
 	private Button exitbutton;
@@ -67,123 +87,103 @@ public class DBTestController extends BasicController {
 	}
 
 	// load the table - table has filter, filter updatePredicate handles the filter
-	public void load(Test test) {
-		testToReturn = test;
-		// noah- added load lect assigned courses\subjects
-		loadFilterComboboxes();
+	// public void load(Test test) {
+	// testToReturn = test;
+	// // noah- added load lect assigned courses\subjects
+	// loadFilterComboboxes();
 
-		Choose.setCellValueFactory(new PropertyValueFactory<>("CheckBox"));
-		Author.setCellValueFactory(new PropertyValueFactory<>("Lecturer"));
-		TestID.setCellValueFactory(new PropertyValueFactory<>("TestId"));
+	// Choose.setCellValueFactory(new PropertyValueFactory<>("CheckBox"));
+	// Author.setCellValueFactory(new PropertyValueFactory<>("Lecturer"));
+	// TestID.setCellValueFactory(new PropertyValueFactory<>("TestId"));
 
-		if (LecturerController.questions.isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Error getting the question!", "Error", JOptionPane.ERROR_MESSAGE);
-		} else {
-			ObservableList<QuestionModel> questionList = FXCollections
-					.observableArrayList(LecturerController.questions);
-			FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
-			table.setItems(filteredList);
+	// if (LecturerController.questions.isEmpty()) {
+	// JOptionPane.showMessageDialog(null, "Error getting the question!", "Error",
+	// JOptionPane.ERROR_MESSAGE);
+	// } else {
+	// ObservableList<QuestionModel> questionList = FXCollections
+	// .observableArrayList(LecturerController.questions);
+	// FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
+	// table.setItems(filteredList);
 
-			// listener - this will update the table to the filtered COMBOBOX SUBJECT
-			subjectComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-				updatePredicate(filteredList);
-			});
+	// // listener - this will update the table to the filtered COMBOBOX SUBJECT
+	// subjectComboBox.getSelectionModel().selectedItemProperty().addListener((observable,
+	// oldValue, newValue) -> {
+	// updatePredicate(filteredList);
+	// });
 
-			// listener - this will update the table to the filtered COMBOBOX SUBJECT
-			courseComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-				updatePredicate(filteredList);
-			});
+	// // listener - this will update the table to the filtered COMBOBOX SUBJECT
+	// courseComboBox.getSelectionModel().selectedItemProperty().addListener((observable,
+	// oldValue, newValue) -> {
+	// updatePredicate(filteredList);
+	// });
 
-			// listener - this will update the table to the filtered TEXTFIELD AUTHOR
-			TableAuthorField.textProperty().addListener((observable, oldValue, newValue) -> {
-				updatePredicate(filteredList);
-			});
+	// // listener - this will update the table to the filtered TEXTFIELD AUTHOR
+	// TableAuthorField.textProperty().addListener((observable, oldValue, newValue)
+	// -> {
+	// updatePredicate(filteredList);
+	// });
+	// }
+	// }
+
+	//// **********************\\\\
+	// maybe implement to filter ?
+	//// **********************\\\\
+	// private void loadSubject() {
+	// HashSet<String> subjectUpdated = new HashSet<>();
+	// subjectUpdated.addAll(LecturerController.subjectsList);
+	// subjectUpdated.add(test.getSubject());
+	// subjectList = FXCollections.observableArrayList(subjectUpdated);
+	// subjectComboBox.setItems(subjectList);
+	// subjectComboBox.setValue(test.getSubject());
+	// }
+
+	// private void loadCourse() {
+	// HashSet<String> courseUpdated = new HashSet<>();
+	// courseUpdated.addAll(LecturerController.coursesList);
+	// courseUpdated.add(test.getCourse());
+	// courseList = FXCollections.observableArrayList(courseUpdated);
+	// courseComboBox.setItems(courseList);
+	// courseComboBox.setValue(test.getCourse());
+	// }
+
+	void load() {
+		// loadSubject();
+		// loadCourse();
+		loadTests();
+
+	}
+
+	public void loadTests() {
+		ClientUI.chat.getAllTestsOfLecturer();
+		try {
+			Thread.sleep(250);
+		} catch (InterruptedException e) {
 		}
-	}
 
-	// load subject contents into the combobox
-	public void loadFilterComboboxes() {
-		subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
-		courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
+		// Checked.setCellValueFactory(new PropertyValueFactory<>("checked"));
+		testID.setCellValueFactory(new PropertyValueFactory<>("id"));
+		date.setCellValueFactory(new PropertyValueFactory<>("dateString"));
+		duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
+		comment.setCellValueFactory(new PropertyValueFactory<>("testcomments"));
+		time.setCellValueFactory(new PropertyValueFactory<>("time"));
+		// course.setCellValueFactory(new PropertyValueFactory<>("course"));
+		// department.setCellValueFactory(new PropertyValueFactory<>("department"));
 
-		subjectComboBox.getItems().removeAll();
-		subjectComboBox.setItems(subjectList);
-
-		courseComboBox.getItems().removeAll();
-		courseComboBox.setItems(courseList);
-	}
-
-	private void updatePredicate(FilteredList<QuestionModel> filteredList) {
-		String selectedSubject = subjectComboBox.getValue();
-		String selectedCourse = courseComboBox.getValue();
-		String authorFilterField = TableAuthorField.getText().trim();
-
-		// add new filters here as needed, dont forget to add a new listener
-		filteredList.setPredicate(questionModel -> {
-			boolean matchesSubject = selectedSubject == null || selectedSubject.isEmpty()
-					|| questionModel.getSubject().contains(selectedSubject)
-					|| questionModel.getSubject().contains(selectedSubject);
-
-			boolean matchesCourse = selectedCourse == null || selectedCourse.isEmpty()
-					|| questionModel.getCoursename().contains(selectedCourse)
-					|| questionModel.getCoursename().contains(selectedCourse);
-
-			boolean matchesLecturer = authorFilterField.isEmpty()
-					|| questionModel.getLecturer().contains(authorFilterField)
-					|| questionModel.getLecturer().contains(authorFilterField);
-
-			return matchesSubject && matchesLecturer && matchesCourse;
-		});
-	}
-
-	/**
-	 * Method to reurn to create test screen with the selected questions.
-	 * 
-	 * @param event
-	 */
-	@FXML
-	void addQuestionPressed(ActionEvent event) {
-
-		// Remembers the questions that needs to be added
-		// ObservableList<QuestionModel> tempQuestionList = table.getItems();
-		// ArrayList<QuestionModel> questionsToAdd = new ArrayList<>();
-
-		// for (int i = 0; i < tempQuestionList.size(); i++)
-		// if
-		// (Choose.getCellObservableValue(tempQuestionList.get(i)).getValue().isSelected())
-		// if (!testToReturn.getQuesitonsInTest().contains(tempQuestionList.get(i)))
-		// questionsToAdd.add(tempQuestionList.get(i));
-
-		// Adds the questions to the current test to return.
-		// testToReturn.addToQuestions(questionsToAdd);
-
-		// open Create Tests back with already updated test
-		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
-				"CEMS System - Lecturer - Create Tests", event);
-		ctc.initialize();
-		ctc.setTest(testToReturn);
+		int cap = 20;
+		// wait until we have a questions pulled from database
+		while (TestList.isEmpty() && (cap > 0)) {
+			try {
+				Thread.sleep(250);
+				cap--;
+			} catch (InterruptedException e) {
+			}
+		}
 	}
 
 	@FXML
 	void backPressed(ActionEvent event) {
 		// open Create Tests
-		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
+		openScreen("/clientFXMLS/LecturerManageTest.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
-		ctc.initialize();
-		ctc.setTest(testToReturn);
-		ctc.loadFilterComboboxes();
-	}
-
-	@FXML
-	void createQuestionPressed(ActionEvent event) {
-		if (LecturerController.subjectsList.isEmpty())
-			JOptionPane.showMessageDialog(null, "Lecturer has no subjects!", "Error", JOptionPane.ERROR_MESSAGE);
-		else {
-			// Open the CreateQuestionController and pass the subjects list
-			CreateQuestionController ctc = (CreateQuestionController) openScreen("/clientFXMLS/LecturerCreateQFromDB",
-					"CEMS System - Lecturer - Create Question", event);
-			ctc.loadFilterComboboxes();
-		}
-
 	}
 }

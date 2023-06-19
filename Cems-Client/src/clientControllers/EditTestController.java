@@ -31,7 +31,7 @@ public class EditTestController extends CreateTestController {
     void load(String testId) {
         loadSubject();
         loadCourse();
-        loadQuestions();
+        // loadQuestions();
 
     }
 
@@ -57,9 +57,14 @@ public class EditTestController extends CreateTestController {
 
     }
 
+    // one step back !
     @Override
     void backPressed(ActionEvent event) {
         openScreen("/clientFXMLS/LecturerTestTable.fxml", "CEMS System - Lecturer", event);
+    }
+
+    // delete the current test
+    void deleteTest(ActionEvent event) {
     }
 
 }
