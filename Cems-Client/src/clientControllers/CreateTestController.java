@@ -316,6 +316,8 @@ public class CreateTestController extends BasicController {
 		// Goes to lecturer screen
 		backToLecturer(event);
 	}
+	
+	
 	// #########################################################
 	// ######################### Local Methods #################
 	// #########################################################
@@ -378,8 +380,7 @@ public class CreateTestController extends BasicController {
 				// Creates new listener for this question and puts it in questionPointsListener
 				questionPointsListener = new ChangeListener<String>() {
 					@Override
-					public void changed(ObservableValue<? extends String> observable, String oldValue,
-							String newValue) {
+					public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 						try {
 							if (newValue == null)
 								question.setPoints("0");

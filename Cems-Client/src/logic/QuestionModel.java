@@ -11,7 +11,7 @@ public class QuestionModel implements Serializable {
     private String questiontext, questionnumber, lecturer;
     private String optionA, optionB, optionC, optionD;
     private String answer;
-    private String points;
+    private String points = "0";
     private Button edit;
     private CheckBox checkBox;
     private String selected;
