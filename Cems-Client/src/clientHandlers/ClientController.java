@@ -94,6 +94,14 @@ public class ClientController implements ChatIF {
         }
     }
 
+    public void getAllTestsOfLecturer() {
+        try {
+            client.getAllTestsOfLecturer();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     // fetch data for hod in statistic on lecterurs
     public void getLecturerListUnderSameDepartment() {
         try {

@@ -334,6 +334,13 @@ public class EchoServer extends AbstractServer {
 									resgetCoursesExams == null ? (Object) notFound
 											: (Object) resgetCoursesExams);
 							break;
+						case "futureTests":
+							ArrayList<String> resgetFutureTests = getFutureTests_db(list.get(1),
+									"getFutureTests");
+							client.sendToClient(
+									resgetFutureTests == null ? (Object) notFound
+											: (Object) resgetFutureTests);
+
 						default:
 							loginVarification(list, client);
 							break;
@@ -698,7 +705,8 @@ public class EchoServer extends AbstractServer {
 		return null;
 	}
 
-	private ArrayList<String> getCompletedTestsForLecturer_db(String query, String out) {
+	// getFutureTests_db
+	private ArrayList<String> getFutureTests_db(String query, String out) {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(out); // add a new identifier
 		try {
@@ -710,6 +718,24 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			return res; // res size is 13 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> getCompletedTestsForLecturer_db(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) {
+				for (int index = 1; index <= 8; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 9 where in first index is indentifier
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
