@@ -2,12 +2,9 @@ package clientControllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-
 import clientHandlers.ClientUI;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -15,25 +12,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import logic.QuestionModel;
 import logic.Test;
 
 public class CheckTestController extends BasicController {
@@ -61,12 +49,22 @@ public class CheckTestController extends BasicController {
   @FXML
   private Label live_time;
 
+  /**
+   * This method is called to initialize a controller after its root element has
+   * been completely processed.
+   * It is typically used to perform setup tasks for the controller.
+   */
   @FXML
   void initialize() {
 
     Timenow(live_time);
   }
 
+  /**
+   * This method is used to load data into a table.
+   * It is typically called when initializing the table or when the data source is
+   * updated.
+   */
   public void loadTable() {
 
     // get completed tests list initilized
@@ -115,7 +113,12 @@ public class CheckTestController extends BasicController {
     }
   }
 
-  // MANUAL RESOLUTION BUTTON ACTION
+  /**
+   * This method is used to create a check button for a given test.
+   *
+   * @param test The test for which the check button is created.
+   * @return The created check button.
+   */
   public Button createCheckButton(Test test) {
     Button checked = new Button("Manual Resolution");
 
@@ -164,30 +167,66 @@ public class CheckTestController extends BasicController {
     return checked;
   }
 
+  /**
+   * This method is triggered when the save button is pressed.
+   * It is responsible for handling the save operation.
+   *
+   * @param event The action event that triggers this method.
+   */
   @FXML
   void savePressed(ActionEvent event) {
 
   }
 
+  /**
+   * This method is triggered when the edit comments button is pressed.
+   * It is responsible for handling the operation of editing comments.
+   *
+   * @param event The action event that triggers this method.
+   */
   @FXML
   void editCommentsPressed(ActionEvent event) {
 
   }
 
+  /**
+   * This method is triggered when the back button is pressed.
+   * It is responsible for handling the operation of navigating back from the
+   * current context.
+   *
+   * @param event The action event that triggers this method.
+   */
   @FXML
   void backPressed(ActionEvent event) {
     openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
   }
 
+  /**
+   * This method is triggered when the back button is pressed in the context of a
+   * lecturer.
+   * It is responsible for handling the transition back to the lecturer screen.
+   *
+   * @param event The action event that triggers this method.
+   */
   @FXML
   void backToLecturer(ActionEvent event) {
     openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
   }
 
+  /**
+   * This method is used to retrieve a list of completed tests.
+   *
+   * @return An ArrayList of completed Test objects.
+   */
   public static ArrayList<Test> getCompletedTestsList() {
     return completedTestsList;
   }
 
+  /**
+   * This method is used to set the list of completed tests.
+   *
+   * @param completedTestsList An ArrayList of completed Test objects to be set.
+   */
   public static void setCompletedTestsList(ArrayList<Test> completedTestsList) {
     CheckTestController.completedTestsList = completedTestsList;
   }
