@@ -25,55 +25,73 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.QuestionModel;
 
+/**
+ * This controller handles the lecturer's questions table in the application.
+ * It extends from the BasicController class.
+ */
 public class LecturerQuestionsTableController extends BasicController {
 
     ObservableList<String> courseList;
 
     @FXML
-    private Button BtnInfo;
+    private Button BtnInfo; // Button for displaying information
 
     @FXML
-    private TableView<QuestionModel> table;
+    private TableView<QuestionModel> table; // TableView for displaying the questions
 
     @FXML
-    private TableColumn<QuestionModel, String> id;
+    private TableColumn<QuestionModel, String> id; // TableColumn for the question id
 
     @FXML
-    private TableColumn<QuestionModel, String> subject;
+    private TableColumn<QuestionModel, String> subject; // TableColumn for the question subject
 
     @FXML
-    private TableColumn<QuestionModel, String> coursename;
+    private TableColumn<QuestionModel, String> coursename; // TableColumn for the course name
 
     @FXML
-    private TableColumn<QuestionModel, String> questiontext;
+    private TableColumn<QuestionModel, String> questiontext; // TableColumn for the question text
 
     @FXML
-    private TableColumn<QuestionModel, String> questionnumber;
+    private TableColumn<QuestionModel, String> questionnumber; // TableColumn for the question number
 
     @FXML
-    private TableColumn<QuestionModel, String> lecturer;
+    private TableColumn<QuestionModel, String> lecturer; // TableColumn for the lecturer
 
     @FXML
-    private TableColumn<QuestionModel, Button> edit;
+    private TableColumn<QuestionModel, Button> edit; // TableColumn for the edit button
 
     @FXML
-    private ComboBox<String> courseComboBox;
+    private ComboBox<String> courseComboBox; // ComboBox for selecting the course
 
     @FXML
-	private Label live_time;
+	private Label live_time; // Label for displaying the live time
 
+	/**
+	 * This function initializes the controller.
+	 * It starts the clock on the UI.
+	 */
 	@FXML
 	void initialize() {
 		// Start the clock
 		Timenow(live_time);
 	}
 
+    /**
+     * This function loads the filter ComboBoxes.
+     * It gets the courses list from the LecturerController and sets it to the course ComboBox.
+     */
     public void loadFilterComboboxes() {
         courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
         courseComboBox.getItems().removeAll();
         courseComboBox.setItems(courseList);
     }
 
+    /**
+     * This function updates the predicate of the filtered list.
+     * It filters the questions based on the selected course.
+     *
+     * @param filteredList The FilteredList of QuestionModel objects
+     */
     private void updatePredicate(FilteredList<QuestionModel> filteredList) {
 		String selectedCourse = courseComboBox.getValue();
 
@@ -84,6 +102,10 @@ public class LecturerQuestionsTableController extends BasicController {
 					|| questionModel.getCoursename().contains(selectedCourse);
 		});}
 
+    /**
+     * This function loads the questions table.
+     * It sets the cell value factories for the table columns and adds the questions to the table.
+     */
     public void loadTable() {
         loadFilterComboboxes();
 

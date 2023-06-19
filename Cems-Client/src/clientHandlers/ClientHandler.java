@@ -581,11 +581,121 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	// clear client data
+	// Clear client data
 	public static void resetClientData() {
+		// Reset the user object
 		user = new User();
+		// Reset the subjectsList and questions lists in the LecturerController
 		LecturerController.subjectsList = new ArrayList<String>();
 		LecturerController.questions = new ArrayList<QuestionModel>();
+	}
+
+	/**
+	 * Checks if a student is taking a specific course.
+	 * 
+	 * @param sendToServer The ArrayList to send to the server.
+	 * @throws IOException If an I/O error occurs while sending the data to the
+	 *                     server.
+	 */
+	public void isStudentTakingCourse(ArrayList<String> sendToServer) throws IOException {
+		// Construct the SQL query to check if a student is taking a specific course
+		sendToServer.add(
+				"SELECT code,id FROM student s JOIN subjectcourses sc ON FIND_IN_SET(sc.coursename, s.courses) > 0 JOIN tests t ON SUBSTRING(t.id, 3, 2) = sc.courseid WHERE s.username = '"
+						+ user.getUsername() + "' AND SUBSTRING(t.id, 1, 2) = sc.subjectid;");
+		sendToServer(sendToServer);
+	}
+
+	/**
+	 * Checks if a test is ready to be taken.
+	 * 
+	 * @param sendToServer The ArrayList to send to the server.
+	 * @throws IOException If an I/O error occurs while sending the data to the
+	 *                     server.
+	 */
+	public void isTestReady(ArrayList<String> sendToServer) throws IOException {
+		// Construct the SQL query to check if a test is ready to be taken
+		sendToServer.add("SELECT test_id FROM ongoing_tests WHERE((SELECT id FROM tests WHERE (id = '"
+				+ sendToServer.get(1) + "') AND id = test_id))");
+		sendToServer(sendToServer);
+	}
+
+	/**
+	 * Retrieves the questions of a test based on the test ID.
+	 * 
+	 * @param sendToServer The ArrayList to send to the server.
+	 * @throws IOException If an I/O error occurs while sending the data to the
+	 *                     server.
+	 */
+	public void getTestFromId(ArrayList<String> sendToServer) throws IOException {
+		// Construct the SQL query to retrieve the questions of a test
+		sendToServer.add("SELECT questions FROM projecton.tests WHERE (id = '" + sendToServer.get(1) + "')");
+		sendToServer(sendToServer);
+	}
+
+	/**
+	 * Deletes a question from the database based on the original question ID.
+	 * 
+	 * @param originalId The original question ID.
+	 */
+	public void DeleteQuestion(String originalId) {
+		// Create an ArrayList to send to the server for deleting the question
+		ArrayList<String> listToSend = new ArrayList<String>();
+		listToSend.add("DeleteQuestion");
+		listToSend.add("DELETE FROM `projecton`.`questions` WHERE (`id` = '" + originalId + "');");
+		try {
+			// Send the listToSend object to the server
+			sendToServer((Object) listToSend);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Retrieves the courses within the same department as the current user.
+	 */
+	public void getCoursesSameDepartment() {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> list = new ArrayList<String>();
+
+		// Create a SQL query to select the subject courses within the same department
+		// as the current user.
+		String query = String.format("SELECT * FROM projecton.subjectcourses WHERE subjectname ='%s';",
+				user.getDepartment());
+
+		// Add the method name and query to the ArrayList.
+		list.addAll(Arrays.asList("getCoursesSameDepartment", query));
+
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Retrieves the exams for a specific course.
+	 * 
+	 * @param courseID The ID of the course.
+	 */
+	public void getCoursesExams(String courseID) {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> list = new ArrayList<String>();
+
+		// Create a SQL query to select the completed exams for a specific course.
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE test_id LIKE '%s%%' AND status='completed' AND tested='true';",
+				courseID);
+
+		// Add the method name and query to the ArrayList.
+		list.addAll(Arrays.asList("getCoursesExams", query));
+
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
