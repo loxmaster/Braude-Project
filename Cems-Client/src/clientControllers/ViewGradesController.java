@@ -76,16 +76,15 @@ public class ViewGradesController extends BasicController {
         
         // Start the clock
         Timenow(live_time);
-
         // Get the list of completed tests for the student
         ClientUI.chat.getcompletedTestsForStudentList();
-
+        
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        
         // Set the student ID text
         Student_ID_Text.setText("Student ID: " + completedTestsList.get(0).getStudentID());
 

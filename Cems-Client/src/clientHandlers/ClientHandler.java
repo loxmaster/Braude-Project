@@ -13,6 +13,8 @@ import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
 import clientControllers.EvaluateTestController;
 import clientControllers.HODStatisticOnLecturerController;
+import clientControllers.HODStatisticOnStudentController;
+import clientControllers.HODViewGradesController;
 import clientControllers.IdAndCodeScreen;
 import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
@@ -113,6 +115,7 @@ public class ClientHandler extends AbstractClient {
 							question.getAnswer());
 					questionModel.setPoints(question.getPoints());
 					listOfQuestionModels.add(questionModel);
+					listOfQuestionModels.add(questionModel);
 				}
 
 				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
@@ -120,9 +123,14 @@ public class ClientHandler extends AbstractClient {
 						testFromServer.getTestComments(), testFromServer.getTestCode(), testFromServer.getDateString(),
 						testFromServer.getTime(),
 						listOfQuestionModels);
+				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
+						testFromServer.getAuthor(), testFromServer.getDuration(),
+						testFromServer.getTestComments(), testFromServer.getTestCode(), testFromServer.getDateString(),
+						testFromServer.getTime(),
+						listOfQuestionModels);
 
 				StudentExamController.setTest(testToAdd);
-				//EvaluateTestController.setLocaltest(testToAdd);
+					//EvaluateTestController.setLocaltest(testToAdd);
 				break;
 
 			// If message type ArrayList it means that data comes in , where first index (0)
@@ -296,6 +304,18 @@ public class ClientHandler extends AbstractClient {
 							HODStatisticOnLecturerController.setLecturerListUnderSameDepartment(listToAdd);
 							break;
 						}
+
+						case "studentListUnderSameDepartment": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<String> listToAdd = new ArrayList<>();
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(list.get(i));
+								i++;
+							}
+							HODStatisticOnStudentController.setStudentListUnderSameDepartment(listToAdd);
+							break;
+						}
 						case "HodGETcompletedTestsForSpecificLecturerList": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
@@ -320,6 +340,30 @@ public class ClientHandler extends AbstractClient {
 							HODStatisticOnLecturerController.setcompletedTestsForSpecificLecturer(listToAdd);
 							break;
 						}
+						case "HodGETcompletedTestsForSpecificStudentList": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<Test> listToAdd = new ArrayList<>();
+							// CompletedTestList = (ArrayList<Test>) severMessage;
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(new Test(
+										list.get(i),
+										list.get(i + 1),
+										list.get(i + 2),
+										list.get(i + 3),
+										list.get(i + 4),
+										list.get(i + 5),
+										list.get(i + 6),
+										list.get(i + 7),
+										list.get(i + 8),
+										list.get(i + 9),
+										list.get(i + 10),
+										list.get(i + 11)));
+								i += 12;
+							}
+							HODStatisticOnStudentController.setcompletedTestsForSpecificStudent(listToAdd);
+							break;
+						}
 						case "getHodSubjectsCourseForTestSpecificLec": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<String> listToAdd = new ArrayList<>();
@@ -329,6 +373,18 @@ public class ClientHandler extends AbstractClient {
 								i++;
 							}
 							HODStatisticOnLecturerController.getHodSubjectsCourseForTestSpecificLec(listToAdd);
+							break;
+						}
+
+						case "getHodCourseForTestSpecificStudent": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<String> listToAdd = new ArrayList<>();
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(list.get(i));
+								i++;
+							}
+							HODViewGradesController.setHodSubjectsCourseForTestSpecificStudent(listToAdd);
 							break;
 						}
 						case "getSubjectID":
@@ -588,6 +644,23 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	public void HodGETcompletedTestsForSpecificStudentList(String userID) {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String status = "completed";
+		String tested = "true";
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND status='%s' AND tested='%s';",
+				userID, status, tested);
+
+		list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificStudentList", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void getCourseForTest(String id) {
 
 		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
@@ -837,6 +910,22 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	public void getHodCourseForTestSpecificStudent(String id) {
+
+		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
+		String subjectid = id.substring(0, 2);
+		String courseid = id.substring(2, 4);
+		String query = String.format(
+				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+				subjectid, courseid);
+		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodCourseForTestSpecificStudent", query));
+		try {
+			sendToServer((Object) subjectcoursenameofcompletedtest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void getLecturerListUnderSameDepartment() {
 
 		ArrayList<String> list = new ArrayList<String>();
@@ -845,6 +934,21 @@ public class ClientHandler extends AbstractClient {
 				user.getDepartment());
 
 		list.addAll(Arrays.asList("LecturerListUnderSameDepartment", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void geStudentListUnderSameDepartment() {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String query = String.format(
+				"SELECT * FROM projecton.users  WHERE type = 'student' AND department = '%s';",
+				user.getDepartment());
+
+		list.addAll(Arrays.asList("studentListUnderSameDepartment", query));
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {

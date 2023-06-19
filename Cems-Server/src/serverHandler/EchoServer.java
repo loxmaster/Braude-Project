@@ -13,8 +13,6 @@ import logic.ClientModel;
 import logic.FileDownloadMessage;
 import logic.FileUploadMessage;
 import logic.Question;
-import logic.QuestionModel;
-import logic.Test;
 import logic.TestInServer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -51,10 +49,12 @@ public class EchoServer extends AbstractServer {
 	private static Connection conn = null;
 	private Statement stmt;
 
+
 	/////////////////////////////////////////////////////////////////
 	////////////////// SERVER CONFIGURATION METHODS ////////////////
 	///////////////////////////////////////////////////////////////
 
+	
 	// Constructors ****************************************************
 
 	/**
@@ -253,6 +253,14 @@ public class EchoServer extends AbstractServer {
 									: (Object) resLecturerListUnderSameDepartment);
 							break;
 
+						case "studentListUnderSameDepartment":
+							ArrayList<String> resstudentListUnderSameDepartment = getStudentListUnderSameDepartment(
+									list.get(1),
+									"studentListUnderSameDepartment");
+							client.sendToClient(resstudentListUnderSameDepartment == null ? (Object) notFound
+									: (Object) resstudentListUnderSameDepartment);
+							break;
+
 						case "HodGETcompletedTestsForSpecificLecturerList":
 							ArrayList<String> resHodGETcompletedTestsForSpecificLecturerList = getHodGETcompletedTestsForSpecificLecturerList_db(
 									list.get(1),
@@ -262,6 +270,15 @@ public class EchoServer extends AbstractServer {
 											: (Object) resHodGETcompletedTestsForSpecificLecturerList);
 							break;
 
+						case "HodGETcompletedTestsForSpecificStudentList":
+							ArrayList<String> resHodGETcompletedTestsForSpecificStudentList = getHodGETcompletedTestsForSpecificStudentList_db(
+									list.get(1),
+									"HodGETcompletedTestsForSpecificStudentList");
+							client.sendToClient(
+									resHodGETcompletedTestsForSpecificStudentList == null ? (Object) notFound
+											: (Object) resHodGETcompletedTestsForSpecificStudentList);
+							break;
+
 						case "getHodSubjectsCourseForTestSpecificLec":
 							ArrayList<String> resHodSubjectsCourseForTestSpecificLec = getHodSubjectsCourseForTestSpecificLec_db(
 									list.get(1),
@@ -269,6 +286,15 @@ public class EchoServer extends AbstractServer {
 							client.sendToClient(resHodSubjectsCourseForTestSpecificLec == null ? (Object) notFound
 									: (Object) resHodSubjectsCourseForTestSpecificLec);
 							break;
+
+						case "getHodCourseForTestSpecificStudent":
+							ArrayList<String> resHodCourseForTestSpecificStudent = getHodSubjectsCourseForTestSpecificStudent_db(
+									list.get(1),
+									"getHodCourseForTestSpecificStudent");
+							client.sendToClient(resHodCourseForTestSpecificStudent == null ? (Object) notFound
+									: (Object) resHodCourseForTestSpecificStudent);
+							break;
+
 						case "lecturerquestions":
 							ArrayList<Question> resQuestionList = getQuestionsFromDatabase(list.get(1));
 							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
@@ -712,6 +738,24 @@ public class EchoServer extends AbstractServer {
 		return null;
 	}
 
+	private ArrayList<String> getStudentListUnderSameDepartment(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) { // This will move the cursor to the next row
+				for (int index = 1; index <= 6; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 5 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private ArrayList<String> getHodGETcompletedTestsForSpecificLecturerList_db(String query, String out) {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(out); // add a new identifier
@@ -730,7 +774,43 @@ public class EchoServer extends AbstractServer {
 		return null;
 	}
 
+	private ArrayList<String> getHodGETcompletedTestsForSpecificStudentList_db(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) {
+				for (int index = 1; index <= 12; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 13 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private ArrayList<String> getHodSubjectsCourseForTestSpecificLec_db(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) { // This will move the cursor to the next row
+				for (int index = 1; index <= 4; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 5 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> getHodSubjectsCourseForTestSpecificStudent_db(String query, String out) {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(out); // add a new identifier
 		try {
