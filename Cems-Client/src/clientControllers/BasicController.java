@@ -214,6 +214,11 @@ public class BasicController {
 	// It asks for confirmation, and if confirmed, it hides the current window,
 	// resets client data, and quits the chat.
 	@FXML
+	void backToHOD(ActionEvent event) {
+		openScreen("/clientFXMLS/HOD.fxml", "CEMS System - Student", event);
+	}
+
+	@FXML
 	void exitPressed(ActionEvent event) {
 		// Show a confirmation dialog asking if the user is sure they want to exit.
 		// If the user selects "Yes", then proceed with the exit.

@@ -20,6 +20,7 @@ public class CreateQuestionController extends BasicController {
 	public static String subjectID, courseID;
 
 	ObservableList<String> subjectList;
+
 	ObservableList<String> courseList;
 
 	@FXML
@@ -60,6 +61,7 @@ public class CreateQuestionController extends BasicController {
 	 * This method sets the subject ID.
 	 * @param subject The subject ID to be set.
 	 */
+
 	public static void setSubjectID(String subject) {
 		CreateQuestionController.subjectID = subject;
 	}
@@ -100,7 +102,6 @@ public class CreateQuestionController extends BasicController {
 
 		courseCombobox.getItems().removeAll();
 		courseCombobox.setItems(courseList);
-
 	}
 
 	@FXML

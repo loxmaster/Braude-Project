@@ -30,71 +30,75 @@ import javafx.stage.Stage;
 import logic.QuestionModel;
 import logic.Test;
 
-
 public class CreateTestController extends BasicController {
 
-	// ############################### Local Variables ###########################################
-	
-	
+	// ############################### Local Variables
+	// ###########################################
+
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
-	private Test test = new Test();
+	protected Test test = new Test();
 	private int pointsInTest = 0;
 	private ChangeListener<? super String> questionPointsListener; // Listener for points TextBox
 	public static String testCount;
 	private static String nextTestNumber;
 	private static final Pattern TIME_PATTERN = Pattern.compile("^\\d{2}:\\d{2}$");
 
-	// ############################### FXML Variables ############################################
+	// ############################### FXML Variables
+	// ############################################
 
-
 	@FXML
-	private ToggleGroup toggleGroup;
+	protected ToggleGroup toggleGroup;
 	@FXML
-	private RadioButton A, B, C, D;
+	protected RadioButton A, B, C, D;
 	@FXML
-	private TextField qID;
+	protected TextField qID;
 	@FXML
-	private TextArea OptionA, OptionB, OptionC, OptionD;
+	protected TextArea OptionA;
 	@FXML
-	private TextArea qBody;
+	protected TextArea OptionB;
 	@FXML
-	private TextField code, duration, startTime, totalPoints;
+	protected TextArea OptionC;
 	@FXML
-	private DatePicker date;
+	protected TextArea OptionD;
 	@FXML
-	private VBox questionTracker;
+	protected TextArea qBody;
 	@FXML
-	private Button exitbutton;
+	protected TextField code, duration, startTime, totalPoints;
 	@FXML
-	private Button logo;
+	protected DatePicker date;
 	@FXML
-	private Button savebutton;
+	protected VBox questionTracker;
 	@FXML
-	private TextArea qPoints;
+	protected Button exitbutton;
 	@FXML
-	private ComboBox<String> subjectComboBox;
+	protected Button logo;
 	@FXML
-	private ComboBox<String> courseComboBox;
+	protected Button savebutton;
+	@FXML
+	protected TextArea qPoints;
+	@FXML
+	protected ComboBox<String> subjectComboBox;
+	@FXML
+	protected ComboBox<String> courseComboBox;
 
 	@FXML
 	private Label live_time;
 
-	
-	// ############################### FXML Methods ###########################################
-
+	// ############################### FXML Methods
+	// ###########################################
 
 	@FXML
 	void initialize() {
 		// Start the clock
-		if(test==null){
-		code.setText("XXXX");
-		duration.setText("00:00");
-		startTime.setText("8:30");
+		if (test == null) {
+			code.setText("XXXX");
+			duration.setText("00:00");
+			startTime.setText("8:30");
 		}
 		Timenow(live_time);
 	}
-	
+
 	public static String getNextTestNumber() {
 		return nextTestNumber;
 	}
@@ -118,7 +122,6 @@ public class CreateTestController extends BasicController {
 		courseComboBox.getItems().removeAll();
 		courseComboBox.setItems(courseList);
 	}
-	
 
 	/**
 	 * Method handeling the pressing of 'Add Test Comments' button .
@@ -145,8 +148,6 @@ public class CreateTestController extends BasicController {
 	 * @param event
 	 */
 
-
-	 
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
 		// test is current test
@@ -232,9 +233,8 @@ public class CreateTestController extends BasicController {
 		// String nextTestNumber = subjectid + courseid + "03";
 
 		// send all three so set a new testID
-		String numberid =subjectid + courseid + nextTestNumber; 
+		String numberid = subjectid + courseid + nextTestNumber;
 		test.setId(numberid);
-
 
 		// Checks if the test points are in order
 		if (totalPoints.getText().equals("100")) {
@@ -307,8 +307,6 @@ public class CreateTestController extends BasicController {
 			return;
 		}
 
-		
-		
 		// Sends the test to the database using the ClientController 'chat' in the
 		// ClientUI, while showing a message to the user
 		ClientUI.chat.sendTestToDatabase(test);
@@ -316,8 +314,7 @@ public class CreateTestController extends BasicController {
 		// Goes to lecturer screen
 		backToLecturer(event);
 	}
-	
-	
+
 	// #########################################################
 	// ######################### Local Methods #################
 	// #########################################################
@@ -380,7 +377,8 @@ public class CreateTestController extends BasicController {
 				// Creates new listener for this question and puts it in questionPointsListener
 				questionPointsListener = new ChangeListener<String>() {
 					@Override
-					public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+					public void changed(ObservableValue<? extends String> observable, String oldValue,
+							String newValue) {
 						try {
 							if (newValue == null)
 								question.setPoints("0");
@@ -553,10 +551,9 @@ public class CreateTestController extends BasicController {
 	@FXML
 	void backPressed(ActionEvent event) {
 		// goes back to options screen
-		
-		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer", event);
-		
-	}
 
+		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer", event);
+
+	}
 
 }

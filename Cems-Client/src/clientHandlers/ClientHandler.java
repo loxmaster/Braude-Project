@@ -1,18 +1,15 @@
 package clientHandlers;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
 import clientControllers.CheckTestController;
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
-import clientControllers.HODStatisticOnCourseController;
 import clientControllers.EvaluateTestController;
+import clientControllers.HODStatisticOnCourseController;
 import clientControllers.HODStatisticOnLecturerController;
 import clientControllers.HODStatisticOnStudentController;
 import clientControllers.HODViewGradesController;
@@ -21,7 +18,6 @@ import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
 import clientControllers.StudentExamController;
 import clientControllers.ViewGradesController;
-import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 import logic.Question;
 import logic.QuestionModel;
@@ -116,7 +112,6 @@ public class ClientHandler extends AbstractClient {
 							question.getAnswer());
 					questionModel.setPoints(question.getPoints());
 					listOfQuestionModels.add(questionModel);
-					listOfQuestionModels.add(questionModel);
 				}
 
 				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
@@ -125,7 +120,7 @@ public class ClientHandler extends AbstractClient {
 						testFromServer.getTime(),
 						listOfQuestionModels);
 
-				if (user.getType() == "lecturer")
+				if (user.getType().equals("lecturer"))
 					EvaluateTestController.setLocaltest(testToAdd);
 				else
 					StudentExamController.setTest(testToAdd);
@@ -245,7 +240,7 @@ public class ClientHandler extends AbstractClient {
 						case "completedTestsForLecturer": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
-							ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
+							//ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
 							// CompletedTestList = (ArrayList<Test>) severMessage;
 							int i = 1;
 							while (i < list.size()) {
@@ -269,6 +264,7 @@ public class ClientHandler extends AbstractClient {
 							CheckTestController.setCompletedTestsList(listToAdd);
 							break;
 						}
+
 
 						case "getCoursesExams": {
 							System.out.println("Client Handler: " + list.get(0));
@@ -500,55 +496,15 @@ public class ClientHandler extends AbstractClient {
 		System.out.println("--> messageFromServerHandled");
 	}
 
-	/**
-	 * This method handles all data coming from the UI
-	 *
-	 * @param message The message from the UI.
-	 */
-	public void handleMessageFromClientUI(Object message) {
-		try {
-			sendToServer(message);
-		} catch (IOException e) {
-			client.display("Could not send message to server.  Terminating client.");
-			quit();
-		}
-	}
 
 	/**
-	 * Handles the message received from the client login user interface
-	 * NOTE: this method does not have a unique ideintifier
-	 * EchoServer is configured that the default of the switch case goes to this
-	 * method
-	 * 
-	 * @param username username entered.
-	 * @param password password entered.
+	 * Method for passing the information to the database from the UI
+	 * @param listToSend
 	 */
-	public void handleMessageFromLoginUI(Object username, Object password, Object type) {
-		ArrayList<String> credentials = new ArrayList<String>();
-		// create a query to grab username requested
-		String name = (String) username;
-		String pass = (String) password;
-		String role = (String) type;
-		String query = String.format(
-				"SELECT * FROM projecton.users  WHERE username = '%s' AND password = '%s' AND type = '%s';",
-				name, pass, role);
-		credentials.addAll(Arrays.asList(query, name, pass, role));
-
+	public void passToServer(Object listToSend) {
 		try {
-			sendToServer((Object) credentials);
-		} catch (IOException e) {
-			client.display("Could not send message to server.  Terminating client.");
-			quit();
-		}
-	}
-
-	/**
-	 * Handles the message received from the lecturer user interface gets all the
-	 * subjects.//TODO please check what this method do and if it's relevant
-	 */
-	public void handleMessageFromLecturerUI() {
-		try {
-			sendToServer((Object) "SELECT DISTINCT subjectname FROM subjectcourses;");
+			this.openConnection();
+			sendToServer(listToSend);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -865,19 +821,8 @@ public void getCourseForTestLec(String id) {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	/**
-	 * Method that creates query for creating a question and
-	 * Passes it to server.
-	 * 
-	 * @param Id
-	 * @param subject
-	 * @param Body
-	 * @param QNumber
-	 */
-	public void CreateQuestion(String Id, String subject, String course, String Body, String QNumber) {
-		ArrayList<String> list = new ArrayList<String>();
 
 		// Construct the INSERT query to create a new question
 		list.addAll(Arrays.asList("createquestion",
@@ -1127,6 +1072,7 @@ public void getCourseForTestLec(String id) {
 	/////////////////////// CLIENT NATIVE /////////////////////
 	//////////////////////////////////////////////////////////
 
+
 	/**
 	 * This method overrites super method that handles what happans when connection
 	 * is closed
@@ -1143,9 +1089,7 @@ public void getCourseForTestLec(String id) {
 		try {
 			sendToServer((Object) this.getInetAddress());
 			closeConnection();
-		} catch (IOException e) {
-		}
-		// System.exit(0);
+		} catch (IOException e) {}
 	}
 
 	// Clear client data
