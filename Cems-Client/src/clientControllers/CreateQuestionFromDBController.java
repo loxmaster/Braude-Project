@@ -117,6 +117,13 @@ public class CreateQuestionFromDBController extends BasicController {
 		courseCombobox.setItems(courseList);
 	}
 
+	
+	/**
+	 * This method is triggered when the confirm button is pressed.
+	 * It is responsible for handling the confirmation operation.
+	 *
+	 * @param event The action event that triggers this method.
+	 */
 	@FXML
 	void confirmPressed(ActionEvent event) {
 		// [subject, qBody, optionA, optionB, optionC, optionD, correctAnswer]
@@ -256,125 +263,132 @@ public class CreateQuestionFromDBController extends BasicController {
 		ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD, correctAnswer, subjectID);
 	}
 
-/**
- * This method is called when the 'Add Another' button is pressed. It validates the input fields, sends the question and answers to SQL,
- * and then resets the input fields for the next question.
- * @param event The event that triggered this method (pressing the 'Add Another' button).
- */
-@FXML
-void addAnotherPressed(ActionEvent event) {
-	// [subject, qBody, optionA, optionB, optionC, optionD, correctAnswer]
-	String correctAnswer = null;
+	/**
+	 * This method is called when the 'Add Another' button is pressed. It validates
+	 * the input fields, sends the question and answers to SQL,
+	 * and then resets the input fields for the next question.
+	 * 
+	 * @param event The event that triggered this method (pressing the 'Add Another'
+	 *              button).
+	 */
+	@FXML
+	void addAnotherPressed(ActionEvent event) {
+		// [subject, qBody, optionA, optionB, optionC, optionD, correctAnswer]
+		String correctAnswer = null;
 
-	// Checks if the subject has been picked
-	if (subjectCombobox.getValue() == "" || subjectCombobox.getValue() == "" || subjectCombobox.getValue() == null) {
-		subjectCombobox.setStyle("-fx-background-color: red;"); // Set red background color
-		JOptionPane.showMessageDialog(null, "Subject Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
-		return;
-	} else {
-		subjectCombobox.setStyle("-fx-background-color: white;");
-	}
-
-	// Checks if the course has been picked
-	if (courseCombobox.getValue() == "" || courseCombobox.getValue() == " " || courseCombobox.getValue() == null) {
-		courseCombobox.setStyle("-fx-background-color: red;"); // Set red background color
-		JOptionPane.showMessageDialog(null, "Course Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
-		return;
-	} else {
-		courseCombobox.setStyle("-fx-background-color: white;");
-	}
-
-	// Checks if the question body is empty
-	if (body.getText().isEmpty()) {
-		JOptionPane.showMessageDialog(null, "Please add questions text !", "Error", JOptionPane.ERROR_MESSAGE);
-		return;
-	}
-
-	// Checks if all the answer fields are filled
-	if (qA.getText().isEmpty() || qB.getText().isEmpty() || qC.getText().isEmpty() || qD.getText().isEmpty()) {
-		JOptionPane.showMessageDialog(null, "Please add questions all answer !", "Error", JOptionPane.ERROR_MESSAGE);
-		return;
-	}
-
-	// Checks if the question number is empty
-	if (qNumber.getText().isEmpty()) {
-		JOptionPane.showMessageDialog(null, "Please add question number !", "Error", JOptionPane.ERROR_MESSAGE);
-		return;
-	}
-
-	// Checks if the question number is a valid number between 1 and 999
-	try {
-		int number = Integer.parseInt(qNumber.getText());
-		if (number < 1 || number > 999) {
-			JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error", JOptionPane.ERROR_MESSAGE);
+		// Checks if the subject has been picked
+		if (subjectCombobox.getValue() == "" || subjectCombobox.getValue() == ""
+				|| subjectCombobox.getValue() == null) {
+			subjectCombobox.setStyle("-fx-background-color: red;"); // Set red background color
+			JOptionPane.showMessageDialog(null, "Subject Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		} else {
-			int length = qNumber.getText().length();
-			if (length == 1)
-				qNumber.setText("00" + qNumber.getText());
-			if (length == 2)
-				qNumber.setText("0" + qNumber.getText());
-			if (length > 3) {
-				JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
+			subjectCombobox.setStyle("-fx-background-color: white;");
 		}
-	} catch (NumberFormatException e) {
-		JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error", JOptionPane.ERROR_MESSAGE);
-		return;
-	}
 
-	// Checks if a correct answer has been selected
-	if (!A.isSelected() && !B.isSelected() && !C.isSelected() && !D.isSelected()) {
-		JOptionPane.showMessageDialog(null, "Please select correct answer !", "Error", JOptionPane.ERROR_MESSAGE);
-		return;
-	}
+		// Checks if the course has been picked
+		if (courseCombobox.getValue() == "" || courseCombobox.getValue() == " " || courseCombobox.getValue() == null) {
+			courseCombobox.setStyle("-fx-background-color: red;"); // Set red background color
+			JOptionPane.showMessageDialog(null, "Course Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		} else {
+			courseCombobox.setStyle("-fx-background-color: white;");
+		}
 
-	// Checks who is the correct answer
-	if (A.isSelected())
-		correctAnswer = "a";
-	else if (B.isSelected())
-		correctAnswer = "b";
-	else if (C.isSelected())
-		correctAnswer = "c";
-	else if (D.isSelected())
-		correctAnswer = "d";
+		// Checks if the question body is empty
+		if (body.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please add questions text !", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
-	ClientUI.updatestatus = 1;
-	sendQandANStoSQL(subjectCombobox.getValue(), courseCombobox.getValue(), body.getText(), qNumber.getText(),
-			qA.getText(), qB.getText(), qC.getText(), qD.getText(), correctAnswer);
+		// Checks if all the answer fields are filled
+		if (qA.getText().isEmpty() || qB.getText().isEmpty() || qC.getText().isEmpty() || qD.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please add questions all answer !", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
-	try {
-		Thread.sleep(200);
-	} catch (InterruptedException e) {
-		e.printStackTrace();
-	}
-	if (ClientUI.updatestatus == 0) {
-		JOptionPane.showMessageDialog(null, "Changes NOT Saved! Question Number Exists In DB", "Fail!",
-				JOptionPane.WARNING_MESSAGE);
+		// Checks if the question number is empty
+		if (qNumber.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please add question number !", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Checks if the question number is a valid number between 1 and 999
+		try {
+			int number = Integer.parseInt(qNumber.getText());
+			if (number < 1 || number > 999) {
+				JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} else {
+				int length = qNumber.getText().length();
+				if (length == 1)
+					qNumber.setText("00" + qNumber.getText());
+				if (length == 2)
+					qNumber.setText("0" + qNumber.getText());
+				if (length > 3) {
+					JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Checks if a correct answer has been selected
+		if (!A.isSelected() && !B.isSelected() && !C.isSelected() && !D.isSelected()) {
+			JOptionPane.showMessageDialog(null, "Please select correct answer !", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Checks who is the correct answer
+		if (A.isSelected())
+			correctAnswer = "a";
+		else if (B.isSelected())
+			correctAnswer = "b";
+		else if (C.isSelected())
+			correctAnswer = "c";
+		else if (D.isSelected())
+			correctAnswer = "d";
+
 		ClientUI.updatestatus = 1;
-		return;
+		sendQandANStoSQL(subjectCombobox.getValue(), courseCombobox.getValue(), body.getText(), qNumber.getText(),
+				qA.getText(), qB.getText(), qC.getText(), qD.getText(), correctAnswer);
+
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if (ClientUI.updatestatus == 0) {
+			JOptionPane.showMessageDialog(null, "Changes NOT Saved! Question Number Exists In DB", "Fail!",
+					JOptionPane.WARNING_MESSAGE);
+			ClientUI.updatestatus = 1;
+			return;
+		}
+		JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
+
+		// Reset all fields for the next question
+		correctAnswer = null;
+		subjectCombobox.setStyle("-fx-background-color: white;"); // Set white background color
+		subjectCombobox.setValue("");
+		courseCombobox.setStyle("-fx-background-color: white;"); // Set white background color
+		courseCombobox.setValue("");
+		body.setText("");
+		qNumber.setText("");
+		qA.setText("");
+		qB.setText("");
+		qC.setText("");
+		qD.setText("");
+		A.setSelected(false);
+		B.setSelected(false);
+		C.setSelected(false);
+		D.setSelected(false);
 	}
-	JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
-
-	// Reset all fields for the next question
-	correctAnswer = null;
-	subjectCombobox.setStyle("-fx-background-color: white;"); // Set white background color
-	subjectCombobox.setValue("");
-	courseCombobox.setStyle("-fx-background-color: white;"); // Set white background color
-	courseCombobox.setValue("");
-	body.setText("");
-	qNumber.setText("");
-	qA.setText("");
-	qB.setText("");
-	qC.setText("");
-	qD.setText("");
-	A.setSelected(false);
-	B.setSelected(false);
-	C.setSelected(false);
-	D.setSelected(false);
-}
-
 
 	/**
 	 * This method is called when the 'Cancel' button is pressed. It sets the author
