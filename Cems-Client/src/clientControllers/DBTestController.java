@@ -32,31 +32,31 @@ public class DBTestController extends BasicController {
 
 	@FXML
 	private TableColumn<Test, String> Author;
-	
+
 	@FXML
 	private TableColumn<Test, String> CourseName;
-	
+
 	@FXML
 	private TableColumn<Test, RadioButton> Choose;
-	
+
 	@FXML
 	private Button exitbutton;
-	
+
 	@FXML
 	private Button logo;
-	
+
 	@FXML
 	private TableView<QuestionModel> table;
-	
+
 	@FXML
 	private TextField TableAuthorField;
-	
+
 	@FXML
 	private ComboBox<String> subjectComboBox;
-	
+
 	@FXML
 	private ComboBox<String> courseComboBox;
-	
+
 	@FXML
 	private Label live_time;
 
@@ -65,7 +65,7 @@ public class DBTestController extends BasicController {
 		// Start the clock
 		Timenow(live_time);
 	}
-	
+
 	// load the table - table has filter, filter updatePredicate handles the filter
 	public void load(Test test) {
 		testToReturn = test;
@@ -79,7 +79,8 @@ public class DBTestController extends BasicController {
 		if (LecturerController.questions.isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Error getting the question!", "Error", JOptionPane.ERROR_MESSAGE);
 		} else {
-			ObservableList<QuestionModel> questionList = FXCollections.observableArrayList(LecturerController.questions);
+			ObservableList<QuestionModel> questionList = FXCollections
+					.observableArrayList(LecturerController.questions);
 			FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
 			table.setItems(filteredList);
 
@@ -127,7 +128,7 @@ public class DBTestController extends BasicController {
 					|| questionModel.getCoursename().contains(selectedCourse)
 					|| questionModel.getCoursename().contains(selectedCourse);
 
-			boolean matchesLecturer = authorFilterField.isEmpty() 
+			boolean matchesLecturer = authorFilterField.isEmpty()
 					|| questionModel.getLecturer().contains(authorFilterField)
 					|| questionModel.getLecturer().contains(authorFilterField);
 
@@ -144,16 +145,17 @@ public class DBTestController extends BasicController {
 	void addQuestionPressed(ActionEvent event) {
 
 		// Remembers the questions that needs to be added
-		//ObservableList<QuestionModel> tempQuestionList = table.getItems();
-		//ArrayList<QuestionModel> questionsToAdd = new ArrayList<>();
+		// ObservableList<QuestionModel> tempQuestionList = table.getItems();
+		// ArrayList<QuestionModel> questionsToAdd = new ArrayList<>();
 
 		// for (int i = 0; i < tempQuestionList.size(); i++)
-		// 	if (Choose.getCellObservableValue(tempQuestionList.get(i)).getValue().isSelected())
-		// 		if (!testToReturn.getQuesitonsInTest().contains(tempQuestionList.get(i)))
-		// 			questionsToAdd.add(tempQuestionList.get(i));
+		// if
+		// (Choose.getCellObservableValue(tempQuestionList.get(i)).getValue().isSelected())
+		// if (!testToReturn.getQuesitonsInTest().contains(tempQuestionList.get(i)))
+		// questionsToAdd.add(tempQuestionList.get(i));
 
 		// Adds the questions to the current test to return.
-		//testToReturn.addToQuestions(questionsToAdd);
+		// testToReturn.addToQuestions(questionsToAdd);
 
 		// open Create Tests back with already updated test
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
@@ -172,16 +174,16 @@ public class DBTestController extends BasicController {
 		ctc.loadFilterComboboxes();
 	}
 
-
 	@FXML
 	void createQuestionPressed(ActionEvent event) {
 		if (LecturerController.subjectsList.isEmpty())
-            JOptionPane.showMessageDialog(null, "Lecturer has no subjects!", "Error", JOptionPane.ERROR_MESSAGE);
-        else {
-            // Open the CreateQuestionController and pass the subjects list
-            CreateQuestionController ctc = (CreateQuestionController) openScreen("/clientFXMLS/LecturerCreateQFromDB", "CEMS System - Lecturer - Create Question", event);
-            ctc.loadFilterComboboxes();
-        }
+			JOptionPane.showMessageDialog(null, "Lecturer has no subjects!", "Error", JOptionPane.ERROR_MESSAGE);
+		else {
+			// Open the CreateQuestionController and pass the subjects list
+			CreateQuestionController ctc = (CreateQuestionController) openScreen("/clientFXMLS/LecturerCreateQFromDB",
+					"CEMS System - Lecturer - Create Question", event);
+			ctc.loadFilterComboboxes();
+		}
 
 	}
 }

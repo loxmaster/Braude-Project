@@ -17,10 +17,10 @@ import javafx.scene.control.ToggleGroup;
 
 public class CreateQuestionController extends BasicController {
 
-
 	public static String subjectID, courseID;
 
 	ObservableList<String> subjectList;
+
 	ObservableList<String> courseList;
 
 	@FXML
@@ -52,6 +52,7 @@ public class CreateQuestionController extends BasicController {
 		// Start the clock
 		Timenow(live_time);
 	}
+
 	public static void setSubjectID(String subject) {
 		CreateQuestionController.subjectID = subject;
 	}
@@ -77,10 +78,7 @@ public class CreateQuestionController extends BasicController {
 
 		courseCombobox.getItems().removeAll();
 		courseCombobox.setItems(courseList);
-
 	}
-
-	
 
 	@FXML
 	void confirmPressed(ActionEvent event) {
