@@ -16,13 +16,22 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 
-public class IdAndCodeScreen extends BasicController { //TODO change name
+public class IdAndCodeScreen extends BasicController {
+
+	
+	/////////////////////////////// Local Variables ///////////////////////////////
 
 
 	private StudentExamController examController;
+
 	public static String test_code = null;
+
 	public static String test_id = null;
+
 	public static boolean testRunning = false;
+
+
+	/////////////////////////////// FXML variables ////////////////////////////////
 
 
 	@FXML
@@ -33,12 +42,6 @@ public class IdAndCodeScreen extends BasicController { //TODO change name
 
 	@FXML
 	private Button logo;
-
-	@FXML
-	private TextField ID;
-
-	@FXML
-    private TextField code;
 
 	@FXML
 	private TextField testCode;
@@ -52,6 +55,10 @@ public class IdAndCodeScreen extends BasicController { //TODO change name
 	@FXML
 	private ImageView onlineTest;
 	
+
+	/////////////////////////////// FXML methods ///////////////////////////////
+
+
 	@FXML
 	void backPressed(ActionEvent event) {
 		// Opening window for code entering
@@ -61,7 +68,7 @@ public class IdAndCodeScreen extends BasicController { //TODO change name
 	@FXML
 	void AutomaticPressed(ActionEvent event) {
 
-		// TODO see what not works here , when works can delete whats below and all guchi
+		// TODO see what not works here , when works delete whats below and all guchi
 		/*
 		if ((test_code == null)) {
 			try {
@@ -85,8 +92,8 @@ public class IdAndCodeScreen extends BasicController { //TODO change name
 			examController.load(test_id);
 		}
 		*/
-		String code = testCode.getText();
 
+		String code = testCode.getText();
 		examController = (StudentExamController) openScreen("/clientFXMLS/StudentExam.fxml",
 					"CEMS System - Student - Exam", event);
 		examController.load(code);
@@ -133,6 +140,9 @@ public class IdAndCodeScreen extends BasicController { //TODO change name
 						JOptionPane.ERROR_MESSAGE);
 		}
 	}
+
+
+	/////////////////////////////// Instance Methods ///////////////////////////////
 
 
 	public static boolean isTestRunning() {

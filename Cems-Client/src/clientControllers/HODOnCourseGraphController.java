@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,17 +14,11 @@ import javafx.scene.text.Text;
 import logic.Statistics;
 import logic.Test;
 
-// Extends the BasicController class
-public class HODOnLecGraphController extends BasicController {
-
-    // FXML variables used to interface with the UI
-    @FXML
-    private Text Exam_NameID;
+public class HODOnCourseGraphController extends BasicController {
 
     @FXML
-    private Text Lecturer_Name;
+    private Text Course_NameID;
 
-    // ... Other FXML variables ...
     @FXML
     private Text a_pass;
 
@@ -34,7 +29,7 @@ public class HODOnLecGraphController extends BasicController {
     private Text b_pass;
 
     @FXML
-    private BarChart<String, Number> graph_barchart;
+    private Button backButton;
 
     @FXML
     private Text c_pass;
@@ -43,16 +38,13 @@ public class HODOnLecGraphController extends BasicController {
     private Text d_pass;
 
     @FXML
-    private Text date_fill;
-
-    @FXML
     private Text e_pass;
 
     @FXML
-    private Text f_pass;
+    private Button exitbutton;
 
     @FXML
-    private Text fail_precentage_fill;
+    private Text f_pass;
 
     @FXML
     private Text fail_precentage;
@@ -61,13 +53,13 @@ public class HODOnLecGraphController extends BasicController {
     private Text g_pass;
 
     @FXML
+    private BarChart<String, Number> graph_barchart;
+
+    @FXML
     private Text h_pass;
 
     @FXML
-    private Text high_fill;
-
-    @FXML
-    private Text low_fill;
+    private Button logo;
 
     @FXML
     private Text median_fill;
@@ -99,15 +91,17 @@ public class HODOnLecGraphController extends BasicController {
     @FXML
     private Text num_h;
 
-    // Buttons in the UI
     @FXML
-    private Button backButton;
+    private PieChart piechart;
 
     @FXML
-    private Button exitbutton;
+    private Text total_students;
 
     @FXML
-    private Button logo;
+    private Text total_above;
+
+    @FXML
+    private Text total_below;
 
     @FXML
     private Label live_time;
@@ -118,34 +112,45 @@ public class HODOnLecGraphController extends BasicController {
         Timenow(live_time);
     }
 
-    // Method to handle "back" button click
+    @FXML
+    void backToLecturer(ActionEvent event) {
+
+    }
+
     @FXML
     void backtoStatistical(ActionEvent event) {
-        HODStatisticOnLecturerController Hod = (HODStatisticOnLecturerController) openScreen(
-                "/clientFXMLS/HodStatisticOnLecturer.fxml", "Statistical Informatrion On Lecturer", event);
+        HODStatisticOnCourseController Hod = (HODStatisticOnCourseController) openScreen(
+                "/clientFXMLS/HodStatisticOnCourses.fxml", "Statistical Informatrion On Courses", event);
         Hod.load();
     }
 
-    // Method to populate the UI with statistics
+    @FXML
+    void exitPressed(ActionEvent event) {
+        
+    }
 
-    public void setData(Statistics stats, ArrayList<Test> completedTestsList) {
-        // Arrays to store the number of students and their percentage in each grade
-        // category
+    public void CoursesdInfo(Statistics data, ArrayList<Test> AllcompletedTestsList) {
+
+        // Create pie chart data
+        PieChart.Data passData = new PieChart.Data("Pass Rate", data.getPass_Rate());
+        PieChart.Data failData = new PieChart.Data("Fail Rate", data.getFail_Rate());
+        // Add data to the pie chart
+        piechart.getData().addAll(passData, failData);
+
+        // Populating UI elements with stats data
+        total_students.setText(Integer.toString(data.getTotal_Number_of_Students()));
+        total_above.setText(Integer.toString(data.getNumber_of_Students_Above_Average()));
+        total_below.setText(Integer.toString(data.getNumber_of_Students_Below_Average()));
+        average_fill.setText(Integer.toString(data.getAverage()));
+        median_fill.setText(data.getMedian());
+        Course_NameID.setText(data.getName_of_Courses() + "(" + data.getCourse() + ")");
 
         int[] presentage_num = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         int[] presentage_precentage = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        // Populating UI elements with stats data
 
-        Exam_NameID.setText(stats.getCourse() + "(" + stats.getTestID() + ")");
-        date_fill.setText(stats.getDate());
-        average_fill.setText(Integer.toString(stats.getAverage()));
-        median_fill.setText(stats.getMedian());
-        high_fill.setText(Integer.toString(stats.getHighes()));
-        low_fill.setText(Integer.toString(stats.getLowest()));
         // ... Other text elements ...
-        for (Test test : completedTestsList) {
-            if (test.getId().equals(stats.getTestID())) {
-                Lecturer_Name.setText(test.getAuthor());
+        for (Test test : AllcompletedTestsList) {
+            if (test.getId().substring(0, 4).equals(data.getCourse())) {
                 if (Integer.parseInt(test.getGrade()) <= 54) {
                     presentage_num[0]++;
                 } else if (Integer.parseInt(test.getGrade()) <= 64 && Integer.parseInt(test.getGrade()) >= 55) {
@@ -170,12 +175,10 @@ public class HODOnLecGraphController extends BasicController {
         // Calculating the percentage of students in each category
 
         for (int i = 0; i < presentage_num.length; i++) {
-            presentage_precentage[i] = (int) ((double) presentage_num[i] / stats.getTotal_Number_of_Students() * 100);
+            presentage_precentage[i] = (int) ((double) presentage_num[i] / data.getTotal_Number_of_Students() * 100);
         }
 
         // Populating UI elements with percentage data
-
-        fail_precentage_fill.setText(Integer.toString(presentage_precentage[0]));
         fail_precentage.setText(Integer.toString(presentage_precentage[0]));
         a_pass.setText(Integer.toString(presentage_precentage[1]));
         b_pass.setText(Integer.toString(presentage_precentage[2]));
@@ -212,13 +215,13 @@ public class HODOnLecGraphController extends BasicController {
         graph_barchart.getData().add(series);
 
         // After adding the series, change the color of bars
-        for (XYChart.Data<String, Number> data : series.getData()) {
-            Node node = data.getNode();
-            if (data.getXValue().equals("Fail")) {
+        for (XYChart.Data<String, Number> DataXY : series.getData()) {
+            Node node = DataXY.getNode();
+            if (DataXY.getXValue().equals("Fail")) {
                 // Set the color of 'Fail' category bar to red
                 node.setStyle("-fx-bar-fill: red;");
-            } else if (data.getXValue().equals("55-64") || data.getXValue().equals("65-69")
-                    || data.getXValue().equals("70-74") || data.getXValue().equals("75-79")) {
+            } else if (DataXY.getXValue().equals("55-64") || DataXY.getXValue().equals("65-69")
+                    || DataXY.getXValue().equals("70-74") || DataXY.getXValue().equals("75-79")) {
                 // Set the color of other bars to yellow
                 node.setStyle("-fx-bar-fill: yellow;");
             } else {
@@ -226,6 +229,7 @@ public class HODOnLecGraphController extends BasicController {
                 node.setStyle("-fx-bar-fill: green;");
             }
         }
+
     }
 
 }

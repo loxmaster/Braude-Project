@@ -2,12 +2,22 @@ package logic;
 
 import java.util.ArrayList;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 
 public class Test {
 
     private ArrayList<QuestionModel> quesitonsInTest;
     private String id, author, subject;
+    private Button check;
+
+    public Button getCheck() {
+        return check;
+    }
+
+    public void setCheck(Button check) {
+        this.check = check;
+    }
 
     public String getSubject() {
         return subject;
@@ -53,7 +63,7 @@ public class Test {
         this.Grade = Grade;
     }
 
-    public Test(String id, String subject, String author, String duration, String testComments, String testCode,
+    public Test(String id, String subject, String author, String duration, String testComment, String testCode,
             String dateString, String time, ArrayList<QuestionModel> quesitonsInTest) {
         this.id = id;
         this.course = subject;
@@ -101,9 +111,6 @@ public class Test {
         return Grade;
     }
 
-    
-    
-    
     public String getTested() {
         return tested;
     }

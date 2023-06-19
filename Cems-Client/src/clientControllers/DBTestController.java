@@ -1,7 +1,5 @@
 package clientControllers;
 
-import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
 
 import javafx.collections.FXCollections;
@@ -10,7 +8,6 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -24,28 +21,39 @@ import logic.Test;
 public class DBTestController extends BasicController {
 
 	private Test testToReturn;
+
 	ObservableList<String> subjectList, courseList;
 
 	@FXML
 	private TableColumn<Test, String> TestID;
+
 	@FXML
 	private TableColumn<Test, String> Department;
+
 	@FXML
 	private TableColumn<Test, String> Author;
+
 	@FXML
 	private TableColumn<Test, String> CourseName;
+
 	@FXML
 	private TableColumn<Test, RadioButton> Choose;
+
 	@FXML
 	private Button exitbutton;
+
 	@FXML
 	private Button logo;
+
 	@FXML
 	private TableView<QuestionModel> table;
+
 	@FXML
 	private TextField TableAuthorField;
+
 	@FXML
 	private ComboBox<String> subjectComboBox;
+
 	@FXML
 	private ComboBox<String> courseComboBox;
 
@@ -137,8 +145,8 @@ public class DBTestController extends BasicController {
 	void addQuestionPressed(ActionEvent event) {
 
 		// Remembers the questions that needs to be added
-		ObservableList<QuestionModel> tempQuestionList = table.getItems();
-		ArrayList<QuestionModel> questionsToAdd = new ArrayList<>();
+		// ObservableList<QuestionModel> tempQuestionList = table.getItems();
+		// ArrayList<QuestionModel> questionsToAdd = new ArrayList<>();
 
 		// for (int i = 0; i < tempQuestionList.size(); i++)
 		// if
@@ -147,7 +155,7 @@ public class DBTestController extends BasicController {
 		// questionsToAdd.add(tempQuestionList.get(i));
 
 		// Adds the questions to the current test to return.
-		testToReturn.addToQuestions(questionsToAdd);
+		// testToReturn.addToQuestions(questionsToAdd);
 
 		// open Create Tests back with already updated test
 		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
@@ -168,7 +176,6 @@ public class DBTestController extends BasicController {
 
 	@FXML
 	void createQuestionPressed(ActionEvent event) {
-
 		if (LecturerController.subjectsList.isEmpty())
 			JOptionPane.showMessageDialog(null, "Lecturer has no subjects!", "Error", JOptionPane.ERROR_MESSAGE);
 		else {

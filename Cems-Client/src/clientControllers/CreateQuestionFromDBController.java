@@ -85,7 +85,6 @@ public class CreateQuestionFromDBController extends BasicController {
 
 		courseCombobox.getItems().removeAll();
 		courseCombobox.setItems(courseList);
-
 	}
 
 	@FXML
@@ -197,6 +196,7 @@ public class CreateQuestionFromDBController extends BasicController {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		subjectID =CreateQuestionController.getSubjectID();
 		System.out.println("CreateQuestion: " + subjectID);
 		subjectID += qnumber;
 		ClientUI.chat.CreateQuestion(subjectID, subject,course, qBody, qnumber);

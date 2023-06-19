@@ -1,18 +1,15 @@
 package clientHandlers;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import logic.QuestionModel;
-import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 import logic.FileUploadMessage;
+import logic.QuestionModel;
 import logic.Test;
 
 public class ClientController implements ChatIF {
@@ -97,7 +94,11 @@ public class ClientController implements ChatIF {
         }
     }
 
+<<<<<<< HEAD
     // 1 in hod
+=======
+    // fetch data for hod in statistic on lecterurs
+>>>>>>> f37ba18f1b11bbba925414323ea39a60661df4cd
     public void getLecturerListUnderSameDepartment() {
         try {
             client.getLecturerListUnderSameDepartment();
@@ -106,7 +107,11 @@ public class ClientController implements ChatIF {
         }
     }
 
+<<<<<<< HEAD
     // 2 in hod
+=======
+    // fetch data for hod in statistic on lecterurs
+>>>>>>> f37ba18f1b11bbba925414323ea39a60661df4cd
     public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
         try {
             client.HodGETcompletedTestsForSpecificLecturerList(userName);
@@ -115,7 +120,11 @@ public class ClientController implements ChatIF {
         }
     }
 
+<<<<<<< HEAD
     // 3 in hod
+=======
+    // fetch data for hod in statistic on lecterurs
+>>>>>>> f37ba18f1b11bbba925414323ea39a60661df4cd
     public void getHodCourseForTestSpecificLec(Object id) {
         try {
             client.getHodCourseForTestSpecificLec((String) id);
@@ -124,6 +133,36 @@ public class ClientController implements ChatIF {
         }
     }
 
+<<<<<<< HEAD
+=======
+    // fetch data for hod in statistic on Students
+    public void geStudentListUnderSameDepartment() {
+        try {
+            client.geStudentListUnderSameDepartment();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // fetch data for hod in statistic on lecterurs
+    public void HodGETcompletedTestsForSpecificStudentList(String userID) {
+        try {
+            client.HodGETcompletedTestsForSpecificStudentList(userID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // fetch data for hod in statistic on lecterurs
+    public void getHodCourseForTestSpecificStudent(Object id) {
+        try {
+            client.getHodCourseForTestSpecificStudent((String) id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+>>>>>>> f37ba18f1b11bbba925414323ea39a60661df4cd
     // gets all subject available for lecturer
     public void getCourseForTest(Object id) {
         try {
@@ -262,6 +301,10 @@ public class ClientController implements ChatIF {
         client.getTestWithCodeForStudent(testName);
     }
 
+    public void getTestWithCodeFor_CompletedTest(Test testName) {
+        client.getTestWithCodeFor_CompletedTest(testName);
+    }
+
     public void sendToCompletedTest(Test localTest) {
         // Creating the quesitons Id list and selected question list.
         ArrayList<String> questionIdList = new ArrayList<>();
@@ -271,11 +314,23 @@ public class ClientController implements ChatIF {
             questionIdList.add(question.getId());
             SelectedQuestions.add(question.getSelected());
         }
+        // Runs over the current test and checks it - grades it.
+        int grade = 0;
+        for (QuestionModel question : localTest.getQuesitonsInTest()) {
+            if (question.getAnswer().equals(question.getSelected())) {
+                grade += Integer.parseInt(question.getPoints());
+                System.out.println(question.getPoints());
+            }
+        }
 
         String query = "INSERT INTO `projecton`.`completed_tests` (`test_id`, `student_id`, `grade`, `authorsname`, `code`, `date`, `time`,"
                 +
                 " `duration`, `questions`, `test_type`, `status`,  `selected`) VALUES ('" + localTest.getId() + "', '"
+<<<<<<< HEAD
                 + ClientHandler.user.getUser_id() + "', '" + "" +
+=======
+                + ClientHandler.user.getUser_id() + "', '" + grade +
+>>>>>>> f37ba18f1b11bbba925414323ea39a60661df4cd
                 "', '" + localTest.getAuthor() + "', '" + localTest.getTestCode() + "', '" + "13-05-2023" + "', '"
                 + localTest.getTime() + "', '" + localTest.getDuration() +
                 "', '" + questionIdList + "', '" + "computer" + "', '" + "completed" + "', '" + SelectedQuestions
@@ -371,6 +426,23 @@ public class ClientController implements ChatIF {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void getCoursesSameDepartment() {
+        try {
+            client.getCoursesSameDepartment();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getCoursesExams(String courseID) {
+                try {
+            client.getCoursesExams(courseID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
