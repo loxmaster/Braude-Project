@@ -9,15 +9,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import logic.QuestionModel;
 import logic.Test;
 
 public class EditTestController extends CreateTestController {
     private Test test;
-    private ArrayList<QuestionModel> questions;
+    private ArrayList<QuestionModel>[] questions;
     private ObservableList<String> subjectList;
     private ObservableList<String> courseList;
+
+    private Button deleteBtn;
 
     @Override
     void initialize() {
