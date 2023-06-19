@@ -64,9 +64,10 @@ public class LoginScreenController extends BasicController {
 		// gest text from fields
 		username = emailTextbox.getText();
 		password = passTextbox.getText();
-		//username = "Amir_Mishayev";
-		password = "123456";
 		String selectedRole = combo_Role.getValue();
+		//username = "Noah_Soskha";
+		//password = "123456";
+		//selectedRole = "lecturer";
 
 		System.out.println("Entered: " + username + " " + password + " " + selectedRole);
 

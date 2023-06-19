@@ -27,8 +27,7 @@
       <TableView fx:id="table" layoutX="161.0" layoutY="201.0" prefHeight="504.0" prefWidth="1250.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="201.0">
         <columns>
           <TableColumn fx:id="test_id" prefWidth="150.0" text="Test ID" />
-          <TableColumn fx:id="subjectName" prefWidth="150.0" text="Subject" />
-            <TableColumn fx:id="courseName" minWidth="0.0" prefWidth="280.0" text="Course " />
+          <TableColumn fx:id="grade" prefWidth="150.0" text="Grade" />
             <TableColumn fx:id="Date" prefWidth="126.0" text="Date" />
             <TableColumn fx:id="student_id" prefWidth="99.0" text="Student ID" />
             <TableColumn fx:id="Checked" minWidth="0.0" prefWidth="141.0" text="checked" />

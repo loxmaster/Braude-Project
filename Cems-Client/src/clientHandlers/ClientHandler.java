@@ -8,9 +8,11 @@ import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+import clientControllers.CheckTestController;
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
 import clientControllers.HODStatisticOnCourseController;
+import clientControllers.EvaluateTestController;
 import clientControllers.HODStatisticOnLecturerController;
 import clientControllers.HODStatisticOnStudentController;
 import clientControllers.HODViewGradesController;
@@ -101,12 +103,19 @@ public class ClientHandler extends AbstractClient {
 				TestInServer testFromServer = (TestInServer) serverMessage;
 				ArrayList<QuestionModel> listOfQuestionModels = new ArrayList<>();
 				for (Question question : testFromServer.getQuesitonsInTest()) {
-					QuestionModel questionModel = new QuestionModel(question.getId(), question.getSubject(),
-							question.getCoursename(), question.getQuestiontext(),
-							question.getQuestionnumber(), question.getLecturer(), question.getOptionA(),
+					QuestionModel questionModel = new QuestionModel(question.getId(),
+							question.getSubject(),
+							question.getCoursename(),
+							question.getQuestiontext(),
+							question.getQuestionnumber(),
+							question.getLecturer(),
+							question.getOptionA(),
 							question.getOptionB(),
-							question.getOptionC(), question.getOptionD(), question.getAnswer());
+							question.getOptionC(),
+							question.getOptionD(),
+							question.getAnswer());
 					questionModel.setPoints(question.getPoints());
+					listOfQuestionModels.add(questionModel);
 					listOfQuestionModels.add(questionModel);
 				}
 
@@ -116,7 +125,10 @@ public class ClientHandler extends AbstractClient {
 						testFromServer.getTime(),
 						listOfQuestionModels);
 
-				StudentExamController.setTest(testToAdd);
+				if (user.getType() == "lecturer")
+					EvaluateTestController.setLocaltest(testToAdd);
+				else
+					StudentExamController.setTest(testToAdd);
 				break;
 
 			// If message type ArrayList it means that data comes in , where first index (0)
@@ -233,6 +245,7 @@ public class ClientHandler extends AbstractClient {
 						case "completedTestsForLecturer": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
+							ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
 							// CompletedTestList = (ArrayList<Test>) severMessage;
 							int i = 1;
 							while (i < list.size()) {
@@ -251,9 +264,12 @@ public class ClientHandler extends AbstractClient {
 										list.get(i + 11)));
 								i += 12;
 							}
+
 							LecturerStatisticalController.setcompletedTestsForLecturerList(listToAdd);
+							CheckTestController.setCompletedTestsList(listToAdd);
 							break;
 						}
+						
 						case "getCoursesExams": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
@@ -547,6 +563,19 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> listOfCommands = new ArrayList<>();
 		listOfCommands.addAll(
 				Arrays.asList("gettestwithcode", "SELECT * FROM projecton.tests where code = '" + testCode + "';"));
+		try {
+			sendToServer((Object) listOfCommands);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getTestWithCodeFor_CompletedTest(Test test) {
+
+		ArrayList<String> listOfCommands = new ArrayList<>();
+		listOfCommands.addAll(
+				Arrays.asList("check test",
+						"SELECT * FROM projecton.completed_tests where test_id = '" + test.getId() + "' AND student_id = '" + test.getStudentID() + "';"));
 		try {
 			sendToServer((Object) listOfCommands);
 		} catch (IOException e) {
