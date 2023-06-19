@@ -1,10 +1,7 @@
 package clientHandlers;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
@@ -14,6 +11,7 @@ import clientControllers.CreateTestController;
 import clientControllers.DBTestController;
 import clientControllers.HODStatisticOnCourseController;
 import clientControllers.EvaluateTestController;
+import clientControllers.HODStatisticOnCourseController;
 import clientControllers.HODStatisticOnLecturerController;
 import clientControllers.HODStatisticOnStudentController;
 import clientControllers.HODViewGradesController;
@@ -22,7 +20,6 @@ import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
 import clientControllers.StudentExamController;
 import clientControllers.ViewGradesController;
-import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 import logic.Question;
 import logic.QuestionModel;
@@ -117,7 +114,6 @@ public class ClientHandler extends AbstractClient {
 							question.getAnswer());
 					questionModel.setPoints(question.getPoints());
 					listOfQuestionModels.add(questionModel);
-					// listOfQuestionModels.add(questionModel);
 				}
 
 				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
@@ -246,7 +242,7 @@ public class ClientHandler extends AbstractClient {
 						case "completedTestsForLecturer": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
-							ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
+							// ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
 							// CompletedTestList = (ArrayList<Test>) severMessage;
 							int i = 1;
 							while (i < list.size()) {
@@ -529,539 +525,37 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	/**
-	 * This method handles all data coming from the UI
-	 *
-	 * @param message The message from the UI.
-	 */
-	public void handleMessageFromClientUI(Object message) {
-		try {
-			sendToServer(message);
-		} catch (IOException e) {
-			client.display("Could not send message to server.  Terminating client.");
-			quit();
-		}
-	}
-
-	/**
-	 * Handles the message received from the client login user interface
-	 * NOTE: this method does not have a unique ideintifier
-	 * EchoServer is configured that the default of the switch case goes to this
-	 * method
+	 * Method for passing the information to the database from the UI
 	 * 
-	 * @param username username entered.
-	 * @param password password entered.
+	 * @param listToSend
 	 */
-	public void handleMessageFromLoginUI(Object username, Object password, Object type) {
-		ArrayList<String> credentials = new ArrayList<String>();
-		// create a query to grab username requested
-		String name = (String) username;
-		String pass = (String) password;
-		String role = (String) type;
-		String query = String.format(
-				"SELECT * FROM projecton.users  WHERE username = '%s' AND password = '%s' AND type = '%s';",
-				name, pass, role);
-		credentials.addAll(Arrays.asList(query, name, pass, role));
-
+	public void passToServer(Object listToSend) {
 		try {
-			sendToServer((Object) credentials);
-		} catch (IOException e) {
-			client.display("Could not send message to server.  Terminating client.");
-			quit();
-		}
-	}
-
-	/**
-	 * Handles the message received from the lecturer user interface gets all the
-	 * subjects.//TODO please check what this method do and if it's relevant
-	 */
-	public void handleMessageFromLecturerUI() {
-		try {
-			sendToServer((Object) "SELECT DISTINCT subjectname FROM subjectcourses;");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	///////////////////////////////////////////////////
-	////////////////// LOGIC METHODS /////////////////
-	/////////////////////////////////////////////////
-
-	public void getTestWithCodeForStudent(String testCode) {
-
-		ArrayList<String> listOfCommands = new ArrayList<>();
-		listOfCommands.addAll(
-				Arrays.asList("gettestwithcode", "SELECT * FROM projecton.tests where code = '" + testCode + "';"));
-		try {
-			sendToServer((Object) listOfCommands);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void getTestWithCodeFor_CompletedTest(Test test) {
-
-		ArrayList<String> listOfCommands = new ArrayList<>();
-		listOfCommands.addAll(
-				Arrays.asList("check test",
-						"SELECT * FROM projecton.completed_tests where test_id = '" + test.getId()
-								+ "' AND student_id = '" + test.getStudentID() + "';"));
-		try {
-			sendToServer((Object) listOfCommands);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Handles the message received from the lecturer user interface gets all the
-	 * subjects for the lecturer.
-	 * for example: grabbing all the courses of a lecturer AND courses
-	 * and whatever the lecturer will need to pre-load
-	 * 
-	 * currently- this method creates a query to get the lecturers (currently logged
-	 * in lecturer) courses.
-	 */
-	public void handleMessageFromLecturerUI(Object username) {
-		ArrayList<String> subjectList = new ArrayList<String>();
-
-		subjectList.addAll(Arrays.asList("lecturersubjects",
-				"SELECT department FROM projecton.users WHERE (`username` = '" + (String) username + "');"));
-		try {
-			sendToServer((Object) subjectList);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void handle_test_MessageFromLecturerUI(Object username) {
-		ArrayList<String> courseList = new ArrayList<String>();
-
-		courseList.addAll(Arrays.asList("lecturercourses",
-				"SELECT courses FROM projecton.lecturer WHERE username = '" + (String) username + "';"));
-		try {
-			sendToServer((Object) courseList);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Handles the message received from the lecturer user interface gets all the
-	 * questions for the lecturer.
-	 * 
-	 * @param username lecturers username
-	 */
-	public void GetLecturersQuestions_Handler(String username) {
-		/*
-		 * try { openConnection(); } catch (IOException e1) { System.out.println(1); }
-		 */
-		ArrayList<String> list = new ArrayList<String>();
-
-		// '*' returns every question, it's used in CreateTestController
-		if (username == "*")
-			list.addAll(Arrays.asList("lecturerquestions", "SELECT * FROM projecton.questions;"));
-		else
-			list.addAll(Arrays.asList("lecturerquestions",
-					"SELECT * FROM projecton.questions where ( `lecturer` = '" + username + "' );"));
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void getcompletedTestsForStudentList() {
-
-		ArrayList<String> list = new ArrayList<String>();
-		String key = user.getUser_id();
-		String testType = "computer";
-		String status = "completed";
-		String tested = "true";
-		String query = String.format(
-				"SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND test_type='%s' AND status='%s' AND tested='%s';",
-				key, testType, status, tested);
-
-		list.addAll(Arrays.asList("completedTestsForStudent", query));
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void getcompletedTestsForLecturerList() {
-
-		ArrayList<String> list = new ArrayList<String>();
-		String status = "completed";
-		String tested = "true";
-		String query = String.format(
-				"SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
-				user.getUsername(), status, tested);
-
-		list.addAll(Arrays.asList("completedTestsForLecturer", query));
-		try {
-			sendToServer((Object) list);
+			this.openConnection();
+			sendToServer(listToSend);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/*
-	 * this function will find all the test that :
-	 * 1) were made by the user
-	 * 2) are not in progress
-	 * 3)aren't finished
-	 */
-	public void getAllTestsOfLecturer() {
-		ArrayList<String> list = new ArrayList<String>();
-		String query = String.format(
-				"SELECT * FROM projecton.tests WHERE authorsname='%s' AND id NOT IN (SELECT test_id FROM projecton.completed_tests ) AND id NOT IN (SELECT test_id FROM projecton.ongoing_tests)",
-				user.getUsername());
-		list.addAll(Arrays.asList("futureTests", query));
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
-
-		ArrayList<String> list = new ArrayList<String>();
-		String status = "completed";
-		String tested = "true";
-		String query = String.format(
-				"SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
-				userName, status, tested);
-
-		list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificLecturerList", query));
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void HodGETcompletedTestsForSpecificStudentList(String userID) {
-
-		ArrayList<String> list = new ArrayList<String>();
-		String status = "completed";
-		String tested = "true";
-		String query = String.format(
-				"SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND status='%s' AND tested='%s';",
-				userID, status, tested);
-
-		list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificStudentList", query));
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void getCourseForTest(String id) {
-
-		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
-		String subjectid = id.substring(0, 2);
-		String courseid = id.substring(2, 4);
-		String query = String.format(
-				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
-				subjectid, courseid);
-		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTest", query));
-		try {
-			sendToServer((Object) subjectcoursenameofcompletedtest);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void getCourseForTestLec(String id) {
-
-		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
-		String subjectid = id.substring(0, 2);
-		String courseid = id.substring(2, 4);
-		String query = String.format(
-				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
-				subjectid, courseid);
-		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTestLec", query));
-		try {
-			sendToServer((Object) subjectcoursenameofcompletedtest);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Method to create query to edit existing question
+	 * public void GetTestGrades_StatisticalInformation(String testID) {
+	 * ArrayList<String> list = new ArrayList<String>();
 	 * 
-	 * @param newBody
-	 * @param newQNumber
-	 * @param originalId
-	 */
-	public void EditQuestion(String NewID, String subject, String course, String qBody, String qnumber,
-			String originalId) {
-		ArrayList<String> list = new ArrayList<String>();
-
-		// ugly will stay ugly <3
-		list.addAll(Arrays.asList("editquestion",
-				"UPDATE `projecton`.`questions` SET `id` = '" + NewID
-						+ "', `lecturer` = '" + user.getUsername()
-						+ "', `subject` = '" + subject
-						+ "', `coursename` = '" + course
-						+ "', `questiontext` = '" + qBody
-						+ "', `questionnumber` = '" + qnumber + "' WHERE (`id` = '" + originalId + "');"));
-
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void EditAnswers(String subjectid, String qA, String qB, String qC, String qD, String correctAnswer) {
-		ArrayList<String> list = new ArrayList<String>();
-
-		// ugly will stay ugly <3
-		list.addAll(Arrays.asList("editquestion",
-				"UPDATE `projecton`.`answers` SET `optionA` = '" + qA
-						+ "', `optionB` = '" + qB
-						+ "', `optionC` = '" + qC
-						+ "', `optionD` = '" + qD
-						+ "', `correctAnswer` = '" + correctAnswer + "' WHERE (`questionid` = '" + subjectid + "');"));
-
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	// return a list of grades where [testGrades, passed grades, failed grades]
-	// query that selects PASSED and FAILED grades --> echoserver to parse
-	// parse: [testGrades(echoServer identifier), passed(query), failed(query)]
-	public void GetTestGrades_StatisticalInformation(String testID) {
-		ArrayList<String> list = new ArrayList<String>();
-
-		// FIXME fix this query
-		String query_passed = "SELECT grade from projecton.testResults WHERE grade>=55";
-		String query_failed = "SELECT grade from projecton.testResults WHERE grade<55";
-		list.addAll(Arrays.asList("testGrades", query_passed, query_failed));
-
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Method that creates query for creating a question and
-	 * Passes it to server.
+	 * // FIXME fix this query
+	 * String query_passed =
+	 * "SELECT grade from projecton.testResults WHERE grade>=55";
+	 * String query_failed =
+	 * "SELECT grade from projecton.testResults WHERE grade<55";
+	 * list.addAll(Arrays.asList("testGrades", query_passed, query_failed));
 	 * 
-	 * @param Id
-	 * @param subject
-	 * @param Body
-	 * @param QNumber
+	 * try {
+	 * sendToServer((Object) list);
+	 * } catch (IOException e) {
+	 * e.printStackTrace();
+	 * }
+	 * }
 	 */
-	public void CreateQuestion(String Id, String subject, String course, String Body, String QNumber) {
-		ArrayList<String> list = new ArrayList<String>();
-
-		// Construct the INSERT query to create a new question
-		list.addAll(Arrays.asList("createquestion",
-				"INSERT INTO `projecton`.`questions` (`id`, `lecturer`, `subject`, `coursename`, `questiontext`, `questionnumber`) VALUES ('"
-						+ Id + "','" + user.getUsername() + "', '" + subject + "', '" + course + "', '" + Body + "', '"
-						+ QNumber + "');"));
-
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Method that creates query for insering answers to database.
-	 * 
-	 * @param optionA
-	 * @param optionB
-	 * @param optionC
-	 * @param optionD
-	 * @param correctAnswer
-	 * @param subjectID
-	 */
-	public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer,
-			String subjectID) {
-		ArrayList<String> list = new ArrayList<String>();
-		// Construct the INSERT query to create a new answer
-		String query = "INSERT INTO `projecton`.`answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
-				+ optionA + "', '" + optionB + "', '" + optionC + "', '" + optionD + "', '" + correctAnswer + "', '"
-				+ subjectID + "');";
-		list.add("createanswers");
-		list.add(query);
-
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Method for sending the test to the data base.
-	 * 
-	 * @param query
-	 */
-	public void sendTestToDatabase(Object query) {
-		ArrayList<String> listToSend = new ArrayList<String>();
-		listToSend.add("Addtesttodata");
-		listToSend.add((String) query);
-		try {
-			this.openConnection();
-			sendToServer((Object) listToSend);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create a new arraylist subject, add an identifier "getSubjectID" so the
-	 * Echoserver idenrtifies it,
-	 * the second cell should contain 'subjectname' for the server to parse
-	 * 
-	 * @param subjectname the subject to whom the search is for.
-	 */
-	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
-		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList("getSubjectID",
-				"SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subjectname + "' );"));
-
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void GetCourseIDfromSubjectCourses(Object coursename) {
-		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList("getCourseID",
-				"SELECT courseid FROM projecton.subjectcourses where ( `coursename` = '" + (String) coursename
-						+ "' );"));
-
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	// test id format: 01 02 03 subjectANDcourse format: 01 02 returned value should
-	// be: 01 02 03
-	public void getNextFreeTestNumber(Object subjectANDcourse) {
-		ArrayList<String> list = new ArrayList<String>();
-		// String subject = (String)subjectANDcourse.substring(0,2);
-
-		list.addAll(Arrays.asList("testNumber",
-				"SELECT MAX(CAST(SUBSTRING(id, 5, 2) AS UNSIGNED)) AS max_test_number FROM tests WHERE SUBSTRING(id, 1, 4) = '"
-						+ (String) subjectANDcourse + "';"));
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void handleFileDownload(FileDownloadMessage downloadMessage) {
-		byte[] fileContent = downloadMessage.getFileContent();
-
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Save File");
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
-		fileChooser.getExtensionFilters().add(extFilter);
-
-		File file = fileChooser.showSaveDialog(null);
-		if (file != null) {
-			try (FileOutputStream fos = new FileOutputStream(file)) {
-				if (fileContent != null) {
-					fos.write(fileContent);
-					fos.flush();
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void getHodCourseForTestSpecificLec(String id) {
-
-		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
-		String subjectid = id.substring(0, 2);
-		String courseid = id.substring(2, 4);
-		String query = String.format(
-				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
-				subjectid, courseid);
-		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodSubjectsCourseForTestSpecificLec", query));
-		try {
-			sendToServer((Object) subjectcoursenameofcompletedtest);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void getHodCourseForTestSpecificStudent(String id) {
-
-		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
-		String subjectid = id.substring(0, 2);
-		String courseid = id.substring(2, 4);
-		String query = String.format(
-				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
-				subjectid, courseid);
-		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodCourseForTestSpecificStudent", query));
-		try {
-			sendToServer((Object) subjectcoursenameofcompletedtest);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void getLecturerListUnderSameDepartment() {
-
-		ArrayList<String> list = new ArrayList<String>();
-		String query = String.format(
-				"SELECT * FROM projecton.users  WHERE type = 'lecturer' AND department = '%s';",
-				user.getDepartment());
-
-		list.addAll(Arrays.asList("LecturerListUnderSameDepartment", query));
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void geStudentListUnderSameDepartment() {
-
-		ArrayList<String> list = new ArrayList<String>();
-		String query = String.format(
-				"SELECT * FROM projecton.users  WHERE type = 'student' AND department = '%s';",
-				user.getDepartment());
-
-		list.addAll(Arrays.asList("studentListUnderSameDepartment", query));
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void passToServer(Object listToSend) {
-		try {
-			sendToServer(listToSend);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////
@@ -1085,7 +579,6 @@ public class ClientHandler extends AbstractClient {
 			closeConnection();
 		} catch (IOException e) {
 		}
-		// System.exit(0);
 	}
 
 	// clear client data
@@ -1093,65 +586,6 @@ public class ClientHandler extends AbstractClient {
 		user = new User();
 		LecturerController.subjectsList = new ArrayList<String>();
 		LecturerController.questions = new ArrayList<QuestionModel>();
-	}
-
-	public void isStudentTakingCourse(ArrayList<String> sendtoServer) throws IOException {
-		sendtoServer.add(
-				"SELECT code,id FROM student s JOIN subjectcourses sc ON FIND_IN_SET(sc.coursename, s.courses) > 0 JOIN tests t ON SUBSTRING(t.id, 3, 2) = sc.courseid WHERE s.username = '"
-						+ user.getUsername() + "' AND SUBSTRING(t.id, 1, 2) = sc.subjectid;");
-		sendToServer(sendtoServer);
-	}
-
-	public void isTestReady(ArrayList<String> sendToServer) throws IOException {
-		sendToServer.add("SELECT test_id FROM ongoing_tests WHERE( (SELECT id FROM tests WHERE (id = '"
-				+ sendToServer.get(1) + "' ) AND id = test_id) )");
-		sendToServer(sendToServer);
-	}
-
-	public void getTestFromId(ArrayList<String> sendToServer) throws IOException {
-		sendToServer.add("SELECT questions FROM projecton.tests WHERE (id = '" + sendToServer.get(1) + "')");
-		sendToServer(sendToServer);
-	}
-
-	public void DeleteQuestion(String originalId) {
-		ArrayList<String> listToSend = new ArrayList<String>();
-		listToSend.add("DeleteQuestion");
-		listToSend.add("DELETE FROM `projecton`.`questions` WHERE (`id` = '" + originalId + "');");
-		try {
-			sendToServer((Object) listToSend);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void getCoursesSameDepartment() {
-
-		ArrayList<String> list = new ArrayList<String>();
-		String query = String.format(
-				"SELECT * FROM projecton.subjectcourses  WHERE subjectname ='%s';",
-				user.getDepartment());
-
-		list.addAll(Arrays.asList("getCoursesSameDepartment", query));
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public void getCoursesExams(String courseID) {
-		ArrayList<String> list = new ArrayList<String>();
-		String query = String.format(
-				"SELECT * FROM projecton.completed_tests WHERE test_id LIKE '%s%%' AND status='completed' AND tested='true';",
-				courseID);
-
-		list.addAll(Arrays.asList("getCoursesExams", query));
-		try {
-			sendToServer((Object) list);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }

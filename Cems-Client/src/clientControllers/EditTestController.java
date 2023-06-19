@@ -55,7 +55,7 @@ public class EditTestController extends CreateTestController {
         courseComboBox.setValue(test.getCourse());
     }
 
-    private void loadQuestions(String testId) throws IOException {
+    private void loadQuestions() {
 
     }
 

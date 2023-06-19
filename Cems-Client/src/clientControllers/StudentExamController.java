@@ -1,7 +1,6 @@
 package clientControllers;
 
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -9,14 +8,11 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import clientHandlers.ClientUI;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -24,10 +20,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import logic.QuestionModel;
 import logic.Test;
 
@@ -82,7 +76,9 @@ public class StudentExamController extends BasicController {
 	@FXML
 	private ToggleGroup toggleGroup;
 
+
 	/////////////////////////////// FXML methods ///////////////////////////////
+
 
 	@FXML
 	void exitExam(ActionEvent event) {
@@ -104,9 +100,7 @@ public class StudentExamController extends BasicController {
 
 		ClientUI.chat.sendToCompletedTest(localTest);
 		JOptionPane.showMessageDialog(null, "Good Luck !", "Success !", JOptionPane.WARNING_MESSAGE);
-	
 		backToStudent(event);
-
 	}
 
 	@FXML
@@ -145,7 +139,9 @@ public class StudentExamController extends BasicController {
 			// Adds every question in the test to the questioinTracker , which is a VBox of
 			// question buttons.
 			int index = 1; // Index for the question number (1,2,3,..)
+			System.out.println(localTest.getQuesitonsInTest().size());
 			for (QuestionModel question : localTest.getQuesitonsInTest()) {
+				System.out.println(question.getId());
 				questionTracker.getChildren().add(createQuestionInTestButton(question, index));
 				index++;
 			}
@@ -194,8 +190,8 @@ public class StudentExamController extends BasicController {
 					LocalTime currentTime = LocalTime.now();
 					if (currentTime.compareTo(targetTime) >= 0) {
 						// Time has ended.
-						openPopupScreen("/clientFXMLS/popupScreen.fxml", "testCode", getInstance());
-						//Platform.exit();
+						//openPopupScreen("/clientFXMLS/popupScreen.fxml", "testCode", getInstance());
+						timeRanOut = true;
 						//timeEnded(); // TODO FIX
 						
 					} else {
@@ -232,10 +228,6 @@ public class StudentExamController extends BasicController {
 	
 	public StudentExamController getInstance() {
 		return this;
-	}
-
-	private void timeEnded() {
-		
 	}
 
 	// Method for adding the time and duration
