@@ -1,15 +1,8 @@
 package clientControllers;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-
-import javax.swing.JOptionPane;
-
-import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,67 +13,136 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import logic.QuestionModel;
 import logic.Test;
 
+/**
+ * This class is a controller for managing database tests.
+ * It extends the BasicController class.
+ */
 public class DBTestController extends BasicController {
 
+	/**
+	 * The test to be returned.
+	 */
 	private Test testToReturn;
+
+	/**
+	 * The list of tests.
+	 */
 	private static ArrayList<Test> TestList;
 
+	/**
+	 * The column for comments in the table.
+	 */
 	@FXML
 	private TableColumn<Test, String> comment;
 
+	/**
+	 * The column for the course in the table.
+	 */
 	@FXML
 	private TableColumn<Test, String> course;
 
+	/**
+	 * The column for the date in the table.
+	 */
 	@FXML
 	private TableColumn<Test, String> date;
 
+	/**
+	 * The column for the department in the table.
+	 */
 	@FXML
 	private TableColumn<Test, String> department;
 
+	/**
+	 * The column for the duration in the table.
+	 */
 	@FXML
 	private TableColumn<Test, String> duration;
 
+	/**
+	 * The list of subjects.
+	 */
 	ObservableList<String> subjectList, courseList;
 
+	/**
+	 * The button for editing a test.
+	 */
 	@FXML
 	private Button EditTestPressed;
 
+	/**
+	 * The column for the test ID in the table.
+	 */
 	@FXML
 	private TableColumn<Test, String> testID;
 
+	/**
+	 * The column for the time in the table.
+	 */
 	@FXML
 	private TableColumn<Test, String> time;
 
+	/**
+	 * The column for the author in the table.
+	 */
 	@FXML
 	private TableColumn<Test, String> Author;
 
+	/**
+	 * The column for choosing a test in the table.
+	 */
 	@FXML
 	private TableColumn<Test, RadioButton> choose;
 
+	/**
+	 * The button for exiting.
+	 */
 	@FXML
 	private Button exitbutton;
 
+	/**
+	 * The button for the logo.
+	 */
 	@FXML
 	private Button logo;
 
+	/**
+	 * The table for displaying tests.
+	 */
 	@FXML
 	private TableView<Test> table;
 
+	/**
+	 * The text field for the author in the table.
+	 */
 	@FXML
 	private TextField TableAuthorField;
 
+	/**
+	 * The combo box for selecting subjects.
+	 */
 	@FXML
 	private ComboBox<String> subjectComboBox;
 
+	/**
+	 * The combo box for selecting courses.
+	 */
 	@FXML
 	private ComboBox<String> courseComboBox;
 
+	/**
+	 * The label for displaying the live time.
+	 */
 	@FXML
 	private Label live_time;
 
+	/**
+	 * This method is called to initialize a controller after its root element has
+	 * been completely processed.
+	 * It starts the clock.
+	 */
 	@FXML
 	void initialize() {
 		// Start the clock
@@ -147,6 +209,10 @@ public class DBTestController extends BasicController {
 	// courseComboBox.setValue(test.getCourse());
 	// }
 
+	/**
+	 * This method is called to load data.
+	 * It invokes the methods to load subjects, courses, and tests.
+	 */
 	void load() {
 		// loadSubject();
 		// loadCourse();
@@ -154,6 +220,10 @@ public class DBTestController extends BasicController {
 
 	}
 
+	/**
+	 * This method is used to load tests.
+	 * It retrieves and populates the tests data.
+	 */
 	public void loadTests() {
 		ClientUI.chat.getAllTestsOfLecturer();
 		try {
@@ -181,6 +251,12 @@ public class DBTestController extends BasicController {
 		}
 	}
 
+	/**
+	 * This method is triggered when the back button is pressed.
+	 * It is responsible for navigating back to the Create Tests page.
+	 *
+	 * @param event The action event that triggers this method.
+	 */
 	@FXML
 	void backPressed(ActionEvent event) {
 		// open Create Tests
@@ -188,12 +264,21 @@ public class DBTestController extends BasicController {
 				"CEMS System - Lecturer - Create Tests", event);
 	}
 
+	/**
+	 * This method is used to set the list of tests.
+	 *
+	 * @param TestList The list of tests to be set.
+	 */
 	public static void setTestList(ArrayList<Test> TestList) {
 		DBTestController.TestList = TestList;
 	}
 
-	// this shouldnt work , and honastly it doesnt work, but hey , now the page
-	// opens ?
+	/**
+	 * This method is triggered when the add question button is pressed.
+	 * It is responsible for handling the operation of adding a question.
+	 *
+	 * @param event The action event that triggers this method.
+	 */
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
 	}

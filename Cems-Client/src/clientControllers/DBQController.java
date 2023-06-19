@@ -110,7 +110,9 @@ public class DBQController extends BasicController {
 	}
 
 	/**
-	 * This function loads the subjects and courses into the respective comboboxes.
+	 * This method is used to load the filter options into the comboboxes.
+	 * It is typically called when initializing the comboboxes or when the filter
+	 * options are updated.
 	 */
 	public void loadFilterComboboxes() {
 		// Get the list of subjects and courses from the LecturerController
