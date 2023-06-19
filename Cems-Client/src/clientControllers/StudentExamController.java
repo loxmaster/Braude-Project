@@ -25,68 +25,126 @@ import javafx.scene.layout.VBox;
 import logic.QuestionModel;
 import logic.Test;
 
+/**
+ * 
+ * Controller class for handling the student exam functionality.
+ * 
+ * Extends the BasicController class.
+ */
 public class StudentExamController extends BasicController {
 
 	/////////////////////////////// Local Variables ///////////////////////////////
 
-	// Private variable that the data from the server regarding the current
-	// test will be entered to.
-	private static Test test;
+	private static Test test; // Private variable for storing the data from the server regarding the current
+								// test
 
-	public static ArrayList<String> questionList;
+	public static ArrayList<String> questionList; // List of questions
 
-	private String test_id;
+	private String test_id; // Test ID
 
-	private LocalTime targetTime;
+	private LocalTime targetTime; // Target time for the exam
 
-	private boolean timeRanOut = false;
+	private boolean timeRanOut = false; // Flag to indicate if time ran out
 
 	/////////////////////////////// FXML variables ////////////////////////////////
 
 	@FXML
-	private ChoiceBox<?> qComboBox;
+	private ChoiceBox<?> qComboBox; // Choice box for selecting a question
 
 	@FXML
-	private TextField questionBody;
+	private TextField questionBody; // Text field for displaying the question body
 
 	@FXML
-	private Label live_time;
+	private Label live_time; // Label for displaying live time
 
 	@FXML
-	private RadioButton A, B, C, D;
+	private RadioButton A; // Radio button for option A
 
 	@FXML
-	private TextArea OptionA, OptionB, OptionC, OptionD;
+	private RadioButton B; // Radio button for option B
 
 	@FXML
-	private TextField code, courseField, qPoints, startTime;
+	private RadioButton C; // Radio button for option C
 
 	@FXML
-	private TextArea qBody;
+	private RadioButton D; // Radio button for option D
 
 	@FXML
-	private TextField testComments, remaining, subjectField, qID;
+	private TextArea OptionA; // Text area for option A
 
 	@FXML
-	private Button exitbutton, logo, submitButton;
+	private TextArea OptionB; // Text area for option B
 
 	@FXML
-	private VBox questionTracker;
+	private TextArea OptionC; // Text area for option C
 
 	@FXML
-	private ToggleGroup toggleGroup;
+	private TextArea OptionD; // Text area for option D
 
+	@FXML
+	private TextField code; // Text field for code
+
+	@FXML
+	private TextField courseField; // Text field for course
+
+	@FXML
+	private TextField qPoints; // Text field for question points
+
+	@FXML
+	private TextField startTime; // Text field for start time
+
+	@FXML
+	private TextArea qBody; // Text area for question body
+
+	@FXML
+	private TextField testComments; // Text field for test comments
+
+	@FXML
+	private TextField remaining; // Text field for remaining
+
+	@FXML
+	private TextField subjectField; // Text field for subject
+
+	@FXML
+	private TextField qID; // Text field for question ID
+
+	@FXML
+	private Button exitbutton; // Button for exiting
+
+	@FXML
+	private Button logo; // Button for displaying logo
+
+	@FXML
+	private Button submitButton; // Button for submitting
+
+	@FXML
+	private VBox questionTracker; // VBox for question tracker
+
+	@FXML
+	private ToggleGroup toggleGroup; // Toggle group for radio buttons
 
 	/////////////////////////////// FXML methods ///////////////////////////////
 
-
+	/**
+	 * 
+	 * Event handler for exiting the exam.
+	 * 
+	 * @param event The action event triggered by the user.
+	 */
 	@FXML
 	void exitExam(ActionEvent event) {
 		backToStudent(event);
 	}
 
+	/**
+	 * 
+	 * Event handler for submitting the exam.
+	 * 
+	 * @param event The action event triggered by the user.
+	 */
 	@FXML
 	void submitExam(ActionEvent event) {
+		// Add your code here for handling the exam submission
 		Test localTest = getTest();
 
 		// Checks if any of the questions in test hasnt been selected.
@@ -109,10 +167,14 @@ public class StudentExamController extends BasicController {
 		Timenow(live_time);
 	}
 
-	
 	/////////////////////////////// Instance Methods ///////////////////////////////
 
-
+	/**
+	 * 
+	 * Loads the specified test.
+	 * 
+	 * @param testCode The code of the test to load.
+	 */
 	public void load(String testCode) {
 
 		ClientUI.chat.getTestWithCodeForStudent(testCode);
@@ -190,10 +252,10 @@ public class StudentExamController extends BasicController {
 					LocalTime currentTime = LocalTime.now();
 					if (currentTime.compareTo(targetTime) >= 0) {
 						// Time has ended.
-						//openPopupScreen("/clientFXMLS/popupScreen.fxml", "testCode", getInstance());
+						// openPopupScreen("/clientFXMLS/popupScreen.fxml", "testCode", getInstance());
 						timeRanOut = true;
-						//timeEnded(); // TODO FIX
-						
+						// timeEnded(); // TODO FIX
+
 					} else {
 						// Calculate the remaining time
 						int remainingHours = targetTime.getHour() - currentTime.getHour();
@@ -225,12 +287,27 @@ public class StudentExamController extends BasicController {
 
 		}
 	}
-	
+
+	/**
+	 * 
+	 * Returns the instance of the StudentExamController.
+	 * 
+	 * @return The instance of the StudentExamController.
+	 */
 	public StudentExamController getInstance() {
 		return this;
 	}
 
-	// Method for adding the time and duration
+	/**
+	 * 
+	 * Retrieves the target time and duration as an array of integers.
+	 * 
+	 * @param time     The target time in the format "HH:mm".
+	 * @param duration The duration in minutes.
+	 * @return An array containing the target time and duration as integers.
+	 *         The first element is the target hour, and the second element is the
+	 *         target minute.
+	 */
 	public int[] getTargetTimeString(String time, String duration) {
 		// Split the first time string
 		String[] time1Parts = time.split(":");
@@ -340,28 +417,57 @@ public class StudentExamController extends BasicController {
 		StudentExamController.test = test;
 	}
 
+	/**
+	 * 
+	 * Retrieves the test ID.
+	 * 
+	 * @return The test ID.
+	 */
 	public String getTest_id() {
 		return test_id;
 	}
 
+	/**
+	 * 
+	 * Sets the test ID.
+	 * 
+	 * @param test_id The test ID to set.
+	 */
 	public void setTest_id(String test_id) {
 		this.test_id = test_id;
 	}
 
+	/**
+	 * 
+	 * Retrieves the list of questions.
+	 * 
+	 * @return The list of questions.
+	 */
 	public static ArrayList<String> getQuestionList() {
 		return questionList;
 	}
 
+	/**
+	 * 
+	 * Sets the list of questions.
+	 * 
+	 * @param questionList The list of questions to set.
+	 */
 	public static void setQuestionList(ArrayList<String> questionList) {
 		StudentExamController.questionList = questionList;
 	}
 
-	
-	 /////////////////////////////// Implementation for Popup Screen ///////////////////////
+	/////////////////////////////// Implementation for Popup Screen
+	/////////////////////////////// ///////////////////////
 
-	
+	/**
+	 * Event handler for the OK button press.
+	 * Calls the submitExam() method.
+	 *
+	 * @param event The action event triggered by the user.
+	 */
 	@FXML
-    void okPressed(ActionEvent event) {
+	void okPressed(ActionEvent event) {
 		submitExam(event);
-    }
+	}
 }
