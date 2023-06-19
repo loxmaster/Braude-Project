@@ -5,11 +5,10 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.DBTestController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../gui/Stylesheet.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.DBTestController">
 <children>
     <Button layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#backPressed" prefHeight="30.0" prefWidth="120.0" text="Back" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
          <font>
@@ -21,7 +20,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="EditTestPressed" layoutX="580.0" layoutY="457.0" mnemonicParsing="false" onAction="#addQuestionPressed" prefHeight="34.0" prefWidth="200.0" text="Edit Test" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="40.0">
+      <Button fx:id="EditTestPressed" layoutX="512.0" layoutY="652.0" mnemonicParsing="false" onAction="#EditTestsPressed" prefHeight="34.0" prefWidth="200.0" text="Edit Test" AnchorPane.bottomAnchor="33.0" AnchorPane.rightAnchor="633.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
@@ -31,17 +30,16 @@
             <Font name="Calibri Bold Italic" size="40.0" />
          </font>
       </Label>
-      <Button fx:id="CreateTestPressed" layoutX="35.0" layoutY="546.0" minHeight="34.0" minWidth="200.0" mnemonicParsing="false" onAction="#createQuestionPressed" text="Create Tests" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="15.0">
-         <font>
-            <Font name="Calibri Bold Italic" size="18.0" />
-         </font></Button>
-      <TableView fx:id="table" layoutX="10.0" layoutY="217.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="250.0">
+      <TableView fx:id="table" layoutX="98.0" layoutY="246.0" AnchorPane.bottomAnchor="104.0" AnchorPane.leftAnchor="98.0" AnchorPane.rightAnchor="102.0" AnchorPane.topAnchor="246.0">
         <columns>
-          <TableColumn id="TestID" fx:id="TestID" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Test ID" />
-          <TableColumn id="Department" fx:id="Department" maxWidth="-1.0" minWidth="300.0" prefWidth="-1.0" text="Department" />
-            <TableColumn id="Author" fx:id="Author" maxWidth="-1.0" minWidth="300.0" prefWidth="-1.0" text="Author" />
-            <TableColumn id="Course" fx:id="CourseName" maxWidth="-1.0" minWidth="300.0" prefWidth="-1.0" text="Course" />
-            <TableColumn id="Choose" fx:id="Choose" maxWidth="142.0" minWidth="100.0" prefWidth="138.0" text="Choose" />
+          <TableColumn id="TestID" fx:id="testID" maxWidth="-1.0" minWidth="100.0" prefWidth="-1.0" text="Test ID" />
+          <TableColumn id="Department" fx:id="department" maxWidth="295.0" minWidth="210.0" prefWidth="210.0" text="Department" />
+            <TableColumn id="Course" fx:id="course" maxWidth="390.0" minWidth="270.0" prefWidth="270.0" text="Course" />
+            <TableColumn fx:id="duration" prefWidth="141.0" text="Duration" />
+            <TableColumn fx:id="comment" prefWidth="208.0" text="Comments" />
+            <TableColumn fx:id="date" text="Date" />
+            <TableColumn fx:id="time" prefWidth="75.0" text="Start Time" />
+            <TableColumn id="Choose" fx:id="choose" maxWidth="146.0" minWidth="36.0" prefWidth="63.0" text="Choose" />
         </columns>
       </TableView>
       <Button fx:id="logo" depthTest="ENABLE" layoutX="492.0" layoutY="15.0" maxWidth="26.0" minWidth="26.0" mnemonicParsing="false" onAction="#backToLecturer" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
@@ -55,22 +53,11 @@
          </font>
       </Label>
       <ComboBox id="subjectComboBox" fx:id="subjectComboBox" editable="true" layoutX="177.0" layoutY="206.0" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: transparent; -fx-background-radius: 10; -fx-background-radius: 10; -fx-border-radius: 10;" />
-      <Label layoutX="328.0" layoutY="211.0" prefHeight="30.0" prefWidth="80.0" text="Author:" textAlignment="CENTER">
+      <Label layoutX="355.0" layoutY="212.0" text="Course:" textAlignment="CENTER">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="TableAuthorField" layoutX="408.0" layoutY="211.0" prefHeight="30.0" prefWidth="107.0" />
-      <Label layoutX="548.0" layoutY="211.0" text="Course:" textAlignment="CENTER">
-         <font>
-            <Font name="Calibri Bold Italic" size="24.0" />
-         </font>
-      </Label>
-      <ComboBox id="subjectComboBox" fx:id="courseComboBox" editable="true" layoutX="626.0" layoutY="206.0" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: transparent; -fx-background-radius: 10; -fx-background-radius: 10; -fx-border-radius: 10;" />
-      <Label fx:id="live_time" layoutX="46.0" layoutY="40.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0">
-         <font>
-            <Font name="Arial Bold" size="24.0" />
-         </font>
-      </Label>
+      <ComboBox id="courseComboBox" fx:id="courseComboBox" editable="true" layoutX="441.0" layoutY="206.0" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: transparent; -fx-background-radius: 10; -fx-background-radius: 10; -fx-border-radius: 10;" />
 </children>
 </AnchorPane>
