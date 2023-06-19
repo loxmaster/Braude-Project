@@ -1,7 +1,5 @@
 package clientHandlers;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +18,6 @@ import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
 import clientControllers.StudentExamController;
 import clientControllers.ViewGradesController;
-import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 import logic.Question;
 import logic.QuestionModel;
@@ -114,7 +111,6 @@ public class ClientHandler extends AbstractClient {
 							question.getOptionD(),
 							question.getAnswer());
 					questionModel.setPoints(question.getPoints());
-					listOfQuestionModels.add(questionModel);
 					listOfQuestionModels.add(questionModel);
 				}
 
@@ -244,7 +240,7 @@ public class ClientHandler extends AbstractClient {
 						case "completedTestsForLecturer": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
-							ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
+							//ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
 							// CompletedTestList = (ArrayList<Test>) severMessage;
 							int i = 1;
 							while (i < list.size()) {
@@ -461,10 +457,24 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	/**
+	 * Method for passing the information to the database from the UI
+	 * @param listToSend
+	 */
+	public void passToServer(Object listToSend) {
+		try {
+			this.openConnection();
+			sendToServer(listToSend);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	/**
 	 * This method handles all data coming from the UI
 	 *
 	 * @param message The message from the UI.
-	 */
+	 
 	public void handleMessageFromClientUI(Object message) {
 		try {
 			sendToServer(message);
@@ -472,7 +482,7 @@ public class ClientHandler extends AbstractClient {
 			client.display("Could not send message to server.  Terminating client.");
 			quit();
 		}
-	}
+	}*/
 
 	/**
 	 * Handles the message received from the client login user interface
@@ -483,7 +493,7 @@ public class ClientHandler extends AbstractClient {
 	 * @param username username entered.
 	 * @param password password entered.
 	 */
-	public void handleMessageFromLoginUI(Object username, Object password, Object type) {
+	/*public void handleMessageFromLoginUI(Object username, Object password, Object type) {
 		ArrayList<String> credentials = new ArrayList<String>();
 		// create a query to grab username requested
 		String name = (String) username;
@@ -500,25 +510,25 @@ public class ClientHandler extends AbstractClient {
 			client.display("Could not send message to server.  Terminating client.");
 			quit();
 		}
-	}
+	}*/
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * subjects.//TODO please check what this method do and if it's relevant
-	 */
+	 
 	public void handleMessageFromLecturerUI() {
 		try {
 			sendToServer((Object) "SELECT DISTINCT subjectname FROM subjectcourses;");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	///////////////////////////////////////////////////
 	////////////////// LOGIC METHODS /////////////////
 	/////////////////////////////////////////////////
 
-	public void getTestWithCodeForStudent(String testCode) {
+	/*public void getTestWithCodeForStudent(String testCode) {
 
 		ArrayList<String> listOfCommands = new ArrayList<>();
 		listOfCommands.addAll(
@@ -541,7 +551,7 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
@@ -551,7 +561,7 @@ public class ClientHandler extends AbstractClient {
 	 * 
 	 * currently- this method creates a query to get the lecturers (currently logged
 	 * in lecturer) courses.
-	 */
+	 
 	public void handleMessageFromLecturerUI(Object username) {
 		ArrayList<String> subjectList = new ArrayList<String>();
 
@@ -574,18 +584,18 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * questions for the lecturer.
 	 * 
 	 * @param username lecturers username
-	 */
+	 
 	public void GetLecturersQuestions_Handler(String username) {
 		/*
 		 * try { openConnection(); } catch (IOException e1) { System.out.println(1); }
-		 */
+		 
 		ArrayList<String> list = new ArrayList<String>();
 
 		// '*' returns every question, it's used in CreateTestController
@@ -599,9 +609,9 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	public void getcompletedTestsForStudentList() {
+	/*public void getcompletedTestsForStudentList() {
 
 		ArrayList<String> list = new ArrayList<String>();
 		String key = user.getUser_id();
@@ -635,9 +645,9 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
+	/*public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
 
 		ArrayList<String> list = new ArrayList<String>();
 		String status = "completed";
@@ -652,9 +662,9 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	public void HodGETcompletedTestsForSpecificStudentList(String userID) {
+	/*public void HodGETcompletedTestsForSpecificStudentList(String userID) {
 
 		ArrayList<String> list = new ArrayList<String>();
 		String status = "completed";
@@ -669,9 +679,9 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	public void getCourseForTest(String id) {
+	/*public void getCourseForTest(String id) {
 
 		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
 		String subjectid = id.substring(0, 2);
@@ -685,9 +695,9 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	public void getCourseForTestLec(String id) {
+	/*public void getCourseForTestLec(String id) {
 
 		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
 		String subjectid = id.substring(0, 2);
@@ -701,7 +711,7 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	/**
 	 * Method to create query to edit existing question
@@ -709,7 +719,7 @@ public class ClientHandler extends AbstractClient {
 	 * @param newBody
 	 * @param newQNumber
 	 * @param originalId
-	 */
+	 
 	public void EditQuestion(String NewID, String subject, String course, String qBody, String qnumber,
 			String originalId) {
 		ArrayList<String> list = new ArrayList<String>();
@@ -746,7 +756,7 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	// return a list of grades where [testGrades, passed grades, failed grades]
 	// query that selects PASSED and FAILED grades --> echoserver to parse
@@ -774,7 +784,7 @@ public class ClientHandler extends AbstractClient {
 	 * @param subject
 	 * @param Body
 	 * @param QNumber
-	 */
+	 
 	public void CreateQuestion(String Id, String subject, String course, String Body, String QNumber) {
 		ArrayList<String> list = new ArrayList<String>();
 
@@ -789,7 +799,7 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	/**
 	 * Method that creates query for insering answers to database.
@@ -800,9 +810,8 @@ public class ClientHandler extends AbstractClient {
 	 * @param optionD
 	 * @param correctAnswer
 	 * @param subjectID
-	 */
-	public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer,
-			String subjectID) {
+	 
+	public void CreateAnswers(String optionA, String optionB, String optionC, String optionD, String correctAnswer, String subjectID) {
 		ArrayList<String> list = new ArrayList<String>();
 		// Construct the INSERT query to create a new answer
 		String query = "INSERT INTO `projecton`.`answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
@@ -816,14 +825,14 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	/**
 	 * Method for sending the test to the data base.
 	 * 
 	 * @param query
 	 */
-	public void sendTestToDatabase(Object query) {
+	/*public void sendTestToDatabase(Object query) {
 		ArrayList<String> listToSend = new ArrayList<String>();
 		listToSend.add("Addtesttodata");
 		listToSend.add((String) query);
@@ -833,7 +842,7 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	/**
 	 * Create a new arraylist subject, add an identifier "getSubjectID" so the
@@ -842,7 +851,7 @@ public class ClientHandler extends AbstractClient {
 	 * 
 	 * @param subjectname the subject to whom the search is for.
 	 */
-	public void GetSubjectIDfromSubjectCourses(Object subjectname) {
+	/*public void GetSubjectIDfromSubjectCourses(Object subjectname) {
 		ArrayList<String> list = new ArrayList<String>();
 		list.addAll(Arrays.asList("getSubjectID",
 				"SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subjectname + "' );"));
@@ -852,9 +861,9 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	public void GetCourseIDfromSubjectCourses(Object coursename) {
+	/*public void GetCourseIDfromSubjectCourses(Object coursename) {
 		ArrayList<String> list = new ArrayList<String>();
 		list.addAll(Arrays.asList("getCourseID",
 				"SELECT courseid FROM projecton.subjectcourses where ( `coursename` = '" + (String) coursename
@@ -871,7 +880,6 @@ public class ClientHandler extends AbstractClient {
 	// be: 01 02 03
 	public void getNextFreeTestNumber(Object subjectANDcourse) {
 		ArrayList<String> list = new ArrayList<String>();
-		// String subject = (String)subjectANDcourse.substring(0,2);
 
 		list.addAll(Arrays.asList("testNumber",
 				"SELECT MAX(CAST(SUBSTRING(id, 5, 2) AS UNSIGNED)) AS max_test_number FROM tests WHERE SUBSTRING(id, 1, 4) = '"
@@ -902,9 +910,9 @@ public class ClientHandler extends AbstractClient {
 				e.printStackTrace();
 			}
 		}
-	}
+	}*/
 
-	public void getHodCourseForTestSpecificLec(String id) {
+	/*public void getHodCourseForTestSpecificLec(String id) {
 
 		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
 		String subjectid = id.substring(0, 2);
@@ -918,9 +926,9 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	public void getHodCourseForTestSpecificStudent(String id) {
+	/*public void getHodCourseForTestSpecificStudent(String id) {
 
 		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
 		String subjectid = id.substring(0, 2);
@@ -949,9 +957,9 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	public void geStudentListUnderSameDepartment() {
+	/*public void geStudentListUnderSameDepartment() {
 
 		ArrayList<String> list = new ArrayList<String>();
 		String query = String.format(
@@ -964,15 +972,8 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	public void passToServer(Object listToSend) {
-		try {
-			sendToServer(listToSend);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////
@@ -1006,7 +1007,7 @@ public class ClientHandler extends AbstractClient {
 		LecturerController.questions = new ArrayList<QuestionModel>();
 	}
 
-	public void isStudentTakingCourse(ArrayList<String> sendtoServer) throws IOException {
+	/*public void isStudentTakingCourse(ArrayList<String> sendtoServer) throws IOException {
 		sendtoServer.add(
 				"SELECT code,id FROM student s JOIN subjectcourses sc ON FIND_IN_SET(sc.coursename, s.courses) > 0 JOIN tests t ON SUBSTRING(t.id, 3, 2) = sc.courseid WHERE s.username = '"
 						+ user.getUsername() + "' AND SUBSTRING(t.id, 1, 2) = sc.subjectid;");
@@ -1033,5 +1034,5 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 }
