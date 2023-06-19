@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="720.0" prefWidth="1280.0" stylesheets="/gui/Stylesheet.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="clientControllers.StudentExamController">
+   <children>
+      <Button layoutX="62.0" layoutY="5.0" mnemonicParsing="false" onAction="#exitExam" prefHeight="49.0" prefWidth="149.0" text="Exit Exam" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="27.0" />
+         </font>
+      </Button>
+      <Button fx:id="exitbutton" layoutX="1294.0" layoutY="14.0" maxHeight="41.0" mnemonicParsing="false" onAction="#exitPressed" textAlignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button layoutX="578.0" layoutY="666.0" mnemonicParsing="false" onAction="#submitExam" prefHeight="34.0" prefWidth="200.0" text="Submit" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="578.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <TextField fx:id="code" alignment="CENTER" editable="false" layoutX="959.0" layoutY="58.0" prefHeight="30.0" prefWidth="68.0" text="DG53" AnchorPane.bottomAnchor="632.0">
+         <font>
+            <Font name="Calibri Italic" size="16.0" />
+         </font>
+      </TextField>
+      <Text layoutX="832.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Test Code:" textAlignment="CENTER" wrappingWidth="109.82813373208046" AnchorPane.bottomAnchor="635.0">
+         <font>
+            <Font name="Calibri Bold" size="24.0" />
+         </font>
+      </Text>
+      <Label layoutX="247.0" layoutY="50.0" prefHeight="30.0" prefWidth="84.0" text="Subject:" textAlignment="CENTER" AnchorPane.bottomAnchor="640.0" AnchorPane.leftAnchor="247.0" AnchorPane.rightAnchor="995.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="duration" alignment="CENTER" editable="false" layoutX="1093.0" layoutY="170.0" prefHeight="44.0" prefWidth="98.0" text="00:00" AnchorPane.bottomAnchor="506.0">
+         <font>
+            <Font name="Calibri" size="24.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="startTime" alignment="CENTER" editable="false" layoutX="959.0" layoutY="92.0" prefHeight="30.0" prefWidth="68.0" text="08:30" AnchorPane.bottomAnchor="598.0" AnchorPane.leftAnchor="959.0" AnchorPane.rightAnchor="299.0">
+         <font>
+            <Font name="Calibri Italic" size="16.0" />
+         </font>
+      </TextField>
+      <Text layoutX="835.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" AnchorPane.bottomAnchor="601.0" AnchorPane.leftAnchor="835.0">
+         <font>
+            <Font name="Calibri Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="839.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remeining Time:" wrappingWidth="246.0" AnchorPane.bottomAnchor="510.0" AnchorPane.leftAnchor="839.0">
+         <font>
+            <Font name="Calibri Bold" size="35.0" />
+         </font>
+      </Text>
+      <Button fx:id="logo" depthTest="ENABLE" layoutX="620.0" layoutY="54.0" minWidth="26.0" mnemonicParsing="false" onAction="#backToStudent" prefHeight="100.0" prefWidth="200.0" AnchorPane.leftAnchor="540.0" AnchorPane.rightAnchor="540.0" AnchorPane.topAnchor="20.0">
+         <font>
+            <Font name="Calibri Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Pane layoutX="140.0" layoutY="267.0" prefHeight="382.0" prefWidth="1186.0" style="-fx-border-color: black; -fx-background-color: white;">
+         <children>
+            <Label layoutX="14.0" layoutY="-2.0" prefHeight="41.0" prefWidth="174.0" text="Question Body :">
+               <font>
+                  <Font name="Calibri Bold" size="24.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="qBody" editable="false" layoutX="14.0" layoutY="48.0" prefHeight="323.0" prefWidth="494.0" style="-fx-border-color: black;" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+            <TextArea fx:id="OptionA" editable="false" layoutX="570.0" layoutY="68.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+            <Label layoutX="570.0" layoutY="21.0" prefHeight="34.0" prefWidth="174.0" text="Question Points :">
+               <font>
+                  <Font name="Calibri Bold Italic" size="24.0" />
+               </font>
+            </Label>
+            <Text layoutX="516.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="516.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B" textAlignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="516.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="C">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text layoutX="515.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="D">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <TextArea fx:id="OptionB" editable="false" layoutX="570.0" layoutY="142.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+            <TextArea fx:id="OptionC" editable="false" layoutX="570.0" layoutY="223.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+            <TextArea fx:id="OptionD" editable="false" layoutX="570.0" layoutY="304.0" prefHeight="67.0" prefWidth="599.0" style="-fx-border-color: black;" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </TextArea>
+            <Text layoutX="968.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Question ID: " wrappingWidth="152.0">
+               <font>
+                  <Font name="Calibri Bold Italic" size="24.0" />
+               </font>
+            </Text>
+            <TextField id="qID" fx:id="qID" alignment="CENTER" editable="false" layoutX="1095.0" layoutY="14.0" prefHeight="48.0" prefWidth="68.0">
+               <font>
+                  <Font name="Calibri" size="16.0" />
+               </font>
+            </TextField>
+            <RadioButton fx:id="A" layoutX="532.0" layoutY="87.0" mnemonicParsing="false">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <toggleGroup>
+                  <ToggleGroup fx:id="toggleGroup" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="B" layoutX="532.0" layoutY="161.0" mnemonicParsing="false" toggleGroup="$toggleGroup">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="C" layoutX="532.0" layoutY="240.0" mnemonicParsing="false" toggleGroup="$toggleGroup">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="D" layoutX="532.0" layoutY="323.0" mnemonicParsing="false" toggleGroup="$toggleGroup">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </RadioButton>
+            <TextField id="qPoints" fx:id="qPoints" alignment="CENTER" editable="false" layoutX="756.0" layoutY="14.0" prefHeight="48.0" prefWidth="68.0">
+               <font>
+                  <Font name="Calibri" size="16.0" />
+               </font>
+            </TextField>
+         </children>
+      </Pane>
+      <ScrollPane layoutX="16.0" layoutY="265.0" prefHeight="401.0" prefWidth="118.0" style="-fx-background-color: transparent;" AnchorPane.leftAnchor="20.0">
+         <content>
+            <VBox fx:id="questionTracker" alignment="CENTER" prefHeight="383.0" prefWidth="112.0" style="-fx-background-color: transparent; -fx-background-radius: 9; -fx-border-color: black; -fx-border-radius: 9;" />
+         </content>
+      </ScrollPane>
+      <Label layoutX="247.0" layoutY="89.0" prefHeight="30.0" prefWidth="84.0" text="Course:" textAlignment="CENTER">
+         <font>
+            <Font name="Calibri Bold Italic" size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="subjectField" editable="false" layoutX="338.0" layoutY="54.0" />
+      <TextField fx:id="courseField" editable="false" layoutX="338.0" layoutY="93.0" />
+      <ScrollPane layoutX="15.0" layoutY="97.0" prefHeight="149.0" prefWidth="524.0" visible="false">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
+      <TextField fx:id="testComments" alignment="TOP_LEFT" editable="false" layoutX="20.0" layoutY="135.0" prefHeight="115.0" prefWidth="469.0" />
+   </children>
+</AnchorPane>

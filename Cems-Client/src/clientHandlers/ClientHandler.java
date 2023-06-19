@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
-import clientControllers.EnterIDForTestController;
+import clientControllers.IdAndCodeScreen;
 import clientControllers.HODStatisticOnLecturerController;
 import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
@@ -18,9 +18,12 @@ import clientControllers.StudentExamController;
 import clientControllers.ViewGradesController;
 import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
+import clientControllers.StudentExamController;
 import logic.Question;
 import logic.QuestionModel;
 import logic.Test;
+import logic.Test;
+import logic.TestInServer;
 import logic.User;
 import ocsf.client.AbstractClient;
 
@@ -77,7 +80,7 @@ public class ClientHandler extends AbstractClient {
 
 		if (serverMessage instanceof FileDownloadMessage) {
 			FileDownloadMessage downloadMessage = (FileDownloadMessage) serverMessage;
-			EnterIDForTestController.setDownloadMessage(downloadMessage);
+			IdAndCodeScreen.setDownloadMessage(downloadMessage);
 			// Pass the downloaded file message to the client controller
 
 		}
@@ -90,7 +93,28 @@ public class ClientHandler extends AbstractClient {
 					System.out.println("Update was successful");
 				else
 					System.out.println("Update wasnt so successful");
-				break;
+			break;
+			
+			// If typeof Test then we create a test for it and 
+			case "TestInServer":
+
+				// Creates a list of QuestionModels and adds it to the testToAdd constructor.
+				TestInServer testFromServer = (TestInServer) serverMessage;
+				ArrayList<QuestionModel> listOfQuestionModels = new ArrayList<>();
+				for (Question question : testFromServer.getQuesitonsInTest()) {
+					QuestionModel questionModel = new QuestionModel(question.getId(), question.getSubject(), question.getCoursename(), question.getQuestiontext(), 
+																	question.getQuestionnumber(), question.getLecturer(), question.getOptionA(), question.getOptionB(), 
+																	question.getOptionC(),  question.getOptionD(), question.getAnswer());
+					questionModel.setPoints(question.getPoints());
+					listOfQuestionModels.add(questionModel);									
+				}
+
+				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(), testFromServer.getAuthor(), testFromServer.getDuration(),
+								 testFromServer.getTestComments(), testFromServer.getTestCode(), testFromServer.getDateString(), testFromServer.getTime(),
+								 listOfQuestionModels);
+
+				StudentExamController.setTest(testToAdd);
+			break;
 
 			// If message type ArrayList it means that data comes in , where first index (0)
 			// is reserved for destination , and second (1) index is the data itself.
@@ -185,14 +209,14 @@ public class ClientHandler extends AbstractClient {
 						case "isStudentTakingCourse":
 							if (!(list.get(1).isEmpty())) {
 								list.remove(0);
-								EnterIDForTestController.setTest_code(list);
+								IdAndCodeScreen.setTest_code(list);
 							} else {
 								list.remove(0);
 								list.remove(0);
 								list.remove(0);
 								list.add("none");
 								list.add("none");
-								EnterIDForTestController.setTest_code(list);
+								IdAndCodeScreen.setTest_code(list);
 							}
 							break;
 
@@ -200,9 +224,9 @@ public class ClientHandler extends AbstractClient {
 						case "isTestReady":
 							if (!(list.get(1).isEmpty())) {
 								list.remove(0);
-								EnterIDForTestController.setTestRunning(true);
+								IdAndCodeScreen.setTestRunning(true);
 							} else {
-								EnterIDForTestController.setTestRunning(false);
+								IdAndCodeScreen.setTestRunning(false);
 							}
 							break;
 						case "lecturercourses":
@@ -365,7 +389,7 @@ public class ClientHandler extends AbstractClient {
 					}
 				}
 				break;
-
+			
 			case "String":
 				switch ((String) serverMessage) {
 					case "User Not Found":
@@ -381,10 +405,15 @@ public class ClientHandler extends AbstractClient {
 						break;
 
 					case "Question Exists":
+						System.out.println("Question Already Exists.");
+						break;
 					case "Not Found":
+						System.out.println("Item not found.");
+					break;
 					case "Id Exists":
 						ClientUI.updatestatus = 0;
-						break;
+						System.out.println("ID Already Exists.");
+					break;
 					default:
 						// Here we recieve the confirmation of the client login
 						subjectArray = ((String) serverMessage).toString().split("\\s");
@@ -404,6 +433,7 @@ public class ClientHandler extends AbstractClient {
 
 		System.out.println("--> messageFromServerHandled");
 	}
+
 
 	/**
 	 * This method handles all data coming from the UI
@@ -459,6 +489,21 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	///////////////////////////////////////////////////
+	////////////////// LOGIC METHODS /////////////////
+	/////////////////////////////////////////////////
+
+	public void getTestWithCodeForStudent(String testCode) {
+		
+		ArrayList<String> listOfCommands = new ArrayList<>();
+		listOfCommands.addAll(Arrays.asList("gettestwithcode", "SELECT * FROM projecton.tests where code = " + testCode + ";"));
+		try {
+			sendToServer((Object) listOfCommands);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * subjects for the lecturer.
@@ -491,10 +536,6 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-
-	///////////////////////////////////////////////////
-	////////////////// LOGIC METHODS /////////////////
-	/////////////////////////////////////////////////
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
@@ -837,6 +878,15 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
+
+	public void sendToCompletedTest(Object listToSend) {
+		try {
+			sendToServer(listToSend);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+
 
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////

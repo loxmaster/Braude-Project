@@ -17,7 +17,7 @@ public class Test {
         this.subject = subject;
     }
 
-    private String duration, testComment, testCode; // FIXME check TestComments var and testComment
+    private String duration, testComment, testCode;
     private String time, dateString;
     private DatePicker date;
     private int totalPoints;
@@ -54,7 +54,7 @@ public class Test {
     }
 
     public Test(String id, String subject, String author, String duration, String testComments, String testCode,
-            String dateString, String time) {
+            String dateString, String time, ArrayList<QuestionModel> quesitonsInTest) {
         this.id = id;
         this.course = subject;
         this.author = author;
@@ -64,7 +64,8 @@ public class Test {
         this.dateString = dateString;
         this.time = time;
         totalPoints = 0;
-        quesitonsInTest = new ArrayList<QuestionModel>();
+        
+        setQuesitonsInTest(quesitonsInTest);
     }
 
     ////// is this the one u looking for???
@@ -100,6 +101,9 @@ public class Test {
         return Grade;
     }
 
+    
+    
+    
     public String getTested() {
         return tested;
     }
@@ -111,19 +115,15 @@ public class Test {
     public String getStudentID() {
         return StudentID;
     }
+    
 
     public String getStudentsName() {
         return StudentsName;
     }
 
-    public ArrayList<QuestionModel> getQuesitonsInTest() {
-        return quesitonsInTest;
-    }
-
     public String getDateString() {
         return dateString;
     }
-
     public String getCourse() {
         return course;
     }
@@ -228,5 +228,9 @@ public class Test {
 
     public void setTotalPoints(int totalPoints) {
         this.totalPoints = totalPoints;
+    }
+
+    public ArrayList<QuestionModel> getQuesitonsInTest() {
+        return quesitonsInTest;
     }
 }

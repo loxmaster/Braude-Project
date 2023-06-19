@@ -33,19 +33,20 @@ import logic.Test;
 
 public class CreateTestController extends BasicController {
 
-	// ############################### Local Variables
-	// #################################################################
+	// ############################### Local Variables ###########################################
+	
+	
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
-	public static String testCount;
-	private static String nextTestNumber;
 	private Test test = new Test();
 	private int pointsInTest = 0;
 	private ChangeListener<? super String> questionPointsListener; // Listener for points TextBox
+	public static String testCount;
+	private static String nextTestNumber;
 	private static final Pattern TIME_PATTERN = Pattern.compile("^\\d{2}:\\d{2}$");
 
-	// ############################### FXML Variables
-	// ###################################################################
+	// ############################### FXML Variables ############################################
+
 
 	@FXML
 	private ToggleGroup toggleGroup;
@@ -90,8 +91,8 @@ public class CreateTestController extends BasicController {
 		Timenow(live_time);
 	}
 	
-	// ############################### FXML Methods
-	// #######################################################################
+	// ############################### FXML Methods ###########################################
+
 
 	public static String getNextTestNumber() {
 		return nextTestNumber;
@@ -126,9 +127,7 @@ public class CreateTestController extends BasicController {
 	@FXML
 	void editCommentsPressed(ActionEvent event) {
 
-		// Opens the comment screen and waits for it too be closed. when closed
-		// get the comment using the controller that is returned.
-		// BasicController basicCtrl = new CreateTestController();
+		// Opens the comment screen and waits for it too be closed.
 		openPopupCommentScreen("/clientFXMLS/TestComments.fxml", "Add Comments", this, test.getTestComments());
 
 		// Because we've sent this instance of CreateTestController as the parameter for
@@ -217,15 +216,13 @@ public class CreateTestController extends BasicController {
 		String subjectid = CreateQuestionController.getSubjectID();
 
 		// grab concat values of subjectid and courseid get the next test number from db
-//020101
 		ClientUI.chat.getNextFreeTestNumber(subjectid + courseid);
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//String nextTestNumber = CreateQuestionController.testcount;
-		//String nextTestNumber = CreateQuestionController.getTestcount();
+
 		try {
 			Thread.sleep(100);
 		} catch (InterruptedException e) {
@@ -313,8 +310,8 @@ public class CreateTestController extends BasicController {
 		
 		// Sends the test to the database using the ClientController 'chat' in the
 		// ClientUI, while showing a message to the user
-		JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
 		ClientUI.chat.sendTestToDatabase(test);
+		JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
 		// Goes to lecturer screen
 		backToLecturer(event);
 	}
@@ -384,13 +381,13 @@ public class CreateTestController extends BasicController {
 							String newValue) {
 						try {
 							if (newValue == null)
-								question.setPoints(0);
+								question.setPoints("0");
 							else
-								question.setPoints(Integer.parseInt(newValue));
+								question.setPoints(newValue);
 							updateTotalPoints();
 							totalPoints.setText(String.valueOf(pointsInTest));
 						} catch (Exception e) {
-							question.setPoints(0);
+							question.setPoints("0");
 						}
 					}
 				};
@@ -432,9 +429,6 @@ public class CreateTestController extends BasicController {
 
 		questionInTestButton.setPrefWidth(70);
 		questionInTestButton.setPrefHeight(10);
-		// questionInTestButton.setPadding(new Insets(20, 0, 20, 0));
-		// Sets the button to the question 'Edit' field
-		question.setEdit(questionInTestButton);
 
 		// adds the button to the HBox
 		hBox.getChildren().add(0, questionInTestButton);
@@ -476,7 +470,7 @@ public class CreateTestController extends BasicController {
 		int totalPoints = 0;
 		ArrayList<QuestionModel> tempQuestionList = test.getQuesitonsInTest();
 		for (QuestionModel question : tempQuestionList)
-			totalPoints += question.getPoints();
+			totalPoints += Integer.parseInt(question.getPoints());
 		pointsInTest = totalPoints;
 	}
 
@@ -489,7 +483,7 @@ public class CreateTestController extends BasicController {
 	 */
 	public String buildIdForTest(String subject, String course) {
 		// TODO get subject+course id string + number of test
-		return "010104";
+		return "010110";
 	}
 
 	// ############################### Controller for comment screen
