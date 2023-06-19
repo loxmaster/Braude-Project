@@ -123,11 +123,6 @@ public class ClientHandler extends AbstractClient {
 						testFromServer.getTestComments(), testFromServer.getTestCode(), testFromServer.getDateString(),
 						testFromServer.getTime(),
 						listOfQuestionModels);
-				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
-						testFromServer.getAuthor(), testFromServer.getDuration(),
-						testFromServer.getTestComments(), testFromServer.getTestCode(), testFromServer.getDateString(),
-						testFromServer.getTime(),
-						listOfQuestionModels);
 
 				StudentExamController.setTest(testToAdd);
 					//EvaluateTestController.setLocaltest(testToAdd);
