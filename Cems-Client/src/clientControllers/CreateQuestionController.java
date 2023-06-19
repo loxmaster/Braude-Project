@@ -47,8 +47,7 @@ public class CreateQuestionController extends BasicController {
 	@FXML
 	private Label live_time;
 
-
-		/**
+	/**
 	 * This method is called when the controller is initialized.
 	 * It starts the clock.
 	 */
@@ -57,8 +56,9 @@ public class CreateQuestionController extends BasicController {
 		Timenow(live_time);
 	}
 
-		/**
+	/**
 	 * This method sets the subject ID.
+	 * 
 	 * @param subject The subject ID to be set.
 	 */
 
@@ -68,6 +68,7 @@ public class CreateQuestionController extends BasicController {
 
 	/**
 	 * This method returns the subject ID.
+	 * 
 	 * @return The subject ID.
 	 */
 	public static String getSubjectID() {
@@ -76,6 +77,7 @@ public class CreateQuestionController extends BasicController {
 
 	/**
 	 * This method sets the course ID.
+	 * 
 	 * @param course The course ID to be set.
 	 */
 	public static void setCourseID(String course) {
@@ -84,6 +86,7 @@ public class CreateQuestionController extends BasicController {
 
 	/**
 	 * This method returns the course ID.
+	 * 
 	 * @return The course ID.
 	 */
 	public static String getCourseID() {
@@ -91,7 +94,9 @@ public class CreateQuestionController extends BasicController {
 	}
 
 	/**
-	 * This method loads the subject and course lists into the corresponding combo boxes.
+	 * This method is used to load the filter options into the comboboxes.
+	 * It is typically called when initializing the comboboxes or when the filter
+	 * options are updated.
 	 */
 	public void loadFilterComboboxes() {
 		subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
@@ -104,6 +109,12 @@ public class CreateQuestionController extends BasicController {
 		courseCombobox.setItems(courseList);
 	}
 
+	/**
+	 * This method is triggered when the confirm button is pressed.
+	 * It is responsible for handling the confirmation operation.
+	 *
+	 * @param event The action event that triggers this method.
+	 */
 	@FXML
 	void confirmPressed(ActionEvent event) {
 		// [subject, qBody, optionA, optionB, optionC, optionD, correctAnswer]
@@ -209,38 +220,42 @@ public class CreateQuestionController extends BasicController {
 
 	}
 
-/**
- * This method sends the question and its answers to the SQL database.
- * @param subject The subject of the question.
- * @param course The course of the question.
- * @param qBody The body of the question.
- * @param qnumber The number of the question.
- * @param optionA The first option of the question.
- * @param optionB The second option of the question.
- * @param optionC The third option of the question.
- * @param optionD The fourth option of the question.
- * @param correctAnswer The correct answer of the question.
- */
-public void sendQandANStoSQL(String subject, String course, String qBody, String qnumber, String optionA,
-		String optionB,
-		String optionC, String optionD, String correctAnswer) {
-	// getting subject id from data
-	ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
-	try {
-		Thread.sleep(3000);
-	} catch (InterruptedException e) {
-		e.printStackTrace();
+	/**
+	 * This method sends the question and its answers to the SQL database.
+	 * 
+	 * @param subject       The subject of the question.
+	 * @param course        The course of the question.
+	 * @param qBody         The body of the question.
+	 * @param qnumber       The number of the question.
+	 * @param optionA       The first option of the question.
+	 * @param optionB       The second option of the question.
+	 * @param optionC       The third option of the question.
+	 * @param optionD       The fourth option of the question.
+	 * @param correctAnswer The correct answer of the question.
+	 */
+	public void sendQandANStoSQL(String subject, String course, String qBody, String qnumber, String optionA,
+			String optionB,
+			String optionC, String optionD, String correctAnswer) {
+		// getting subject id from data
+		ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		System.out.println("CreateQuestion: " + subjectID);
+		subjectID += qnumber;
+		ClientUI.chat.CreateQuestion(subjectID, subject, course, qBody, qnumber);
+		ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD, correctAnswer, subjectID);
 	}
-	System.out.println("CreateQuestion: " + subjectID);
-	subjectID += qnumber;
-	ClientUI.chat.CreateQuestion(subjectID, subject, course, qBody, qnumber);
-	ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD, correctAnswer, subjectID);
-}
 
-/**
- * This method is called when the "Add Another" button is pressed. It validates the input fields, sends the question and answers to the SQL database, and resets the input fields for the next question.
- * @param event The action event that triggered this method.
- */
+	/**
+	 * This method is called when the "Add Another" button is pressed. It validates
+	 * the input fields, sends the question and answers to the SQL database, and
+	 * resets the input fields for the next question.
+	 * 
+	 * @param event The action event that triggered this method.
+	 */
 	@FXML
 	void addAnotherPressed(ActionEvent event) {
 		// [subject, qBody, optionA, optionB, optionC, optionD, correctAnswer]
