@@ -170,15 +170,16 @@ public class ClientHandler extends AbstractClient {
 								LecturerController.getSubjectsList().add(s);
 							break;
 
-						case "completedTestsForLecturer":
-							ArrayList<Test> tests_temp = new ArrayList<Test>();
-							for (int i = 1; i < ((ArrayList<String>) serverMessage).size(); i+=12) {
-								tests_temp.add(new Test(list.get(i), list.get(i + 1), list.get(i + 2), list.get(i + 3),
-										list.get(i + 4), list.get(i + 5), list.get(i + 6), list.get(i + 7),
-										list.get(i + 8), list.get(i + 9), list.get(i + 10), list.get(i + 11)));
-							}
-							LecturerStatisticalController.setCompletedTestsList(tests_temp);
-							break;
+						// case "completedTestsForLecturer":
+						// ArrayList<Test> tests_temp = new ArrayList<Test>();
+						// for (int i = 1; i < ((ArrayList<String>) serverMessage).size(); i+=12) {
+						// tests_temp.add(new Test(list.get(i), list.get(i + 1), list.get(i + 2),
+						// list.get(i + 3),
+						// list.get(i + 4), list.get(i + 5), list.get(i + 6), list.get(i + 7),
+						// list.get(i + 8), list.get(i + 9), list.get(i + 10), list.get(i + 11)));
+						// }
+						// LecturerStatisticalController.setCompletedTestsList(tests_temp);
+						// break;
 
 						case "getTest":
 							if (!(list.get(1).isEmpty())) {
@@ -218,6 +219,126 @@ public class ClientHandler extends AbstractClient {
 							for (String s : subjectArray)
 								LecturerController.getCoursesList().add(s);
 							break;
+
+						case "completedTestsForStudent": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<Test> listToAdd = new ArrayList<>();
+							// CompletedTestList = (ArrayList<Test>) severMessage;
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(new Test(
+										list.get(i),
+										list.get(i + 1),
+										list.get(i + 2),
+										list.get(i + 3),
+										list.get(i + 4),
+										list.get(i + 5),
+										list.get(i + 6),
+										list.get(i + 7),
+										list.get(i + 8),
+										list.get(i + 9),
+										list.get(i + 10),
+										list.get(i + 11)));
+								i += 12;
+							}
+							ViewGradesController.setcompletedTestsForStudentList(listToAdd);
+							break;
+						}
+						case "completedTestsForLecturer": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<Test> listToAdd = new ArrayList<>();
+							// CompletedTestList = (ArrayList<Test>) severMessage;
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(new Test(
+										list.get(i),
+										list.get(i + 1),
+										list.get(i + 2),
+										list.get(i + 3),
+										list.get(i + 4),
+										list.get(i + 5),
+										list.get(i + 6),
+										list.get(i + 7),
+										list.get(i + 8),
+										list.get(i + 9),
+										list.get(i + 10),
+										list.get(i + 11)));
+								i += 12;
+							}
+							LecturerStatisticalController.setcompletedTestsForLecturerList(listToAdd);
+							break;
+						}
+
+						case "getSubjectsCourseForTest": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<String> listToAdd = new ArrayList<>();
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(list.get(i));
+								i++;
+							}
+							ViewGradesController.setSubjectsCoursesList(listToAdd);
+							break;
+						}
+						case "getSubjectsCourseForTestLec": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<String> listToAdd = new ArrayList<>();
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(list.get(i));
+								i++;
+							}
+							LecturerStatisticalController.setSubjectsCoursesListLec(listToAdd);
+							break;
+						}
+						case "LecturerListUnderSameDepartment": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<String> listToAdd = new ArrayList<>();
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(list.get(i));
+								i++;
+							}
+							//HODStatisticOnLecturerController.setLecturerListUnderSameDepartment(listToAdd);
+							break;
+						}
+
+						case "HodGETcompletedTestsForSpecificLecturerList": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<Test> listToAdd = new ArrayList<>();
+							// CompletedTestList = (ArrayList<Test>) severMessage;
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(new Test(
+										list.get(i),
+										list.get(i + 1),
+										list.get(i + 2),
+										list.get(i + 3),
+										list.get(i + 4),
+										list.get(i + 5),
+										list.get(i + 6),
+										list.get(i + 7),
+										list.get(i + 8),
+										list.get(i + 9),
+										list.get(i + 10),
+										list.get(i + 11)));
+								i += 12;
+							}
+							//HODStatisticOnLecturerController.setcompletedTestsForSpecificLecturer(listToAdd);
+							break;
+						}
+
+						case "getHodSubjectsCourseForTestSpecificLec": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<String> listToAdd = new ArrayList<>();
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(list.get(i));
+								i++;
+							}
+							//HODStatisticOnLecturerController.getHodSubjectsCourseForTestSpecificLec(listToAdd);
+							break;
+						}
 
 						case "getSubjectID":
 							System.out.println("Client Handler: " + list.get(1));
