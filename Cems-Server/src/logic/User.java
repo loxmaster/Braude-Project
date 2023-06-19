@@ -1,7 +1,7 @@
 package logic;
 
 public class User {
-    // maybe we should Encrypt the password ?
+    
     private String username, password;
     private String pName, lName, email, department, type;
     private boolean isOnline, isFound;

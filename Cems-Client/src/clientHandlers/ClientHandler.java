@@ -7,8 +7,11 @@ import java.util.Arrays;
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
 import clientControllers.LecturerController;
+import clientControllers.StudentExamController;
 import logic.Question;
 import logic.QuestionModel;
+import logic.Test;
+import logic.TestInServer;
 import logic.User;
 import ocsf.client.AbstractClient;
 
@@ -69,6 +72,27 @@ public class ClientHandler extends AbstractClient {
 					System.out.println("Update wasnt so successful");
 			break;
 			
+			// If typeof Test then we create a test for it and 
+			case "TestInServer":
+
+				// Creates a list of QuestionModels and adds it to the testToAdd constructor.
+				TestInServer testFromServer = (TestInServer) serverMessage;
+				ArrayList<QuestionModel> listOfQuestionModels = new ArrayList<>();
+				for (Question question : testFromServer.getQuesitonsInTest()) {
+					QuestionModel questionModel = new QuestionModel(question.getId(), question.getSubject(), question.getCoursename(), question.getQuestiontext(), 
+																	question.getQuestionnumber(), question.getLecturer(), question.getOptionA(), question.getOptionB(), 
+																	question.getOptionC(),  question.getOptionD(), question.getAnswer());
+					questionModel.setPoints(question.getPoints());
+					listOfQuestionModels.add(questionModel);									
+				}
+
+				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(), testFromServer.getAuthor(), testFromServer.getDuration(),
+								 testFromServer.getTestComments(), testFromServer.getTestCode(), testFromServer.getDateString(), testFromServer.getTime(),
+								 listOfQuestionModels);
+
+				StudentExamController.setTest(testToAdd);
+			break;
+
 			// If message type ArrayList it means that data comes in , where first index (0)
 			// is reserved for destination , and second (1) index is the data itself.
 			case "ArrayList":
@@ -140,7 +164,7 @@ public class ClientHandler extends AbstractClient {
 					}
 				}
 			break;
-
+			
 			case "String":
 				switch((String)serverMessage) {
 					case "User Not Found":
@@ -149,8 +173,14 @@ public class ClientHandler extends AbstractClient {
 					break;
 
 					case "Question Exists":
+						System.out.println("Question Already Exists.");
+						break;
 					case "Not Found":
+						System.out.println("Item not found.");
+					break;
 					case "Id Exists":
+						System.out.println("ID Already Exists.");
+					break;
 					default:
 						// Here we recieve the confirmation of the client login
 						subjectArray = ((String) serverMessage).toString().split("\\s");
@@ -215,6 +245,21 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	///////////////////////////////////////////////////
+	////////////////// LOGIC METHODS /////////////////
+	/////////////////////////////////////////////////
+
+	public void getTestWithCodeForStudent(String testCode) {
+		
+		ArrayList<String> listOfCommands = new ArrayList<>();
+		listOfCommands.addAll(Arrays.asList("gettestwithcode", "SELECT * FROM projecton.tests where code = " + testCode + ";"));
+		try {
+			sendToServer((Object) listOfCommands);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * subjects for the lecturer.
@@ -246,10 +291,6 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-
-	///////////////////////////////////////////////////
-	////////////////// LOGIC METHODS /////////////////
-	/////////////////////////////////////////////////
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
@@ -426,6 +467,15 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
+
+	public void sendToCompletedTest(Object listToSend) {
+		try {
+			sendToServer(listToSend);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+
 
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////

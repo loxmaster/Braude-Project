@@ -11,9 +11,10 @@ public class QuestionModel implements Serializable {
     private String questiontext, questionnumber, lecturer;
     private String optionA, optionB, optionC, optionD;
     private String answer;
-    private int points = 0;
+    private String points;
     private Button edit;
     private CheckBox checkBox;
+    private String selected;
 
     public QuestionModel(String id, String subject, String coursename, String questiontext, String questionnumber,
             String lecturer, String optionA, String optionB, String optionC, String optionD, String answer) {
@@ -31,11 +32,19 @@ public class QuestionModel implements Serializable {
         checkBox = new CheckBox();
     }
 
-    public int getPoints() {
+    public String getSelected() {
+        return selected;
+    }
+
+    public void setSelected(String selected) {
+        this.selected = selected;
+    }
+
+    public String getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(String points) {
         this.points = points;
     }
 

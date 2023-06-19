@@ -114,6 +114,11 @@ public class BasicController {
 	}
 
 	@FXML
+	void backToStudent(ActionEvent event) {
+		openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student", event);
+	}
+
+	@FXML
 	void exitPressed(ActionEvent event) {
 		if(JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confirmation", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
 		((Node) event.getSource()).getScene().getWindow().hide();

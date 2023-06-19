@@ -3,14 +3,15 @@ package serverHandler;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import logic.ClientModel;
 import logic.Question;
+import logic.TestInServer;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import serverUI.ServerUI;
@@ -161,7 +162,7 @@ public class EchoServer extends AbstractServer {
 							break;
 
 						case "lecturerquestions":
-							ArrayList<Question> resQuestionList = getQuestionsForLecturer_db(list.get(1));
+							ArrayList<Question> resQuestionList = getQuestionsFromDatabase(list.get(1));
 							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
 							break;
 
@@ -174,6 +175,18 @@ public class EchoServer extends AbstractServer {
 							break;
 
 						// default is user login authentication
+						case "gettestwithcode":
+							TestInServer test = getTestWithCode(list.get(1));
+							client.sendToClient(
+									test == null ? (Object) notFound : (Object) test);
+							System.out.println("Server gettestwithcode --> " + test.getId());
+						break;
+
+						case "sendtocompletedtest":
+							int returned = executeMyQuery(list.get(1));
+							client.sendToClient(
+									returned == 0 ? (Object) notFound : (Object) returned);
+						break;
 						default:
 							loginVarification(list, client);
 							break;
@@ -183,6 +196,94 @@ public class EchoServer extends AbstractServer {
 			e.printStackTrace();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
+		}
+	}
+
+	private TestInServer getTestWithCode(String query) {
+    	try {
+        
+			Statement testStatement = conn.createStatement();
+			ResultSet res = testStatement.executeQuery(query);
+
+			Statement questionStmt = null;
+			ResultSet questionResult = null;
+			
+			if (res.next()) {
+
+				// Gets the lists of question ID`s and creates a Question for them ,
+				// also gets the question points array and assigns each quesiton its points.
+				ArrayList<Question> listOfQuestions = new ArrayList<>();
+				
+				// Handles the questions ID`s array
+				String listOfIdsFromDatabase = res.getString(8);
+				String listOfIdsTrimmed = listOfIdsFromDatabase.replace("[", "").replace("]", "").trim();
+				String[] arrayIds = listOfIdsTrimmed.split(",");
+				
+				// handles the question points array
+				String questionsPoints = res.getString(9);
+				String listOfIdsTrimmedPoints = questionsPoints.replace("[", "").replace("]", "").trim();
+				String[] arrayPoints = listOfIdsTrimmedPoints.split(",");
+				
+				// index for the current quesiton number
+				int index = 0;
+				for (String id : arrayIds) {
+					String queryForGettingTheQuestions = "SELECT * FROM projecton.questions WHERE id = " + id + "";
+					questionStmt = conn.createStatement();
+					System.out.println(id);
+					questionResult = questionStmt.executeQuery(queryForGettingTheQuestions);
+					
+					if (questionResult.next()) {
+						Question q = new Question(
+								questionResult.getString(1),
+								questionResult.getString(2),
+								questionResult.getString(3),
+								questionResult.getString(4),
+								questionResult.getString(5),
+								questionResult.getString(6));
+						
+						String answerQuery = "SELECT optionA, optionB, optionC, optionD, correctAnswer FROM projecton.answers WHERE questionid = " + q.getId() + "";
+						Statement answerStmt = conn.createStatement();
+						ResultSet answerResult = answerStmt.executeQuery(answerQuery);
+						if (answerResult.next()) {
+							System.out.println(answerResult.getString(1));
+							q.setOptionA(answerResult.getString(1));
+							q.setOptionB(answerResult.getString(2));
+							q.setOptionC(answerResult.getString(3));
+							q.setOptionD(answerResult.getString(4));
+							q.setAnswer(answerResult.getString(5));
+						}
+						
+						// Sets the question points
+						q.setPoints(arrayPoints[index]);
+						index++;
+						listOfQuestions.add(q);
+					}
+				
+				}
+
+				TestInServer tempTest = new TestInServer(
+						res.getString(1),
+						"MATH", // TODO: Add subject to SQL
+						res.getString(4),
+						res.getString(2),
+						res.getString(3),
+						res.getString(5),
+						res.getString(6),
+						res.getString(7),
+						listOfQuestions);
+				
+				res.close();
+				stmt.close();
+				
+				return tempTest;
+			} else {
+				res.close();
+				stmt.close();
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 
@@ -231,10 +332,10 @@ public class EchoServer extends AbstractServer {
 	}
 
 	// gets Questions from db
-	private ArrayList<Question> getQuestionsForLecturer_db(String query) {
+	private ArrayList<Question> getQuestionsFromDatabase(String query) {
 		try {
-			stmt = conn.createStatement();
-			ResultSet result = stmt.executeQuery(query);
+			Statement tempStatement = conn.createStatement();
+			ResultSet result = tempStatement.executeQuery(query);
 			ArrayList<Question> res = new ArrayList<Question>();
 
 			while (result.next()) {
@@ -251,7 +352,7 @@ public class EchoServer extends AbstractServer {
 				ResultSet answers = answerstmt.executeQuery(
 						"SELECT optionA,optionB,optionC,optionD,correctAnswer FROM `projecton`.`answers` WHERE (`questionid` = '"
 								+ q.getId() + "');");
-				while (answers.next()) {
+				if (answers.next()) {
 					q.setOptionA(answers.getString(1));
 					q.setOptionB(answers.getString(2));
 					q.setOptionC(answers.getString(3));
@@ -262,10 +363,15 @@ public class EchoServer extends AbstractServer {
 				res.add(q);
 			}
 			System.out.println("Message sent back: " + res);
-			if (res.size() == 0)
+
+			if (res.size() == 0){
 				return null;
+			}
+				
 			return res;
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

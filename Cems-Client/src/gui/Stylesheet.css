@@ -19,9 +19,11 @@
 }
 
 /* ............................BUTTONS................................ */
+
 #chooseFile:pressed{
 	-fx-translate-y: 0px	
 }
+
 #chooseFile{
 
 	-fx-background-color: lightgrey;
@@ -36,7 +38,9 @@
 	-fx-font-size: 10;
 	-fx-font-style: italic;
 }
-#ClickDownload{
+
+#selectDirectory{
+
 	-fx-background-color: lightgrey;
 	-fx-background-size: cover;
 	-fx-background-repeat: no-repeat;
@@ -45,8 +49,8 @@
 	-fx-border-radius: 5px;
 	-fx-background-radius: 5px;
 	-fx-min-height: 30px;
-	-fx-max-height: 30px;
 	-fx-font-size: 10;
+	-fx-font-style: italic;
 }
 
 

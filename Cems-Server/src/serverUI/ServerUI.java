@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import serverControllers.ServerController;
- 
+
 /**
  * Class for opening the server UI. Also opens and loads the 
  * text into screen.

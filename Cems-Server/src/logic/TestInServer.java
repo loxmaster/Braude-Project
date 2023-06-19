@@ -1,26 +1,29 @@
 package logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import javafx.scene.control.DatePicker;
+public class TestInServer implements Serializable {
 
-public class Test {
-    private ArrayList<QuestionModel> quesitonsInTest;
+    private ArrayList<Question> quesitonsInTest;
     private String id, subject, author;
     private String duration, testComment, testCode;
     private String time, dateString;
-    private DatePicker date;
+    //private DatePicker date;
     private int totalPoints;
 
-//noah - added getters and setters for course - not yet updated in the sql - talk to me
-   private String course;
+    // noah - added getters and setters for course - not yet updated in the sql -
+    // talk to me
+    private String course;
 
-    public Test() {
+    public TestInServer() {
         id = new String();
         subject = new String();
-//noah - added getters and setters for course - not yet updated in the sql - talk to me
+        
+        // noah - added getters and setters for course - not yet updated in the sql -
+        // talk to me
         course = new String();
-       
+
         author = new String();
         duration = new String();
         testComment = new String();
@@ -28,19 +31,23 @@ public class Test {
         time = new String();
         dateString = new String();
         totalPoints = 0;
-        quesitonsInTest = new ArrayList<QuestionModel>();
+        quesitonsInTest = new ArrayList<Question>();
     }
-//noah - added getters and setters for course - not yet updated in the sql - talk to me
-     public String getCourse() {
-         return course;
-     }
-//noah - added getters and setters for course - not yet updated in the sql - talk to me
-     public void setCourse(String course) {
-         this.course = course;
-     }
 
-    public Test(String id, String subject, String author, String duration, String testComment, String testCode,
-            String dateString, String time, ArrayList<QuestionModel> quesitonsInTest) {
+    // noah - added getters and setters for course - not yet updated in the sql -
+    // talk to me
+    public String getCourse() {
+        return course;
+    }
+
+    // noah - added getters and setters for course - not yet updated in the sql -
+    // talk to me
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public TestInServer(String id, String subject, String author, String duration, String testComment, String testCode,
+            String dateString, String time, ArrayList<Question> quesitonsInTest) {
         this.id = id;
         this.subject = subject;
         this.author = author;
@@ -53,11 +60,11 @@ public class Test {
         setQuesitonsInTest(quesitonsInTest);
     }
 
-    public ArrayList<QuestionModel> getQuesitonsInTest() {
+    public ArrayList<Question> getQuesitonsInTest() {
         return quesitonsInTest;
     }
 
-    public void setQuesitonsInTest(ArrayList<QuestionModel> quesitonsInTest) {
+    public void setQuesitonsInTest(ArrayList<Question> quesitonsInTest) {
         this.quesitonsInTest = quesitonsInTest;
     }
 
@@ -75,10 +82,6 @@ public class Test {
 
     public void setDateString(String dateString) {
         this.dateString = dateString;
-    }
-
-    public void setDate(DatePicker date) {
-        this.date = date;
     }
 
     public String getSubject() {
@@ -129,13 +132,9 @@ public class Test {
         this.time = time;
     }
 
-    public DatePicker getDate() {
-        return date;
-    }
-
-    public void addToQuestions(ArrayList<QuestionModel> list) {
-        for (QuestionModel q : list)
-            if(!quesitonsInTest.contains(q))
+    public void addToQuestions(ArrayList<Question> list) {
+        for (Question q : list)
+            if (!quesitonsInTest.contains(q))
                 quesitonsInTest.add(q);
     }
 

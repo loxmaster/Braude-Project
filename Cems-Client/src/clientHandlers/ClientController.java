@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import logic.QuestionModel;
 import logic.Test;
 
 public class ClientController implements ChatIF {
@@ -145,10 +147,18 @@ public class ClientController implements ChatIF {
      */
     public void sendTestToDatabase(Test test) {
 
-        String query = "INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('"
+        // Adding the Id`s of the questions in the test and its points
+        ArrayList<String> questionIdList = new ArrayList<>();
+        ArrayList<String> questionPoints = new ArrayList<>();
+        for (QuestionModel question : test.getQuesitonsInTest()) {
+            questionIdList.add(question.getId());
+            questionPoints.add("" + question.getPoints());
+        }
+
+        String query = "INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`, `points`) VALUES ('"
                 + test.getId() + "','" + test.getDuration() + "', '" + test.getTestComments() + "', '"
                 + test.getAuthor() + "', '" + test.getTestCode() + "', '" + test.getDate().getValue().toString() + "','"
-                + test.getTime() + "', '" + test.getQuesitonsInTest() + "');";
+                + test.getTime() + "', '" + questionIdList + "', '" + questionPoints + "');";
 
         client.sendTestToDatabase((Object) query);
     }
@@ -168,6 +178,29 @@ public class ClientController implements ChatIF {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void getTestWithCodeForStudent(String testName) {
+        client.getTestWithCodeForStudent(testName);
+    }
+
+    public void sendToCompletedTest(Test localTest) {
+        // Creating the quesitons Id list and selected question list.
+        ArrayList<String> questionIdList = new ArrayList<>();
+        ArrayList<String> SelectedQuestions = new ArrayList<>(); // This list represents the student selected questions
+
+        for (QuestionModel question : localTest.getQuesitonsInTest()) {
+            questionIdList.add(question.getId());
+            SelectedQuestions.add(question.getSelected());
+        }
+        String query = "INSERT INTO `projecton`.`completed_tests` (`test_id`, `student_id`, `grade`, `authorsname`, `code`, `date`, `time`," +
+        " `duration`, `questions`,  `selected`) VALUES ('" + localTest.getId() + "', '" + "332" + "', '" + "grade" + 
+        "', '" + localTest.getAuthor() + "', '" + localTest.getTestCode() + "', '" + "localDate" + "', '" + localTest.getTime() + "', '" + localTest.getDuration() + 
+        "', '" + questionIdList + "', '" + SelectedQuestions + "');";
+
+        ArrayList<String> listToSend = new ArrayList<>();
+        listToSend.addAll(Arrays.asList("sendtocompletedtest" , query));
+        client.sendToCompletedTest((Object) listToSend);
     }
 
     /**
@@ -209,4 +242,5 @@ public class ClientController implements ChatIF {
             e.printStackTrace();
         }
     }
+
 }
