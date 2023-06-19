@@ -61,8 +61,6 @@ public class CheckTestController extends BasicController {
   @FXML
   private Label live_time;
 
- 
-
   @FXML
   void initialize() {
 
@@ -74,10 +72,9 @@ public class CheckTestController extends BasicController {
     // get completed tests list initilized
     ClientUI.chat.getcompletedTestsForLecturerList();
     try {
-        Thread.sleep(250);
-      } catch (InterruptedException e) {
-      }
-    
+      Thread.sleep(250);
+    } catch (InterruptedException e) {
+    }
 
     // Checked.setCellValueFactory(new PropertyValueFactory<>("checked"));
     test_id.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -101,30 +98,29 @@ public class CheckTestController extends BasicController {
     } else {
       ObservableList<Test> testlist_observable = FXCollections.observableArrayList(completedTestsList);
       for (Test test : completedTestsList) {/// ?
-          test.setCheck(createCheckButton(test));
-        }
-        FilteredList<Test> filteredList = new FilteredList<>(testlist_observable);
-        
-       //  ObservableList<Test> testlist_observable = FXCollections.observableArrayList(completedTestsList);
+        test.setCheck(createCheckButton(test));
+      }
+      FilteredList<Test> filteredList = new FilteredList<>(testlist_observable);
 
+      // ObservableList<Test> testlist_observable =
+      // FXCollections.observableArrayList(completedTestsList);
 
       table.setItems(filteredList);
-      //table.setItems(testlist_observable);
-     // listener - this will update the table to the filtered COMBOBOX SUBJECT
+      // table.setItems(testlist_observable);
+      // listener - this will update the table to the filtered COMBOBOX SUBJECT
       // courseComboBox.getSelectionModel().selectedItemProperty().addListener((observable,
       // oldValue, newValue) -> {
 
-     // updatePredicate(filteredList);
+      // updatePredicate(filteredList);
     }
   }
-
 
   // MANUAL RESOLUTION BUTTON ACTION
   public Button createCheckButton(Test test) {
     Button checked = new Button("Manual Resolution");
-    
+
     checked.setOnAction(new EventHandler<ActionEvent>() {
-      
+
       @Override
       public void handle(ActionEvent event) {
         // remember all the data of the question
@@ -151,9 +147,9 @@ public class CheckTestController extends BasicController {
           e.printStackTrace();
         }
         EvaluateTestController eqc = loader.getController();
-        //TODO get question from the test we sent to this method
+        // TODO get question from the test we sent to this method
         eqc.loadTest(test);
-        //System.out.println("opening edit question" + question.getId());
+        // System.out.println("opening edit question" + question.getId());
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/gui/Stylesheet.css").toExternalForm());
         currentStage.initStyle(StageStyle.UNDECORATED);

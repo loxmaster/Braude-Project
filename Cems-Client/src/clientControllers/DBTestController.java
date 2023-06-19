@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import javax.swing.JOptionPane;
 
+import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,7 +67,7 @@ public class DBTestController extends BasicController {
 	private Button logo;
 
 	@FXML
-	private TableView<QuestionModel> table;
+	private TableView<Test> table;
 
 	@FXML
 	private TextField TableAuthorField;
@@ -186,4 +187,15 @@ public class DBTestController extends BasicController {
 		openScreen("/clientFXMLS/LecturerManageTest.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
 	}
+
+	public static void setTestList(ArrayList<Test> TestList) {
+		DBTestController.TestList = TestList;
+	}
+
+	// this shouldnt work , and honastly it doesnt work, but hey , now the page
+	// opens ?
+	@FXML
+	void addQuestionPressed(ActionEvent event) {
+	}
+
 }

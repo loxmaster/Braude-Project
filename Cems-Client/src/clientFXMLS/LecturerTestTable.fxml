@@ -20,7 +20,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="EditTestPressed" layoutX="512.0" layoutY="652.0" mnemonicParsing="false" onAction="#addQuestionPressed" prefHeight="34.0" prefWidth="200.0" text="Edit Test" AnchorPane.bottomAnchor="33.0" AnchorPane.rightAnchor="633.0">
+      <Button fx:id="EditTestPressed" layoutX="512.0" layoutY="652.0" mnemonicParsing="false" onAction="#EditTestsPressed" prefHeight="34.0" prefWidth="200.0" text="Edit Test" AnchorPane.bottomAnchor="33.0" AnchorPane.rightAnchor="633.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
