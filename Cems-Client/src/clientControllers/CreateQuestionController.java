@@ -17,7 +17,6 @@ import javafx.scene.control.ToggleGroup;
 
 public class CreateQuestionController extends BasicController {
 
-
 	public static String subjectID, courseID;
 
 	ObservableList<String> subjectList;
@@ -30,10 +29,10 @@ public class CreateQuestionController extends BasicController {
 	private RadioButton A, B, C, D;
 
 	@FXML
-    private ToggleGroup CorectAnswer;
+	private ToggleGroup CorectAnswer;
 
 	@FXML
-	private Button savebutton,cancelbutton,exitbutton, logo;
+	private Button savebutton, cancelbutton, exitbutton, logo;
 
 	@FXML
 	private TextField body, qA, qB, qC, qD;
@@ -48,26 +47,50 @@ public class CreateQuestionController extends BasicController {
 	private Label live_time;
 
 
+		/**
+	 * This method is called when the controller is initialized.
+	 * It starts the clock.
+	 */
 	void initialize() {
 		// Start the clock
 		Timenow(live_time);
 	}
+
+		/**
+	 * This method sets the subject ID.
+	 * @param subject The subject ID to be set.
+	 */
 	public static void setSubjectID(String subject) {
 		CreateQuestionController.subjectID = subject;
 	}
 
+	/**
+	 * This method returns the subject ID.
+	 * @return The subject ID.
+	 */
 	public static String getSubjectID() {
 		return subjectID;
 	}
 
+	/**
+	 * This method sets the course ID.
+	 * @param course The course ID to be set.
+	 */
 	public static void setCourseID(String course) {
 		CreateQuestionController.courseID = course;
 	}
 
+	/**
+	 * This method returns the course ID.
+	 * @return The course ID.
+	 */
 	public static String getCourseID() {
 		return courseID;
 	}
 
+	/**
+	 * This method loads the subject and course lists into the corresponding combo boxes.
+	 */
 	public void loadFilterComboboxes() {
 		subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
 		courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
@@ -80,15 +103,14 @@ public class CreateQuestionController extends BasicController {
 
 	}
 
-	
-
 	@FXML
 	void confirmPressed(ActionEvent event) {
 		// [subject, qBody, optionA, optionB, optionC, optionD, correctAnswer]
 		String correctAnswer = null;
 
 		// Checks if the subject has been picked
-		if (subjectCombobox.getValue() == "" || subjectCombobox.getValue() == ""|| subjectCombobox.getValue() == null) {
+		if (subjectCombobox.getValue() == "" || subjectCombobox.getValue() == ""
+				|| subjectCombobox.getValue() == null) {
 			subjectCombobox.setStyle("-fx-background-color: red;"); // Set red background color
 			JOptionPane.showMessageDialog(null, "Subject Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
@@ -107,45 +129,47 @@ public class CreateQuestionController extends BasicController {
 		if (body.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Please add questions text !", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		} 
+		}
 
-		if (qA.getText().isEmpty()||qB.getText().isEmpty()||qC.getText().isEmpty()||qD.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Please add questions all answer !", "Error", JOptionPane.ERROR_MESSAGE);
+		if (qA.getText().isEmpty() || qB.getText().isEmpty() || qC.getText().isEmpty() || qD.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please add questions all answer !", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
-		} 
+		}
 
 		if (qNumber.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Please add question number !", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		} 
+		}
 
 		try {
-    		int number = Integer.parseInt(qNumber.getText());
-			if (number < 1 || number > 999 ) {
-				JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error", JOptionPane.ERROR_MESSAGE);
+			int number = Integer.parseInt(qNumber.getText());
+			if (number < 1 || number > 999) {
+				JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
+						JOptionPane.ERROR_MESSAGE);
 				return;
-			}
-			else{
+			} else {
 				int lenght = qNumber.getText().length();
-				if (lenght ==1)
-				qNumber.setText("00" + qNumber.getText ());
-				if (lenght ==2)
-				qNumber.setText("0" + qNumber.getText ());
-				if (lenght > 3){
-					JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error", JOptionPane.ERROR_MESSAGE);
+				if (lenght == 1)
+					qNumber.setText("00" + qNumber.getText());
+				if (lenght == 2)
+					qNumber.setText("0" + qNumber.getText());
+				if (lenght > 3) {
+					JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			}
 		} catch (NumberFormatException e) {
-    			JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
+			JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 
 		if (!A.isSelected() && !B.isSelected() && !C.isSelected() && !D.isSelected()) {
 			JOptionPane.showMessageDialog(null, "Please select correct answer !", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		} 
-			
+		}
 
 		// checks who is the correct answer
 		if (A.isSelected())
@@ -159,17 +183,19 @@ public class CreateQuestionController extends BasicController {
 
 		ClientUI.updatestatus = 1;
 
-		sendQandANStoSQL(subjectCombobox.getValue(),courseCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),qC.getText(), qD.getText(), correctAnswer);
-		
+		sendQandANStoSQL(subjectCombobox.getValue(), courseCombobox.getValue(), body.getText(), qNumber.getText(),
+				qA.getText(), qB.getText(), qC.getText(), qD.getText(), correctAnswer);
+
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		
+
 		}
-		if (ClientUI.updatestatus == 0){
-		JOptionPane.showMessageDialog(null, "Changes NOT Saved! Qustion Number Exist In DB", "Fail!", JOptionPane.WARNING_MESSAGE);
-		ClientUI.updatestatus =1;
+		if (ClientUI.updatestatus == 0) {
+			JOptionPane.showMessageDialog(null, "Changes NOT Saved! Qustion Number Exist In DB", "Fail!",
+					JOptionPane.WARNING_MESSAGE);
+			ClientUI.updatestatus = 1;
 			return;
 		}
 		JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
@@ -179,30 +205,48 @@ public class CreateQuestionController extends BasicController {
 				event);
 		lc.loadLecturer(ClientHandler.user);
 		System.out.println("Opening Lecturer screen...");
-		
+
 	}
 
-	public void sendQandANStoSQL(String subject,String course,String qBody, String qnumber, String optionA, String optionB,
-			String optionC, String optionD, String correctAnswer) {
-		// getting subject id from data
-		ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println("CreateQuestion: " + subjectID);
-		subjectID += qnumber;
-		ClientUI.chat.CreateQuestion(subjectID, subject,course, qBody, qnumber);
-		ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD,correctAnswer,subjectID);
+/**
+ * This method sends the question and its answers to the SQL database.
+ * @param subject The subject of the question.
+ * @param course The course of the question.
+ * @param qBody The body of the question.
+ * @param qnumber The number of the question.
+ * @param optionA The first option of the question.
+ * @param optionB The second option of the question.
+ * @param optionC The third option of the question.
+ * @param optionD The fourth option of the question.
+ * @param correctAnswer The correct answer of the question.
+ */
+public void sendQandANStoSQL(String subject, String course, String qBody, String qnumber, String optionA,
+		String optionB,
+		String optionC, String optionD, String correctAnswer) {
+	// getting subject id from data
+	ClientUI.chat.GetSubjectIDfromSubjectCourses(subject);
+	try {
+		Thread.sleep(3000);
+	} catch (InterruptedException e) {
+		e.printStackTrace();
 	}
+	System.out.println("CreateQuestion: " + subjectID);
+	subjectID += qnumber;
+	ClientUI.chat.CreateQuestion(subjectID, subject, course, qBody, qnumber);
+	ClientUI.chat.CreateAnswers(optionA, optionB, optionC, optionD, correctAnswer, subjectID);
+}
 
+/**
+ * This method is called when the "Add Another" button is pressed. It validates the input fields, sends the question and answers to the SQL database, and resets the input fields for the next question.
+ * @param event The action event that triggered this method.
+ */
 	@FXML
 	void addAnotherPressed(ActionEvent event) {
 		// [subject, qBody, optionA, optionB, optionC, optionD, correctAnswer]
 		String correctAnswer = null;
 		// Checks if the subject has been picked
-		if (subjectCombobox.getValue() == "" || subjectCombobox.getValue() == ""|| subjectCombobox.getValue() == null) {
+		if (subjectCombobox.getValue() == "" || subjectCombobox.getValue() == ""
+				|| subjectCombobox.getValue() == null) {
 			subjectCombobox.setStyle("-fx-background-color: red;"); // Set red background color
 			JOptionPane.showMessageDialog(null, "Subject Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
@@ -222,44 +266,47 @@ public class CreateQuestionController extends BasicController {
 		if (body.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Please add questions text !", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		} 
+		}
 
-		if (qA.getText().isEmpty()||qB.getText().isEmpty()||qC.getText().isEmpty()||qD.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Please add questions all answer !", "Error", JOptionPane.ERROR_MESSAGE);
+		if (qA.getText().isEmpty() || qB.getText().isEmpty() || qC.getText().isEmpty() || qD.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Please add questions all answer !", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
-		} 
+		}
 
 		if (qNumber.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "Please add question number !", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		} 
+		}
 
 		try {
-    		int number = Integer.parseInt(qNumber.getText());
-			if (number < 1 || number > 999 ) {
-				JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error", JOptionPane.ERROR_MESSAGE);
+			int number = Integer.parseInt(qNumber.getText());
+			if (number < 1 || number > 999) {
+				JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
+						JOptionPane.ERROR_MESSAGE);
 				return;
-			}
-			else{
+			} else {
 				int lenght = qNumber.getText().length();
-				if (lenght ==1)
-				qNumber.setText("00" + qNumber.getText ());
-				if (lenght ==2)
-				qNumber.setText("0" + qNumber.getText ());
-				if (lenght > 3){
-					JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error", JOptionPane.ERROR_MESSAGE);
+				if (lenght == 1)
+					qNumber.setText("00" + qNumber.getText());
+				if (lenght == 2)
+					qNumber.setText("0" + qNumber.getText());
+				if (lenght > 3) {
+					JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			}
 		} catch (NumberFormatException e) {
-    			JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
+			JOptionPane.showMessageDialog(null, "Question number must be between 1 and 999 !", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 		if (!A.isSelected() && !B.isSelected() && !C.isSelected() && !D.isSelected()) {
 			JOptionPane.showMessageDialog(null, "Please select correct answer !", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		} 
-			
+		}
+
 		// checks who is the correct answer
 		if (A.isSelected())
 			correctAnswer = "a";
@@ -270,18 +317,20 @@ public class CreateQuestionController extends BasicController {
 		else if (D.isSelected())
 			correctAnswer = "d";
 
-		ClientUI.updatestatus =1;
-		sendQandANStoSQL(subjectCombobox.getValue(),courseCombobox.getValue(), body.getText(), qNumber.getText(), qA.getText(), qB.getText(),qC.getText(), qD.getText(), correctAnswer);
-		
+		ClientUI.updatestatus = 1;
+		sendQandANStoSQL(subjectCombobox.getValue(), courseCombobox.getValue(), body.getText(), qNumber.getText(),
+				qA.getText(), qB.getText(), qC.getText(), qD.getText(), correctAnswer);
+
 		try {
 			Thread.sleep(200);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		
+
 		}
-		if (ClientUI.updatestatus == 0){
-		JOptionPane.showMessageDialog(null, "Changes NOT Saved! Qustion Number Exist In DB", "Fail!", JOptionPane.WARNING_MESSAGE);
-		ClientUI.updatestatus =1;
+		if (ClientUI.updatestatus == 0) {
+			JOptionPane.showMessageDialog(null, "Changes NOT Saved! Qustion Number Exist In DB", "Fail!",
+					JOptionPane.WARNING_MESSAGE);
+			ClientUI.updatestatus = 1;
 			return;
 		}
 		JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
@@ -304,19 +353,30 @@ public class CreateQuestionController extends BasicController {
 
 	}
 
+	/**
+	 * This method is called when the 'Cancel' button is pressed. It navigates the
+	 * user back to the Lecturer Options screen.
+	 * 
+	 * @param event The event that triggered this method (pressing the 'Cancel'
+	 *              button).
+	 */
 	@FXML
 	void cancelPressed(ActionEvent event) {
 		// Opens lecturer screen from existing stage
 		openScreen("/clientFXMLS/LecturerOptions.fxml", "CEMS System - Lecturer", event);
 	}
 
+	/**
+	 * This method is called when the 'Back' button is pressed. It navigates the
+	 * user back to the Lecturer Options screen.
+	 * 
+	 * @param event The event that triggered this method (pressing the 'Back'
+	 *              button).
+	 */
 	@FXML
 	void backPressed(ActionEvent event) {
 		// goes back to options screen
-		
 		openScreen("/clientFXMLS/LecturerOptions.fxml", "CEMS System - Lecturer", event);
-		
 	}
 
-	
 }

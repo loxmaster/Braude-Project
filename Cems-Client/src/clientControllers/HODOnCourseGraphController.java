@@ -14,8 +14,13 @@ import javafx.scene.text.Text;
 import logic.Statistics;
 import logic.Test;
 
+/**
+ * This controller handles the display of course statistics for the Head of
+ * Department (HOD).
+ * It extends from the BasicController class.
+ */
 public class HODOnCourseGraphController extends BasicController {
-
+    // Define UI elements
     @FXML
     private Text Course_NameID;
 
@@ -106,17 +111,29 @@ public class HODOnCourseGraphController extends BasicController {
     @FXML
     private Label live_time;
 
+    /**
+     * This function initializes the controller.
+     * It starts the clock on the UI.
+     */
     @FXML
     void initialize() {
         // Start the clock
         Timenow(live_time);
     }
 
+    /**
+     * This function handles the action of clicking the "Back to Lecturer" button.
+     */
     @FXML
     void backToLecturer(ActionEvent event) {
 
     }
 
+    /**
+     * This function handles the action of clicking the "Back to Statistical"
+     * button.
+     * It navigates the user back to the statistical information on courses page.
+     */
     @FXML
     void backtoStatistical(ActionEvent event) {
         HODStatisticOnCourseController Hod = (HODStatisticOnCourseController) openScreen(
@@ -124,11 +141,21 @@ public class HODOnCourseGraphController extends BasicController {
         Hod.load();
     }
 
+    /**
+     * This function handles the action of clicking the "Exit" button.
+     */
     @FXML
     void exitPressed(ActionEvent event) {
-        
+
     }
 
+    /**
+     * This function populates the UI with course statistics.
+     * It takes a Statistics object and a list of completed tests as input.
+     * The function calculates the number and percentage of students in each grade category,
+     * and displays this information in a pie chart and a bar chart.
+     * The function also updates various text fields in the UI with statistics data.
+     */
     public void CoursesdInfo(Statistics data, ArrayList<Test> AllcompletedTestsList) {
 
         // Create pie chart data
