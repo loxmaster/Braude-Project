@@ -133,7 +133,7 @@ public class EnterIDForTestController extends BasicController {
 			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
 			fileChooser.getExtensionFilters().add(extFilter);
 			fileChooser.setInitialFileName(filename);
-			fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Desktop"));
+			//fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Desktop"));
 
 			File file = fileChooser.showSaveDialog(null);
 			if (file != null) {
