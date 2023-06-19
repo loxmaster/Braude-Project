@@ -132,6 +132,13 @@ public class EchoServer extends AbstractServer {
 				case "ArrayList":
 					ArrayList<String> list = (ArrayList<String>) msg;
 					switch (list.get(0)) {
+						case "futureTests":
+							ArrayList<String> resgetFutureTests = getFutureTests_db(list.get(1),
+									"getFutureTests");
+							client.sendToClient(
+									resgetFutureTests == null ? (Object) notFound
+											: (Object) resgetFutureTests);
+							break;
 						case "getSubjectID":
 							// send query to be executed along with the identifier
 							ArrayList<String> resultList = getData_db(list.get(1), "getSubjectID");
@@ -334,12 +341,6 @@ public class EchoServer extends AbstractServer {
 									resgetCoursesExams == null ? (Object) notFound
 											: (Object) resgetCoursesExams);
 							break;
-						case "futureTests":
-							ArrayList<String> resgetFutureTests = getFutureTests_db(list.get(1),
-									"getFutureTests");
-							client.sendToClient(
-									resgetFutureTests == null ? (Object) notFound
-											: (Object) resgetFutureTests);
 
 						default:
 							loginVarification(list, client);
