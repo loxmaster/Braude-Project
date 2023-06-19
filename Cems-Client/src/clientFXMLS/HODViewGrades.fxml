@@ -30,7 +30,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitPressed" prefHeight="30.0" prefWidth="120.0" text="EXIT" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="exitbutton" layoutX="1301.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitPressed" prefHeight="35.0" prefWidth="32.0" textAlignment="CENTER" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="14.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
@@ -40,7 +40,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <ScrollPane blendMode="MULTIPLY" layoutX="10.0" layoutY="318.0" prefHeight="408.0" prefWidth="1325.0" AnchorPane.bottomAnchor="-6.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="318.0">
+      <ScrollPane blendMode="MULTIPLY" layoutX="10.0" layoutY="272.0" prefHeight="454.0" prefWidth="1325.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="272.0">
          <content>
             <GridPane fx:id="ExamContainer">
                <rowConstraints>
@@ -63,7 +63,7 @@
             <Cursor fx:constant="DEFAULT" />
          </cursor>
       </ScrollPane>
-      <Text fx:id="Student_ID_Text" layoutX="20.0" layoutY="280.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Student ID: " wrappingWidth="251.849609375" AnchorPane.bottomAnchor="425.0" AnchorPane.leftAnchor="20.0">
+      <Text fx:id="ID_Text" layoutX="20.0" layoutY="253.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Student ID: " wrappingWidth="374.849609375" AnchorPane.bottomAnchor="461.0" AnchorPane.leftAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
@@ -100,7 +100,7 @@
             </RadialGradient>
          </fill>
       </Text>
-      <Text fx:id="Student_ID_Text1" layoutX="564.0" layoutY="280.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose Course Name To View:" wrappingWidth="333.849609375" AnchorPane.bottomAnchor="425.0">
+      <Text layoutX="564.0" layoutY="253.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose Course Name To View:" wrappingWidth="333.849609375" AnchorPane.bottomAnchor="461.0">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
@@ -137,13 +137,13 @@
             </RadialGradient>
          </fill>
       </Text>
-      <ComboBox fx:id="filterComboBox" editable="true" layoutX="898.0" layoutY="254.0" prefHeight="35.0" prefWidth="210.0" promptText="fillter Exams" AnchorPane.bottomAnchor="420.0" />
+      <ComboBox fx:id="filterComboBox" editable="true" layoutX="898.0" layoutY="224.0" prefHeight="35.0" prefWidth="210.0" promptText="fillter Exams" AnchorPane.bottomAnchor="456.0" />
       <Label fx:id="live_time" layoutX="20.0" layoutY="79.0">
          <font>
             <Font name="Perpetua Titling MT Bold" size="24.0" />
          </font>
       </Label>
-      <Text fx:id="Student_ID_Text2" layoutX="20.0" layoutY="220.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Average:" wrappingWidth="95.849609375">
+      <Text fx:id="Avg_text" layoutX="20.0" layoutY="165.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Average:" wrappingWidth="302.849609375">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>
@@ -180,7 +180,7 @@
             </RadialGradient>
          </fill>
       </Text>
-      <Text fx:id="Student_ID_Text3" layoutX="20.0" layoutY="254.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Student's Name: " wrappingWidth="251.849609375">
+      <Text fx:id="Name_text" layoutX="20.0" layoutY="211.0" smooth="false" strokeType="OUTSIDE" strokeWidth="0.0" text="Student's Name: " wrappingWidth="395.849609375">
          <font>
             <Font name="Calibri Bold Italic" size="24.0" />
          </font>

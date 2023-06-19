@@ -116,10 +116,6 @@ public class HODOnLecGraphController extends BasicController {
         // Start the clock
         Timenow(live_time);
     }
-
-    // List to store completed tests
-    private ArrayList<Test> completedTestsList;
-
     // Method to handle "back" button click
     @FXML
     void backtoStatistical(ActionEvent event) {

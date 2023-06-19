@@ -1,17 +1,11 @@
 package logic;
 
-import java.util.ArrayList;
-
 import clientControllers.BasicController;
-import clientControllers.GraphController;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-
 public class Statistics extends BasicController {
     private String Course, Date, Median, TestID, Grade, LecturerName;
     private int Average, Total_Number_of_Students, Highes, Lowest, Number_of_Students_Above_Average;
     private int Number_of_Students_Below_Average, Pass_Rate, Fail_Rate, Grade_Distribution;
+    private String StudentName, StudentID, Email, Number_Of_Courses;
 
     public Statistics(String TestID) {
         this.TestID = TestID;
@@ -25,7 +19,8 @@ public class Statistics extends BasicController {
         this.Average = Average;
     }
 
-    public Statistics(String LecturerName,String TestID, String course, String Date, int Total_Number_of_Students, int Average) {
+    public Statistics(String LecturerName, String TestID, String course, String Date, int Total_Number_of_Students,
+            int Average) {
         this.LecturerName = LecturerName;
         this.TestID = TestID;
         this.Course = course;
@@ -34,13 +29,55 @@ public class Statistics extends BasicController {
         this.Average = Average;
     }
 
-    public Statistics(int average, String course, String date, String median, String testID, String Grade) {
-        this.Average = average;
+    public Statistics(int Average, String course, String date, String median, String testID, String Grade) {
+        this.Average = Average;
         this.Course = course;
         this.Date = date;
         this.Median = median;
         this.TestID = testID;
         this.Grade = Grade;
+    }
+
+    public Statistics(String StudentName, String StudentID, String Email, int Average, String Number_Of_Courses) {
+        this.StudentName = StudentName;
+        this.StudentID = StudentID;
+        this.Email = Email;
+        this.Average = Average;
+        this.Number_Of_Courses = Number_Of_Courses;
+
+    }
+
+    
+    public String getStudentName() {
+        return StudentName;
+    }
+
+    public void setStudentName(String studentName) {
+        StudentName = studentName;
+    }
+
+    public String getStudentID() {
+        return StudentID;
+    }
+
+    public void setStudentID(String studentID) {
+        StudentID = studentID;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getNumber_Of_Courses() {
+        return Number_Of_Courses;
+    }
+
+    public void setNumber_Of_Courses(String number_Of_Courses) {
+        Number_Of_Courses = number_Of_Courses;
     }
 
     public String getLecturerName() {
