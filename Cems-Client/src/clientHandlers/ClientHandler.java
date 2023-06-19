@@ -571,29 +571,12 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
 
-	try
-
-	{
-		sendToServer((Object) credentials);
-	}catch(
-	IOException e)
-	{
-		client.display("Could not send message to server.  Terminating client.");
-		quit();
-	}
-	}
-
-	/**
-	 * Handles the message received from the lecturer user interface gets all the
-	 * subjects.//TODO please check what this method do and if it's relevant
-	 */
-	public void handleMessageFromLecturerUI() {
 		try {
-			sendToServer((Object) "SELECT DISTINCT subjectname FROM subjectcourses;");
+			sendToServer((Object) credentials);
 		} catch (IOException e) {
-			e.printStackTrace();
+			client.display("Could not send message to server.  Terminating client.");
+			quit();
 		}
 	}
 
