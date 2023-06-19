@@ -94,8 +94,6 @@ public class BasicController {
 		return loader.getController();
 	}
 
-
-
 	/**
 	 * Method for opening a popup screen from given fxml path and title.
 	 * 
@@ -170,54 +168,77 @@ public class BasicController {
 		}
 	}
 
-	// This method is triggered when the logout button is pressed.
-	// It hides the current window, resets client data, quits the chat, and opens
-	// the login screen.
+	/**
+	 * This method is triggered when the logout button is pressed. It performs
+	 * several actions:
+	 * <ul>
+	 * <li>Hides the current window. The source of the event is cast to a Node, and
+	 * then the window that the node belongs to is retrieved and hidden.</li>
+	 * <li>Resets client data using a method from the ClientHandler class.</li>
+	 * <li>Quits the chat using a method from the ClientUI class.</li>
+	 * <li>Opens the login screen. The path to the FXML file for the login screen is
+	 * provided, along with the title for the new window.</li>
+	 * </ul>
+	 *
+	 * @param event The action event that triggers this method.
+	 */
 	@FXML
 	void logoutPressed(ActionEvent event) {
-		// Hide the current window. The source of the event is cast to a Node,
-		// and then the window that the node belongs to is retrieved and hidden.
 		((Node) event.getSource()).getScene().getWindow().hide();
-		// Reset client data using a method from the ClientHandler class.
 		ClientHandler.resetClientData();
-		// Quit the chat using a method from the ClientUI class.
 		ClientUI.chat.quit();
-		// Open the login screen. The path to the FXML file for the login screen is
-		// provided,
-		// along with the title for the new window.
 		openScreen("/clientFXMLS/LoginScreen.fxml", "CEMS System - Login", event);
 	}
 
-	// This method is triggered when the back button is pressed in the lecturer
-	// screen.
-	// It opens the lecturer screen and sets the welcome label.
+	/**
+	 * This method is triggered when the back button is pressed in the lecturer
+	 * screen. It performs two main actions:
+	 * <ul>
+	 * <li>Opens the lecturer screen and casts the returned controller to a
+	 * LecturerController.</li>
+	 * <li>Sets the welcome label on the lecturer screen.</li>
+	 * </ul>
+	 *
+	 * @param event The action event that triggers this method.
+	 */
 	@FXML
 	void backToLecturer(ActionEvent event) {
-		// Open the lecturer screen and cast the returned controller to a
-		// LecturerController.
 		LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer",
 				event);
-		// Set the welcome label on the lecturer screen.
 		lc.setWelcomeLabel();
 	}
 
-	// This method is triggered when the back button is pressed in the student
-	// screen.
-	// It opens the student screen.
+	/**
+	 * This method is triggered when the back button is pressed in the student
+	 * screen.
+	 * It is responsible for handling the transition back to the student screen.
+	 *
+	 * @param event The action event that triggers this method.
+	 */
 	@FXML
 	void backToStudent(ActionEvent event) {
 		// Open the student screen.
 		openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student", event);
 	}
 
-	// This method is triggered when the exit button is pressed.
-	// It asks for confirmation, and if confirmed, it hides the current window,
-	// resets client data, and quits the chat.
+	/**
+	 * This method is triggered when the back button is pressed in the HOD (Head of
+	 * Department) screen.
+	 * It is responsible for handling the transition back to the HOD screen.
+	 *
+	 * @param event The action event that triggers this method.
+	 */
 	@FXML
 	void backToHOD(ActionEvent event) {
 		openScreen("/clientFXMLS/HOD.fxml", "CEMS System - Student", event);
 	}
 
+	/**
+	 * This method is triggered when the exit button is pressed.
+	 * It is responsible for handling the termination of the application.
+	 *
+	 * @param event The action event that triggers this method.
+	 */
 	@FXML
 	void exitPressed(ActionEvent event) {
 		// Show a confirmation dialog asking if the user is sure they want to exit.
@@ -241,8 +262,11 @@ public class BasicController {
 	// not from the thread's local cache.
 	private volatile boolean stop = false;
 
-	// Define a method 'Timenow' that takes a Label object 'live_time' as an
-	// argument.
+	/**
+	 * This method is used to update the provided label with the current time.
+	 *
+	 * @param live_time The label that will be updated with the current time.
+	 */
 	public void Timenow(Label live_time) {
 		// Create a new Thread object.
 		Thread thread = new Thread(new Runnable() {
