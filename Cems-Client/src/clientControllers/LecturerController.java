@@ -11,12 +11,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import logic.QuestionModel;
+import logic.Test;
 import logic.User;
 
 public class LecturerController extends BasicController {
 
 	public static ArrayList<String> subjectsList;
 	public static ArrayList<QuestionModel> questions;
+	public static ArrayList<Test> ongoingTests;
 
 	@FXML
 	private Button BtnInfo;
@@ -72,8 +74,10 @@ public class LecturerController extends BasicController {
 
 	@FXML
 	void MenageOngoingTestsPressed(ActionEvent event) {
-		// open Ongoing Test screen
-		openScreen("/clientFXMLS/LecturerOngoingTest.fxml", "CEMS System - Lecturer - Menage Tests", event);
+		// open Ongoing Test screen 
+		OngoingTestController controller = new OngoingTestController();
+		OngoingTestController lsc = (OngoingTestController) openScreen2("/clientFXMLS/LecturerOngoingTest.fxml", "CEMS System - HOD - permissions", event,controller);
+		lsc.load();
 	}
 
 	@FXML
@@ -82,6 +86,8 @@ public class LecturerController extends BasicController {
 		LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen("/clientFXMLS/LecturerStatistical.fxml", "CEMS System - Lecturer - Statistical Information", event);
 		lsc.load();
 	}
+	
+	
 
 	public static ArrayList<String> getSubjectsList() {
 		return subjectsList;
@@ -98,5 +104,11 @@ public class LecturerController extends BasicController {
 	public static void setQuestions(ArrayList<QuestionModel> questions) {
 		LecturerController.questions = questions;
 	}
+	public static ArrayList<Test> getOngoingTests() {
+		return ongoingTests;
+	}
 
+	public static void setOngoingTests(ArrayList<Test> ongoingTests) {
+		LecturerController.ongoingTests = ongoingTests;
+	}
 }

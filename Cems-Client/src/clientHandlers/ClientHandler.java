@@ -1,13 +1,20 @@
 package clientHandlers;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import clientControllers.CreateQuestionController;
+import clientControllers.HODController;
 import clientControllers.LecturerController;
+import clientControllers.OngoingTestController;
 import logic.Question;
 import logic.QuestionModel;
+import logic.Test;
 import logic.User;
 import ocsf.client.AbstractClient;
 
@@ -50,6 +57,8 @@ public class ClientHandler extends AbstractClient {
 		String[] subjectArray;
 		ArrayList<String> list;
 		ArrayList<Question> questionList;
+		ArrayList<Test> TestsList;
+
 
 		// TODO add a comment here
 		if (severMessage instanceof Integer) {
@@ -82,6 +91,21 @@ public class ClientHandler extends AbstractClient {
 
 				LecturerController.setQuestions(listToAdd);
 			}
+			else if (((ArrayList<?>) severMessage).get(0) instanceof Test) {
+				System.out.println("we catched instance of Test");
+				TestsList = (ArrayList<Test>) severMessage;
+				
+				if(TestsList.get(0).getTimeToAdd()!=null) { //if the test have timeToAdd, we know that its test from the time extension permission tests
+					HODController.setOngoingTests_permissions(TestsList);
+					calculateTest_timeLeft(TestsList);//send the tests to calculate and update the timeLeft
+
+				}		
+				else {
+					calculateTest_timeLeft(TestsList);//send the tests to calculate and update the timeLeft
+					
+		            LecturerController.setOngoingTests(TestsList);
+				}
+		     }
 
 			else {
 				list = ((ArrayList<String>) severMessage);
@@ -99,8 +123,20 @@ public class ClientHandler extends AbstractClient {
 					System.out.println("Client Handler: " + list.get(1));
 					CreateQuestionController.setSubjectID(list.get(1));
 				}
+				else if (list.get(0).equals("getSubjectsCourseForTest")) {
+                    System.out.println("Client Handler: " + list.get(0));
+                    ArrayList<String> listToAdd = new ArrayList<>();
+                    int i = 1;
+                    while (i < list.size()) {
+                        listToAdd.add(list.get(i));
+                        i++;
+                    }
+                    OngoingTestController.setSubjectsCoursesList(listToAdd);
+				}
+				else if (list.get(0).equals("getSubjectNameFromCode")) {
+					
+				}
 			}
-
 		}
 
 		// Handles the error of user not found.
@@ -204,7 +240,147 @@ public class ClientHandler extends AbstractClient {
 	///////////////////////////////////////////////////
 	////////////////// LOGIC METHODS /////////////////
 	/////////////////////////////////////////////////
+	
+	/**
+	 * calculate the test left time for the ongoing tests 
+	 */
+	private void calculateTest_timeLeft(ArrayList<Test> tests) {
 
+		for(Test test : tests) {
+		// Calculate time left
+           LocalTime testTime = LocalTime.parse(test.getTime());
+           LocalDate testDate = LocalDate.parse(test.getDateString());
+           ZonedDateTime now = ZonedDateTime.now();
+           ZonedDateTime testZonedDateTime = ZonedDateTime.of(testDate, testTime, now.getZone());
+
+           // Parse duration which is in HH:mm format
+           String[] durationParts = test.getDuration().split(":");
+           long hours = Long.parseLong(durationParts[0]);
+           long minutes = Long.parseLong(durationParts[1]);
+           Duration testDuration = Duration.ofHours(hours).plusMinutes(minutes);
+
+           ZonedDateTime testEndTime = testZonedDateTime.plus(testDuration);
+
+           // Calculate time left manually
+           if (testEndTime.isBefore(now)) {
+               test.setTimeLeft("00:00"); // Test has ended
+           } else {
+               Duration durationToEnd = Duration.between(now, testEndTime);
+               long totalSeconds = durationToEnd.getSeconds();
+               long hoursLeft = totalSeconds / 3600;
+               long minutesLeft = (totalSeconds % 3600) / 60;
+               String formattedTimeLeft = String.format("%02d:%02d", hoursLeft, minutesLeft);
+               test.setTimeLeft(formattedTimeLeft);
+           }
+       }
+	}
+	/**
+	 * handle the test recieved from the HOD user and deletes from the DB from table hod_timeextensionrequests test who was
+	 *  approved/denied by the hod
+	 */
+	public void Update_HOD_permissionsTable_inDB(Test test) {
+	    ArrayList<String> request = new ArrayList<>();
+	    String query = "DELETE FROM hod_timeextensionrequests WHERE id = " + test.getId();
+	    request.add("updateHODPermissionsTable");
+	    request.add(query);
+
+	    try {
+	        sendToServer((Object)request);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+	/**
+	 *ask from the server to get course by the id , check both subjectid and courseid to find the correspond id from the DB
+	 */
+	public void getCourseForTest(String id) {
+
+        ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
+        String subjectid = id.substring(0, 2);
+        String courseid = id.substring(2, 4);
+        String query = String.format(
+                "SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+                subjectid, courseid);
+        subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTest", query));
+        try {
+            sendToServer((Object) subjectcoursenameofcompletedtest);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+	/**
+	 *ask the server to fetch the ongoing tests from the DB
+	 */
+	   public void fetchOngoingTests() {
+	        ArrayList<String> request = new ArrayList<>();
+	        request.add("fetchOngoingTests");
+	        try {
+	            sendToServer((Object)request);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	   
+		/**
+		 *send query to server to update the ongoing tests that wait for approve/deny for extra time in hod_timeextensionrequests
+		 */
+   public void updateHod_timeExtensionRequests_InDB(String id,String comments, String timeToAdd, String subject) {
+		ArrayList<String> listToSend = new ArrayList<String>();
+        String query = "INSERT INTO `projecton`.`hod_timeextensionrequests` (`id`,`Subject`, `TimeToAdd`, `Reason`) VALUES ('"
+                + id + "','" + subject + "', '" + timeToAdd + "', '"
+                + comments +"');";
+		listToSend.add("Update_timeExtensionRequestsTable");
+		listToSend.add(query);
+		try {
+			sendToServer((Object) listToSend);
+			} catch (IOException e) {
+			e.printStackTrace();
+		}
+   }
+   
+	/**
+	 *send query to server to get the ongoing tests that waiting for approve/deny for extra time in hod_timeextensionrequests
+	 */
+	public void fetch_ongoingTests_permissions_FromDB() {
+		ArrayList<String> ongoingTests_permissions_list = new ArrayList<String>();
+		String query = "SELECT * FROM hod_timeextensionrequests;";
+		ongoingTests_permissions_list.add("fetch_ongoingTests_permissions_FromDB");
+		ongoingTests_permissions_list.add(query);
+		try {
+			sendToServer((Object) ongoingTests_permissions_list);
+		} catch (IOException e) {
+			e.printStackTrace();
+			}
+	}   
+	/**
+	 *send query to server to update the Lock Button status FALSE/TRUE
+	 */
+	public void updateLockButton_DB(Test test,String value) {
+		ArrayList<String> list = new ArrayList<String>();
+	    String query = "UPDATE ongoing_tests SET locked = '" + value + "' WHERE test_id = " + test.getId();
+		list.add("updateLockButton_DB");
+		list.add(query);
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}		
+	}
+	   
+	/**
+	 *ask the server to get subject name from code of the test
+	 */
+   	   public void getSubjectNameFromCode(String code) {
+	        ArrayList<Object> list = new ArrayList<>();
+	        list.addAll(Arrays.asList("getSubjectNameFromCode", code));
+
+	        try {
+	            sendToServer(list);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * questions for the lecturer.

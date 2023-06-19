@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 import logic.ClientModel;
 import logic.Question;
+import logic.Test;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import serverUI.ServerUI;
@@ -38,6 +40,7 @@ public class EchoServer extends AbstractServer {
 	private String userNotFound = "User Not Found";
 	private String idExists = "Id Exists";
 	private String notFound = "Not Found";
+	private String rowsAffected = "rows Affected";
 
 	// Instance of the server
 	private static EchoServer serverInstance;
@@ -94,7 +97,8 @@ public class EchoServer extends AbstractServer {
 	 * table in UI.
 	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-
+		int rows_affected;
+		String rowsAffectedString;
 		// lastMessageTimes.put(client, System.currentTimeMillis());
 
 		System.out.println("Message received: " + msg + " from " + client);
@@ -129,7 +133,62 @@ public class EchoServer extends AbstractServer {
 							int flag = executeMyQuery(list.get(1));
 							client.sendToClient(flag == 0 ? idExists : flag);
 							break;
-
+							
+						case "Update_timeExtensionRequestsTable":
+							rows_affected = executeMyQuery(list.get(1));
+							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
+							System.out.println(rowsAffectedString);
+							client.sendToClient(rowsAffected);
+							break;
+							
+						case "updateLockButton_DB":
+							rows_affected = executeMyQuery(list.get(1));
+							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
+							System.out.println(rowsAffectedString);
+							client.sendToClient(rows_affected);
+							break;
+							
+						case "getSubjectsCourseForTest":
+                            ArrayList<String> resSubjectsCoursesList = getSubjectsCoursesList(list.get(1),
+                                    "getSubjectsCourseForTest");
+                            client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
+                                    : (Object) resSubjectsCoursesList);
+                            break;
+                            
+						case "getSubjectNameFromCode":
+						    String code = (String) list.get(1);
+						    String query = "SELECT subjectname FROM subjectcourses WHERE subjectid = SUBSTRING(?, 1, 2)";
+						    ArrayList<String> subjectStringList = getSubjectNameFromCode(query, code,"getSubjectNameFromCode");
+						    client.sendToClient(subjectStringList == null ? (Object) notFound : (Object) subjectStringList);
+						    break;
+						    
+						case "fetchOngoingTests":
+						try {
+							ArrayList<Test> ongoingTests = fetchOngoingTestsFromDB();
+							client.sendToClient((Object) ongoingTests);
+							//client.sendToClient(ongoingTests == null ? (Object) notFound : (Object) ongoingTests);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						break;
+						
+						case "fetch_ongoingTests_permissions_FromDB":
+							try {
+								ArrayList<Test> ongoingTestsPermissions = fetch_ongoingTests_permissions_FromDB(list.get(1)); 
+								client.sendToClient((Object) ongoingTestsPermissions);
+								//client.sendToClient(ongoingTestsPermissions == null ? (Object) notFound : (Object) ongoingTestsPermissions);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							break;
+							
+						case "updateHODPermissionsTable":
+							rows_affected = executeMyQuery(list.get(1));
+							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
+							System.out.println(rowsAffectedString);
+							client.sendToClient(rows_affected);
+							break;
+							
 						case "lecturersubjects":
 							ArrayList<String> resStringList = getDataFromDB(list.get(1), "lecturersubjects");
 							client.sendToClient(resStringList == null ? (Object) notFound : (Object) resStringList);
@@ -187,6 +246,113 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 
+	private ArrayList<Test> fetch_ongoingTests_permissions_FromDB(String query) {
+		  ArrayList<Test> tests = new ArrayList<>();
+		    try {
+		        Statement statement = conn.createStatement();
+		        ResultSet resultSet = statement.executeQuery(query);
+		        while(resultSet.next()) {
+		            Test test = new Test();
+		            test.setId(resultSet.getString("id"));
+		            test.setSubject(resultSet.getString("Subject")); // Added this line
+		            test.setTimeToAdd(resultSet.getString("TimeToAdd"));
+		            test.setReasonForTimeExtension(resultSet.getString("Reason"));
+		            tests.add(test);
+		            
+		        }
+		        resultSet.close();
+		        statement.close();
+		    }catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return tests;
+	}
+	
+	private ArrayList<String> getSubjectsCoursesList(String query, String out) {
+	    ArrayList<String> res = new ArrayList<String>();
+	    res.add(out); // add a new identifier
+	    try {
+	        stmt = conn.createStatement();
+	        ResultSet result = stmt.executeQuery(query);
+	        while (result.next()) { // This will move the cursor to the next row
+	            for (int index = 1; index <= 4; index++) {
+	                res.add(result.getString(index));
+	            }
+	        }
+	        return res; // res size is 5 where in first index is indentifier
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+	
+	
+	private ArrayList<String> getSubjectNameFromCode(String query, String code,String out) {
+	    ArrayList<String> resultList = new ArrayList<>();
+	    resultList.add(out);
+	    try {
+	        PreparedStatement statement = conn.prepareStatement(query);
+	        statement.setString(1, code);
+
+	        ResultSet resultSet = statement.executeQuery();
+
+	        while (resultSet.next()) {
+	            String subjectName = resultSet.getString("subjectname");
+	            resultList.add(subjectName);
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return resultList;
+	}
+	
+	
+	
+	private ArrayList<Test> fetchOngoingTestsFromDB() {
+	    ArrayList<Test> tests = new ArrayList<>();
+	    try {
+	        Statement statement = conn.createStatement();
+
+	        ResultSet resultSet = statement.executeQuery("SELECT tests.*, subjectcourses.subjectname, ongoing_tests.locked "
+	                + "FROM tests "
+	                + "LEFT JOIN subjectcourses ON CAST(tests.id AS UNSIGNED) = CAST(subjectcourses.subjectid AS UNSIGNED) "
+	                + "LEFT JOIN ongoing_tests ON tests.id = ongoing_tests.test_id "
+	                + "WHERE STR_TO_DATE(CONCAT(tests.date, ' ', tests.time), '%Y-%m-%d %H:%i') <= NOW() AND "
+	                + "TIMESTAMPADD(MINUTE, TIME_TO_SEC(TIMEDIFF(tests.duration, '00:00'))/60, STR_TO_DATE(CONCAT(tests.date, ' ', tests.time), '%Y-%m-%d %H:%i')) >= NOW()"
+	                + "GROUP BY tests.id");
+	        while(resultSet.next()) {
+	            Test test = new Test();
+	            test.setId(resultSet.getString("id"));
+	            test.setSubject(resultSet.getString("subjectname")); // Added this line
+	            test.setDuration(resultSet.getString("duration"));
+	            test.setTestComments(resultSet.getString("testcomments"));
+	            test.setAuthor(resultSet.getString("authorsname"));
+	            test.setCode(resultSet.getString("code"));
+	            test.setDateString(resultSet.getString("date"));
+	            test.setTime(resultSet.getString("time"));
+	            String lockBTN = resultSet.getString("locked");
+	           
+	            if(lockBTN.equals("FALSE"))
+		            test.setLockBtnPressed(false);
+	            else
+		            test.setLockBtnPressed(true);
+	            	tests.add(test);
+	        }
+	        resultSet.close();
+	        statement.close();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return tests;
+	}
+	
+	
+	
+	
+	
+	
 	/**
 	 * Method for executing Update queries .
 	 * 

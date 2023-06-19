@@ -89,6 +89,16 @@ public class ClientController implements ChatIF {
             e.printStackTrace();
         }
     }
+    
+ // gets all subject available for lecturer
+    public void getCourseForTest(Object id) {
+        try {
+            client.getCourseForTest((String)id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
 
     // sends query to create qeustion with data
     public void CreateQuestion(String Id, String subject, String Body, String QNumber) {
@@ -118,7 +128,35 @@ public class ClientController implements ChatIF {
             e.printStackTrace();
         }
     }
+    
+    //get all the ongoing tests 
+	   public void GetOngoingTests() {
+	        try {
+	            client.fetchOngoingTests();
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	   
+	//update time extension requests in hod_timeextensionrequests table
+    public void SendRequest_TimeExtention_toHOD(String id,String comments, String timeToAdd, String subject) {
+    	client.updateHod_timeExtensionRequests_InDB(id,comments,  timeToAdd,  subject);
+    }
+    
+    public void Update_HOD_permissionsTable_inDB(Test test) {
+		openConnection();
 
+		client.Update_HOD_permissionsTable_inDB(test);
+	}
+
+	public void fetch_ongoingTests_permissions_list() {
+		openConnection();
+		client.fetch_ongoingTests_permissions_FromDB();
+	}
+
+	public void updateLockButton_DB(Test test,String value) {
+		client.updateLockButton_DB(test,value);
+	}
     // Sends question to data base and updating existing one
     public void EditQuestion(String newBody, String newQNumber, String originalId) {
         try {
@@ -137,7 +175,7 @@ public class ClientController implements ChatIF {
 
         String query = "INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`) VALUES ('"
                 + test.getId() + "','" + test.getDuration() + "', '" + test.getTestComments() + "', '"
-                + test.getAuthor() + "', '" + test.getTestCode() + "', '" + test.getDate().getValue().toString() + "','"
+                + test.getAuthor() + "', '" + test.getCode() + "', '" + test.getDate().getValue().toString() + "','"
                 + test.getTime() + "', '" + test.getQuesitonsInTest() + "');";
         client.sendTestToDatabase(query);
     }

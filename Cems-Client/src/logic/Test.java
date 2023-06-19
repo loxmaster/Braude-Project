@@ -1,23 +1,43 @@
 package logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 
-public class Test {
+public class Test implements Serializable{
     private ArrayList<QuestionModel> quesitonsInTest;
-    private String id, subject, author;
-    private String duration, TestComments, testCode;
-    private String time, dateString;
+    private String id, Subject, author;
+    private String duration, TestComments, Code;
+    private String timeToAdd,ReasonForTimeExtension;
+	private String time, dateString;
     private DatePicker date;
+	private String TimeLeft;
+
+    //ongoing_tests 
+    private Button LockTest;
+	private Button AddTime;
+    private Button UnlockTest;
+	private boolean LockBtnPressed = false;
+	private boolean ongoingTest_approved=false;
+	private boolean ongoingTest_denied=false;
+	//HOD time extension
+    private Button Approve;
+	private Button Deny;
+
+	
+
+
 
     public Test() {
         id = new String();
-        subject = new String();
+        Subject = new String();
         author = new String();
         duration = new String();
         TestComments = new String();
-        testCode = new String();
+        Code = new String();
         time = new String();
         dateString = new String();
         quesitonsInTest = new ArrayList<QuestionModel>();
@@ -26,11 +46,11 @@ public class Test {
     public Test(String id, String subject, String author, String duration, String testComments, String testCode,
             String dateString, String time) {
         this.id = id;
-        this.subject = subject;
+        this.Subject = subject;
         this.author = author;
         this.duration = duration;
         TestComments = testComments;
-        this.testCode = testCode;
+        this.Code = testCode;
         this.dateString = dateString;
         this.time = time;
         quesitonsInTest = new ArrayList<QuestionModel>();
@@ -39,7 +59,21 @@ public class Test {
     public ArrayList<QuestionModel> getQuesitonsInTest() {
         return quesitonsInTest;
     }
+	public boolean isOngoingTest_approved() {
+		return ongoingTest_approved;
+	}
 
+	public void setOngoingTest_approved(boolean ongoingTest_approved) {
+		this.ongoingTest_approved = ongoingTest_approved;
+	}
+
+	public boolean isOngoingTest_denied() {
+		return ongoingTest_denied;
+	}
+
+	public void setOngoingTest_denied(boolean ongoingTest_denied) {
+		this.ongoingTest_denied = ongoingTest_denied;
+	}
     public void setQuesitonsInTest(ArrayList<QuestionModel> quesitonsInTest) {
         this.quesitonsInTest = quesitonsInTest;
     }
@@ -65,11 +99,11 @@ public class Test {
     }
 
     public String getSubject() {
-        return subject;
+        return Subject;
     }
 
     public void setSubject(String subject) {
-        this.subject = subject;
+        this.Subject = subject;
     }
 
     public String getAuthor() {
@@ -96,12 +130,12 @@ public class Test {
         TestComments = testComments;
     }
 
-    public String getTestCode() {
-        return testCode;
+    public String getCode() {
+        return Code;
     }
 
-    public void setTestCode(String testCode) {
-        this.testCode = testCode;
+    public void setCode(String testCode) {
+        this.Code = testCode;
     }
 
     public String getTime() {
@@ -121,4 +155,82 @@ public class Test {
             if(!quesitonsInTest.contains(q))
                 quesitonsInTest.add(q);
     }
+    public Button getLockTest() {
+		return LockTest;
+	}
+
+	public void setLockTest(Button lockTest) {
+		this.LockTest = lockTest;
+	}
+
+	public Button getAddTime() {
+		return AddTime;
+	}
+
+	public void setAddTime(Button addTime) {
+		this.AddTime = addTime;
+	}
+
+
+	public String getTimeLeft() {
+		return TimeLeft;
+	}
+
+	public void setTimeLeft(String timeLeft) {
+		TimeLeft = timeLeft;
+	}
+	
+    public Button getApprove() {
+		return Approve;
+	}
+
+	public void setApprove(Button approve) {
+		Approve = approve;
+	}
+
+	public Button getDeny() {
+		return Deny;
+	}
+
+	public void setDeny(Button deny) {
+		Deny = deny;
+	}
+
+	public String getTimeToAdd() {
+		return timeToAdd;
+	}
+
+	public void setTimeToAdd(String timeToAdd) {
+		this.timeToAdd = timeToAdd;
+	}
+
+	public String getReasonForTimeExtension() {
+		return ReasonForTimeExtension;
+	}
+
+	public void setReasonForTimeExtension(String reasonForTimeExtension) {
+		ReasonForTimeExtension = reasonForTimeExtension;
+	}
+
+	public boolean isLockBtnPressed() {
+		return LockBtnPressed;
+	}
+
+	public void setLockBtnPressed(boolean lockBtnPressed) {
+		LockBtnPressed = lockBtnPressed;
+	}
+
+	public Button getUnlockTest() {
+		return UnlockTest;
+	}
+
+	public void setUnlockTest(Button unlockTest) {
+		UnlockTest = unlockTest;
+	}
+	
+	
+
+
 }
+
+

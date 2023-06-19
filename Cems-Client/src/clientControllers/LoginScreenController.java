@@ -36,13 +36,12 @@ public class LoginScreenController extends BasicController {
 		// Opens connection if closed
 		ClientUI.chat.openConnection();
 
-		// gest text from fields
-		//username = emailTextbox.getText();
-		// // password = passTextbox.getText();
-		// emailTextbox.setText("noah");
-		// passTextbox.setText("123456");
-		username = "noah";
-		password = "123456";
+		// get text from fields
+		username = emailTextbox.getText();
+		password = passTextbox.getText();
+//		 emailTextbox.setText("noah");
+//		 passTextbox.setText("123456");
+
 		System.out.println("Entered: " + username + " " + password);
 
 		if (username.trim().isEmpty() || password.trim().isEmpty())
