@@ -73,10 +73,13 @@ public class ViewGradesController extends BasicController {
     // view.
     @FXML
     void initialize() {
+        
         // Start the clock
         Timenow(live_time);
+
         // Get the list of completed tests for the student
         ClientUI.chat.getcompletedTestsForStudentList();
+
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -104,6 +107,8 @@ public class ViewGradesController extends BasicController {
         // Add the "Show all" option to the ComboBox
         courseNames.add("Show all");
         ExamLoad("Show all");
+
+        filterComboBox.getItems().clear();
         filterComboBox.getItems().addAll(FXCollections.observableArrayList(courseNames));
 
         // Set the action to be performed when an option is selected in the ComboBox
