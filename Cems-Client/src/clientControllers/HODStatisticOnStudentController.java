@@ -29,4 +29,10 @@ public class HODStatisticOnStudentController extends BasicController {
         openScreen("/clientFXMLS/HodStatisticScrene.fxml", "CEMS System - Head Of Department - Statistics", event);
     }
 
+    public void load() {
+        
+    }
+
+
+
 }
