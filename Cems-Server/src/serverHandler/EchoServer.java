@@ -208,7 +208,7 @@ public class EchoServer extends AbstractServer {
 							ArrayList<String> resSubjectsList = getData_db(list.get(1), "lecturersubjects");
 							client.sendToClient(resSubjectsList == null ? (Object) notFound : (Object) resSubjectsList);
 							break;
-						
+
 						case "lecturercourses":
 							ArrayList<String> resCoursesList = getCourses_db(list.get(1), "lecturercourses");
 							client.sendToClient(resCoursesList == null ? (Object) notFound : (Object) resCoursesList);
@@ -232,7 +232,7 @@ public class EchoServer extends AbstractServer {
 							break;
 
 						case "getSubjectsCourseForTestLec":
-							ArrayList<String> resSubjectsCoursesListLec = getSubjectsCoursesList(list.get(1),
+							ArrayList<String> resSubjectsCoursesListLec = getSubjectsCoursesListLec(list.get(1),
 									"getSubjectsCourseForTestLec");
 							client.sendToClient(resSubjectsCoursesListLec == null ? (Object) notFound
 									: (Object) resSubjectsCoursesListLec);
@@ -244,7 +244,8 @@ public class EchoServer extends AbstractServer {
 							client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
 									: (Object) resSubjectsCoursesList);
 							break;
-							case "LecturerListUnderSameDepartment":
+
+						case "LecturerListUnderSameDepartment":
 							ArrayList<String> resLecturerListUnderSameDepartment = getLecturerListUnderSameDepartment(
 									list.get(1),
 									"LecturerListUnderSameDepartment");
@@ -286,13 +287,13 @@ public class EchoServer extends AbstractServer {
 							client.sendToClient(
 									test == null ? (Object) notFound : (Object) test);
 							System.out.println("Server gettestwithcode --> " + test.getId());
-						break;
+							break;
 
 						case "sendtocompletedtest":
 							int returned = executeMyQuery(list.get(1));
 							client.sendToClient(
 									returned == 0 ? (Object) notFound : (Object) returned);
-						break;
+							break;
 						default:
 							loginVarification(list, client);
 							break;
@@ -319,7 +320,7 @@ public class EchoServer extends AbstractServer {
 		}
 		return null;
 	}
-	
+
 	private ArrayList<String> getOnGoingTest(String query) {
 		ArrayList<String> output = new ArrayList<>();
 		output.add("isTestReady");
@@ -392,31 +393,31 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 
-private TestInServer getTestWithCode(String query) {
-    	try {
-        
+	private TestInServer getTestWithCode(String query) {
+		try {
+
 			Statement testStatement = conn.createStatement();
 			ResultSet res = testStatement.executeQuery(query);
 
 			Statement questionStmt = null;
 			ResultSet questionResult = null;
-			
+
 			if (res.next()) {
 
 				// Gets the lists of question ID`s and creates a Question for them ,
 				// also gets the question points array and assigns each quesiton its points.
 				ArrayList<Question> listOfQuestions = new ArrayList<>();
-				
+
 				// Handles the questions ID`s array
 				String listOfIdsFromDatabase = res.getString(8);
 				String listOfIdsTrimmed = listOfIdsFromDatabase.replace("[", "").replace("]", "").trim();
 				String[] arrayIds = listOfIdsTrimmed.split(",");
-				
+
 				// handles the question points array
 				String questionsPoints = res.getString(9);
 				String listOfIdsTrimmedPoints = questionsPoints.replace("[", "").replace("]", "").trim();
 				String[] arrayPoints = listOfIdsTrimmedPoints.split(",");
-				
+
 				// index for the current quesiton number
 				int index = 0;
 				for (String id : arrayIds) {
@@ -424,7 +425,7 @@ private TestInServer getTestWithCode(String query) {
 					questionStmt = conn.createStatement();
 					System.out.println(id);
 					questionResult = questionStmt.executeQuery(queryForGettingTheQuestions);
-					
+
 					if (questionResult.next()) {
 						Question q = new Question(
 								questionResult.getString(1),
@@ -433,8 +434,9 @@ private TestInServer getTestWithCode(String query) {
 								questionResult.getString(4),
 								questionResult.getString(5),
 								questionResult.getString(6));
-						
-						String answerQuery = "SELECT optionA, optionB, optionC, optionD, correctAnswer FROM projecton.answers WHERE questionid = " + q.getId() + "";
+
+						String answerQuery = "SELECT optionA, optionB, optionC, optionD, correctAnswer FROM projecton.answers WHERE questionid = "
+								+ q.getId() + "";
 						Statement answerStmt = conn.createStatement();
 						ResultSet answerResult = answerStmt.executeQuery(answerQuery);
 						if (answerResult.next()) {
@@ -445,13 +447,13 @@ private TestInServer getTestWithCode(String query) {
 							q.setOptionD(answerResult.getString(4));
 							q.setAnswer(answerResult.getString(5));
 						}
-						
+
 						// Sets the question points
 						q.setPoints(arrayPoints[index]);
 						index++;
 						listOfQuestions.add(q);
 					}
-				
+
 				}
 
 				TestInServer tempTest = new TestInServer(
@@ -464,10 +466,10 @@ private TestInServer getTestWithCode(String query) {
 						res.getString(6),
 						res.getString(7),
 						listOfQuestions);
-				
+
 				res.close();
 				stmt.close();
-				
+
 				return tempTest;
 			} else {
 				res.close();
@@ -479,6 +481,7 @@ private TestInServer getTestWithCode(String query) {
 			return null;
 		}
 	}
+
 	// User Login Varification
 	private void loginVarification(ArrayList<String> list, ConnectionToClient client) {
 		try {
@@ -558,10 +561,10 @@ private TestInServer getTestWithCode(String query) {
 			}
 			System.out.println("Message sent back: " + res);
 
-			if (res.size() == 0){
+			if (res.size() == 0) {
 				return null;
 			}
-				
+
 			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -690,6 +693,7 @@ private TestInServer getTestWithCode(String query) {
 		}
 		return null;
 	}
+
 	private ArrayList<String> getLecturerListUnderSameDepartment(String query, String out) {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(out); // add a new identifier

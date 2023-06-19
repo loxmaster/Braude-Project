@@ -277,7 +277,7 @@ public class ClientHandler extends AbstractClient {
 								listToAdd.add(list.get(i));
 								i++;
 							}
-							//HODStatisticOnLecturerController.setLecturerListUnderSameDepartment(listToAdd);
+							HODStatisticOnLecturerController.setLecturerListUnderSameDepartment(listToAdd);
 							break;
 						}
 						case "HodGETcompletedTestsForSpecificLecturerList": {
