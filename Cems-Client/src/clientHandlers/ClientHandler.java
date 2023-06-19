@@ -22,7 +22,6 @@ import clientControllers.StudentExamController;
 import logic.Question;
 import logic.QuestionModel;
 import logic.Test;
-import logic.Test;
 import logic.TestInServer;
 import logic.User;
 import ocsf.client.AbstractClient;
@@ -42,6 +41,7 @@ public class ClientHandler extends AbstractClient {
 	 *                     user .
 	 * @param subjectsList static arrayList of all the subjects available .
 	 */
+	
 	ChatIF client;
 	public static User user = new User();
 
@@ -119,41 +119,6 @@ public class ClientHandler extends AbstractClient {
 			// If message type ArrayList it means that data comes in , where first index (0)
 			// is reserved for destination , and second (1) index is the data itself.
 			case "ArrayList":
-
-				// if ((String) (((ArrayList<?>) serverMessage).get(0)) instanceof String) {
-				// String test;
-				// test = (String) ((ArrayList<?>) serverMessage).get(0);
-				// if (test.equals("getTest")) {
-				// ((ArrayList<?>) serverMessage).remove(0);
-				// int size = ((ArrayList<?>) serverMessage).size();
-				// ArrayList<QuestionModel> questionBuild = new ArrayList<>();
-
-				// //ArrayList<QuestionModel> copymessage = new ArrayList<>();
-				// // copymessage.addAll((Collection<? extends QuestionModel>) serverMessage);
-
-				// ArrayList<Question> copymessage = new ArrayList<>();
-				// copymessage = (ArrayList<Question>) serverMessage;
-
-				// // questionBuild.addAll((Collection<? extends QuestionModel>) serverMessage);
-
-				// for (int i = 0; i < size; i++) {
-				// questionBuild.add(new QuestionModel(
-				// copymessage.get(i).getId(),
-				// copymessage.get(i).getSubject(),
-				// copymessage.get(i).getCoursename(),
-				// copymessage.get(i).getQuestiontext(),
-				// copymessage.get(i).getQuestionnumber(),
-				// copymessage.get(i).getLecturer(),
-				// copymessage.get(i).getOptionA(),
-				// copymessage.get(i).getOptionB(),
-				// copymessage.get(i).getOptionC(),
-				// copymessage.get(i).getOptionD(),
-				// copymessage.get(i).getAnswer()));
-				// }
-				// }
-				// // questionfromTestList.addAll(((ArrayList<QuestionModel>) serverMessage));
-
-				// }
 
 				// If first instance is Question than its a question list.
 				if (((ArrayList<?>) serverMessage).get(0) instanceof Question) {
@@ -286,7 +251,6 @@ public class ClientHandler extends AbstractClient {
 							LecturerStatisticalController.setcompletedTestsForLecturerList(listToAdd);
 							break;
 						}
-
 						case "getSubjectsCourseForTest": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<String> listToAdd = new ArrayList<>();
@@ -320,7 +284,6 @@ public class ClientHandler extends AbstractClient {
 							//HODStatisticOnLecturerController.setLecturerListUnderSameDepartment(listToAdd);
 							break;
 						}
-
 						case "HodGETcompletedTestsForSpecificLecturerList": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
@@ -345,7 +308,6 @@ public class ClientHandler extends AbstractClient {
 							HODStatisticOnLecturerController.setcompletedTestsForSpecificLecturer(listToAdd);
 							break;
 						}
-
 						case "getHodSubjectsCourseForTestSpecificLec": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<String> listToAdd = new ArrayList<>();
@@ -357,7 +319,6 @@ public class ClientHandler extends AbstractClient {
 							HODStatisticOnLecturerController.getHodSubjectsCourseForTestSpecificLec(listToAdd);
 							break;
 						}
-
 						case "getSubjectID":
 							System.out.println("Client Handler: " + list.get(1));
 							CreateQuestionController.setSubjectID(list.get(1));
@@ -493,10 +454,11 @@ public class ClientHandler extends AbstractClient {
 	////////////////// LOGIC METHODS /////////////////
 	/////////////////////////////////////////////////
 
+
 	public void getTestWithCodeForStudent(String testCode) {
 		
 		ArrayList<String> listOfCommands = new ArrayList<>();
-		listOfCommands.addAll(Arrays.asList("gettestwithcode", "SELECT * FROM projecton.tests where code = " + testCode + ";"));
+		listOfCommands.addAll(Arrays.asList("gettestwithcode", "SELECT * FROM projecton.tests where code = '" + testCode + "';"));
 		try {
 			sendToServer((Object) listOfCommands);
 		} catch (IOException e) {
@@ -879,7 +841,7 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-	public void sendToCompletedTest(Object listToSend) {
+	public void passToServer(Object listToSend) {
 		try {
 			sendToServer(listToSend);
 		} catch (IOException e) {

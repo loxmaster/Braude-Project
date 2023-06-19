@@ -29,24 +29,16 @@ import logic.QuestionModel;
 import logic.Test;
 
 public class StudentExamController extends BasicController {
-    public static ArrayList<String> questionList;
+
+
+    /////////////////////////////// FXML variables. ///////////////////////////////
+
+
+	// Private variable that the data from the server regarding the current
+    // test will be entered to.
+	private static Test test; 
+	public static ArrayList<String> questionList;
     private String test_id;
-
-    public String getTest_id() {
-        return test_id;
-    }
-
-    public void setTest_id(String test_id) {
-        this.test_id = test_id;
-    }
-
-    public static ArrayList<String> getQuestionList() {
-        return questionList;
-    }
-
-    public static void setQuestionList(ArrayList<String> questionList) {
-        StudentExamController.questionList = questionList;
-    }
 
     @FXML
     private ChoiceBox<?> qComboBox;
@@ -56,41 +48,8 @@ public class StudentExamController extends BasicController {
 
     @FXML
 	private Label live_time;
-
-	@FXML
-	void submitPressed(ActionEvent event){}
-	@FXML
-	void initialize() {
-		// Start the clock
-		Timenow(live_time);
-	}
     
-
-    @FXML
-    void NextQuestionPressed(ActionEvent event) {
-
-    }
-
-    @FXML
-    void qComboBox(MouseEvent event) {
-
-        // loadQuestions(questionList);
-
-    }
-
-    // Private variable that the data from the server regarding the current
-    // test will be entered to.
-    private static Test test; 
-
-    /*private StudentExamController() {
-        test = new Test();
-    }*/
-
-
-    /////////////////////////////// FXML variables. ///////////////////////////////
-
-
-    @FXML
+	@FXML
     private RadioButton A, B, C, D;
 
     @FXML
@@ -129,7 +88,7 @@ public class StudentExamController extends BasicController {
 
 		// Checks if any of the questions in test hasnt been selected.
 		for (QuestionModel question : localTest.getQuesitonsInTest()) {
-			if (question.getSelected().isEmpty()) {
+			if (question.getSelected() == null) {
 				JOptionPane.showMessageDialog(null, "You didnt select all the questions !", "Warning !", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
@@ -140,9 +99,16 @@ public class StudentExamController extends BasicController {
 		backToStudent(event);
 
 	}
+	
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
 
 
     /////////////////////////////// Instance Methods ///////////////////////////////
+
 
     public void load(String testCode) {
 
@@ -220,7 +186,7 @@ public class StudentExamController extends BasicController {
 
 		// Creating the question button
 		Button questionInTestButton = new Button("Q: " + index);
-		questionInTestButton.setPadding(new Insets(4, 4, 4, 4));
+		questionInTestButton.setPadding(new Insets(8, 4, 8, 4));
 		// Handle what happens when you press the button
 		questionInTestButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -291,7 +257,23 @@ public class StudentExamController extends BasicController {
         StudentExamController.test = test;
     }
 
+	public String getTest_id() {
+        return test_id;
+    }
 
+    public void setTest_id(String test_id) {
+        this.test_id = test_id;
+    }
+
+    public static ArrayList<String> getQuestionList() {
+        return questionList;
+    }
+
+    public static void setQuestionList(ArrayList<String> questionList) {
+        StudentExamController.questionList = questionList;
+    }
+
+	/* 
     /////////////////////////////// Implementation for Choose Test Type ///////////////////////
 
 	private String testCode;
@@ -334,7 +316,7 @@ public class StudentExamController extends BasicController {
 			 * check test id and validate from db
 			 * it exists as an uploaded file
 			 * if so, concat the 'Testid' with the id
-			 */
+			 
 			File newFile = new File("Cems-Server/TestFiles/Testid" + "123");
 			byte[] mybytearray = new byte[(int) newFile.length()];
 			FileOutputStream fis = new FileOutputStream(newFile);
@@ -352,7 +334,8 @@ public class StudentExamController extends BasicController {
  		
 	}
 
-	 public void loadTestCode(String testCode) {
+	public void loadTestCode(String testCode) {
         this.testCode = testCode;
     }
+*/
 }

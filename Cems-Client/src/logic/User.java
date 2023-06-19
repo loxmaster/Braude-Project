@@ -3,21 +3,21 @@ package logic;
 public class User {
 
     private String username, password;
-    private String pName, lName, email, department, type,user_id;
+    private String pName, lName, email, department, type, user_id;
     private boolean isOnline, isFound;
-    
-    public User(String username,String password,String type,String user_id,String email,String department){
+
+    public User(String username, String password, String type, String user_id, String email, String department) {
         this.username = username;
-        this.password=password;
-        this.type=type;
-        this.user_id=user_id;
-        this.email=email;
-        this.department=department;
+        this.password = password;
+        this.type = type;
+        this.user_id = user_id;
+        this.email = email;
+        this.department = department;
     }
 
-    public User(){
+    public User() {
     }
-    
+
     public String getUser_id() {
         return user_id;
     }
@@ -31,7 +31,7 @@ public class User {
     }
 
     public void setType(String type) {
-        this.type =  type;
+        this.type = type;
     }
 
     public void setIsFound(boolean isFound) {

@@ -16,6 +16,7 @@ import logic.FileUploadMessage;
 import logic.Test;
 
 public class ClientController implements ChatIF {
+
     // Class variables *************************************************
 
     /**
@@ -97,7 +98,7 @@ public class ClientController implements ChatIF {
     }
     
  // 1 in hod
- public void getLecturerListUnderSameDepartment() {
+    public void getLecturerListUnderSameDepartment() {
     try {
         client.getLecturerListUnderSameDepartment();
     } catch (Exception e) {
@@ -106,7 +107,7 @@ public class ClientController implements ChatIF {
 }
 
 // 2 in hod
-public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
+    public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
     try {
         client.HodGETcompletedTestsForSpecificLecturerList(userName);
     } catch (Exception e) {
@@ -115,7 +116,7 @@ public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
 }
 
 // 3 in hod
-public void getHodCourseForTestSpecificLec(Object id) {
+    public void getHodCourseForTestSpecificLec(Object id) {
     try {
         client.getHodCourseForTestSpecificLec((String) id);
     } catch (Exception e) {
@@ -123,8 +124,7 @@ public void getHodCourseForTestSpecificLec(Object id) {
     }
 }
 
-
-    // gets all subject available for lecturer
+// gets all subject available for lecturer
     public void getCourseForTest(Object id) {
         try {
             client.getCourseForTest((String) id);
@@ -133,7 +133,7 @@ public void getHodCourseForTestSpecificLec(Object id) {
         }
     }
 
-        // gets all subject available for lecturer
+    // gets all subject available for lecturer
     public void getCourseForTestLec(Object id) {
         try {
             client.getCourseForTestLec((String) id);
@@ -142,8 +142,7 @@ public void getHodCourseForTestSpecificLec(Object id) {
         }
     }
 
-
-    // gets the id of the subject given
+// gets the id of the subject given
     public void GetSubjectIDfromSubjectCourses(String subjectname) {
         try {
             client.GetSubjectIDfromSubjectCourses(subjectname);
@@ -208,6 +207,7 @@ public void getHodCourseForTestSpecificLec(Object id) {
             e.printStackTrace();
         }
     }
+    
     public void EditAnswers(String subjectid, String qA,String qB,String  qC ,String qD, String correctAnswer){
         try {
             
@@ -216,6 +216,7 @@ public void getHodCourseForTestSpecificLec(Object id) {
             e.printStackTrace();
         }
     }
+    
     /**
      * Method to send question information to DataBase
      * 
@@ -265,18 +266,21 @@ public void getHodCourseForTestSpecificLec(Object id) {
         ArrayList<String> questionIdList = new ArrayList<>();
         ArrayList<String> SelectedQuestions = new ArrayList<>(); // This list represents the student selected questions
 
+        
+
         for (QuestionModel question : localTest.getQuesitonsInTest()) {
             questionIdList.add(question.getId());
             SelectedQuestions.add(question.getSelected());
         }
+
         String query = "INSERT INTO `projecton`.`completed_tests` (`test_id`, `student_id`, `grade`, `authorsname`, `code`, `date`, `time`," +
-        " `duration`, `questions`,  `selected`) VALUES ('" + localTest.getId() + "', '" + "332" + "', '" + "grade" + 
-        "', '" + localTest.getAuthor() + "', '" + localTest.getTestCode() + "', '" + "localDate" + "', '" + localTest.getTime() + "', '" + localTest.getDuration() + 
-        "', '" + questionIdList + "', '" + SelectedQuestions + "');";
+        " `duration`, `questions`, `test_type`, `status`,  `selected`) VALUES ('" + localTest.getId() + "', '" + ClientHandler.user.getUser_id() + "', '" + "" + 
+        "', '" + localTest.getAuthor() + "', '" + localTest.getTestCode() + "', '" + "13-05-2023" + "', '" + localTest.getTime() + "', '" + localTest.getDuration() + 
+        "', '" + questionIdList + "', '" + "computer" + "', '" + "completed" + "', '" + SelectedQuestions + "');";
 
         ArrayList<String> listToSend = new ArrayList<>();
         listToSend.addAll(Arrays.asList("sendtocompletedtest" , query));
-        client.sendToCompletedTest((Object) listToSend);
+        client.passToServer((Object) listToSend);
     }
 
     /**

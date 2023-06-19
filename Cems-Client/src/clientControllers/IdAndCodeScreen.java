@@ -18,6 +18,13 @@ import logic.FileDownloadMessage;
 
 public class IdAndCodeScreen extends BasicController { //TODO change name
 
+
+	private StudentExamController examController;
+	public static String test_code = null;
+	public static String test_id = null;
+	public static boolean testRunning = false;
+
+
 	@FXML
     private Button downloadButton;
 
@@ -34,26 +41,6 @@ public class IdAndCodeScreen extends BasicController { //TODO change name
     private TextField code;
 
 	@FXML
-	void backPressed(ActionEvent event) {
-		// Opening window for code entering
-		openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student - Enter Code", event);
-	}
-
-	@FXML
-	void submitPressed(ActionEvent event) {
-		/*
-		* grab id and CODE text from text field
-		* validate information...
-		*/
-		String testCode = code.getText();
-
-		// Opens the Choose test Type screen and sets the test code for the controller.
-		StudentExamController sec = (StudentExamController) openScreen("/clientFXMLS/ChooseTestType.fxml", "CEMS System - Student - Exam Type Selection", event);
-		sec.loadTestCode(testCode);
-	}
-
-
-	@FXML
 	private TextField testCode;
 
 	@FXML
@@ -64,41 +51,18 @@ public class IdAndCodeScreen extends BasicController { //TODO change name
 
 	@FXML
 	private ImageView onlineTest;
-
-	private StudentExamController examController;
-
-	public static String test_code = null;
-	public static String test_id = null;
-
-	public static boolean testRunning = false;
-
-	public static boolean isTestRunning() {
-		return testRunning;
+	
+	@FXML
+	void backPressed(ActionEvent event) {
+		// Opening window for code entering
+		openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student - Enter Code", event);
 	}
-
-	public static void setTestRunning(boolean testRunning) {
-		IdAndCodeScreen.testRunning = testRunning;
-	}
-
-	public static void setTest_code(ArrayList<String> list) {
-		test_code = list.get(0);
-		test_id = list.get(1);
-	}
-
-	private static FileDownloadMessage downloadMessage;
-
-	public synchronized static FileDownloadMessage getDownloadMessage() {
-		return downloadMessage;
-	}
-
-	public synchronized static void setDownloadMessage(FileDownloadMessage downloadMessage) {
-		IdAndCodeScreen.downloadMessage = downloadMessage;
-	}
-
 
 	@FXML
 	void AutomaticPressed(ActionEvent event) {
 
+		// TODO see what not works here , when works can delete whats below and all guchi
+		/*
 		if ((test_code == null)) {
 			try {
 				ClientUI.chat.isStudentTakingCourse();
@@ -108,7 +72,7 @@ public class IdAndCodeScreen extends BasicController { //TODO change name
 				e.printStackTrace();
 			}
 		}
-
+		 
 		if (test_code == "none" || !(testCode.getText().equals(test_code)) || !testRunning) {
 			JOptionPane.showMessageDialog(null,
 					(String) "you either enetered a wrongh test code\n or you're not enlisted in this course!",
@@ -116,11 +80,16 @@ public class IdAndCodeScreen extends BasicController { //TODO change name
 			return;
 		}
 		if (testCode.getText().equals(test_code) && testRunning) {
-			examController = (StudentExamController) openScreen("/clientFXMLS/StudentTestQ.fxml",
-					"CEMS System - Student - Enter Code", event);
+			examController = (StudentExamController) openScreen("/clientFXMLS/StudentExam.fxml",
+					"CEMS System - Student - Exam", event);
 			examController.load(test_id);
 		}
+		*/
+		String code = testCode.getText();
 
+		examController = (StudentExamController) openScreen("/clientFXMLS/StudentExam.fxml",
+					"CEMS System - Student - Exam", event);
+		examController.load(code);
 	}
 
 	@FXML
@@ -163,8 +132,30 @@ public class IdAndCodeScreen extends BasicController { //TODO change name
 				JOptionPane.showMessageDialog(null, (String) "Something went wrong!", (String) "Error!",
 						JOptionPane.ERROR_MESSAGE);
 		}
-		// }
+	}
 
+
+	public static boolean isTestRunning() {
+		return testRunning;
+	}
+
+	public static void setTestRunning(boolean testRunning) {
+		IdAndCodeScreen.testRunning = testRunning;
+	}
+
+	public static void setTest_code(ArrayList<String> list) {
+		test_code = list.get(0);
+		test_id = list.get(1);
+	}
+
+	private static FileDownloadMessage downloadMessage;
+
+	public synchronized static FileDownloadMessage getDownloadMessage() {
+		return downloadMessage;
+	}
+
+	public synchronized static void setDownloadMessage(FileDownloadMessage downloadMessage) {
+		IdAndCodeScreen.downloadMessage = downloadMessage;
 	}
 
 }

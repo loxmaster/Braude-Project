@@ -80,6 +80,10 @@ public class CreateTestController extends BasicController {
 	@FXML
 	private Label live_time;
 
+	
+	// ############################### FXML Methods ###########################################
+
+
 	@FXML
 	void initialize() {
 		// Start the clock
@@ -91,9 +95,6 @@ public class CreateTestController extends BasicController {
 		Timenow(live_time);
 	}
 	
-	// ############################### FXML Methods ###########################################
-
-
 	public static String getNextTestNumber() {
 		return nextTestNumber;
 	}

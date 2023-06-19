@@ -185,5 +185,10 @@
         </content>
       </ScrollPane>
       <TextField fx:id="testComments" alignment="TOP_LEFT" editable="false" layoutX="20.0" layoutY="135.0" prefHeight="115.0" prefWidth="469.0" />
+      <Label fx:id="live_time" layoutX="36.0" layoutY="82.0" prefHeight="30.0" prefWidth="118.0">
+         <font>
+            <Font name="Perpetua Titling MT Bold" size="24.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
