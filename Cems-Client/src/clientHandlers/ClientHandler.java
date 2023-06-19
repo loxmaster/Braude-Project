@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
 import clientControllers.HODStatisticOnLecturerController;
+import clientControllers.HODStatisticOnStudentController;
+import clientControllers.HODViewGradesController;
 import clientControllers.IdAndCodeScreen;
 import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
@@ -40,7 +42,7 @@ public class ClientHandler extends AbstractClient {
 	 *                     user .
 	 * @param subjectsList static arrayList of all the subjects available .
 	 */
-	
+
 	ChatIF client;
 	public static User user = new User();
 
@@ -89,28 +91,32 @@ public class ClientHandler extends AbstractClient {
 					System.out.println("Update was successful");
 				else
 					System.out.println("Update wasnt so successful");
-			break;
-			
-			// If typeof Test then we create a test for it and 
+				break;
+
+			// If typeof Test then we create a test for it and
 			case "TestInServer":
 
 				// Creates a list of QuestionModels and adds it to the testToAdd constructor.
 				TestInServer testFromServer = (TestInServer) serverMessage;
 				ArrayList<QuestionModel> listOfQuestionModels = new ArrayList<>();
 				for (Question question : testFromServer.getQuesitonsInTest()) {
-					QuestionModel questionModel = new QuestionModel(question.getId(), question.getSubject(), question.getCoursename(), question.getQuestiontext(), 
-																	question.getQuestionnumber(), question.getLecturer(), question.getOptionA(), question.getOptionB(), 
-																	question.getOptionC(),  question.getOptionD(), question.getAnswer());
+					QuestionModel questionModel = new QuestionModel(question.getId(), question.getSubject(),
+							question.getCoursename(), question.getQuestiontext(),
+							question.getQuestionnumber(), question.getLecturer(), question.getOptionA(),
+							question.getOptionB(),
+							question.getOptionC(), question.getOptionD(), question.getAnswer());
 					questionModel.setPoints(question.getPoints());
-					listOfQuestionModels.add(questionModel);									
+					listOfQuestionModels.add(questionModel);
 				}
 
-				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(), testFromServer.getAuthor(), testFromServer.getDuration(),
-								 testFromServer.getTestComments(), testFromServer.getTestCode(), testFromServer.getDateString(), testFromServer.getTime(),
-								 listOfQuestionModels);
+				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
+						testFromServer.getAuthor(), testFromServer.getDuration(),
+						testFromServer.getTestComments(), testFromServer.getTestCode(), testFromServer.getDateString(),
+						testFromServer.getTime(),
+						listOfQuestionModels);
 
 				StudentExamController.setTest(testToAdd);
-			break;
+				break;
 
 			// If message type ArrayList it means that data comes in , where first index (0)
 			// is reserved for destination , and second (1) index is the data itself.
@@ -280,6 +286,18 @@ public class ClientHandler extends AbstractClient {
 							HODStatisticOnLecturerController.setLecturerListUnderSameDepartment(listToAdd);
 							break;
 						}
+
+						case "studentListUnderSameDepartment": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<String> listToAdd = new ArrayList<>();
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(list.get(i));
+								i++;
+							}
+							HODStatisticOnStudentController.setStudentListUnderSameDepartment(listToAdd);
+							break;
+						}
 						case "HodGETcompletedTestsForSpecificLecturerList": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
@@ -304,6 +322,30 @@ public class ClientHandler extends AbstractClient {
 							HODStatisticOnLecturerController.setcompletedTestsForSpecificLecturer(listToAdd);
 							break;
 						}
+						case "HodGETcompletedTestsForSpecificStudentList": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<Test> listToAdd = new ArrayList<>();
+							// CompletedTestList = (ArrayList<Test>) severMessage;
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(new Test(
+										list.get(i),
+										list.get(i + 1),
+										list.get(i + 2),
+										list.get(i + 3),
+										list.get(i + 4),
+										list.get(i + 5),
+										list.get(i + 6),
+										list.get(i + 7),
+										list.get(i + 8),
+										list.get(i + 9),
+										list.get(i + 10),
+										list.get(i + 11)));
+								i += 12;
+							}
+							HODStatisticOnStudentController.setcompletedTestsForSpecificStudent(listToAdd);
+							break;
+						}
 						case "getHodSubjectsCourseForTestSpecificLec": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<String> listToAdd = new ArrayList<>();
@@ -313,6 +355,18 @@ public class ClientHandler extends AbstractClient {
 								i++;
 							}
 							HODStatisticOnLecturerController.getHodSubjectsCourseForTestSpecificLec(listToAdd);
+							break;
+						}
+
+						case "getHodCourseForTestSpecificStudent": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<String> listToAdd = new ArrayList<>();
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(list.get(i));
+								i++;
+							}
+							HODViewGradesController.setHodSubjectsCourseForTestSpecificStudent(listToAdd);
 							break;
 						}
 						case "getSubjectID":
@@ -336,7 +390,7 @@ public class ClientHandler extends AbstractClient {
 								int format = Integer.parseInt(list.get(1));
 								format++;
 								String format2 = "0" + format;
-								//CreateQuestionController.testcount = format2.substring(2, 4);
+								// CreateQuestionController.testcount = format2.substring(2, 4);
 								CreateTestController.setNextTestNumber(format2);
 							}
 
@@ -346,7 +400,7 @@ public class ClientHandler extends AbstractClient {
 					}
 				}
 				break;
-			
+
 			case "String":
 				switch ((String) serverMessage) {
 					case "User Not Found":
@@ -366,11 +420,11 @@ public class ClientHandler extends AbstractClient {
 						break;
 					case "Not Found":
 						System.out.println("Item not found.");
-					break;
+						break;
 					case "Id Exists":
 						ClientUI.updatestatus = 0;
 						System.out.println("ID Already Exists.");
-					break;
+						break;
 					default:
 						// Here we recieve the confirmation of the client login
 						subjectArray = ((String) serverMessage).toString().split("\\s");
@@ -390,7 +444,6 @@ public class ClientHandler extends AbstractClient {
 
 		System.out.println("--> messageFromServerHandled");
 	}
-
 
 	/**
 	 * This method handles all data coming from the UI
@@ -450,11 +503,11 @@ public class ClientHandler extends AbstractClient {
 	////////////////// LOGIC METHODS /////////////////
 	/////////////////////////////////////////////////
 
-
 	public void getTestWithCodeForStudent(String testCode) {
-		
+
 		ArrayList<String> listOfCommands = new ArrayList<>();
-		listOfCommands.addAll(Arrays.asList("gettestwithcode", "SELECT * FROM projecton.tests where code = '" + testCode + "';"));
+		listOfCommands.addAll(
+				Arrays.asList("gettestwithcode", "SELECT * FROM projecton.tests where code = '" + testCode + "';"));
 		try {
 			sendToServer((Object) listOfCommands);
 		} catch (IOException e) {
@@ -566,6 +619,23 @@ public class ClientHandler extends AbstractClient {
 				userName, status, tested);
 
 		list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificLecturerList", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void HodGETcompletedTestsForSpecificStudentList(String userID) {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String status = "completed";
+		String tested = "true";
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND status='%s' AND tested='%s';",
+				userID, status, tested);
+
+		list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificStudentList", query));
 		try {
 			sendToServer((Object) list);
 		} catch (IOException e) {
@@ -822,6 +892,22 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	public void getHodCourseForTestSpecificStudent(String id) {
+
+		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
+		String subjectid = id.substring(0, 2);
+		String courseid = id.substring(2, 4);
+		String query = String.format(
+				"SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+				subjectid, courseid);
+		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodCourseForTestSpecificStudent", query));
+		try {
+			sendToServer((Object) subjectcoursenameofcompletedtest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void getLecturerListUnderSameDepartment() {
 
 		ArrayList<String> list = new ArrayList<String>();
@@ -837,14 +923,28 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	public void geStudentListUnderSameDepartment() {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String query = String.format(
+				"SELECT * FROM projecton.users  WHERE type = 'student' AND department = '%s';",
+				user.getDepartment());
+
+		list.addAll(Arrays.asList("studentListUnderSameDepartment", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void passToServer(Object listToSend) {
 		try {
 			sendToServer(listToSend);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
-
+	}
 
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////

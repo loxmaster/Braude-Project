@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -17,8 +18,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import clientHandlers.ClientUI;
+import logic.Statistics;
 import logic.Test;
-import javafx.event.EventHandler;
 
 // This class is a controller for the ViewGrades view
 public class HODViewGradesController extends BasicController {
@@ -35,38 +36,44 @@ public class HODViewGradesController extends BasicController {
     // The value selected in the filterComboBox
     public String value;
 
-    // The container for the exams
+    @FXML
+    private Text Avg_text;
+
     @FXML
     private GridPane ExamContainer;
 
-    // The text field for the student ID
     @FXML
-    private Text Student_ID_Text;
+    private Text ID_Text;
 
-    // The back button
+    @FXML
+    private Text Name_text;
+
+    @FXML
+    private AnchorPane View_Grades_root;
+
     @FXML
     private Button backButton;
 
-    // The combo box for filtering
-    @FXML
-    private ComboBox<String> filterComboBox;
-
-    // The exit button
     @FXML
     private Button exitbutton;
 
-    // The filter button
     @FXML
-    private Button filterButton;
+    private ComboBox<String> filterComboBox;
 
     @FXML
     private Label live_time;
+
+    @FXML
+    private Button logo;
 
     // This method is called when the back button is pressed. It loads the student
     // main screen.
     @FXML
     void backButtonPressed(ActionEvent event) {
-        openScreen("/clientFXMLS/HodStatisticOnStudent.fxml", "Statistical Informatrion On Student", event);
+        HODStatisticOnStudentController Hssc = (HODStatisticOnStudentController) openScreen(
+                "/clientFXMLS/HODStatisticOnStudent.fxml",
+                "CEMS System - Head Of Department - Statistics On Student", event);
+        Hssc.load();
     }
 
     // This method is called when the ViewGrades view is loaded. It initializes the
@@ -75,35 +82,42 @@ public class HODViewGradesController extends BasicController {
     void initialize() {
         // Start the clock
         Timenow(live_time);
-        // Get the list of completed tests for the student
-        ClientUI.chat.getcompletedTestsForStudentList();
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    }
 
-        // Set the student ID text
-        Student_ID_Text.setText("Student ID: " + completedTestsList.get(0).getStudentID());
+    // This method is called when the ViewGrades view is loaded. It initializes the
+    // view.
+    @FXML
+    void StudendInfo(Statistics user, ArrayList<Test> AllcompletedTestsList) {
 
+        // Start the clock
+        Timenow(live_time);
+
+        Avg_text.setText("Average: "+Integer.toString(user.getAverage()));
+        Name_text.setText("Student's Name: "+user.getStudentName());
+        ID_Text.setText("Student ID: "+ user.getStudentID());
+        completedTestsList = new ArrayList<>();
         // Populate the ComboBox with course names
         Set<String> courseNames = new HashSet<>();
-        for (Test test : completedTestsList) {
-            ClientUI.chat.getCourseForTest(test.getId());
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            String courseName = SubjectCourse.get(2);
-            if (!courseNames.contains(courseName)) {
-                courseNames.add(courseName);
+        for (Test test : AllcompletedTestsList) {
+            if (user.getStudentID().equals(test.getStudentID())) {
+                ClientUI.chat.getHodCourseForTestSpecificStudent(test.getId());
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                String courseName = SubjectCourse.get(2);
+                if (!courseNames.contains(courseName)) {
+                    courseNames.add(courseName);
+                }
+                completedTestsList.add(test);
             }
         }
-
         // Add the "Show all" option to the ComboBox
         courseNames.add("Show all");
-        ExamLoad("Show all");
+        Load("Show all");
+
+        filterComboBox.getItems().clear();
         filterComboBox.getItems().addAll(FXCollections.observableArrayList(courseNames));
 
         // Set the action to be performed when an option is selected in the ComboBox
@@ -111,12 +125,12 @@ public class HODViewGradesController extends BasicController {
             @Override
             public void handle(ActionEvent event) {
                 System.out.println((String) filterComboBox.getValue());
-                ExamLoad((String) filterComboBox.getValue());
+                Load((String) filterComboBox.getValue());
             }
         });
     }
 
-    public void ExamLoad(String value) {
+    public void Load(String value) {
         // Clear the ExamContainer. This is necessary to ensure that the previous exams
         // are not shown.
         ExamContainer.getChildren().clear();
@@ -129,7 +143,7 @@ public class HODViewGradesController extends BasicController {
             // Loop through each test in the completed tests list.
             for (Test test : completedTestsList) {
                 // Get the course for the test.
-                ClientUI.chat.getCourseForTest(test.getId());
+                ClientUI.chat.getHodCourseForTestSpecificStudent(test.getId());
                 try {
                     // Sleep for a short period to allow the course to be fetched.
                     Thread.sleep(100);
@@ -189,6 +203,8 @@ public class HODViewGradesController extends BasicController {
         }
     }
 
+    
+
     // Getter for the list of completed tests for a student
     public static ArrayList<Test> getcompletedTestsForStudentList() {
         return completedTestsList;
@@ -197,21 +213,6 @@ public class HODViewGradesController extends BasicController {
     // Setter for the list of completed tests for a student
     public static void setcompletedTestsForStudentList(ArrayList<Test> completedTests) {
         completedTestsList = completedTests;
-    }
-
-    // Setter for the list of subjects and courses
-    public static void setSubjectsCoursesList(ArrayList<String> SubjectandCourse) {
-        SubjectCourse = SubjectandCourse;
-    }
-
-    // Getter for the list of completed tests
-    public static ArrayList<Test> getCompletedTestsList() {
-        return completedTestsList;
-    }
-
-    // Setter for the list of completed tests
-    public static void setCompletedTestsList(ArrayList<Test> completedTestsList) {
-        ViewGradesController.completedTestsList = completedTestsList;
     }
 
     // Getter for the list of subjects and courses
@@ -244,4 +245,7 @@ public class HODViewGradesController extends BasicController {
         this.filterComboBox = filterComboBox;
     }
 
+    public static void setHodSubjectsCourseForTestSpecificStudent(ArrayList<String> listToAdd) {
+        SubjectCourse = listToAdd;
+    }
 }
