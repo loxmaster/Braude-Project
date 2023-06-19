@@ -29,22 +29,43 @@ public class ClientController implements ChatIF {
 
 
     /**
-     * Constructs an instance of the ClientConsole UI.
+     * Constructs an instance of the ClientController.
      *
      * @param host The host to connect to.
      * @param port The port to connect on.
      */
     public ClientController(String host, int port) {
         try {
+            // Create a ClientHandler instance to handle the client-server communication.
+            // Pass the host, port, and a reference to this ClientController.
             client = new ClientHandler(host, port, this);
         } catch (IOException exception) {
-            System.out.println("Error: Can't setup connection!" + " Terminating client.");
+            System.out.println("Error: Can't setup connection! Terminating client.");
             System.exit(1);
         }
     }
 
 
-    // Instance methods - Handle the data from UI ******************************************
+    /**
+     * Accepts user input from the console and sends it to the server for processing.
+     */
+    public void accept() {
+        try {
+            // Create a BufferedReader to read user input from the console.
+            BufferedReader fromConsole = new BufferedReader(new InputStreamReader(System.in));
+            System.out.println("> Connected To Server ");
+            
+            // Read a line of input from the console.
+            Object message = fromConsole.readLine();
+            
+            // Pass the message to the ClientHandler to handle and send to the server.
+            client.handleMessageFromClientUI(message);
+        } catch (Exception ex) {
+            System.out.println("Unexpected error while reading from console!");
+            ex.printStackTrace();
+        }
+    }
+
 
 
     /**

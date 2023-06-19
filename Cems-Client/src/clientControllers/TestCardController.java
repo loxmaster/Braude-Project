@@ -8,8 +8,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import logic.Test;
 
+/**
+ * This controller handles the display of a test card in the application.
+ * It extends from the BasicController class.
+ */
 public class TestCardController extends BasicController{
 
+    // Define UI elements
     @FXML
     private Text code_Exam;
 
@@ -31,13 +36,24 @@ public class TestCardController extends BasicController{
     @FXML
 	private Label live_time;
 
+    /**
+     * This function initializes the controller.
+     * It starts the clock on the UI.
+     */
 	@FXML
 	void initialize() {
 		// Start the clock
 		Timenow(live_time);
 	}
 
-    // Method to set the details of the test card
+    /**
+     * This function sets the details of the test card.
+     * It takes a Test object and an ArrayList of Strings as parameters.
+     * The ArrayList contains the subject and course of the test.
+     * The function sets the exam code, test name, grade, and test date on the card.
+     * It also sets the color of the grade text to red if the grade is less than 55.
+     * The background color of the card is set randomly.
+     */
     public void setCard(Test test, ArrayList<String> SubjectCourse) {
         // Set the exam code
         code_Exam.setText(test.getId());
