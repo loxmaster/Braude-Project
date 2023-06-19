@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
+import clientControllers.HODStatisticOnCourseController;
 import clientControllers.HODStatisticOnLecturerController;
 import clientControllers.HODStatisticOnStudentController;
 import clientControllers.HODViewGradesController;
@@ -253,6 +254,30 @@ public class ClientHandler extends AbstractClient {
 							LecturerStatisticalController.setcompletedTestsForLecturerList(listToAdd);
 							break;
 						}
+						case "getCoursesExams": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<Test> listToAdd = new ArrayList<>();
+							// CompletedTestList = (ArrayList<Test>) severMessage;
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(new Test(
+										list.get(i),
+										list.get(i + 1),
+										list.get(i + 2),
+										list.get(i + 3),
+										list.get(i + 4),
+										list.get(i + 5),
+										list.get(i + 6),
+										list.get(i + 7),
+										list.get(i + 8),
+										list.get(i + 9),
+										list.get(i + 10),
+										list.get(i + 11)));
+								i += 12;
+							}
+							HODStatisticOnCourseController.setCoursesExams(listToAdd);
+							break;
+						}
 						case "getSubjectsCourseForTest": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<String> listToAdd = new ArrayList<>();
@@ -275,6 +300,19 @@ public class ClientHandler extends AbstractClient {
 							LecturerStatisticalController.setSubjectsCoursesListLec(listToAdd);
 							break;
 						}
+
+						case "getCoursesSameDepartment": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<String> listToAdd = new ArrayList<>();
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(list.get(i));
+								i++;
+							}
+							HODStatisticOnCourseController.setCoursesSameDepartment(listToAdd);
+							break;
+						}
+
 						case "LecturerListUnderSameDepartment": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<String> listToAdd = new ArrayList<>();
@@ -298,6 +336,7 @@ public class ClientHandler extends AbstractClient {
 							HODStatisticOnStudentController.setStudentListUnderSameDepartment(listToAdd);
 							break;
 						}
+
 						case "HodGETcompletedTestsForSpecificLecturerList": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
@@ -1006,4 +1045,35 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
+
+	public void getCoursesSameDepartment() {
+
+		ArrayList<String> list = new ArrayList<String>();
+		String query = String.format(
+				"SELECT * FROM projecton.subjectcourses  WHERE subjectname ='%s';",
+				user.getDepartment());
+
+		list.addAll(Arrays.asList("getCoursesSameDepartment", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void getCoursesExams(String courseID) {
+		ArrayList<String> list = new ArrayList<String>();
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE test_id LIKE '%s%%' AND status='completed' AND tested='true';",
+				courseID);
+
+		list.addAll(Arrays.asList("getCoursesExams", query));
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

@@ -49,12 +49,10 @@ public class EchoServer extends AbstractServer {
 	private static Connection conn = null;
 	private Statement stmt;
 
-
 	/////////////////////////////////////////////////////////////////
 	////////////////// SERVER CONFIGURATION METHODS ////////////////
 	///////////////////////////////////////////////////////////////
 
-	
 	// Constructors ****************************************************
 
 	/**
@@ -319,6 +317,21 @@ public class EchoServer extends AbstractServer {
 							int returned = executeMyQuery(list.get(1));
 							client.sendToClient(
 									returned == 0 ? (Object) notFound : (Object) returned);
+							break;
+						case "getCoursesSameDepartment":
+							ArrayList<String> resgetCoursesSameDepartment = getCoursesSameDepartment_db(
+									list.get(1),
+									"getCoursesSameDepartment");
+							client.sendToClient(resgetCoursesSameDepartment == null ? (Object) notFound
+									: (Object) resgetCoursesSameDepartment);
+							break;
+
+						case "getCoursesExams":
+							ArrayList<String> resgetCoursesExams = getCoursesExams_db(list.get(1),
+									"getCoursesExams");
+							client.sendToClient(
+									resgetCoursesExams == null ? (Object) notFound
+											: (Object) resgetCoursesExams);
 							break;
 						default:
 							loginVarification(list, client);
@@ -666,6 +679,24 @@ public class EchoServer extends AbstractServer {
 		return null;
 	}
 
+	private ArrayList<String> getCoursesExams_db(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) {
+				for (int index = 1; index <= 12; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 13 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private ArrayList<String> getCompletedTestsForLecturer_db(String query, String out) {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(out); // add a new identifier
@@ -811,6 +842,24 @@ public class EchoServer extends AbstractServer {
 	}
 
 	private ArrayList<String> getHodSubjectsCourseForTestSpecificStudent_db(String query, String out) {
+		ArrayList<String> res = new ArrayList<String>();
+		res.add(out); // add a new identifier
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(query);
+			while (result.next()) { // This will move the cursor to the next row
+				for (int index = 1; index <= 4; index++) {
+					res.add(result.getString(index));
+				}
+			}
+			return res; // res size is 5 where in first index is indentifier
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private ArrayList<String> getCoursesSameDepartment_db(String query, String out) {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(out); // add a new identifier
 		try {

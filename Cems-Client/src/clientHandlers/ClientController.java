@@ -121,7 +121,7 @@ public class ClientController implements ChatIF {
         }
     }
 
-        // fetch data for hod in statistic on Students
+    // fetch data for hod in statistic on Students
     public void geStudentListUnderSameDepartment() {
         try {
             client.geStudentListUnderSameDepartment();
@@ -297,17 +297,21 @@ public class ClientController implements ChatIF {
         }
         // Runs over the current test and checks it - grades it.
         int grade = 0;
-        for( QuestionModel question : localTest.getQuesitonsInTest() ) {
-            if(question.getAnswer().equals(question.getSelected())) {
+        for (QuestionModel question : localTest.getQuesitonsInTest()) {
+            if (question.getAnswer().equals(question.getSelected())) {
                 grade += Integer.parseInt(question.getPoints());
                 System.out.println(question.getPoints());
             }
         }
-    
-        String query = "INSERT INTO `projecton`.`completed_tests` (`test_id`, `student_id`, `grade`, `authorsname`, `code`, `date`, `time`," +
-        " `duration`, `questions`, `test_type`, `status`,  `selected`) VALUES ('" + localTest.getId() + "', '" + ClientHandler.user.getUser_id() + "', '" + grade + 
-        "', '" + localTest.getAuthor() + "', '" + localTest.getTestCode() + "', '" + "13-05-2023" + "', '" + localTest.getTime() + "', '" + localTest.getDuration() + 
-        "', '" + questionIdList + "', '" + "computer" + "', '" + "completed" + "', '" + SelectedQuestions + "');";
+
+        String query = "INSERT INTO `projecton`.`completed_tests` (`test_id`, `student_id`, `grade`, `authorsname`, `code`, `date`, `time`,"
+                +
+                " `duration`, `questions`, `test_type`, `status`,  `selected`) VALUES ('" + localTest.getId() + "', '"
+                + ClientHandler.user.getUser_id() + "', '" + grade +
+                "', '" + localTest.getAuthor() + "', '" + localTest.getTestCode() + "', '" + "13-05-2023" + "', '"
+                + localTest.getTime() + "', '" + localTest.getDuration() +
+                "', '" + questionIdList + "', '" + "computer" + "', '" + "completed" + "', '" + SelectedQuestions
+                + "');";
 
         ArrayList<String> listToSend = new ArrayList<>();
         listToSend.addAll(Arrays.asList("sendtocompletedtest", query));
@@ -399,6 +403,23 @@ public class ClientController implements ChatIF {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void getCoursesSameDepartment() {
+        try {
+            client.getCoursesSameDepartment();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getCoursesExams(String courseID) {
+                try {
+            client.getCoursesExams(courseID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
