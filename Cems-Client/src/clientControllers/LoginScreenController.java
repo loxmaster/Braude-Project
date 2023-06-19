@@ -93,19 +93,18 @@ public class LoginScreenController extends BasicController {
 			// Verifies students credintials from database
 			ClientUI.chat.loginVarification(username, password, selectedRole);
 
-			// Waits 5 seconds for user to be found
-			int cap = 20;
-			while (!ClientHandler.user.getIsFound() && (cap > 0)) {
-				try {
-					Thread.sleep(250);
-					cap--;
-				} catch (InterruptedException e) {
-				}
-			}
+			// Waits for user to be found
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		
+		}
 
 			if (!ClientHandler.user.getIsFound()) {
-				setVisibleFalse();
-				System.out.println("user not found! (loginscreencontroller)");
+						JOptionPane.showMessageDialog(null, "your username or password or type are incorrect!",
+					"Fail LogIn",
+					JOptionPane.ERROR_MESSAGE);
 			} else {
 				// if found loading the corresponding screen
 				switch (ClientHandler.user.getType()) {
@@ -143,10 +142,6 @@ public class LoginScreenController extends BasicController {
 			}
 
 		}
-	}
-
-	void setVisibleFalse() {
-		wrongLabel.setVisible(true);
 	}
 
 	public void start(Stage stage) throws IOException {

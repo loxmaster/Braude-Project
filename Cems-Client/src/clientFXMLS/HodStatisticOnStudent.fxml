@@ -40,12 +40,12 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="logo" layoutX="515.0" layoutY="24.0" mnemonicParsing="false" onAction="#logoutPressed" prefHeight="100.0" prefWidth="250.0" AnchorPane.leftAnchor="515.0" AnchorPane.rightAnchor="515.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="logo" layoutX="515.0" layoutY="24.0" mnemonicParsing="false" onAction="#backToHOD" prefHeight="100.0" prefWidth="250.0" AnchorPane.leftAnchor="515.0" AnchorPane.rightAnchor="515.0" AnchorPane.topAnchor="20.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" textAlignment="CENTER" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+      <Button fx:id="exitbutton" layoutX="1239.0" layoutY="14.0" mnemonicParsing="false" onAction="#exitPressed" textAlignment="CENTER" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>

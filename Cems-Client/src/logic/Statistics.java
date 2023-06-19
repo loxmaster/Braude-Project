@@ -1,11 +1,12 @@
 package logic;
 
 import clientControllers.BasicController;
+
 public class Statistics extends BasicController {
-    private String Course, Date, Median, TestID, Grade, LecturerName;
+    private String Course, Date, Median, TestID, Grade, LecturerName, Number_of_Exams;
     private int Average, Total_Number_of_Students, Highes, Lowest, Number_of_Students_Above_Average;
     private int Number_of_Students_Below_Average, Pass_Rate, Fail_Rate, Grade_Distribution;
-    private String StudentName, StudentID, Email, Number_Of_Courses;
+    private String StudentName, StudentID, Email, Number_Of_Courses,Name_of_Courses;
 
     public Statistics(String TestID) {
         this.TestID = TestID;
@@ -47,7 +48,31 @@ public class Statistics extends BasicController {
 
     }
 
-    
+    public Statistics(String Name_of_Courses, String CourseID, int Average, String Number_of_Exams,
+            int Total_Number_of_Students, String Median, int Pass_Rate, int Fail_Rate,
+            int Number_of_Students_Above_Average, int Number_of_Students_Below_Average) {
+                this.Name_of_Courses = Name_of_Courses;
+                this.Course = CourseID;
+                this.Average = Average;
+                this.Number_of_Exams = Number_of_Exams;
+                this.Total_Number_of_Students = Total_Number_of_Students;
+                this.Median = Median;
+                this.Pass_Rate = Pass_Rate;
+                this.Fail_Rate = Fail_Rate;
+                this.Number_of_Students_Above_Average = Number_of_Students_Above_Average;
+                this.Number_of_Students_Below_Average = Number_of_Students_Below_Average;
+    }
+
+
+
+    public String getNumber_of_Exams() {
+        return Number_of_Exams;
+    }
+
+    public void setNumber_of_Exams(String number_of_Exams) {
+        Number_of_Exams = number_of_Exams;
+    }
+
     public String getStudentName() {
         return StudentName;
     }
@@ -198,6 +223,14 @@ public class Statistics extends BasicController {
 
     public void setGrade(String grade) {
         Grade = grade;
+    }
+
+    public String getName_of_Courses() {
+        return Name_of_Courses;
+    }
+
+    public void setName_of_Courses(String name_of_Courses) {
+        Name_of_Courses = name_of_Courses;
     }
 
 }

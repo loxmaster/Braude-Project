@@ -73,7 +73,10 @@ public class CheckTestController extends BasicController {
 
     // get completed tests list initilized
     ClientUI.chat.getcompletedTestsForLecturerList();
-
+    try {
+        Thread.sleep(250);
+      } catch (InterruptedException e) {
+      }
     
 
     // Checked.setCellValueFactory(new PropertyValueFactory<>("checked"));

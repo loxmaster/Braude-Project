@@ -96,6 +96,15 @@ public class ClientController implements ChatIF {
         //client.getcompletedTestsForLecturerList();
     }
 
+    public void getAllTestsOfLecturer() {
+        ArrayList<String> list = new ArrayList<String>();
+		String query = String.format(
+				"SELECT * FROM projecton.tests WHERE authorsname='%s' AND id NOT IN (SELECT test_id FROM projecton.completed_tests ) AND id NOT IN (SELECT test_id FROM projecton.ongoing_tests)",
+				ClientHandler.user.getUsername()); //TODO may couse problems
+		list.addAll(Arrays.asList("futureTests", query));
+        client.passToServer((Object) list);
+    }
+
     // fetch data for hod in statistic on lecterurs
     public void getLecturerListUnderSameDepartment() {
         ArrayList<String> list = new ArrayList<String>();
@@ -132,7 +141,7 @@ public class ClientController implements ChatIF {
         //client.getHodCourseForTestSpecificLec((String) id);
     }
 
-        // fetch data for hod in statistic on Students
+    // fetch data for hod in statistic on Students
     public void geStudentListUnderSameDepartment() {
         ArrayList<String> list = new ArrayList<String>();
 		String query = String.format(
@@ -358,8 +367,8 @@ public class ClientController implements ChatIF {
 
         // Runs over the current test and checks it - grades it.
         int grade = 0;
-        for( QuestionModel question : localTest.getQuesitonsInTest() ) {
-            if(question.getAnswer().equals(question.getSelected())) {
+        for (QuestionModel question : localTest.getQuesitonsInTest()) {
+            if (question.getAnswer().equals(question.getSelected())) {
                 grade += Integer.parseInt(question.getPoints());
                 System.out.println(question.getPoints());
             }
@@ -426,6 +435,25 @@ public class ClientController implements ChatIF {
 		listToSend.add("DELETE FROM `projecton`.`questions` WHERE (`id` = '" + originalId + "');");
         client.passToServer((Object) originalId);
     }
+
+    public void getCoursesSameDepartment() {
+		ArrayList<String> list = new ArrayList<String>();
+		String query = String.format(
+				"SELECT * FROM projecton.subjectcourses  WHERE subjectname ='%s';",
+				ClientHandler.user.getDepartment()); //TODO may couse problems
+
+		list.addAll(Arrays.asList("getCoursesSameDepartment", query));
+		client.passToServer((Object) list);
+	}
+
+    public void getCoursesExams(String courseID) {
+		ArrayList<String> list = new ArrayList<String>();
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE test_id LIKE '%s%%' AND status='completed' AND tested='true';",
+				courseID);
+		list.addAll(Arrays.asList("getCoursesExams", query));
+		client.passToServer((Object) list);
+	}
 
     /**
      * This method overrides the method in the ChatIF interface. It displays a
