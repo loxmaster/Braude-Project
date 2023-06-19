@@ -108,17 +108,9 @@ public class LecturerQuestionsTableController extends BasicController {
             JOptionPane.showMessageDialog(null, "Error getting the question!", "Error", JOptionPane.ERROR_MESSAGE);
         } 
         else {
-            ObservableList<QuestionModel> questionList = FXCollections
-                    .observableArrayList(LecturerController.questions);
+            ObservableList<QuestionModel> questionList = FXCollections.observableArrayList(LecturerController.questions);
             for (QuestionModel question : questionList){
                 question.setEdit(createEditButton(question));
-                System.err.println(question.getAnswer() + "ANSWER");
-                System.err.println(question.getCoursename() + "COURSE NAME");
-                System.err.println(question.getId() + "ID");
-                System.err.println(question.getLecturer() + "LECTURER");
-                System.err.println(question.getQuestionnumber() + "QUESTION NUMBER");
-                System.err.println(question.getQuestiontext() + "QUESTION TEXT");
-                System.err.println(question.getSubject() + "SUBJECT");
             }
             FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
             table.setItems(filteredList);
