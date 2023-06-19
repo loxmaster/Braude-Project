@@ -39,8 +39,9 @@ public class HODStatisticalController extends BasicController {
 	@FXML
 	void infoOnStudentPressed(ActionEvent event) {
 		// open Student Statistic screen
-		openScreen("/clientFXMLS/HODStatisticOnStudent.fxml",
+		HODStatisticOnStudentController Hssc = (HODStatisticOnStudentController)openScreen("/clientFXMLS/HODStatisticOnStudent.fxml",
 				"CEMS System - Head Of Department - Statistics On Student", event);
+		Hssc.load();
 	}
 
 	@FXML
