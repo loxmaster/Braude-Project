@@ -1,7 +1,10 @@
 package clientHandlers;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
@@ -20,6 +23,7 @@ import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
 import clientControllers.StudentExamController;
 import clientControllers.ViewGradesController;
+import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 import logic.Question;
 import logic.QuestionModel;
@@ -525,14 +529,69 @@ public class ClientHandler extends AbstractClient {
 	}
 
 	/**
-	 * Method for passing the information to the database from the UI
+	 * This method handles all data coming from the UI
+	 *
+	 * @param message The message from the UI.
+	 */
+	public void handleMessageFromClientUI(Object message) {
+		try {
+			sendToServer(message);
+		} catch (IOException e) {
+			client.display("Could not send message to server.  Terminating client.");
+			quit();
+		}
+	}
+
+	/**
+	 * Handles the message received from the client login user interface
+	 * NOTE: this method does not have a unique ideintifier
+	 * EchoServer is configured that the default of the switch case goes to this
+	 * method
 	 * 
-	 * @param listToSend
+	 * @param username username entered.
+	 * 
+	 * @param password password entered.
 	 */
 	public void passToServer(Object listToSend) {
 		try {
-			this.openConnection();
-			sendToServer(listToSend);
+			sendToServer((Object) credentials);
+		} catch (IOException e) {
+			client.display("Could not send message to server.  Terminating client.");
+			quit();
+		}
+	}
+
+	/**
+	 * Handles the message received from the lecturer user interface gets all the
+	 * subjects.//TODO please check what this method do and if it's relevant
+	 */
+	public void handleMessageFromLecturerUI() {
+		try {
+			sendToServer((Object) "SELECT DISTINCT subjectname FROM subjectcourses;");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	try
+
+	{
+		sendToServer((Object) credentials);
+	}catch(
+	IOException e)
+	{
+		client.display("Could not send message to server.  Terminating client.");
+		quit();
+	}
+	}
+
+	/**
+	 * Handles the message received from the lecturer user interface gets all the
+	 * subjects.//TODO please check what this method do and if it's relevant
+	 */
+	public void handleMessageFromLecturerUI() {
+		try {
+			sendToServer((Object) "SELECT DISTINCT subjectname FROM subjectcourses;");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -542,12 +601,98 @@ public class ClientHandler extends AbstractClient {
 	 * public void GetTestGrades_StatisticalInformation(String testID) {
 	 * ArrayList<String> list = new ArrayList<String>();
 	 * 
-	 * // FIXME fix this query
-	 * String query_passed =
-	 * "SELECT grade from projecton.testResults WHERE grade>=55";
-	 * String query_failed =
-	 * "SELECT grade from projecton.testResults WHERE grade<55";
-	 * list.addAll(Arrays.asList("testGrades", query_passed, query_failed));
+	 * @param newBody
+	 * 
+	 * @param newQNumber
+	 * 
+	 * @param originalId
+	 */
+	public void EditQuestion(String NewID, String subject, String course, String qBody, String qnumber,
+			String originalId) {
+		ArrayList<String> list = new ArrayList<String>();
+
+		list.addAll(Arrays.asList("editquestion",
+				"UPDATE `projecton`.`questions` SET `id` = '" + NewID
+						+ "', `lecturer` = '" + user.getUsername()
+						+ "', `subject` = '" + subject
+						+ "', `coursename` = '" + course
+						+ "', `questiontext` = '" + qBody
+						+ "', `questionnumber` = '" + qnumber + "' WHERE (`id` = '" + originalId + "');"));
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void EditAnswers(String subjectid, String qA, String qB, String qC, String qD, String correctAnswer) {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> list = new ArrayList<String>();
+
+		// Construct the SQL query to update the answers of a question.
+		String query = "UPDATE `projecton`.`answers` SET " +
+				"`optionA` = '" + qA + "', " +
+				"`optionB` = '" + qB + "', " +
+				"`optionC` = '" + qC + "', " +
+				"`optionD` = '" + qD + "', " +
+				"`correctAnswer` = '" + correctAnswer + "' " +
+				"WHERE (`questionid` = '" + subjectid + "');";
+
+		// Add the method name and query to the ArrayList.
+		list.addAll(Arrays.asList("editquestion", query));
+
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// return a list of grades where [testGrades, passed grades, failed grades]
+	// query that selects PASSED and FAILED grades --> echoserver to parse
+	// parse: [testGrades(echoServer identifier), passed(query), failed(query)]
+	public void GetTestGrades_StatisticalInformation(String testID) {
+		ArrayList<String> list = new ArrayList<String>();
+
+		String query_passed = "SELECT grade from projecton.testResults WHERE grade>=55";
+		String query_failed = "SELECT grade from projecton.testResults WHERE grade<55";
+		list.addAll(Arrays.asList("testGrades", query_passed, query_failed));
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method that creates query for creating a question and
+	 * Passes it to server.
+	 * 
+	 * @param Id
+	 * @param subject
+	 * @param Body
+	 * @param QNumber
+	 */
+	public void CreateQuestion(String Id, String subject, String course, String Body, String QNumber) {
+		ArrayList<String> list = new ArrayList<String>();
+		// Construct the INSERT query to create a new question
+		list.addAll(Arrays.asList("createquestion",
+				"INSERT INTO `projecton`.`questions` (`id`, `lecturer`, `subject`, `coursename`, `questiontext`, `questionnumber`) VALUES ('"
+						+ Id + "','" + user.getUsername() + "', '" + subject + "', '" + course + "', '" + Body + "', '"
+						+ QNumber + "');"));
+
+		try {
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Method that creates query for insering answers to database.
 	 * 
 	 * try {
 	 * sendToServer((Object) list);
