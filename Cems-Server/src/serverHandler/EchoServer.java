@@ -309,6 +309,7 @@ public class EchoServer extends AbstractServer {
 
 						// default is user login authentication
 						case "gettestwithcode":
+						case "check test":
 							TestInServer test = getTestWithCode(list.get(1));
 							client.sendToClient(
 									test == null ? (Object) notFound : (Object) test);

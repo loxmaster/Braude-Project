@@ -124,8 +124,10 @@ public class ClientHandler extends AbstractClient {
 						testFromServer.getTime(),
 						listOfQuestionModels);
 
-				StudentExamController.setTest(testToAdd);
-					//EvaluateTestController.setLocaltest(testToAdd);
+				if (user.getType() == "lecturer")
+					EvaluateTestController.setLocaltest(testToAdd);
+				else
+					StudentExamController.setTest(testToAdd);
 				break;
 
 			// If message type ArrayList it means that data comes in , where first index (0)
@@ -261,7 +263,7 @@ public class ClientHandler extends AbstractClient {
 										list.get(i + 11)));
 								i += 12;
 							}
-							
+
 							LecturerStatisticalController.setcompletedTestsForLecturerList(listToAdd);
 							CheckTestController.setCompletedTestsList(listToAdd);
 							break;
@@ -521,6 +523,19 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> listOfCommands = new ArrayList<>();
 		listOfCommands.addAll(
 				Arrays.asList("gettestwithcode", "SELECT * FROM projecton.tests where code = '" + testCode + "';"));
+		try {
+			sendToServer((Object) listOfCommands);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getTestWithCodeFor_CompletedTest(Test test) {
+
+		ArrayList<String> listOfCommands = new ArrayList<>();
+		listOfCommands.addAll(
+				Arrays.asList("check test",
+						"SELECT * FROM projecton.completed_tests where test_id = '" + test.getId() + "' AND student_id = '" + test.getStudentID() + "';"));
 		try {
 			sendToServer((Object) listOfCommands);
 		} catch (IOException e) {

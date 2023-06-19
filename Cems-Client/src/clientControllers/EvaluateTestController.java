@@ -78,12 +78,16 @@ public class EvaluateTestController extends BasicController {
 
   public void loadTest(Test test) {
     // loadEditQuestionScreen();
-    this.localtest = test;
+    //this.localtest = test;
 
     ArrayList<Question> questionStringList = new ArrayList<>();
     ArrayList<QuestionModel> listOfQuestionModels = new ArrayList<>();
 
-    
+    //this function init setLocalTest()  the test returned will be in localtest
+    ClientUI.chat.getTestWithCodeFor_CompletedTest(test);
+
+
+
 
     System.out.println(test.getQuesitonsInTest());
     questionlist = test.getQuesitonsInTest();

@@ -73,7 +73,7 @@ public class CheckTestController extends BasicController {
 
     // get completed tests list initilized
     ClientUI.chat.getcompletedTestsForLecturerList();
-    
+
     
 
     // Checked.setCellValueFactory(new PropertyValueFactory<>("checked"));
@@ -148,7 +148,6 @@ public class CheckTestController extends BasicController {
           e.printStackTrace();
         }
         EvaluateTestController eqc = loader.getController();
-
         //TODO get question from the test we sent to this method
         eqc.loadTest(test);
         //System.out.println("opening edit question" + question.getId());

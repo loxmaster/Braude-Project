@@ -286,6 +286,10 @@ public class ClientController implements ChatIF {
         client.getTestWithCodeForStudent(testName);
     }
 
+    public void getTestWithCodeFor_CompletedTest(Test testName) {
+        client.getTestWithCodeFor_CompletedTest(testName);
+    }
+
     public void sendToCompletedTest(Test localTest) {
         // Creating the quesitons Id list and selected question list.
         ArrayList<String> questionIdList = new ArrayList<>();
