@@ -94,11 +94,7 @@ public class ClientController implements ChatIF {
         }
     }
 
-<<<<<<< HEAD
-    // 1 in hod
-=======
     // fetch data for hod in statistic on lecterurs
->>>>>>> f37ba18f1b11bbba925414323ea39a60661df4cd
     public void getLecturerListUnderSameDepartment() {
         try {
             client.getLecturerListUnderSameDepartment();
@@ -107,11 +103,7 @@ public class ClientController implements ChatIF {
         }
     }
 
-<<<<<<< HEAD
-    // 2 in hod
-=======
     // fetch data for hod in statistic on lecterurs
->>>>>>> f37ba18f1b11bbba925414323ea39a60661df4cd
     public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
         try {
             client.HodGETcompletedTestsForSpecificLecturerList(userName);
@@ -120,11 +112,7 @@ public class ClientController implements ChatIF {
         }
     }
 
-<<<<<<< HEAD
-    // 3 in hod
-=======
     // fetch data for hod in statistic on lecterurs
->>>>>>> f37ba18f1b11bbba925414323ea39a60661df4cd
     public void getHodCourseForTestSpecificLec(Object id) {
         try {
             client.getHodCourseForTestSpecificLec((String) id);
@@ -133,8 +121,6 @@ public class ClientController implements ChatIF {
         }
     }
 
-<<<<<<< HEAD
-=======
     // fetch data for hod in statistic on Students
     public void geStudentListUnderSameDepartment() {
         try {
@@ -162,7 +148,6 @@ public class ClientController implements ChatIF {
         }
     }
 
->>>>>>> f37ba18f1b11bbba925414323ea39a60661df4cd
     // gets all subject available for lecturer
     public void getCourseForTest(Object id) {
         try {
@@ -326,11 +311,7 @@ public class ClientController implements ChatIF {
         String query = "INSERT INTO `projecton`.`completed_tests` (`test_id`, `student_id`, `grade`, `authorsname`, `code`, `date`, `time`,"
                 +
                 " `duration`, `questions`, `test_type`, `status`,  `selected`) VALUES ('" + localTest.getId() + "', '"
-<<<<<<< HEAD
-                + ClientHandler.user.getUser_id() + "', '" + "" +
-=======
                 + ClientHandler.user.getUser_id() + "', '" + grade +
->>>>>>> f37ba18f1b11bbba925414323ea39a60661df4cd
                 "', '" + localTest.getAuthor() + "', '" + localTest.getTestCode() + "', '" + "13-05-2023" + "', '"
                 + localTest.getTime() + "', '" + localTest.getDuration() +
                 "', '" + questionIdList + "', '" + "computer" + "', '" + "completed" + "', '" + SelectedQuestions
@@ -437,7 +418,7 @@ public class ClientController implements ChatIF {
     }
 
     public void getCoursesExams(String courseID) {
-                try {
+        try {
             client.getCoursesExams(courseID);
         } catch (Exception e) {
             e.printStackTrace();
