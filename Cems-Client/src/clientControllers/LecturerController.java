@@ -108,7 +108,8 @@ public class LecturerController extends BasicController {
 	@FXML
 	void MenageOngoingTestsPressed(ActionEvent event) {
 		// open Ongoing Test screen
-		openScreen("/clientFXMLS/LecturerOngoingTest.fxml", "CEMS System - Lecturer - Menage Tests", event);
+		CheckTestController ctc = (CheckTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
+		ctc.loadTable();
 	}
 
 	
