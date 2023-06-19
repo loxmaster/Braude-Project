@@ -60,7 +60,7 @@ public class ServerController {
         hostNameColumn.setCellValueFactory(new PropertyValueFactory<>("Host"));
         ipColumn.setCellValueFactory(new PropertyValueFactory<>("Ip"));
 
-        passwordField.setText("1234");
+        passwordField.setText("123456");
         usernameField.setText("root");
         dbNameField.setText("projecton");
         try {

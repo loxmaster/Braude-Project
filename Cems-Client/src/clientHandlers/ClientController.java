@@ -1,18 +1,15 @@
 package clientHandlers;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import logic.QuestionModel;
-import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 import logic.FileUploadMessage;
+import logic.QuestionModel;
 import logic.Test;
 
 public class ClientController implements ChatIF {

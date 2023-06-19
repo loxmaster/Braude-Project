@@ -14,7 +14,6 @@ public class ClientUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        
         // Create an instance of ClientController
         chat = new ClientController("localhost", 5555);
         // Create an instance of LoginScreenController

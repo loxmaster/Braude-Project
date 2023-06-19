@@ -1,6 +1,7 @@
 package clientControllers;
 
 import java.util.ArrayList;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -116,6 +117,7 @@ public class HODOnLecGraphController extends BasicController {
         // Start the clock
         Timenow(live_time);
     }
+
     // Method to handle "back" button click
     @FXML
     void backtoStatistical(ActionEvent event) {
