@@ -20,71 +20,105 @@ import clientHandlers.ClientUI;
 import logic.Test;
 import javafx.event.EventHandler;
 
-// This class is a controller for the ViewGrades view
+/**
+ * This class is a controller for the ViewGrades view.
+ * It extends the BasicController class.
+ */
 public class ViewGradesController extends BasicController {
 
-    // The list of completed tests
+    /**
+     * The list of completed tests.
+     */
     public static ArrayList<Test> completedTestsList;
 
-    // The list of subjects and courses
+    /**
+     * The list of subjects and courses.
+     */
     private static ArrayList<String> SubjectCourse;
 
-    // A flag variable
+    /**
+     * A flag variable.
+     */
     public static boolean flag = false;
 
-    // The value selected in the filterComboBox
+    /**
+     * The value selected in the filterComboBox.
+     */
     public String value;
 
-    // The container for the exams
+    /**
+     * The container for the exams.
+     */
     @FXML
     private GridPane ExamContainer;
 
-    // The text field for the student ID
+    /**
+     * The text field for the student ID.
+     */
     @FXML
     private Text Student_ID_Text;
 
-    // The back button
+    /**
+     * The back button.
+     */
     @FXML
     private Button backButton;
 
-    // The combo box for filtering
+    /**
+     * The combo box for filtering.
+     */
     @FXML
     private ComboBox<String> filterComboBox;
 
-    // The exit button
+    /**
+     * The exit button.
+     */
     @FXML
     private Button exitbutton;
 
-    // The filter button
+    /**
+     * The filter button.
+     */
     @FXML
     private Button filterButton;
 
+    /**
+     * The label for displaying the live time.
+     */
     @FXML
     private Label live_time;
 
-    // This method is called when the back button is pressed. It loads the student
-    // main screen.
+    /**
+     * This method is called when the back button is pressed.
+     * It loads the student main screen.
+     *
+     * @param event The action event that triggers this method.
+     */
     @FXML
     void backButtonPressed(ActionEvent event) {
         openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student", event);
     }
 
-    // This method is called when the ViewGrades view is loaded. It initializes the
-    // view.
+    /**
+     * This method is called to initialize a controller after its root element has
+     * been completely processed.
+     * It starts the clock, retrieves the list of completed tests for the student,
+     * and waits for a short duration before proceeding.
+     */
     @FXML
     void initialize() {
-        
+
         // Start the clock
         Timenow(live_time);
         // Get the list of completed tests for the student
         ClientUI.chat.getcompletedTestsForStudentList();
-        
+
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
+
         // Set the student ID text
         Student_ID_Text.setText("Student ID: " + completedTestsList.get(0).getStudentID());
 
@@ -120,6 +154,15 @@ public class ViewGradesController extends BasicController {
         });
     }
 
+    /**
+     * This method is used to load the exams based on the selected value.
+     * It clears the ExamContainer, retrieves the course for each test in the
+     * completed tests list,
+     * and creates and adds the corresponding test cards to the ExamContainer based
+     * on the selected value.
+     *
+     * @param value The selected value determining which exams to show.
+     */
     public void ExamLoad(String value) {
         // Clear the ExamContainer. This is necessary to ensure that the previous exams
         // are not shown.
@@ -193,57 +236,105 @@ public class ViewGradesController extends BasicController {
         }
     }
 
-    // Getter for the list of completed tests for a student
+    /**
+     * This method is used to get the list of completed tests for a student.
+     *
+     * @return The list of completed tests for a student.
+     */
     public static ArrayList<Test> getcompletedTestsForStudentList() {
         return completedTestsList;
     }
 
-    // Setter for the list of completed tests for a student
+    /**
+     * Setter for the list of completed tests for a student.
+     *
+     * @param completedTests The list of completed tests for a student.
+     */
     public static void setcompletedTestsForStudentList(ArrayList<Test> completedTests) {
         completedTestsList = completedTests;
     }
 
-    // Setter for the list of subjects and courses
+    /**
+     * Setter for the list of subjects and courses.
+     *
+     * @param SubjectandCourse The list of subjects and courses.
+     */
     public static void setSubjectsCoursesList(ArrayList<String> SubjectandCourse) {
         SubjectCourse = SubjectandCourse;
     }
 
-    // Getter for the list of completed tests
+    /**
+     * Getter for the list of completed tests.
+     *
+     * @return The list of completed tests.
+     */
     public static ArrayList<Test> getCompletedTestsList() {
         return completedTestsList;
     }
 
-    // Setter for the list of completed tests
+    /**
+     * Setter for the list of completed tests.
+     *
+     * @param completedTestsList The list of completed tests.
+     */
     public static void setCompletedTestsList(ArrayList<Test> completedTestsList) {
         ViewGradesController.completedTestsList = completedTestsList;
     }
 
-    // Getter for the list of subjects and courses
+    /**
+     * Getter for the list of subjects and courses.
+     *
+     * @return The list of subjects and courses.
+     */
     public static ArrayList<String> getSubjectCourse() {
         return SubjectCourse;
     }
 
-    // Setter for the list of subjects and courses
+    /**
+     * Setter for the list of subjects and courses.
+     *
+     * @param subjectCourse The list of subjects and courses.
+     */
     public static void setSubjectCourse(ArrayList<String> subjectCourse) {
         SubjectCourse = subjectCourse;
     }
 
-    // Getter for the flag variable
+    /**
+     * 
+     * Retrieves the value of the flag variable.
+     * 
+     * @return The value of the flag variable.
+     */
     public static boolean isFlag() {
         return flag;
     }
 
-    // Setter for the flag variable
+    /**
+     * 
+     * Sets the value of the flag variable.
+     * 
+     * @param flag The new value for the flag variable.
+     */
     public static void setFlag(boolean flag) {
         ViewGradesController.flag = flag;
     }
 
-    // Getter for the filter combo box
+    /**
+     * 
+     * Retrieves the filter combo box.
+     * 
+     * @return The filter combo box.
+     */
     public ComboBox<String> getFilterComboBox() {
         return filterComboBox;
     }
 
-    // Setter for the filter combo box
+    /**
+     * 
+     * Sets the filter combo box.
+     * 
+     * @param filterComboBox The new filter combo box.
+     */
     public void setFilterComboBox(ComboBox<String> filterComboBox) {
         this.filterComboBox = filterComboBox;
     }
