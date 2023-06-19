@@ -80,24 +80,26 @@ public class EvaluateTestController extends BasicController {
     // loadEditQuestionScreen();
     //this.localtest = test;
 
-    ArrayList<Question> questionStringList = new ArrayList<>();
-    ArrayList<QuestionModel> listOfQuestionModels = new ArrayList<>();
-
     //this function init setLocalTest()  the test returned will be in localtest
     ClientUI.chat.getTestWithCodeFor_CompletedTest(test);
-
-
-
+    
+    try {
+      Thread.sleep(250);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
 
     System.out.println(test.getQuesitonsInTest());
     questionlist = test.getQuesitonsInTest();
 
     int index = 1;
-    for (QuestionModel question : test.getQuesitonsInTest()) {
+    for (QuestionModel question : localtest.getQuesitonsInTest()) {
       // Creates and adds the question to the VBox
       questionTracker.getChildren().add(createQuestionInTestButton(question, index));
       index++;
     }
+    
+
 
   }
 
@@ -126,20 +128,6 @@ public class EvaluateTestController extends BasicController {
         break;
 
     }
-  }
-
-  public void loadEditQuestionScreen() {
-    // subjectList =
-    // FXCollections.observableArrayList(LecturerController.getSubjectsList());
-    // courseList =
-    // FXCollections.observableArrayList(LecturerController.getCoursesList());
-
-    // subjectCombobox.getItems().removeAll();
-    // subjectCombobox.setItems(subjectList);
-
-    // courseComboBox.getItems().removeAll();
-    // courseComboBox.setItems(courseList);
-
   }
 
   @FXML
