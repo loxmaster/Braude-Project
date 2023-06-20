@@ -58,7 +58,6 @@ public class ClientHandler extends AbstractClient {
 	/**
 	 * Contructor for this instance of ClientHandler. Also, opens a connection
 	 * to the server (If connection already open does nothing) .
-	 * 
 	 * @param host
 	 * @param port
 	 * @param client
@@ -76,22 +75,17 @@ public class ClientHandler extends AbstractClient {
 	 * @param serverMessage The message from the server .
 	 */
 	public void handleMessageFromServer(Object serverMessage) {
-
 		// Local parameters.
 		String[] subjectArray;
 		ArrayList<String> list;
 		ArrayList<Question> questionList;
 		Test testToAdd;
-
-
 		// Notifice about recieving the message to console .
 		System.out.println("got message: " + serverMessage);
-
 		if (serverMessage instanceof FileDownloadMessage) {
 			FileDownloadMessage downloadMessage = (FileDownloadMessage) serverMessage;
 			IdAndCodeScreen.setDownloadMessage(downloadMessage);
 			// Pass the downloaded file message to the client controller
-
 		}
 		// Switch function on the name of the class that message was the sent .
 		switch (serverMessage.getClass().getSimpleName()) {
@@ -169,35 +163,36 @@ public class ClientHandler extends AbstractClient {
 				if (((ArrayList<?>) serverMessage).get(0) instanceof TestInServer) {
 					ArrayList<TestInServer> testsFromServer = (ArrayList<TestInServer>) serverMessage;
 					ArrayList<Test> testsToReturn = new ArrayList<>();
-					if (testsFromServer.get(0).getTimeToAdd()!=null ) { //if the test have timeToAdd, we know that its test from the time extension permission tests
-						
-						for(TestInServer test : testsFromServer) {
-						testToAdd = new Test(test.getId(), test.getSubject(), test.getAuthor(), test.getDuration(),
-							test.getTestComments(), test.getTestCode(), test.getDateString(), test.getTime(),
-							null);
-						testToAdd.setTimeToAdd(test.getTimeToAdd());
-						testToAdd.setReasonForTimeExtension(test.getReasonForTimeExtension());
-						testToAdd.setSubject(test.getSubject());
-						
-						testsToReturn.add(testToAdd);
-						}
-						HODController.setOngoingTests_permissions(testsToReturn); 
-						calculateTest_timeLeft(testsToReturn);//send the tests to calculate and update the timeLeft
-					}
-					for(TestInServer test : testsFromServer) {
-						testToAdd = new Test(test.getId(), test.getSubject(),
-							test.getAuthor(), test.getDuration(),
-							test.getTestComments(), test.getTestCode(), test.getDateString(),
-							test.getTime(),
-							null);
-						testsToReturn.add(testToAdd);
-					}
-					
-					calculateTest_timeLeft(testsToReturn);//send the tests to calculate and update the timeLeft
-		            LecturerController.setOngoingTests(testsToReturn);
+					if (testsFromServer.get(0).getTimeToAdd() != null) { // if the test have timeToAdd, we know that its
+																			// test from the time extension permission
+																			// tests
 
-				}
-				else {
+						for (TestInServer test : testsFromServer) {
+							testToAdd = new Test(test.getId(), test.getSubject(), test.getAuthor(), test.getDuration(),
+									test.getTestComments(), test.getTestCode(), test.getDateString(), test.getTime(),
+									null);
+							testToAdd.setTimeToAdd(test.getTimeToAdd());
+							testToAdd.setReasonForTimeExtension(test.getReasonForTimeExtension());
+							testToAdd.setSubject(test.getSubject());
+
+							testsToReturn.add(testToAdd);
+						}
+						HODController.setOngoingTests_permissions(testsToReturn);
+						calculateTest_timeLeft(testsToReturn);// send the tests to calculate and update the timeLeft
+					}
+					for (TestInServer test : testsFromServer) {
+						testToAdd = new Test(test.getId(), test.getSubject(),
+								test.getAuthor(), test.getDuration(),
+								test.getTestComments(), test.getTestCode(), test.getDateString(),
+								test.getTime(),
+								null);
+						testsToReturn.add(testToAdd);
+					}
+
+					calculateTest_timeLeft(testsToReturn);// send the tests to calculate and update the timeLeft
+					LecturerController.setOngoingTests(testsToReturn);
+
+				} else {
 					list = (ArrayList<String>) serverMessage;
 					switch (list.get(0)) {
 
@@ -273,7 +268,7 @@ public class ClientHandler extends AbstractClient {
 						case "completedTestsForLecturer": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
-							//ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
+							// ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
 							// CompletedTestList = (ArrayList<Test>) severMessage;
 							int i = 1;
 							while (i < list.size()) {
@@ -297,7 +292,6 @@ public class ClientHandler extends AbstractClient {
 							CheckTestController.setCompletedTestsList(listToAdd);
 							break;
 						}
-
 
 						case "getCoursesExams": {
 							System.out.println("Client Handler: " + list.get(0));
@@ -505,10 +499,10 @@ public class ClientHandler extends AbstractClient {
 							}
 
 							System.out.println("Client Handler: " + list.get(1));
-						break;
+							break;
 						case "":
-							
-						break;
+
+							break;
 
 					}
 				}
@@ -571,8 +565,6 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-
-
 	///////////////////////////////////////////////////
 	////////////////// LOGIC METHODS /////////////////
 	/////////////////////////////////////////////////
@@ -582,37 +574,19 @@ public class ClientHandler extends AbstractClient {
 	 * calculate the test left time for the ongoing tests 
 	 */
 	private void calculateTest_timeLeft(ArrayList<Test> tests) {
-
 		for(Test test : tests) {
-		// Calculate time left
            LocalTime testTime = LocalTime.parse(test.getTime());
            LocalDate testDate = LocalDate.parse(test.getDateString());
            ZonedDateTime now = ZonedDateTime.now();
            ZonedDateTime testZonedDateTime = ZonedDateTime.of(testDate, testTime, now.getZone());
+		}
 
-           // Parse duration which is in HH:mm format
-           String[] durationParts = test.getDuration().split(":");
-           long hours = Long.parseLong(durationParts[0]);
-           long minutes = Long.parseLong(durationParts[1]);
-           Duration testDuration = Duration.ofHours(hours).plusMinutes(minutes);
-
-           ZonedDateTime testEndTime = testZonedDateTime.plus(testDuration);
-
-           // Calculate time left manually
-           if (testEndTime.isBefore(now)) {
-               test.setTimeLeft("00:00"); // Test has ended
-           } else {
-               Duration durationToEnd = Duration.between(now, testEndTime);
-               long totalSeconds = durationToEnd.getSeconds();
-               long hoursLeft = totalSeconds / 3600;
-               long minutesLeft = (totalSeconds % 3600) / 60;
-               String formattedTimeLeft = String.format("%02d:%02d", hoursLeft, minutesLeft);
-               test.setTimeLeft(formattedTimeLeft);
-           }
-       }
-	}
-	
-
+	/**
+	 * Handles the message received from the lecturer user interface gets all the
+	 * questions for the lecturer.
+	 * 
+	 * @param username lecturers username
+	 */
 	public void passToServer(Object listToSend) {
 		try {
 			sendToServer(listToSend);
@@ -624,7 +598,6 @@ public class ClientHandler extends AbstractClient {
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////
 	//////////////////////////////////////////////////////////
-
 
 	/**
 	 * This method overrites super method that handles what happans when connection
@@ -645,7 +618,10 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {}
 	}
 
-	// Clear client data
+	/**
+	 * 
+	 * Resets the client data.
+	 */
 	public static void resetClientData() {
 		// Reset the user object
 		user = new User();
