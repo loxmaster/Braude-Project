@@ -448,7 +448,7 @@ public class ClientController implements ChatIF {
         list.addAll(Arrays.asList("testNumber",
                 "SELECT MAX(CAST(SUBSTRING(id, 5, 2) AS UNSIGNED)) AS max_test_number FROM tests WHERE SUBSTRING(id, 1, 4) = '"
                         + (String) coursename + "';"));
-        client.passToServer(coursename);
+        client.passToServer((Object)list);
     }
 
     public void GetCourseIDfromSubjectCourses(Object coursename) {
@@ -456,7 +456,7 @@ public class ClientController implements ChatIF {
         list.addAll(Arrays.asList("getCourseID",
                 "SELECT courseid FROM projecton.subjectcourses where ( `coursename` = '" + (String) coursename
                         + "' );"));
-        client.passToServer(coursename);
+        client.passToServer((Object)list);
     }
 
     public void getTestWithCodeForStudent(String testCode) {
@@ -561,7 +561,7 @@ public class ClientController implements ChatIF {
         ArrayList<String> listToSend = new ArrayList<String>();
         listToSend.add("DeleteQuestion");
         listToSend.add("DELETE FROM `projecton`.`questions` WHERE (`id` = '" + originalId + "');");
-        client.passToServer((Object) originalId);
+        client.passToServer((Object) listToSend);
     }
 
     public void getCoursesSameDepartment() {
