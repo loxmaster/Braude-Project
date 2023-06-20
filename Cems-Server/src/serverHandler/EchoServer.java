@@ -592,7 +592,7 @@ public class EchoServer extends AbstractServer {
 				// index for the current quesiton number
 				int index = 0;
 				for (String id : arrayIds) {
-					String queryForGettingTheQuestions = "SELECT * FROM projecton.questions WHERE id = " + id + "";
+					String queryForGettingTheQuestions = "SELECT * FROM questions WHERE id = " + id + "";
 					questionStmt = conn.createStatement();
 					System.out.println(id);
 					questionResult = questionStmt.executeQuery(queryForGettingTheQuestions);
@@ -606,7 +606,7 @@ public class EchoServer extends AbstractServer {
 								questionResult.getString(5),
 								questionResult.getString(6));
 
-						String answerQuery = "SELECT optionA, optionB, optionC, optionD, correctAnswer FROM projecton.answers WHERE questionid = "
+						String answerQuery = "SELECT optionA, optionB, optionC, optionD, correctAnswer FROM answers WHERE questionid = "
 								+ q.getId() + "";
 						Statement answerStmt = conn.createStatement();
 						ResultSet answerResult = answerStmt.executeQuery(answerQuery);
@@ -718,7 +718,7 @@ public class EchoServer extends AbstractServer {
 
 				Statement answerstmt = conn.createStatement();
 				ResultSet answers = answerstmt.executeQuery(
-						"SELECT optionA,optionB,optionC,optionD,correctAnswer FROM `projecton`.`answers` WHERE (`questionid` = '"
+						"SELECT optionA,optionB,optionC,optionD,correctAnswer FROM `answers` WHERE (`questionid` = '"
 								+ q.getId() + "');");
 				if (answers.next()) {
 					q.setOptionA(answers.getString(1));
