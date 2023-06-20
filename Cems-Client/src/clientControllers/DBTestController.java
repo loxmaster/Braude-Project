@@ -242,6 +242,7 @@ public class DBTestController extends BasicController {
 
 		int cap = 20;
 		// wait until we have a questions pulled from database
+		// ********** ERROR IS HERE ***********/
 		while (TestList.isEmpty() && (cap > 0)) {
 			try {
 				Thread.sleep(250);
@@ -249,6 +250,7 @@ public class DBTestController extends BasicController {
 			} catch (InterruptedException e) {
 			}
 		}
+		// ********** ERROR IS HERE ***********/
 	}
 
 	/**
@@ -275,7 +277,7 @@ public class DBTestController extends BasicController {
 
 	@FXML
 	void EditTestsPressed(ActionEvent event) {
-
+		System.out.println("temp");
 	}
 
 	/**
