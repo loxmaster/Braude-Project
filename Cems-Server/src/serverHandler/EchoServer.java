@@ -135,6 +135,13 @@ public class EchoServer extends AbstractServer {
 				case "ArrayList":
 					ArrayList<String> list = (ArrayList<String>) msg;
 					switch (list.get(0)) {
+						case "futureTests":
+							ArrayList<String> resgetFutureTests = getFutureTests_db(list.get(1),
+									"getFutureTests");
+							client.sendToClient(
+									resgetFutureTests == null ? (Object) notFound
+											: (Object) resgetFutureTests);
+							break;
 						case "getSubjectID":
 							// send query to be executed along with the identifier
 							ArrayList<String> resultList = getData_db(list.get(1), "getSubjectID");
@@ -337,12 +344,6 @@ public class EchoServer extends AbstractServer {
 									resgetCoursesExams == null ? (Object) notFound
 											: (Object) resgetCoursesExams);
 							break;
-						case "futureTests":
-							ArrayList<String> resgetFutureTests = getFutureTests_db(list.get(1),
-									"getFutureTests");
-							client.sendToClient(
-									resgetFutureTests == null ? (Object) notFound
-											: (Object) resgetFutureTests);
 						case "Update_timeExtensionRequestsTable":
 							rows_affected = executeMyQuery(list.get(1));
 							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
@@ -394,7 +395,6 @@ public class EchoServer extends AbstractServer {
 			ioe.printStackTrace();
 		}
 	}
-
 
 	private ArrayList<TestInServer> fetch_ongoingTests_permissions_FromDB(String query) {
 		  ArrayList<TestInServer> tests = new ArrayList<>();
@@ -457,8 +457,6 @@ public class EchoServer extends AbstractServer {
 	    }
 	    return tests;
 	}
-
-
 
 	private ArrayList<Object> getQuestionsFromTest(String query) {
 		ArrayList<Object> output = new ArrayList<>();
@@ -1099,9 +1097,7 @@ public class EchoServer extends AbstractServer {
 	 * }
 	 */
 
-	// TODO see if piechart is needed
-	// query_passed: select passed students
-	// grade_index - position of the grade field
+
 	private ArrayList<String> TestGrades_PassedGrades(String query_passed, int grade_index) throws SQLException {
 		ArrayList<String> outputList = new ArrayList<String>();
 		stmt = conn.createStatement();
@@ -1114,23 +1110,5 @@ public class EchoServer extends AbstractServer {
 		}
 		return outputList;
 	}
-
-	/*
-	 * // query_failed: select failed students query
-	 * // grade_index - position of the grade field
-	 * private ArrayList<String> testGrades_failed_Query(String query_failed, int
-	 * grade_index) throws SQLException {
-	 * ArrayList<String> outputList = new ArrayList<String>();
-	 * stmt = conn.createStatement();
-	 * ArrayList<ResultSet> res = new ArrayList<>();
-	 * ResultSet queryResult = stmt.executeQuery(query_failed);
-	 * 
-	 * // outputList.addAll((String)queryResult.getString(query_passed));
-	 * while (queryResult.next()) {
-	 * outputList.add(queryResult.getString(grade_index));
-	 * }
-	 * return outputList;
-	 * }
-	 */
 
 }

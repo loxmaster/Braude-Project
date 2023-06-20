@@ -116,9 +116,11 @@ public static void setSubjectCourseLec(ArrayList<String> subjectCourseLec) {
 		// Start the clock
 		Timenow(live_time);
 	}
-	/**
-	 * This function loads the statistics from the server and populates the table.
-	 */
+    /**
+     * This function loads the statistics from the server and populates the table.
+     * It fetches the completed tests for the lecturer, calculates the statistics for each test,
+     * and then displays the statistics in the table.
+     */
 	public void load() {
 		// Request completed tests for the lecturer
 		ClientUI.chat.getcompletedTestsForLecturerList();

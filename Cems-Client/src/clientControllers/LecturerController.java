@@ -54,7 +54,7 @@ public class LecturerController extends BasicController {
 		setCoursesList(new ArrayList<String>());
 		ClientUI.chat.getCoursesForLecturer((Object) ClientHandler.user.getUsername());
 
-		
+
 		// Sets the welcome label
 		setWelcomeLabel();
 	}
@@ -67,45 +67,47 @@ public class LecturerController extends BasicController {
 
 	@FXML
 	void CheckTheTestsPressed(ActionEvent event) {
-		CheckTestController ctc = (CheckTestController) openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml", "CEMS System - Lecturer - Check Tests", event);
+		CheckTestController ctc = (CheckTestController) openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml",
+				"CEMS System - Lecturer - Check Tests", event);
 		ctc.loadTable();
 	}
-	
+
 	@FXML
 	void HelpPressed(ActionEvent event) {
 		if (textBox.isVisible())
-		textBox.setVisible(false);
+			textBox.setVisible(false);
 		else
-		textBox.setVisible(true);
+			textBox.setVisible(true);
 	}
-	
+
 	@FXML
-    void UploadTestPressed(ActionEvent event) {
+	void UploadTestPressed(ActionEvent event) {
 		openScreen("/clientFXMLS/LecturerTestUpload.fxml", "CEMS System - Lecturer - Upload A Test", event);
-    }
+	}
 
-
-    @FXML
-    void EditTestsPressed(ActionEvent event) {
-		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerTestTable.fxml", "CEMS System - Lecturer - Create Tests", event);
-		ctc.loadFilterComboboxes();
-    }
+	@FXML
+	void EditTestsPressed(ActionEvent event) {
+		DBTestController dbt = (DBTestController) openScreen("/clientFXMLS/LecturerTestTable.fxml",
+				"CEMS System - Lecturer - Create Tests", event);
+		dbt.load();
+		dbt.initialize();
+	}
 
 	@FXML
 	void CreateTestsPressed(ActionEvent event) {
 		// open Create Tests
-		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml", "CEMS System - Lecturer - Create Tests", event);
+		CreateTestController ctc = (CreateTestController) openScreen("/clientFXMLS/LecturerCreateTes.fxml",
+				"CEMS System - Lecturer - Create Tests", event);
 		ctc.loadFilterComboboxes();
 		ctc.initialize();
 	}
-	
+
 	@FXML
 	void ManageTestsPressed(ActionEvent event) {
 		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Create Tests", event);
-		//ctc.loadFilterComboboxes();
-		
-	}
+		// ctc.loadFilterComboboxes();
 
+	}
 
 	@FXML
 	void MenageOngoingTestsPressed(ActionEvent event) {
@@ -113,8 +115,6 @@ public class LecturerController extends BasicController {
 		OngoingTestController ctc = (OngoingTestController) openScreen("/clientFXMLS/LecturerOngoingTest.fxml", "CEMS System - Lecturer - Create Tests", event);
 		ctc.load();
 	}
-
-	
 
 	@FXML
 	void StatisticalInfoPressed(ActionEvent event) {

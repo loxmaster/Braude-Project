@@ -1,17 +1,21 @@
 package clientHandlers;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
 import clientControllers.CheckTestController;
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
+import clientControllers.DBTestController;
 import clientControllers.EvaluateTestController;
 import clientControllers.HODController;
 import clientControllers.HODStatisticOnCourseController;
@@ -23,6 +27,7 @@ import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
 import clientControllers.StudentExamController;
 import clientControllers.ViewGradesController;
+import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 import logic.Question;
 import logic.QuestionModel;
@@ -293,6 +298,7 @@ public class ClientHandler extends AbstractClient {
 							break;
 						}
 
+
 						case "getCoursesExams": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
@@ -341,6 +347,7 @@ public class ClientHandler extends AbstractClient {
 						}
 
 						case "getCoursesSameDepartment": {
+
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<String> listToAdd = new ArrayList<>();
 							int i = 1;
@@ -349,6 +356,31 @@ public class ClientHandler extends AbstractClient {
 								i++;
 							}
 							HODStatisticOnCourseController.setCoursesSameDepartment(listToAdd);
+							break;
+						}
+
+						case "getFutureTests": {
+							System.out.println("Client Handler: " + list.get(0));
+							ArrayList<Test> listToAdd = new ArrayList<>();
+							ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
+							int i = 1;
+							while (i < list.size()) {
+								listToAdd.add(new Test(
+										list.get(i),
+										list.get(i + 1),
+										list.get(i + 2),
+										list.get(i + 3),
+										list.get(i + 4),
+										list.get(i + 5),
+										list.get(i + 6),
+										list.get(i + 7),
+										list.get(i + 8),
+										list.get(i + 9),
+										list.get(i + 10),
+										list.get(i + 11)));
+								i += 12;
+							}
+							DBTestController.setTestList(listToAdd);
 							break;
 						}
 
@@ -522,8 +554,21 @@ public class ClientHandler extends AbstractClient {
 
 				break;
 		}
-
 		System.out.println("--> messageFromServerHandled");
+	}
+
+	/**
+	 * This method handles all data coming from the UI
+	 *
+	 * @param message The message from the UI.
+	 */
+	public void handleMessageFromClientUI(Object message) {
+		try {
+			sendToServer(message);
+		} catch (IOException e) {
+			client.display("Could not send message to server.  Terminating client.");
+			quit();
+		}
 	}
 
 
@@ -532,19 +577,6 @@ public class ClientHandler extends AbstractClient {
 	////////////////// LOGIC METHODS /////////////////
 	/////////////////////////////////////////////////
 
-
-	/**
-	 * Method for passing the information to the database from the UI
-	 * @param listToSend
-	 */
-	public void passToServer(Object listToSend) {
-		try {
-			this.openConnection();
-			sendToServer(listToSend);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * calculate the test left time for the ongoing tests 
@@ -580,21 +612,14 @@ public class ClientHandler extends AbstractClient {
        }
 	}
 	
-	/*public void GetTestGrades_StatisticalInformation(String testID) {
-		ArrayList<String> list = new ArrayList<String>();
 
-		// FIXME fix this query
-		String query_passed = "SELECT grade from projecton.testResults WHERE grade>=55";
-		String query_failed = "SELECT grade from projecton.testResults WHERE grade<55";
-		list.addAll(Arrays.asList("testGrades", query_passed, query_failed));
-
+	public void passToServer(Object listToSend) {
 		try {
-			sendToServer((Object) list);
+			sendToServer(listToSend);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}*/
-
+	}
 
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////
@@ -620,9 +645,11 @@ public class ClientHandler extends AbstractClient {
 		} catch (IOException e) {}
 	}
 
-	// clear client data
+	// Clear client data
 	public static void resetClientData() {
+		// Reset the user object
 		user = new User();
+		// Reset the subjectsList and questions lists in the LecturerController
 		LecturerController.subjectsList = new ArrayList<String>();
 		LecturerController.questions = new ArrayList<QuestionModel>();
 	}
