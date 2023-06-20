@@ -21,7 +21,11 @@ import clientHandlers.ClientUI;
 import logic.Statistics;
 import logic.Test;
 
-// This class is a controller for the ViewGrades view
+/**
+ * 
+ * Controller class for the HODViewGrades view.
+ * Extends the BasicController class.
+ */
 public class HODViewGradesController extends BasicController {
 
     // The list of completed tests
@@ -66,8 +70,13 @@ public class HODViewGradesController extends BasicController {
     @FXML
     private Button logo;
 
-    // This method is called when the back button is pressed. It loads the student
-    // main screen.
+    /**
+     * 
+     * Event handler for the Back button press.
+     * Opens the HODStatisticOnStudent view and loads the data.
+     * 
+     * @param event The action event triggered by the user.
+     */
     @FXML
     void backButtonPressed(ActionEvent event) {
         HODStatisticOnStudentController Hssc = (HODStatisticOnStudentController) openScreen(
@@ -76,25 +85,33 @@ public class HODViewGradesController extends BasicController {
         Hssc.load();
     }
 
-    // This method is called when the ViewGrades view is loaded. It initializes the
-    // view.
+    /**
+     * 
+     * Initializes the controller.
+     * Starts the clock.
+     */
     @FXML
     void initialize() {
         // Start the clock
         Timenow(live_time);
     }
 
-    // This method is called when the ViewGrades view is loaded. It initializes the
-    // view.
+    /**
+     * 
+     * Displays the student information and their completed tests.
+     * 
+     * @param user                  The statistics of the student.
+     * @param AllcompletedTestsList The list of completed tests by the student.
+     */
     @FXML
     void StudendInfo(Statistics user, ArrayList<Test> AllcompletedTestsList) {
 
         // Start the clock
         Timenow(live_time);
 
-        Avg_text.setText("Average: "+Integer.toString(user.getAverage()));
-        Name_text.setText("Student's Name: "+user.getStudentName());
-        ID_Text.setText("Student ID: "+ user.getStudentID());
+        Avg_text.setText("Average: " + Integer.toString(user.getAverage()));
+        Name_text.setText("Student's Name: " + user.getStudentName());
+        ID_Text.setText("Student ID: " + user.getStudentID());
         completedTestsList = new ArrayList<>();
         // Populate the ComboBox with course names
         Set<String> courseNames = new HashSet<>();
@@ -130,6 +147,12 @@ public class HODViewGradesController extends BasicController {
         });
     }
 
+    /**
+     * 
+     * Loads the data based on the specified value.
+     * 
+     * @param value The value to load.
+     */
     public void Load(String value) {
         // Clear the ExamContainer. This is necessary to ensure that the previous exams
         // are not shown.
@@ -203,48 +226,83 @@ public class HODViewGradesController extends BasicController {
         }
     }
 
-    
-
-    // Getter for the list of completed tests for a student
+    /**
+     * Retrieves the list of completed tests for a student.
+     *
+     * @return The list of completed tests for a student.
+     */
     public static ArrayList<Test> getcompletedTestsForStudentList() {
         return completedTestsList;
     }
 
-    // Setter for the list of completed tests for a student
+    /**
+     * Sets the list of completed tests for a student.
+     *
+     * @param completedTests The list of completed tests for a student to set.
+     */
     public static void setcompletedTestsForStudentList(ArrayList<Test> completedTests) {
         completedTestsList = completedTests;
     }
 
-    // Getter for the list of subjects and courses
+    /**
+     * Retrieves the list of subjects and courses.
+     *
+     * @return The list of subjects and courses.
+     */
     public static ArrayList<String> getSubjectCourse() {
         return SubjectCourse;
     }
 
-    // Setter for the list of subjects and courses
+    /**
+     * Sets the list of subjects and courses.
+     *
+     * @param subjectCourse The list of subjects and courses to set.
+     */
     public static void setSubjectCourse(ArrayList<String> subjectCourse) {
         SubjectCourse = subjectCourse;
     }
 
-    // Getter for the flag variable
+    /**
+     * Retrieves the flag variable.
+     *
+     * @return The value of the flag variable.
+     */
     public static boolean isFlag() {
         return flag;
     }
 
-    // Setter for the flag variable
+    /**
+     * Sets the flag variable.
+     *
+     * @param flag The value to set for the flag variable.
+     */
     public static void setFlag(boolean flag) {
         ViewGradesController.flag = flag;
     }
 
-    // Getter for the filter combo box
+    /**
+     * Retrieves the filter combo box.
+     *
+     * @return The filter combo box.
+     */
     public ComboBox<String> getFilterComboBox() {
         return filterComboBox;
     }
 
-    // Setter for the filter combo box
+    /**
+     * Sets the filter combo box.
+     *
+     * @param filterComboBox The filter combo box to set.
+     */
     public void setFilterComboBox(ComboBox<String> filterComboBox) {
         this.filterComboBox = filterComboBox;
     }
 
+    /**
+     * Sets the list of subjects and courses for a test specific student.
+     *
+     * @param listToAdd The list of subjects and courses to set.
+     */
     public static void setHodSubjectsCourseForTestSpecificStudent(ArrayList<String> listToAdd) {
         SubjectCourse = listToAdd;
     }
