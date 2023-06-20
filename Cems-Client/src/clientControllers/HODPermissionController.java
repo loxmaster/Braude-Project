@@ -16,7 +16,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import logic.Test;
 
-
+/**
+ * 
+ * This controller handles the permissions view for the Head of Department
+ * (HOD).
+ * 
+ * It extends from the BasicController class.
+ */
 public class HODPermissionController extends BasicController {
 
     @FXML
@@ -38,22 +44,39 @@ public class HODPermissionController extends BasicController {
     private TableColumn<Test, Button> Deny;
     @FXML
     private Button backBTN;
-    
+
     @FXML
-	private Label live_time;
+    private Label live_time;
 
-	@FXML
-	void initialize() {
-		// Start the clock
-		Timenow(live_time);
-	}
+    /**
+     * 
+     * This function initializes the controller.
+     * It starts the clock on the UI.
+     */
+    @FXML
+    void initialize() {
+        // Start the clock
+        Timenow(live_time);
+    }
 
+    /**
+     * 
+     * This function handles the action of clicking the "Back" button.
+     * It navigates the user back to the HOD screen.
+     * 
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     void backPressed(ActionEvent event) {
         // open HOD screen from existing stage
         openScreen("/clientFXMLS/HOD.fxml", "CEMS System - Head Of Department", event);
     }
 
+    /**
+     * 
+     * This function loads the permissions data from the server and populates the
+     * table.
+     */
     public void load() {
 
         System.out.println("load function of hodPermission Controller");
@@ -87,6 +110,16 @@ public class HODPermissionController extends BasicController {
         }
     }
 
+    /**
+     * 
+     * This function creates the buttons for the Approve and Deny columns.
+     * 
+     * @param test    The Test object associated with the button.
+     * 
+     * @param btnName The name of the button ("Approve" or "Deny").
+     * 
+     * @return The created button.
+     */
     public Button createButtons(Test test, String btnName) {
         Button btn = new Button(btnName);
         btn.setUserData(test); // associate the button with the corresponding Test object
@@ -113,7 +146,5 @@ public class HODPermissionController extends BasicController {
 
         return btn;
     }
-
-    
 
 }

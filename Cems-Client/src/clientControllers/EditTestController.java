@@ -1,22 +1,23 @@
 package clientControllers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-
 import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import logic.QuestionModel;
 import logic.Test;
 
+/**
+ * The EditTestController class handles the logic for editing a test.
+ * It extends from the CreateTestController class.
+ */
 public class EditTestController extends CreateTestController {
+
     private Test test;
     private ArrayList<QuestionModel>[] questions;
     private ObservableList<String> subjectList;
@@ -24,12 +25,19 @@ public class EditTestController extends CreateTestController {
 
     private Button deleteBtn;
 
+    /**
+     * Initializes the controller.
+     */
     @Override
     void initialize() {
 
     }
 
-    //
+    /**
+     * Loads the test with the given test ID.
+     *
+     * @param testId The ID of the test to load.
+     */
     void load(String testId) {
         loadSubject();
         loadCourse();
@@ -37,6 +45,9 @@ public class EditTestController extends CreateTestController {
 
     }
 
+    /**
+     * Loads the subject into the subjectComboBox.
+     */
     private void loadSubject() {
         HashSet<String> subjectUpdated = new HashSet<>();
         subjectUpdated.addAll(LecturerController.subjectsList);
@@ -45,7 +56,9 @@ public class EditTestController extends CreateTestController {
         subjectComboBox.setItems(subjectList);
         subjectComboBox.setValue(test.getSubject());
     }
-
+    /**
+     * Loads the course into the courseComboBox.
+     */
     private void loadCourse() {
         HashSet<String> courseUpdated = new HashSet<>();
         courseUpdated.addAll(LecturerController.coursesList);
@@ -54,21 +67,39 @@ public class EditTestController extends CreateTestController {
         courseComboBox.setItems(courseList);
         courseComboBox.setValue(test.getCourse());
     }
-
+    /**
+     * Loads the questions for the test.
+     */
     private void loadQuestions() {
 
     }
 
-    // one step back !
+    /**
+     * Handles the event when the "Back" button is pressed.
+     * It opens the LecturerTestTable screen.
+     *
+     * @param event The action event triggered by the button press.
+     */
     @Override
     void backPressed(ActionEvent event) {
         openScreen("/clientFXMLS/LecturerTestTable.fxml", "CEMS System - Lecturer", event);
     }
 
-    // delete the current test
+  /**
+     * Deletes the current test.
+     *
+     * @param event The action event triggered by the button press.
+     */
     void deleteTest(ActionEvent event) {
     }
 
+    /**
+     * Handles the event when the "Add Question" button is pressed.
+     * It sets the necessary information for the test and opens the Question
+     * DataBase screen.
+     *
+     * @param event The action event triggered by the button press.
+     */
     @FXML
     // unchecked(((************************************)))
     void addQuestionPressed(ActionEvent event) {
