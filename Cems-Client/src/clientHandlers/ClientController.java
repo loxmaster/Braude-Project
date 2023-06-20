@@ -583,4 +583,11 @@ public class ClientController implements ChatIF {
         client.passToServer((Object) list);
     }
 
+    public void uploadStudentFile(String testId, byte[] fileContent, String filename) {
+        FileUploadMessage fileUpload = new FileUploadMessage(testId, fileContent, filename);
+        ArrayList<Object> listToSend = new ArrayList<>();
+        listToSend.addAll(Arrays.asList("studentupload", fileUpload, ClientHandler.user.getUser_id()));
+        client.passToServer((Object) listToSend);
+    }
+
 }

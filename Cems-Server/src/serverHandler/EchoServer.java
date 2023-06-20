@@ -9,11 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import javax.swing.JOptionPane;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TextInputDialog;
 import logic.ClientModel;
 import logic.FileDownloadMessage;
 import logic.FileUploadMessage;
@@ -138,262 +135,275 @@ public class EchoServer extends AbstractServer {
 					clientDisconnected(client);
 					break;
 				case "ArrayList":
-					ArrayList<String> list = (ArrayList<String>) msg;
-					switch (list.get(0)) {
-						case "getSubjectID":
-							// send query to be executed along with the identifier
-							ArrayList<String> resultList = getData_db(list.get(1), "getSubjectID");
-							// result list should have arraylist = {identifier, subjectId}
-							// if we got no results: send notFound signal
-							if (resultList == null)
-								client.sendToClient((Object) notFound);
-							// else return the subjectID result we got from the query
-							else
-								client.sendToClient(resultList);
-							break;
 
-						case "getCourseID":
-							// send query to be executed along with the identifier
-							ArrayList<String> resultCourseID = getData_db(list.get(1), "getCourseID");
-							// result list should have arraylist = {identifier, subjectId}
-							// if we got no results: send notFound signal
-							if (resultCourseID == null)
-								client.sendToClient((Object) notFound);
-							// else return the subjectID result we got from the query
-							else
-								client.sendToClient(resultCourseID);
-							break;
-
-						case "createquestion":
-						case "createanswers":
-						case "editquestion":
-						case "Addtesttodata":
-						case "DeleteQuestion":
-						case "testEval":
-							// executeMyQuery will execute a basic UPDATE query
-							int flag = executeMyQuery(list.get(1));
-							// if (flag != 0) flag=1;
-							client.sendToClient(flag == 0 ? idExists : flag);
-							break;
-
-						case "isStudentTakingCourse": // list size od 2 {tag, query}
-							ArrayList<String> testcode = getTestCodeFromUsername(list.get(1));
-							if (testcode == null)
-								list.remove(1);
-							client.sendToClient(testcode == null ? list : testcode);
-							break;
-
-						case "isTestReady": // list size of 3 {tag, test_id, query}
-							ArrayList<String> test_id_ognoing = getOnGoingTest(list.get(2));
-							if (test_id_ognoing == null) {
-								list.remove(1);
-								list.remove(2);
-							}
-							client.sendToClient(test_id_ognoing == null ? list : test_id_ognoing);
-							break;
-
-						case "getTest":// list size of 3 {tag, test_id, query}
-							ArrayList<Object> TestQuestionList = getQuestionsFromTest(list.get(2));
-							if (TestQuestionList == null) {
-								list.remove(1);
-								list.remove(1);
-							} else
-								TestQuestionList.add(0, "getTest");
-							client.sendToClient(
-									TestQuestionList == null ? (Object) "getTest" : (Object) TestQuestionList);
-							break;
-						case "testNumber":
-							ArrayList<String> restestList = getData_db(list.get(1), "testNumber");
-							// ArrayList<String> list2 = new ArrayList<>();
-							// list2.add("testNumber");
-							if (restestList == null)
-								list.remove(1);
-							client.sendToClient(restestList == null ? (Object) list : (Object) restestList);
-							break;
-
-						case "lecturersubjects":
-							ArrayList<String> resSubjectsList = getData_db(list.get(1), "lecturersubjects");
-							client.sendToClient(resSubjectsList == null ? (Object) notFound : (Object) resSubjectsList);
-							break;
-
-						case "lecturercourses":
-							ArrayList<String> resCoursesList = getCourses_db(list.get(1), "lecturercourses");
-							client.sendToClient(resCoursesList == null ? (Object) notFound : (Object) resCoursesList);
-							break;
-
-						case "completedTestsForStudent":
-							ArrayList<String> resCompletedTestsForStudent = getCompletedTestsForStudent_db(list.get(1),
-									"completedTestsForStudent");
-							client.sendToClient(
-									resCompletedTestsForStudent == null ? (Object) notFound
-											: (Object) resCompletedTestsForStudent);
-							break;
-
-						case "completedTestsForLecturer":
-							ArrayList<String> resCompletedTestsForLecturer = getCompletedTestsForLecturer_db(
-									list.get(1),
-									"completedTestsForLecturer");
-							client.sendToClient(
-									resCompletedTestsForLecturer == null ? (Object) notFound
-											: (Object) resCompletedTestsForLecturer);
-							break;
-
-						case "getSubjectsCourseForTestLec":
-							ArrayList<String> resSubjectsCoursesListLec = getSubjectsCoursesListLec(list.get(1),
-									"getSubjectsCourseForTestLec");
-							client.sendToClient(resSubjectsCoursesListLec == null ? (Object) notFound
-									: (Object) resSubjectsCoursesListLec);
-							break;
-
-						case "getSubjectsCourseForTest":
-							ArrayList<String> resSubjectsCoursesList = getSubjectsCoursesList(list.get(1),
-									"getSubjectsCourseForTest");
-							client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
-									: (Object) resSubjectsCoursesList);
-							break;
-
-						case "LecturerListUnderSameDepartment":
-							ArrayList<String> resLecturerListUnderSameDepartment = getLecturerListUnderSameDepartment(
-									list.get(1),
-									"LecturerListUnderSameDepartment");
-							client.sendToClient(resLecturerListUnderSameDepartment == null ? (Object) notFound
-									: (Object) resLecturerListUnderSameDepartment);
-							break;
-
-						case "studentListUnderSameDepartment":
-							ArrayList<String> resstudentListUnderSameDepartment = getStudentListUnderSameDepartment(
-									list.get(1),
-									"studentListUnderSameDepartment");
-							client.sendToClient(resstudentListUnderSameDepartment == null ? (Object) notFound
-									: (Object) resstudentListUnderSameDepartment);
-							break;
-
-						case "HodGETcompletedTestsForSpecificLecturerList":
-							ArrayList<String> resHodGETcompletedTestsForSpecificLecturerList = getHodGETcompletedTestsForSpecificLecturerList_db(
-									list.get(1),
-									"HodGETcompletedTestsForSpecificLecturerList");
-							client.sendToClient(
-									resHodGETcompletedTestsForSpecificLecturerList == null ? (Object) notFound
-											: (Object) resHodGETcompletedTestsForSpecificLecturerList);
-							break;
-
-						case "HodGETcompletedTestsForSpecificStudentList":
-							ArrayList<String> resHodGETcompletedTestsForSpecificStudentList = getHodGETcompletedTestsForSpecificStudentList_db(
-									list.get(1),
-									"HodGETcompletedTestsForSpecificStudentList");
-							client.sendToClient(
-									resHodGETcompletedTestsForSpecificStudentList == null ? (Object) notFound
-											: (Object) resHodGETcompletedTestsForSpecificStudentList);
-							break;
-
-						case "getHodSubjectsCourseForTestSpecificLec":
-							ArrayList<String> resHodSubjectsCourseForTestSpecificLec = getHodSubjectsCourseForTestSpecificLec_db(
-									list.get(1),
-									"getHodSubjectsCourseForTestSpecificLec");
-							client.sendToClient(resHodSubjectsCourseForTestSpecificLec == null ? (Object) notFound
-									: (Object) resHodSubjectsCourseForTestSpecificLec);
-							break;
-
-						case "getHodCourseForTestSpecificStudent":
-							ArrayList<String> resHodCourseForTestSpecificStudent = getHodSubjectsCourseForTestSpecificStudent_db(
-									list.get(1),
-									"getHodCourseForTestSpecificStudent");
-							client.sendToClient(resHodCourseForTestSpecificStudent == null ? (Object) notFound
-									: (Object) resHodCourseForTestSpecificStudent);
-							break;
-
-						case "lecturerquestions":
-							ArrayList<Question> resQuestionList = getQuestionsFromDatabase(list.get(1));
-							client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
-							break;
-
-						case "testGrades":
-							ArrayList<String> resGradesList = TestGrades_PassedGrades(list.get(1), 1);
-							client.sendToClient(
-									resGradesList == null ? (Object) notFound : (Object) resGradesList);
-							System.out.println("Server: TestGrades_PassedGrades --> " + resGradesList.toArray());
-							break;
-
-						// default is user login authentication
-						case "gettestwithcode":
-						case "check test":
-							TestInServer test = getTestWithCode(list.get(1));
-							client.sendToClient(
-									test == null ? (Object) notFound : (Object) test);
-							System.out.println("Server gettestwithcode --> " + test.getId());
-							break;
-
-						case "sendtocompletedtest":
-							int returned = executeMyQuery(list.get(1));
-							client.sendToClient(
-									returned == 0 ? (Object) notFound : (Object) returned);
-							break;
-						case "getCoursesSameDepartment":
-							ArrayList<String> resgetCoursesSameDepartment = getCoursesSameDepartment_db(
-									list.get(1),
-									"getCoursesSameDepartment");
-							client.sendToClient(resgetCoursesSameDepartment == null ? (Object) notFound
-									: (Object) resgetCoursesSameDepartment);
-							break;
-
-						case "getSelectedAnswers":
-							ArrayList<String> selectedAnswers = getSelectedAnswers_db(list);
-							client.sendToClient(selectedAnswers == null ? (Object) notFound : (Object) selectedAnswers);
-							System.out.println("Server: sending back selected answers:" + selectedAnswers);
-							break;
-						case "getCoursesExams":
-							ArrayList<String> resgetCoursesExams = getCoursesExams_db(list.get(1),
-									"getCoursesExams");
-							client.sendToClient(
-									resgetCoursesExams == null ? (Object) notFound
-											: (Object) resgetCoursesExams);
-							break;
-						case "Update_timeExtensionRequestsTable":
-							rows_affected = executeMyQuery(list.get(1));
-							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
-							System.out.println(rowsAffectedString);
-							client.sendToClient(rowsAffected);
-							break;
-
-						case "updateLockButton_DB":
-							rows_affected = executeMyQuery(list.get(1));
-							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
-							System.out.println(rowsAffectedString);
-							client.sendToClient(rows_affected);
-							break;
-
-						case "fetchOngoingTests":
-							try {
-								ArrayList<TestInServer> ongoingTests = fetchOngoingTestsFromDB();
-								client.sendToClient((Object) ongoingTests);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-							break;
-
-						case "fetch_ongoingTests_permissions_FromDB":
-							try {
-								ArrayList<TestInServer> ongoingTestsPermissions = fetch_ongoingTests_permissions_FromDB(
-										list.get(1));
-								client.sendToClient((Object) ongoingTestsPermissions);
-								// client.sendToClient(ongoingTestsPermissions == null ? (Object) notFound :
-								// (Object) ongoingTestsPermissions);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-							break;
-
-						case "updateHODPermissionsTable":
-							rows_affected = executeMyQuery(list.get(1));
-							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
-							System.out.println(rowsAffectedString);
-							client.sendToClient(rows_affected);
-							break;
-
-						default:
-							loginVarification(list, client);
-							break;
+					ArrayList<Object> listSent = (ArrayList<Object>)msg;
+					// Checks if the list is of Objects (If the student uploaded a test)
+					if ((listSent.get(0)).equals("studentupload")) {
+						FileUploadMessage uploadMessage = (FileUploadMessage) (listSent.get(1));
+						if (saveFileToStudentUpload(uploadMessage.getFileId(), uploadMessage.getFileContent(), uploadMessage.getFilename(), (String)(listSent.get(2))))
+							client.sendToClient("File Uploaded Successfully!");
+						else
+							client.sendToClient("Error! File Upload Failed!");
 					}
+					else {
+						ArrayList<String> list = (ArrayList<String>) msg;
+						switch (list.get(0)) {
+							case "getSubjectID":
+								// send query to be executed along with the identifier
+								ArrayList<String> resultList = getData_db(list.get(1), "getSubjectID");
+								// result list should have arraylist = {identifier, subjectId}
+								// if we got no results: send notFound signal
+								if (resultList == null)
+									client.sendToClient((Object) notFound);
+								// else return the subjectID result we got from the query
+								else
+									client.sendToClient(resultList);
+								break;
+
+							case "getCourseID":
+								// send query to be executed along with the identifier
+								ArrayList<String> resultCourseID = getData_db(list.get(1), "getCourseID");
+								// result list should have arraylist = {identifier, subjectId}
+								// if we got no results: send notFound signal
+								if (resultCourseID == null)
+									client.sendToClient((Object) notFound);
+								// else return the subjectID result we got from the query
+								else
+									client.sendToClient(resultCourseID);
+								break;
+
+							case "createquestion":
+							case "createanswers":
+							case "editquestion":
+							case "Addtesttodata":
+							case "DeleteQuestion":
+							case "testEval":
+								// executeMyQuery will execute a basic UPDATE query
+								int flag = executeMyQuery(list.get(1));
+								// if (flag != 0) flag=1;
+								client.sendToClient(flag == 0 ? idExists : flag);
+								break;
+
+							case "isStudentTakingCourse": // list size od 2 {tag, query}
+								ArrayList<String> testcode = getTestCodeFromUsername(list.get(1));
+								if (testcode == null)
+									list.remove(1);
+								client.sendToClient(testcode == null ? list : testcode);
+								break;
+
+							case "isTestReady": // list size of 3 {tag, test_id, query}
+								ArrayList<String> test_id_ognoing = getOnGoingTest(list.get(2));
+								if (test_id_ognoing == null) {
+									list.remove(1);
+									list.remove(2);
+								}
+								client.sendToClient(test_id_ognoing == null ? list : test_id_ognoing);
+								break;
+
+							case "getTest":// list size of 3 {tag, test_id, query}
+								ArrayList<Object> TestQuestionList = getQuestionsFromTest(list.get(2));
+								if (TestQuestionList == null) {
+									list.remove(1);
+									list.remove(1);
+								} else
+									TestQuestionList.add(0, "getTest");
+								client.sendToClient(
+										TestQuestionList == null ? (Object) "getTest" : (Object) TestQuestionList);
+								break;
+							case "testNumber":
+								ArrayList<String> restestList = getData_db(list.get(1), "testNumber");
+								// ArrayList<String> list2 = new ArrayList<>();
+								// list2.add("testNumber");
+								if (restestList == null)
+									list.remove(1);
+								client.sendToClient(restestList == null ? (Object) list : (Object) restestList);
+								break;
+
+							case "lecturersubjects":
+								ArrayList<String> resSubjectsList = getData_db(list.get(1), "lecturersubjects");
+								client.sendToClient(resSubjectsList == null ? (Object) notFound : (Object) resSubjectsList);
+								break;
+
+							case "lecturercourses":
+								ArrayList<String> resCoursesList = getCourses_db(list.get(1), "lecturercourses");
+								client.sendToClient(resCoursesList == null ? (Object) notFound : (Object) resCoursesList);
+								break;
+
+							case "completedTestsForStudent":
+								ArrayList<String> resCompletedTestsForStudent = getCompletedTestsForStudent_db(list.get(1),
+										"completedTestsForStudent");
+								client.sendToClient(
+										resCompletedTestsForStudent == null ? (Object) notFound
+												: (Object) resCompletedTestsForStudent);
+								break;
+
+							case "completedTestsForLecturer":
+								ArrayList<String> resCompletedTestsForLecturer = getCompletedTestsForLecturer_db(
+										list.get(1),
+										"completedTestsForLecturer");
+								client.sendToClient(
+										resCompletedTestsForLecturer == null ? (Object) notFound
+												: (Object) resCompletedTestsForLecturer);
+								break;
+
+							case "getSubjectsCourseForTestLec":
+								ArrayList<String> resSubjectsCoursesListLec = getSubjectsCoursesListLec(list.get(1),
+										"getSubjectsCourseForTestLec");
+								client.sendToClient(resSubjectsCoursesListLec == null ? (Object) notFound
+										: (Object) resSubjectsCoursesListLec);
+								break;
+
+							case "getSubjectsCourseForTest":
+								ArrayList<String> resSubjectsCoursesList = getSubjectsCoursesList(list.get(1),
+										"getSubjectsCourseForTest");
+								client.sendToClient(resSubjectsCoursesList == null ? (Object) notFound
+										: (Object) resSubjectsCoursesList);
+								break;
+
+							case "LecturerListUnderSameDepartment":
+								ArrayList<String> resLecturerListUnderSameDepartment = getLecturerListUnderSameDepartment(
+										list.get(1),
+										"LecturerListUnderSameDepartment");
+								client.sendToClient(resLecturerListUnderSameDepartment == null ? (Object) notFound
+										: (Object) resLecturerListUnderSameDepartment);
+								break;
+
+							case "studentListUnderSameDepartment":
+								ArrayList<String> resstudentListUnderSameDepartment = getStudentListUnderSameDepartment(
+										list.get(1),
+										"studentListUnderSameDepartment");
+								client.sendToClient(resstudentListUnderSameDepartment == null ? (Object) notFound
+										: (Object) resstudentListUnderSameDepartment);
+								break;
+
+							case "HodGETcompletedTestsForSpecificLecturerList":
+								ArrayList<String> resHodGETcompletedTestsForSpecificLecturerList = getHodGETcompletedTestsForSpecificLecturerList_db(
+										list.get(1),
+										"HodGETcompletedTestsForSpecificLecturerList");
+								client.sendToClient(
+										resHodGETcompletedTestsForSpecificLecturerList == null ? (Object) notFound
+												: (Object) resHodGETcompletedTestsForSpecificLecturerList);
+								break;
+
+							case "HodGETcompletedTestsForSpecificStudentList":
+								ArrayList<String> resHodGETcompletedTestsForSpecificStudentList = getHodGETcompletedTestsForSpecificStudentList_db(
+										list.get(1),
+										"HodGETcompletedTestsForSpecificStudentList");
+								client.sendToClient(
+										resHodGETcompletedTestsForSpecificStudentList == null ? (Object) notFound
+												: (Object) resHodGETcompletedTestsForSpecificStudentList);
+								break;
+
+							case "getHodSubjectsCourseForTestSpecificLec":
+								ArrayList<String> resHodSubjectsCourseForTestSpecificLec = getHodSubjectsCourseForTestSpecificLec_db(
+										list.get(1),
+										"getHodSubjectsCourseForTestSpecificLec");
+								client.sendToClient(resHodSubjectsCourseForTestSpecificLec == null ? (Object) notFound
+										: (Object) resHodSubjectsCourseForTestSpecificLec);
+								break;
+
+							case "getHodCourseForTestSpecificStudent":
+								ArrayList<String> resHodCourseForTestSpecificStudent = getHodSubjectsCourseForTestSpecificStudent_db(
+										list.get(1),
+										"getHodCourseForTestSpecificStudent");
+								client.sendToClient(resHodCourseForTestSpecificStudent == null ? (Object) notFound
+										: (Object) resHodCourseForTestSpecificStudent);
+								break;
+
+							case "lecturerquestions":
+								ArrayList<Question> resQuestionList = getQuestionsFromDatabase(list.get(1));
+								client.sendToClient(resQuestionList == null ? (Object) notFound : (Object) resQuestionList);
+								break;
+
+							case "testGrades":
+								ArrayList<String> resGradesList = TestGrades_PassedGrades(list.get(1), 1);
+								client.sendToClient(
+										resGradesList == null ? (Object) notFound : (Object) resGradesList);
+								System.out.println("Server: TestGrades_PassedGrades --> " + resGradesList.toArray());
+								break;
+
+							// default is user login authentication
+							case "gettestwithcode":
+							case "check test":
+								TestInServer test = getTestWithCode(list.get(1));
+								client.sendToClient(
+										test == null ? (Object) notFound : (Object) test);
+								System.out.println("Server gettestwithcode --> " + test.getId());
+								break;
+
+							case "sendtocompletedtest":
+								int returned = executeMyQuery(list.get(1));
+								client.sendToClient(
+										returned == 0 ? (Object) notFound : (Object) returned);
+								break;
+							case "getCoursesSameDepartment":
+								ArrayList<String> resgetCoursesSameDepartment = getCoursesSameDepartment_db(
+										list.get(1),
+										"getCoursesSameDepartment");
+								client.sendToClient(resgetCoursesSameDepartment == null ? (Object) notFound
+										: (Object) resgetCoursesSameDepartment);
+								break;
+
+							case "getSelectedAnswers":
+								ArrayList<String> selectedAnswers = getSelectedAnswers_db(list);
+								client.sendToClient(selectedAnswers == null ? (Object) notFound : (Object) selectedAnswers);
+								System.out.println("Server: sending back selected answers:" + selectedAnswers);
+								break;
+							case "getCoursesExams":
+								ArrayList<String> resgetCoursesExams = getCoursesExams_db(list.get(1),
+										"getCoursesExams");
+								client.sendToClient(
+										resgetCoursesExams == null ? (Object) notFound
+												: (Object) resgetCoursesExams);
+								break;
+							case "Update_timeExtensionRequestsTable":
+								rows_affected = executeMyQuery(list.get(1));
+								rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
+								System.out.println(rowsAffectedString);
+								client.sendToClient(rowsAffected);
+								break;
+
+							case "updateLockButton_DB":
+								rows_affected = executeMyQuery(list.get(1));
+								rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
+								System.out.println(rowsAffectedString);
+								client.sendToClient(rows_affected);
+								break;
+
+							case "fetchOngoingTests":
+								try {
+									ArrayList<TestInServer> ongoingTests = fetchOngoingTestsFromDB();
+									client.sendToClient((Object) ongoingTests);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+								break;
+
+							case "fetch_ongoingTests_permissions_FromDB":
+								try {
+									ArrayList<TestInServer> ongoingTestsPermissions = fetch_ongoingTests_permissions_FromDB(
+											list.get(1));
+									client.sendToClient((Object) ongoingTestsPermissions);
+									// client.sendToClient(ongoingTestsPermissions == null ? (Object) notFound :
+									// (Object) ongoingTestsPermissions);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+								break;
+
+							case "updateHODPermissionsTable":
+								rows_affected = executeMyQuery(list.get(1));
+								rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
+								System.out.println(rowsAffectedString);
+								client.sendToClient(rows_affected);
+								break;
+
+							default:
+								loginVarification(list, client);
+								break;
+						}
+					}
+					
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -556,6 +566,21 @@ public class EchoServer extends AbstractServer {
 			statement.setString(1, fileId);
 			statement.setBytes(2, fileContent);
 			statement.setString(3, filename);
+			statement.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean saveFileToStudentUpload( String fileId, byte[] fileContent, String filename , String studentId) {
+		String sql = "INSERT INTO student_upload (test_id, student_id, file_data, file_name) VALUES (?, ?, ?, ?)";
+		try (PreparedStatement statement = conn.prepareStatement(sql)) {
+			statement.setString(1, fileId);
+			statement.setString(2, studentId);
+			statement.setBytes(3, fileContent);
+			statement.setString(4, filename);
 			statement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
