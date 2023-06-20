@@ -194,7 +194,9 @@ public class StudentExamController extends BasicController {
 					LocalTime currentTime = LocalTime.now();
 					if (currentTime.compareTo(targetTime) >= 0) {
 						// Time has ended.
-						openPopupScreen("/clientFXMLS/popupScreen.fxml", "testCode", getInstance());
+
+						//openPopupScreen("/clientFXMLS/popupScreen.fxml", "testCode", getInstance());
+
 						//Platform.exit();
 						//timeEnded(); // TODO FIX
 						

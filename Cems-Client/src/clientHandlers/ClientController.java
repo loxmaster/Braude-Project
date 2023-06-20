@@ -418,12 +418,33 @@ public class ClientController implements ChatIF {
     }
 
     public void getCoursesExams(String courseID) {
-                try {
+        try {
             client.getCoursesExams(courseID);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
+    public void getSelectedAnswers(String studentID, String id) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("getSelectedAnswers");
+        list.add("SELECT selected FROM projecton.completed_tests WHERE test_id='" + id + "' AND student_id= '"
+                + studentID + "';");
+        client.passToServer(list);
+    }
+
+    public void SendEvaluatedTest(String id, String studentID, String text, String testcomments) {
+        ArrayList<String> saveChanges = new ArrayList<>();
+        saveChanges.add("testEval");
+        saveChanges.add("UPDATE `projecton`.`completed_tests` SET `grade` = '" + text
+                + "', `tested` = 'true', `comment` = '" + testcomments + "' WHERE (`test_id` = '" + id
+                + "') and (`student_id` = '" + studentID + "');");
+        client.passToServer(saveChanges);
+    }
+
+    // /public void getSelectedAnswers(String studentID) {
+    // getSelectedAnswers();
+    // }
 
 }

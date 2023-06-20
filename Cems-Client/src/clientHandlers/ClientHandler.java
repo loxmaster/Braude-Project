@@ -116,7 +116,7 @@ public class ClientHandler extends AbstractClient {
 							question.getAnswer());
 					questionModel.setPoints(question.getPoints());
 					listOfQuestionModels.add(questionModel);
-					//listOfQuestionModels.add(questionModel);
+					// listOfQuestionModels.add(questionModel);
 				}
 
 				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
@@ -269,7 +269,7 @@ public class ClientHandler extends AbstractClient {
 							CheckTestController.setCompletedTestsList(listToAdd);
 							break;
 						}
-						
+
 						case "getCoursesExams": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
@@ -451,6 +451,15 @@ public class ClientHandler extends AbstractClient {
 
 							System.out.println("Client Handler: " + list.get(1));
 							break;
+						case "getSelectedAnswers":
+							list.remove(0);
+							// Step 1: Remove square brackets
+							String cleanedInput = list.get(0).replace("[", "").replace("]", "");
+							String[] elements = cleanedInput.split(",");
+							ArrayList<String> clean = new ArrayList<>();
+							clean.addAll(Arrays.asList(elements));
+							EvaluateTestController.setSelectedAnswers(clean);
+							break;
 
 					}
 				}
@@ -575,7 +584,8 @@ public class ClientHandler extends AbstractClient {
 		ArrayList<String> listOfCommands = new ArrayList<>();
 		listOfCommands.addAll(
 				Arrays.asList("check test",
-						"SELECT * FROM projecton.completed_tests where test_id = '" + test.getId() + "' AND student_id = '" + test.getStudentID() + "';"));
+						"SELECT * FROM projecton.completed_tests where test_id = '" + test.getId()
+								+ "' AND student_id = '" + test.getStudentID() + "';"));
 		try {
 			sendToServer((Object) listOfCommands);
 		} catch (IOException e) {

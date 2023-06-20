@@ -161,6 +161,7 @@ public class EchoServer extends AbstractServer {
 						case "editquestion":
 						case "Addtesttodata":
 						case "DeleteQuestion":
+						case "testEval":
 							// executeMyQuery will execute a basic UPDATE query
 							int flag = executeMyQuery(list.get(1));
 							// if (flag != 0) flag=1;
@@ -327,6 +328,11 @@ public class EchoServer extends AbstractServer {
 									: (Object) resgetCoursesSameDepartment);
 							break;
 
+						case "getSelectedAnswers":
+							ArrayList<String> selectedAnswers = getSelectedAnswers_db(list);
+							client.sendToClient(selectedAnswers == null ? (Object) notFound : (Object) selectedAnswers);
+							System.out.println("Server: sending back selected answers:" + selectedAnswers);
+							break;
 						case "getCoursesExams":
 							ArrayList<String> resgetCoursesExams = getCoursesExams_db(list.get(1),
 									"getCoursesExams");
@@ -344,6 +350,21 @@ public class EchoServer extends AbstractServer {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
+	}
+
+	private ArrayList<String> getSelectedAnswers_db(ArrayList<String> list) {
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(list.get(1));
+			list.remove(1);// remove the query from list
+			while (result.next()) {
+				list.add(result.getString(1));
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private ArrayList<Object> getQuestionsFromTest(String query) {

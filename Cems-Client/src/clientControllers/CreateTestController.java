@@ -36,6 +36,7 @@ public class CreateTestController extends BasicController {
 	// ############################### Local Variables ###########################################
 	
 	
+
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
 	private Test test = new Test();
@@ -144,9 +145,6 @@ public class CreateTestController extends BasicController {
 	 * 
 	 * @param event
 	 */
-
-
-	 
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
 		// test is current test
