@@ -236,7 +236,7 @@ public class StudentExamController extends BasicController {
 			// Create the timer with a 1-second delay
 			int delay = 1000; // milliseconds
 			timer = new Timer(delay, taskPerformer);
-			timer.start;
+			timer.start();
 		}
 	}
 	
