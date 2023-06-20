@@ -206,7 +206,7 @@ public class ClientController implements ChatIF {
     public void getcompletedTestsForLecturerList() {
         ArrayList<String> list = new ArrayList<String>();
         String status = "completed";
-        String tested = "false";
+        String tested = "true";
         String query = String.format(
                 "SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
                 ClientHandler.user.getUsername(), status, tested); // TODO may couse problem

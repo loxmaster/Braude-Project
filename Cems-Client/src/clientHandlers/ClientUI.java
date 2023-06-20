@@ -7,25 +7,6 @@ import javafx.application.Application;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 
-// public class ClientUI extends Application {
-//     public static ClientController chat;
-//     public static int updatestatus;
-
-//     public static void main(String[] args) {
-
-//         launch(args);
-//     } 
-// //new client that logs in will use these as input
-//     @Override
-//     public void start(Stage primaryStage) throws Exception {
-//         // Create an instance of ClientController
-
-//         chat = new ClientController("localhost", 5555);
-//         // Create an instance of LoginScreenController
-//         LoginScreenController loginController = new LoginScreenController();
-//         // Start the login screen
-//         loginController.start(primaryStage);
-//     }
 public class ClientUI extends Application {
     public static ClientController chat;
     public static int updatestatus;

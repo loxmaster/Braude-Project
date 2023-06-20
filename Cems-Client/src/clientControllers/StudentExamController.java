@@ -187,6 +187,7 @@ public class StudentExamController extends BasicController {
 					// Gets the current time
 					LocalTime currentTime = LocalTime.now();
 					if (currentTime.compareTo(targetTime) >= 0) {
+						timeRanOut = true;
 					} else {
 						// Calculate the remaining time
 						int remainingHours = targetTime.getHour() - currentTime.getHour();
@@ -219,13 +220,6 @@ public class StudentExamController extends BasicController {
 		}
 	}
 	
-	public StudentExamController getInstance() {
-		return this;
-	}
-
-	private void timeEnded() {
-		
-	}
 
 	// Method for adding the time and duration
 	public int[] getTargetTimeString(String time, String duration) {
