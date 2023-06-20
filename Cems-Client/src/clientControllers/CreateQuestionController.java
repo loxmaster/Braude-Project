@@ -46,8 +46,9 @@ public class CreateQuestionController extends BasicController {
 
 	@FXML
 	private Label live_time;
-
-
+	
+	
+	@FXML
 	void initialize() {
 		// Start the clock
 		Timenow(live_time);

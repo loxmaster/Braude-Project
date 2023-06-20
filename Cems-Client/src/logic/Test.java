@@ -1,11 +1,12 @@
 package logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 
-public class Test {
+public class Test implements Serializable {
 
     private String duration, testComment, testCode;
     private String time, dateString;

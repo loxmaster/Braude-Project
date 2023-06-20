@@ -564,6 +564,7 @@ public class ClientHandler extends AbstractClient {
 	 */
 	public void passToServer(Object listToSend) {
 		try {
+			openConnection();
 			sendToServer(listToSend);
 		} catch (IOException e) {
 			e.printStackTrace();

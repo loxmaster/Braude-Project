@@ -55,7 +55,8 @@ public class CreateQuestionFromDBController extends BasicController {
 	ObservableList<String> courseList;
 	public static String testCount;
 	private Test test = new Test();
-
+	
+	@FXML
 	void initialize() {
 		// Start the clock
 		Timenow(live_time);

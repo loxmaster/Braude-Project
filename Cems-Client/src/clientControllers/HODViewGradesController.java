@@ -107,7 +107,7 @@ public class HODViewGradesController extends BasicController {
     void StudendInfo(Statistics user, ArrayList<Test> AllcompletedTestsList) {
 
         // Start the clock
-        Timenow(live_time);
+        //Timenow(live_time);
 
         Avg_text.setText("Average: " + Integer.toString(user.getAverage()));
         Name_text.setText("Student's Name: " + user.getStudentName());
