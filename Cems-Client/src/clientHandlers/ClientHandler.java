@@ -1,6 +1,10 @@
 package clientHandlers;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -9,6 +13,7 @@ import clientControllers.CheckTestController;
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
 import clientControllers.EvaluateTestController;
+import clientControllers.HODController;
 import clientControllers.HODStatisticOnCourseController;
 import clientControllers.HODStatisticOnLecturerController;
 import clientControllers.HODStatisticOnStudentController;
@@ -71,6 +76,8 @@ public class ClientHandler extends AbstractClient {
 		String[] subjectArray;
 		ArrayList<String> list;
 		ArrayList<Question> questionList;
+		Test testToAdd;
+
 
 		// Notifice about recieving the message to console .
 		System.out.println("got message: " + serverMessage);
@@ -98,6 +105,7 @@ public class ClientHandler extends AbstractClient {
 				// Creates a list of QuestionModels and adds it to the testToAdd constructor.
 				TestInServer testFromServer = (TestInServer) serverMessage;
 				ArrayList<QuestionModel> listOfQuestionModels = new ArrayList<>();
+
 				for (Question question : testFromServer.getQuesitonsInTest()) {
 					QuestionModel questionModel = new QuestionModel(question.getId(),
 							question.getSubject(),
@@ -114,7 +122,7 @@ public class ClientHandler extends AbstractClient {
 					listOfQuestionModels.add(questionModel);
 				}
 
-				Test testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
+				testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
 						testFromServer.getAuthor(), testFromServer.getDuration(),
 						testFromServer.getTestComments(), testFromServer.getTestCode(), testFromServer.getDateString(),
 						testFromServer.getTime(),
@@ -153,6 +161,37 @@ public class ClientHandler extends AbstractClient {
 					LecturerController.setQuestions(listToAdd);
 				}
 
+				if (((ArrayList<?>) serverMessage).get(0) instanceof TestInServer) {
+					ArrayList<TestInServer> testsFromServer = (ArrayList<TestInServer>) serverMessage;
+					ArrayList<Test> testsToReturn = new ArrayList<>();
+					if (testsFromServer.get(0).getTimeToAdd()!=null ) { //if the test have timeToAdd, we know that its test from the time extension permission tests
+						
+						for(TestInServer test : testsFromServer) {
+						testToAdd = new Test(test.getId(), test.getSubject(), test.getAuthor(), test.getDuration(),
+							test.getTestComments(), test.getTestCode(), test.getDateString(), test.getTime(),
+							null);
+						testToAdd.setTimeToAdd(test.getTimeToAdd());
+						testToAdd.setReasonForTimeExtension(test.getReasonForTimeExtension());
+						testToAdd.setSubject(test.getSubject());
+						
+						testsToReturn.add(testToAdd);
+						}
+						HODController.setOngoingTests_permissions(testsToReturn); 
+						calculateTest_timeLeft(testsToReturn);//send the tests to calculate and update the timeLeft
+					}
+					for(TestInServer test : testsFromServer) {
+						testToAdd = new Test(test.getId(), test.getSubject(),
+							test.getAuthor(), test.getDuration(),
+							test.getTestComments(), test.getTestCode(), test.getDateString(),
+							test.getTime(),
+							null);
+						testsToReturn.add(testToAdd);
+					}
+					
+					calculateTest_timeLeft(testsToReturn);//send the tests to calculate and update the timeLeft
+		            LecturerController.setOngoingTests(testsToReturn);
+
+				}
 				else {
 					list = (ArrayList<String>) serverMessage;
 					switch (list.get(0)) {
@@ -162,17 +201,6 @@ public class ClientHandler extends AbstractClient {
 							for (String s : subjectArray)
 								LecturerController.getSubjectsList().add(s);
 							break;
-
-						// case "completedTestsForLecturer":
-						// ArrayList<Test> tests_temp = new ArrayList<Test>();
-						// for (int i = 1; i < ((ArrayList<String>) serverMessage).size(); i+=12) {
-						// tests_temp.add(new Test(list.get(i), list.get(i + 1), list.get(i + 2),
-						// list.get(i + 3),
-						// list.get(i + 4), list.get(i + 5), list.get(i + 6), list.get(i + 7),
-						// list.get(i + 8), list.get(i + 9), list.get(i + 10), list.get(i + 11)));
-						// }
-						// LecturerStatisticalController.setCompletedTestsList(tests_temp);
-						// break;
 
 						case "getTest":
 							if (!(list.get(1).isEmpty())) {
@@ -445,7 +473,10 @@ public class ClientHandler extends AbstractClient {
 							}
 
 							System.out.println("Client Handler: " + list.get(1));
-							break;
+						break;
+						case "":
+							
+						break;
 
 					}
 				}
@@ -496,6 +527,12 @@ public class ClientHandler extends AbstractClient {
 	}
 
 
+
+	///////////////////////////////////////////////////
+	////////////////// LOGIC METHODS /////////////////
+	/////////////////////////////////////////////////
+
+
 	/**
 	 * Method for passing the information to the database from the UI
 	 * @param listToSend
@@ -509,6 +546,40 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
+	/**
+	 * calculate the test left time for the ongoing tests 
+	 */
+	private void calculateTest_timeLeft(ArrayList<Test> tests) {
+
+		for(Test test : tests) {
+		// Calculate time left
+           LocalTime testTime = LocalTime.parse(test.getTime());
+           LocalDate testDate = LocalDate.parse(test.getDateString());
+           ZonedDateTime now = ZonedDateTime.now();
+           ZonedDateTime testZonedDateTime = ZonedDateTime.of(testDate, testTime, now.getZone());
+
+           // Parse duration which is in HH:mm format
+           String[] durationParts = test.getDuration().split(":");
+           long hours = Long.parseLong(durationParts[0]);
+           long minutes = Long.parseLong(durationParts[1]);
+           Duration testDuration = Duration.ofHours(hours).plusMinutes(minutes);
+
+           ZonedDateTime testEndTime = testZonedDateTime.plus(testDuration);
+
+           // Calculate time left manually
+           if (testEndTime.isBefore(now)) {
+               test.setTimeLeft("00:00"); // Test has ended
+           } else {
+               Duration durationToEnd = Duration.between(now, testEndTime);
+               long totalSeconds = durationToEnd.getSeconds();
+               long hoursLeft = totalSeconds / 3600;
+               long minutesLeft = (totalSeconds % 3600) / 60;
+               String formattedTimeLeft = String.format("%02d:%02d", hoursLeft, minutesLeft);
+               test.setTimeLeft(formattedTimeLeft);
+           }
+       }
+	}
+	
 	/*public void GetTestGrades_StatisticalInformation(String testID) {
 		ArrayList<String> list = new ArrayList<String>();
 

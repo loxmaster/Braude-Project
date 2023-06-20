@@ -67,6 +67,50 @@ public class ClientController implements ChatIF {
         client.passToServer((Object)credentials);
     }
 
+    public void Update_HOD_permissionsTable_inDB(Test test) {
+		ArrayList<String> request = new ArrayList<>();
+	    String query = "DELETE FROM hod_timeextensionrequests WHERE id = " + test.getId();
+	    request.add("updateHODPermissionsTable");
+	    request.add(query);
+        openConnection();
+        client.passToServer((Object)request);
+	}
+
+    public void fetch_ongoingTests_permissions_list() {
+        ArrayList<String> ongoingTests_permissions_list = new ArrayList<String>();
+		String query = "SELECT * FROM hod_timeextensionrequests;";
+		ongoingTests_permissions_list.add("fetch_ongoingTests_permissions_FromDB");
+		ongoingTests_permissions_list.add(query);
+		openConnection();
+        client.passToServer((Object) ongoingTests_permissions_list);
+	}
+
+    //get all the ongoing tests 
+	public void GetOngoingTests() {
+        ArrayList<String> request = new ArrayList<>();
+	    request.add("fetchOngoingTests");
+	    client.passToServer((Object) request);
+	}
+
+    //update time extension requests in hod_timeextensionrequests table
+    public void SendRequest_TimeExtention_toHOD(String id,String comments, String timeToAdd, String subject) {
+    	ArrayList<String> listToSend = new ArrayList<String>();
+        String query = "INSERT INTO `projecton`.`hod_timeextensionrequests` (`id`,`Subject`, `TimeToAdd`, `Reason`) VALUES ('"
+                + id + "','" + subject + "', '" + timeToAdd + "', '"
+                + comments +"');";
+		listToSend.add("Update_timeExtensionRequestsTable");
+		listToSend.add(query);
+        client.passToServer((Object) listToSend);
+    }
+
+    public void updateLockButton_DB(Test test,String value) {
+        ArrayList<String> list = new ArrayList<String>();
+	    String query = "UPDATE ongoing_tests SET locked = '" + value + "' WHERE test_id = " + test.getId();
+		list.add("updateLockButton_DB");
+		list.add(query);
+        client.passToServer((Object) list);
+	}
+
     // gets all subject available for lecturer
     public void getcompletedTestsForStudentList() {
         ArrayList<String> list = new ArrayList<String>();
