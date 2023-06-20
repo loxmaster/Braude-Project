@@ -84,7 +84,7 @@ public class LecturerController extends BasicController {
 
 	@FXML
 	void EditTestsPressed(ActionEvent event) {
-		DBTestController dbt = (DBTestController) openScreen("/clientFXMLS/LecturerTestTable.fxml",
+		DBTestController dbt = (DBTestController) openScreen("/clientFXMLS/LecturerTestTableNoAddQuestionPlease.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
 		dbt.load();
 		dbt.initialize();

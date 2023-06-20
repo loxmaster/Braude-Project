@@ -65,7 +65,8 @@ public class LoginScreenController extends BasicController {
 
 	/**
 	 * This function handles the login button press event.
-	 * It verifies the user credentials from the database and opens the corresponding screen based on the user type.
+	 * It verifies the user credentials from the database and opens the
+	 * corresponding screen based on the user type.
 	 *
 	 * @param event The ActionEvent object representing the login button press event
 	 * @throws IOException If an input or output exception occurred
@@ -78,12 +79,12 @@ public class LoginScreenController extends BasicController {
 
 		// gest text from fields
 		username = emailTextbox.getText();
-		//password = passTextbox.getText();
+		password = passTextbox.getText();
 		String selectedRole = combo_Role.getValue();
 
 		System.out.println("Entered: " + username + " " + password + " " + selectedRole);
 
-		if ((username.trim().isEmpty() || password.trim().isEmpty() || selectedRole == null )) {
+		if ((username.trim().isEmpty() || password.trim().isEmpty() || selectedRole == null)) {
 			// setVisibleFalse();
 			JOptionPane.showMessageDialog(null, "your username or password are incorrect!",
 					"incorrect username or password",
@@ -106,17 +107,17 @@ public class LoginScreenController extends BasicController {
 			ClientUI.chat.loginVarification(username, password, selectedRole);
 
 			// Waits for user to be found
-		try {
-			Thread.sleep(300);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		
-		}
+			try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+
+			}
 
 			if (!ClientHandler.user.getIsFound()) {
-						JOptionPane.showMessageDialog(null, "your username or password or type are incorrect!",
-					"Fail LogIn",
-					JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "your username or password or type are incorrect!",
+						"Fail LogIn",
+						JOptionPane.ERROR_MESSAGE);
 			} else {
 				// if found loading the corresponding screen
 				switch (ClientHandler.user.getType()) {

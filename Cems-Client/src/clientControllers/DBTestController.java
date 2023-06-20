@@ -273,14 +273,18 @@ public class DBTestController extends BasicController {
 		DBTestController.TestList = TestList;
 	}
 
+	void EditTestPressed(ActionEvent event) {
+
+	}
+
 	/**
 	 * This method is triggered when the add question button is pressed.
 	 * It is responsible for handling the operation of adding a question.
 	 *
 	 * @param event The action event that triggers this method.
 	 */
-	@FXML
-	void addQuestionPressed(ActionEvent event) {
-	}
+	// @FXML
+	// void addQuestionPressed(ActionEvent event) {
+	// }
 
 }
