@@ -14,7 +14,6 @@ import clientControllers.CreateTestController;
 import clientControllers.DBTestController;
 import clientControllers.HODStatisticOnCourseController;
 import clientControllers.EvaluateTestController;
-import clientControllers.HODStatisticOnCourseController;
 import clientControllers.HODStatisticOnLecturerController;
 import clientControllers.HODStatisticOnStudentController;
 import clientControllers.HODViewGradesController;
@@ -246,7 +245,7 @@ public class ClientHandler extends AbstractClient {
 						case "completedTestsForLecturer": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
-							//ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
+							// ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
 							// CompletedTestList = (ArrayList<Test>) severMessage;
 							int i = 1;
 							while (i < list.size()) {
@@ -270,7 +269,6 @@ public class ClientHandler extends AbstractClient {
 							CheckTestController.setCompletedTestsList(listToAdd);
 							break;
 						}
-
 
 						case "getCoursesExams": {
 							System.out.println("Client Handler: " + list.get(0));
@@ -587,7 +585,12 @@ public class ClientHandler extends AbstractClient {
 	///////////////////////////////////////////////////
 	////////////////// LOGIC METHODS /////////////////
 	/////////////////////////////////////////////////
-
+	/**
+	 * 
+	 * Retrieves the test with the specified test code for the student.
+	 * 
+	 * @param testCode The test code of the test to retrieve.
+	 */
 	public void getTestWithCodeForStudent(String testCode) {
 
 		ArrayList<String> listOfCommands = new ArrayList<>();
@@ -600,24 +603,30 @@ public class ClientHandler extends AbstractClient {
 		}
 	}
 
-public void getTestWithCodeFor_CompletedTest(Test test) {
-    // Create an ArrayList to store the method name and query.
-    ArrayList<String> listOfCommands = new ArrayList<>();
+	/**
+	 * 
+	 * Retrieves the completed test with the specified test object.
+	 * 
+	 * @param test The test object representing the completed test to retrieve.
+	 */
+	public void getTestWithCodeFor_CompletedTest(Test test) {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> listOfCommands = new ArrayList<>();
 
-    // Create a SQL query to select the completed test with the specified test code and student ID.
-    listOfCommands.addAll(
-            Arrays.asList("check test",
-                    "SELECT * FROM projecton.completed_tests where test_id = '" + test.getId()
-                            + "' AND student_id = '" + test.getStudentID() + "';"));
+		// Create a SQL query to select the completed test with the specified test code
+		// and student ID.
+		listOfCommands.addAll(
+				Arrays.asList("check test",
+						"SELECT * FROM projecton.completed_tests where test_id = '" + test.getId()
+								+ "' AND student_id = '" + test.getStudentID() + "';"));
 
-    try {
-        // Send the ArrayList to the server.
-        sendToServer((Object) listOfCommands);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) listOfCommands);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
@@ -640,22 +649,27 @@ public void getTestWithCodeFor_CompletedTest(Test test) {
 		}
 	}
 
-public void handle_test_MessageFromLecturerUI(Object username) {
-    // Create an ArrayList to store the method name and query.
-    ArrayList<String> courseList = new ArrayList<String>();
+	/**
+	 * 
+	 * Handles the test message received from the lecturer UI.
+	 * 
+	 * @param username The username of the lecturer.
+	 */
+	public void handle_test_MessageFromLecturerUI(Object username) {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> courseList = new ArrayList<String>();
 
-    // Create a SQL query to select the courses assigned to the lecturer.
-    courseList.addAll(Arrays.asList("lecturercourses",
-            "SELECT courses FROM projecton.lecturer WHERE username = '" + (String) username + "';"));
+		// Create a SQL query to select the courses assigned to the lecturer.
+		courseList.addAll(Arrays.asList("lecturercourses",
+				"SELECT courses FROM projecton.lecturer WHERE username = '" + (String) username + "';"));
 
-    try {
-        // Send the ArrayList to the server.
-        sendToServer((Object) courseList);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) courseList);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
@@ -664,7 +678,7 @@ public void handle_test_MessageFromLecturerUI(Object username) {
 	 * @param username lecturers username
 	 */
 	public void GetLecturersQuestions_Handler(String username) {
-	/*
+		/*
 		 * try { openConnection(); } catch (IOException e1) { System.out.println(1); }
 		 */
 		ArrayList<String> list = new ArrayList<String>();
@@ -682,153 +696,188 @@ public void handle_test_MessageFromLecturerUI(Object username) {
 		}
 	}
 
-public void getcompletedTestsForStudentList() {
-    // Create an ArrayList to store the method name and query.
-    ArrayList<String> list = new ArrayList<String>();
+	/**
+	 * 
+	 * Retrieves the list of completed tests for the student.
+	 */
+	public void getcompletedTestsForStudentList() {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> list = new ArrayList<String>();
 
-    // Get the user ID of the logged-in student.
-    String key = user.getUser_id();
+		// Get the user ID of the logged-in student.
+		String key = user.getUser_id();
 
-    // Define the test type, status, and tested values for filtering the completed tests.
-    String testType = "computer";
-    String status = "completed";
-    String tested = "true";
+		// Define the test type, status, and tested values for filtering the completed
+		// tests.
+		String testType = "computer";
+		String status = "completed";
+		String tested = "true";
 
-    // Create a SQL query to select the completed tests for the logged-in student.
-    String query = String.format("SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND test_type='%s' AND status='%s' AND tested='%s';",
-            key, testType, status, tested);
+		// Create a SQL query to select the completed tests for the logged-in student.
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND test_type='%s' AND status='%s' AND tested='%s';",
+				key, testType, status, tested);
 
-    // Add the method name and query to the ArrayList.
-    list.addAll(Arrays.asList("completedTestsForStudent", query));
+		// Add the method name and query to the ArrayList.
+		list.addAll(Arrays.asList("completedTestsForStudent", query));
 
-    try {
-        // Send the ArrayList to the server.
-        sendToServer((Object) list);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
+	/**
+	 * 
+	 * Retrieves the list of completed tests for the lecturer.
+	 */
+	public void getcompletedTestsForLecturerList() {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> list = new ArrayList<String>();
 
-public void getcompletedTestsForLecturerList() {
-    // Create an ArrayList to store the method name and query.
-    ArrayList<String> list = new ArrayList<String>();
+		// Define the status and tested values for filtering the completed tests.
+		String status = "completed";
+		String tested = "true";
 
-    // Define the status and tested values for filtering the completed tests.
-    String status = "completed";
-    String tested = "true";
+		// Create a SQL query to select the completed tests for the logged-in lecturer.
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
+				user.getUsername(), status, tested);
 
-    // Create a SQL query to select the completed tests for the logged-in lecturer.
-    String query = String.format("SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
-            user.getUsername(), status, tested);
+		// Add the method name and query to the ArrayList.
+		list.addAll(Arrays.asList("completedTestsForLecturer", query));
 
-    // Add the method name and query to the ArrayList.
-    list.addAll(Arrays.asList("completedTestsForLecturer", query));
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    try {
-        // Send the ArrayList to the server.
-        sendToServer((Object) list);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
+	/**
+	 * 
+	 * Retrieves the list of completed tests for a specific lecturer identified by
+	 * their username.
+	 * 
+	 * @param userName The username of the lecturer.
+	 */
+	public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> list = new ArrayList<String>();
 
+		// Define the status and tested values for filtering the completed tests.
+		String status = "completed";
+		String tested = "true";
 
-public void HodGETcompletedTestsForSpecificLecturerList(String userName) {
-    // Create an ArrayList to store the method name and query.
-    ArrayList<String> list = new ArrayList<String>();
+		// Create a SQL query to select the completed tests for the specific lecturer.
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
+				userName, status, tested);
 
-    // Define the status and tested values for filtering the completed tests.
-    String status = "completed";
-    String tested = "true";
+		// Add the method name and query to the ArrayList.
+		list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificLecturerList", query));
 
-    // Create a SQL query to select the completed tests for the specific lecturer.
-    String query = String.format("SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
-            userName, status, tested);
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    // Add the method name and query to the ArrayList.
-    list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificLecturerList", query));
+	/**
+	 * 
+	 * Retrieves the list of completed tests for a specific student identified by
+	 * their user ID.
+	 * 
+	 * @param userID The user ID of the student.
+	 */
+	public void HodGETcompletedTestsForSpecificStudentList(String userID) {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> list = new ArrayList<String>();
 
-    try {
-        // Send the ArrayList to the server.
-        sendToServer((Object) list);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
+		// Define the status and tested values for filtering the completed tests.
+		String status = "completed";
+		String tested = "true";
 
+		// Create a SQL query to select the completed tests for the specific student.
+		String query = String.format(
+				"SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND status='%s' AND tested='%s';",
+				userID, status, tested);
 
-public void HodGETcompletedTestsForSpecificStudentList(String userID) {
-    // Create an ArrayList to store the method name and query.
-    ArrayList<String> list = new ArrayList<String>();
+		// Add the method name and query to the ArrayList.
+		list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificStudentList", query));
 
-    // Define the status and tested values for filtering the completed tests.
-    String status = "completed";
-    String tested = "true";
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) list);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    // Create a SQL query to select the completed tests for the specific student.
-    String query = String.format("SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND status='%s' AND tested='%s';",
-            userID, status, tested);
+	/**
+	 * 
+	 * Retrieves the course for the specified test ID.
+	 * 
+	 * @param id The test ID.
+	 */
+	public void getCourseForTest(String id) {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
 
-    // Add the method name and query to the ArrayList.
-    list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificStudentList", query));
+		// Extract the subject ID and course ID from the provided ID.
+		String subjectid = id.substring(0, 2);
+		String courseid = id.substring(2, 4);
 
-    try {
-        // Send the ArrayList to the server.
-        sendToServer((Object) list);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
+		// Create a SQL query to select the course information based on the subject ID
+		// and course ID.
+		String query = String.format("SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+				subjectid, courseid);
 
+		// Add the method name and query to the ArrayList.
+		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTest", query));
 
-public void getCourseForTest(String id) {
-    // Create an ArrayList to store the method name and query.
-    ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) subjectcoursenameofcompletedtest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    // Extract the subject ID and course ID from the provided ID.
-    String subjectid = id.substring(0, 2);
-    String courseid = id.substring(2, 4);
+	/**
+	 * 
+	 * Retrieves the course for the specified test ID for a lecturer.
+	 * 
+	 * @param id The test ID.
+	 */
+	public void getCourseForTestLec(String id) {
+		// Create an ArrayList to store the method name and query.
+		ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
 
-    // Create a SQL query to select the course information based on the subject ID and course ID.
-    String query = String.format("SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
-            subjectid, courseid);
+		// Extract the subject ID and course ID from the provided ID.
+		String subjectid = id.substring(0, 2);
+		String courseid = id.substring(2, 4);
 
-    // Add the method name and query to the ArrayList.
-    subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTest", query));
+		// Create a SQL query to select the course information based on the subject ID
+		// and course ID.
+		String query = String.format("SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+				subjectid, courseid);
 
-    try {
-        // Send the ArrayList to the server.
-        sendToServer((Object) subjectcoursenameofcompletedtest);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
+		// Add the method name and query to the ArrayList.
+		subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTestLec", query));
 
-
-public void getCourseForTestLec(String id) {
-    // Create an ArrayList to store the method name and query.
-    ArrayList<String> subjectcoursenameofcompletedtest = new ArrayList<String>();
-
-    // Extract the subject ID and course ID from the provided ID.
-    String subjectid = id.substring(0, 2);
-    String courseid = id.substring(2, 4);
-
-    // Create a SQL query to select the course information based on the subject ID and course ID.
-    String query = String.format("SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
-            subjectid, courseid);
-
-    // Add the method name and query to the ArrayList.
-    subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTestLec", query));
-
-    try {
-        // Send the ArrayList to the server.
-        sendToServer((Object) subjectcoursenameofcompletedtest);
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-
+		try {
+			// Send the ArrayList to the server.
+			sendToServer((Object) subjectcoursenameofcompletedtest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Method to create query to edit existing question
@@ -858,6 +907,17 @@ public void getCourseForTestLec(String id) {
 		}
 	}
 
+	/**
+	 * 
+	 * Edits the answers for a question.
+	 * 
+	 * @param subjectid     The subject ID of the question.
+	 * @param qA            The new answer for option A.
+	 * @param qB            The new answer for option B.
+	 * @param qC            The new answer for option C.
+	 * @param qD            The new answer for option D.
+	 * @param correctAnswer The new correct answer.
+	 */
 	public void EditAnswers(String subjectid, String qA, String qB, String qC, String qD, String correctAnswer) {
 		// Create an ArrayList to store the method name and query.
 		ArrayList<String> list = new ArrayList<String>();
@@ -882,9 +942,12 @@ public void getCourseForTestLec(String id) {
 		}
 	}
 
-	// return a list of grades where [testGrades, passed grades, failed grades]
-	// query that selects PASSED and FAILED grades --> echoserver to parse
-	// parse: [testGrades(echoServer identifier), passed(query), failed(query)]
+	/**
+	 * 
+	 * Retrieves the statistical information for the grades of a specific test.
+	 * 
+	 * @param testID The ID of the test.
+	 */
 	public void GetTestGrades_StatisticalInformation(String testID) {
 		ArrayList<String> list = new ArrayList<String>();
 
@@ -922,7 +985,6 @@ public void getCourseForTestLec(String id) {
 			e.printStackTrace();
 		}
 	}
-
 
 	/**
 	 * Method that creates query for insering answers to database.
@@ -994,6 +1056,12 @@ public void getCourseForTestLec(String id) {
 		}
 	}
 
+	/**
+	 * 
+	 * Retrieves the course ID from the subject courses.
+	 * 
+	 * @param coursename The name of the course.
+	 */
 	public void GetCourseIDfromSubjectCourses(Object coursename) {
 		// Create an ArrayList to store the method name and query.
 		ArrayList<String> list = new ArrayList<String>();
@@ -1013,8 +1081,12 @@ public void getCourseForTestLec(String id) {
 		}
 	}
 
-	// test id format: 01 02 03 subjectANDcourse format: 01 02 returned value should
-	// be: 01 02 03
+	/**
+	 * 
+	 * Retrieves the next free test number for a specific subject and course.
+	 * 
+	 * @param subjectANDcourse The subject and course identifier.
+	 */
 	public void getNextFreeTestNumber(Object subjectANDcourse) {
 		ArrayList<String> list = new ArrayList<String>();
 		// String subject = (String)subjectANDcourse.substring(0,2);
@@ -1029,6 +1101,12 @@ public void getCourseForTestLec(String id) {
 		}
 	}
 
+	/**
+	 * 
+	 * Handles the file download message.
+	 * 
+	 * @param downloadMessage The file download message.
+	 */
 	public void handleFileDownload(FileDownloadMessage downloadMessage) {
 		// Get the file content from the download message.
 		byte[] fileContent = downloadMessage.getFileContent();
@@ -1057,6 +1135,12 @@ public void getCourseForTestLec(String id) {
 		}
 	}
 
+	/**
+	 * 
+	 * Retrieves the course for the specified test ID for a specific lecturer (HOD).
+	 * 
+	 * @param id The test ID.
+	 */
 	public void getHodCourseForTestSpecificLec(String id) {
 		// Create an ArrayList to store the subject and course name of the completed
 		// test.
@@ -1082,6 +1166,12 @@ public void getCourseForTestLec(String id) {
 		}
 	}
 
+	/**
+	 * 
+	 * Retrieves the course for the specified test ID for a specific student (HOD).
+	 * 
+	 * @param id The test ID.
+	 */
 	public void getHodCourseForTestSpecificStudent(String id) {
 		// Create an ArrayList to store the subject and course name of the completed
 		// test.
@@ -1107,6 +1197,10 @@ public void getCourseForTestLec(String id) {
 		}
 	}
 
+	/**
+	 * 
+	 * Retrieves the list of lecturers under the same department.
+	 */
 	public void getLecturerListUnderSameDepartment() {
 		// Create an ArrayList to store the method name and query.
 		ArrayList<String> list = new ArrayList<String>();
@@ -1127,6 +1221,9 @@ public void getCourseForTestLec(String id) {
 		}
 	}
 
+	/**
+	 * Retrieves the list of students under the same department.
+	 */
 	public void geStudentListUnderSameDepartment() {
 		// Create an ArrayList to store the method name and query.
 		ArrayList<String> list = new ArrayList<String>();
@@ -1147,6 +1244,11 @@ public void getCourseForTestLec(String id) {
 		}
 	}
 
+	/**
+	 * Passes the specified object to the server.
+	 *
+	 * @param listToSend The object to send to the server.
+	 */
 	public void passToServer(Object listToSend) {
 		try {
 			sendToServer(listToSend);
@@ -1158,7 +1260,6 @@ public void getCourseForTestLec(String id) {
 	////////////////////////////////////////////////////////////
 	/////////////////////// CLIENT NATIVE /////////////////////
 	//////////////////////////////////////////////////////////
-
 
 	/**
 	 * This method overrites super method that handles what happans when connection
@@ -1176,10 +1277,14 @@ public void getCourseForTestLec(String id) {
 		try {
 			sendToServer((Object) this.getInetAddress());
 			closeConnection();
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
 	}
 
-	// Clear client data
+	/**
+	 * 
+	 * Resets the client data.
+	 */
 	public static void resetClientData() {
 		// Reset the user object
 		user = new User();

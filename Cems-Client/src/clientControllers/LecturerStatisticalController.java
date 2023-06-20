@@ -34,47 +34,71 @@ import logic.Test;
  */
 public class LecturerStatisticalController extends BasicController {
 
-// Store the list of completed tests and exam statistics
-private static ArrayList<Test> completedTestsList;
-private static ArrayList<Statistics> diffExamsStats;
-private static ArrayList<String> SubjectCourseLec;
+	// Store the list of completed tests and exam statistics
+	private static ArrayList<Test> completedTestsList;
+	private static ArrayList<Statistics> diffExamsStats;
+	private static ArrayList<String> SubjectCourseLec;
 
-
+	/**
+	 * Retrieves the list of completed tests.
+	 *
+	 * @return The list of completed tests.
+	 */
 	public static ArrayList<Test> getCompletedTestsList() {
-	return completedTestsList;
-}
+		return completedTestsList;
+	}
 
+	/**
+	 * Sets the list of completed tests.
+	 *
+	 * @param completedTestsList The list of completed tests to set.
+	 */
+	public static void setCompletedTestsList(ArrayList<Test> completedTestsList) {
+		LecturerStatisticalController.completedTestsList = completedTestsList;
+	}
 
+	/**
+	 * Retrieves the list of different exams statistics.
+	 *
+	 * @return The list of different exams statistics.
+	 */
+	public static ArrayList<Statistics> getDiffExamsStats() {
+		return diffExamsStats;
+	}
 
-public static void setCompletedTestsList(ArrayList<Test> completedTestsList) {
-	LecturerStatisticalController.completedTestsList = completedTestsList;
-}
+	/**
+	 * Sets the list of different exams statistics.
+	 *
+	 * @param diffExamsStats The list of different exams statistics to set.
+	 */
+	public static void setDiffExamsStats(ArrayList<Statistics> diffExamsStats) {
+		LecturerStatisticalController.diffExamsStats = diffExamsStats;
+	}
 
+	/**
+	 * Retrieves the list of subjects/courses for the lecturer.
+	 *
+	 * @return The list of subjects/courses for the lecturer.
+	 */
+	public static ArrayList<String> getSubjectCourseLec() {
+		return SubjectCourseLec;
+	}
 
+	/**
+	 * Sets the list of subjects/courses for the lecturer.
+	 *
+	 * @param subjectCourseLec The list of subjects/courses to set.
+	 */
+	public static void setSubjectCourseLec(ArrayList<String> subjectCourseLec) {
+		SubjectCourseLec = subjectCourseLec;
+	}
 
-public static ArrayList<Statistics> getDiffExamsStats() {
-	return diffExamsStats;
-}
-
-
-
-public static void setDiffExamsStats(ArrayList<Statistics> diffExamsStats) {
-	LecturerStatisticalController.diffExamsStats = diffExamsStats;
-}
-
-
-
-public static ArrayList<String> getSubjectCourseLec() {
-	return SubjectCourseLec;
-}
-
-
-
-public static void setSubjectCourseLec(ArrayList<String> subjectCourseLec) {
-	SubjectCourseLec = subjectCourseLec;
-}
-
-	// Define columns for the statistics table
+	/**
+	 * 
+	 * Controller class for the LecturerStatistical view.
+	 * 
+	 * Extends the BasicController class.
+	 */
 	@FXML
 	private TableColumn<Statistics, String> Average_Score;
 
@@ -116,11 +140,13 @@ public static void setSubjectCourseLec(ArrayList<String> subjectCourseLec) {
 		// Start the clock
 		Timenow(live_time);
 	}
-    /**
-     * This function loads the statistics from the server and populates the table.
-     * It fetches the completed tests for the lecturer, calculates the statistics for each test,
-     * and then displays the statistics in the table.
-     */
+
+	/**
+	 * This function loads the statistics from the server and populates the table.
+	 * It fetches the completed tests for the lecturer, calculates the statistics
+	 * for each test,
+	 * and then displays the statistics in the table.
+	 */
 	public void load() {
 		// Request completed tests for the lecturer
 		ClientUI.chat.getcompletedTestsForLecturerList();
@@ -331,17 +357,29 @@ public static void setSubjectCourseLec(ArrayList<String> subjectCourseLec) {
 		backToLecturer(event);
 	}
 
-	// Getter and setter methods for the completed tests and the subjects/courses
-	// list
-
+	/**
+	 * Retrieves the list of completed tests for the lecturer.
+	 *
+	 * @return The list of completed tests for the lecturer.
+	 */
 	public static ArrayList<Test> getcompletedTestsForLecturerList() {
 		return completedTestsList;
 	}
 
+	/**
+	 * Sets the list of completed tests for the lecturer.
+	 *
+	 * @param completedTests The list of completed tests to set.
+	 */
 	public static void setcompletedTestsForLecturerList(ArrayList<Test> completedTests) {
 		completedTestsList = completedTests;
 	}
 
+	/**
+	 * Sets the subjects/courses list for the lecturer.
+	 *
+	 * @param listToAdd The list of subjects/courses to set.
+	 */
 	public static void setSubjectsCoursesListLec(ArrayList<String> listToAdd) {
 		SubjectCourseLec = listToAdd;
 	}
