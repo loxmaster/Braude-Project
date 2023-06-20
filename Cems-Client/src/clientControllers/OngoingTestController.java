@@ -71,8 +71,8 @@ public class OngoingTestController extends BasicController {
 		table.getItems().clear();
 		table.refresh();
 
-		Code.setCellValueFactory(new PropertyValueFactory<>("Code"));
-		Subject.setCellValueFactory(new PropertyValueFactory<>("Subject"));
+		//Code.setCellValueFactory(new PropertyValueFactory<>("Code"));
+		//Subject.setCellValueFactory(new PropertyValueFactory<>("Subject"));
 		TimeLeft.setCellValueFactory(new PropertyValueFactory<>("TimeLeft"));
 		AddTime.setCellValueFactory(new PropertyValueFactory<>("AddTime"));
 		LockTest.setCellValueFactory(new PropertyValueFactory<>("LockTest"));
@@ -99,14 +99,14 @@ public class OngoingTestController extends BasicController {
 				ClientUI.chat.getCourseForTest(test.getId());
 				System.out.println("course for test getted");
 				// get the subject returned from the db and set it to the test subject
-				test.setSubject(getSubjectCourses().get(0));
+				if(getSubjectCourses()!=null)
+					test.setSubject(getSubjectCourses().get(0));
 
 				int cap = 0;
-				while (getSubjectCourses().isEmpty() && cap < 20) {
+				while (getSubjectCourses() == null && cap < 20) {
 					try {
 						Thread.sleep(250);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					cap++;
@@ -155,7 +155,7 @@ public class OngoingTestController extends BasicController {
 				Stage currentStage = new Stage();
 				FXMLLoader loader = new FXMLLoader();
 				try {
-					root = loader.load(getClass().getResource("/clientFXMLS/TimeExtensionRequest.fxml").openStream());
+					root = loader.load(getClass().getResource("/clientFXMLS/LecturerTimeExtensionRequest.fxml").openStream());
 				} catch (IOException e) {
 					e.printStackTrace();
 				}

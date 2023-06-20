@@ -94,7 +94,7 @@ public class HODPermissionController extends BasicController {
         table.getItems().clear();
         table.refresh();
         // Set cell value factories for the cols of the table
-        Subject.setCellValueFactory(new PropertyValueFactory<>("Subject"));
+        //Subject.setCellValueFactory(new PropertyValueFactory<>("Subject"));
         TimeToAdd.setCellValueFactory(new PropertyValueFactory<>("timeToAdd"));
         Reason.setCellValueFactory(new PropertyValueFactory<>("ReasonForTimeExtension"));
         // Set cell value factories for the Approve and Deny columns to create the
