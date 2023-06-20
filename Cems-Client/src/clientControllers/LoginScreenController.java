@@ -63,7 +63,7 @@ public class LoginScreenController extends BasicController {
 
 		// gest text from fields
 		username = emailTextbox.getText();
-		password = passTextbox.getText();
+		//password = passTextbox.getText();
 		String selectedRole = combo_Role.getValue();
 		//username = "Noah_Soskha";
 		//password = "123456";
@@ -104,7 +104,7 @@ public class LoginScreenController extends BasicController {
 			}
 
 			if (!ClientHandler.user.getIsFound()) {
-				setVisibleFalse();
+			//	setVisibleFalse();
 				System.out.println("user not found! (loginscreencontroller)");
 			} else {
 				// if found loading the corresponding screen
@@ -145,11 +145,13 @@ public class LoginScreenController extends BasicController {
 		}
 	}
 
-	void setVisibleFalse() {
-		wrongLabel.setVisible(true);
-	}
-
-	public void start(Stage stage) throws IOException {
-		openScreen("/clientFXMLS/LoginScreen.fxml", "CEMS - Login", null);
-	}
+/**
+ * Starts the application by opening the LoginScreen view.
+ *
+ * @param stage The primary stage of the application.
+ * @throws IOException If an error occurs while loading the LoginScreen view.
+ */
+public void start(Stage stage) throws IOException {
+    openScreen("/clientFXMLS/LoginScreen.fxml", "CEMS - Login", null);
+}
 }

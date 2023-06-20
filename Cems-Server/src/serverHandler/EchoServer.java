@@ -41,6 +41,7 @@ public class EchoServer extends AbstractServer {
 	private String userNotFound = "User Not Found";
 	private String idExists = "Id Exists";
 	private String notFound = "Not Found";
+	private String rowsAffected = "rows Affected";
 
 	// Instance of the server
 	private static EchoServer serverInstance;
@@ -98,6 +99,8 @@ public class EchoServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
 		// lastMessageTimes.put(client, System.currentTimeMillis());
+		int rows_affected;
+		String rowsAffectedString;
 
 		System.out.println("Message received: " + msg + " from " + client);
 
@@ -340,6 +343,48 @@ public class EchoServer extends AbstractServer {
 									resgetCoursesExams == null ? (Object) notFound
 											: (Object) resgetCoursesExams);
 							break;
+						case "Update_timeExtensionRequestsTable":
+							rows_affected = executeMyQuery(list.get(1));
+							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
+							System.out.println(rowsAffectedString);
+							client.sendToClient(rowsAffected);
+							break;
+
+						case "updateLockButton_DB":
+							rows_affected = executeMyQuery(list.get(1));
+							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
+							System.out.println(rowsAffectedString);
+							client.sendToClient(rows_affected);
+							break;
+
+						case "fetchOngoingTests":
+							try {
+								ArrayList<TestInServer> ongoingTests = fetchOngoingTestsFromDB();
+								client.sendToClient((Object) ongoingTests);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							break;
+
+						case "fetch_ongoingTests_permissions_FromDB":
+							try {
+								ArrayList<TestInServer> ongoingTestsPermissions = fetch_ongoingTests_permissions_FromDB(
+										list.get(1));
+								client.sendToClient((Object) ongoingTestsPermissions);
+								// client.sendToClient(ongoingTestsPermissions == null ? (Object) notFound :
+								// (Object) ongoingTestsPermissions);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							break;
+
+						case "updateHODPermissionsTable":
+							rows_affected = executeMyQuery(list.get(1));
+							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
+							System.out.println(rowsAffectedString);
+							client.sendToClient(rows_affected);
+							break;
+
 						default:
 							loginVarification(list, client);
 							break;
@@ -365,6 +410,69 @@ public class EchoServer extends AbstractServer {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private ArrayList<TestInServer> fetch_ongoingTests_permissions_FromDB(String query) {
+		ArrayList<TestInServer> tests = new ArrayList<>();
+		try {
+			Statement statement = conn.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+
+			while (resultSet.next()) {
+				TestInServer test = new TestInServer();
+				test.setId(resultSet.getString("id"));
+				test.setSubject(resultSet.getString("Subject")); // Added this line
+				test.setTimeToAdd(resultSet.getString("TimeToAdd"));
+				test.setReasonForTimeExtension(resultSet.getString("Reason"));
+				tests.add(test);
+
+			}
+			resultSet.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tests;
+	}
+
+	private ArrayList<TestInServer> fetchOngoingTestsFromDB() {
+		ArrayList<TestInServer> tests = new ArrayList<>();
+		try {
+			Statement statement = conn.createStatement();
+
+			ResultSet resultSet = statement
+					.executeQuery("SELECT tests.*, subjectcourses.subjectname, ongoing_tests.locked "
+							+ "FROM tests "
+							+ "LEFT JOIN subjectcourses ON CAST(tests.id AS UNSIGNED) = CAST(subjectcourses.subjectid AS UNSIGNED) "
+							+ "LEFT JOIN ongoing_tests ON tests.id = ongoing_tests.test_id "
+							+ "WHERE STR_TO_DATE(CONCAT(tests.date, ' ', tests.time), '%Y-%m-%d %H:%i') <= NOW() AND "
+							+ "TIMESTAMPADD(MINUTE, TIME_TO_SEC(TIMEDIFF(tests.duration, '00:00'))/60, STR_TO_DATE(CONCAT(tests.date, ' ', tests.time), '%Y-%m-%d %H:%i')) >= NOW()"
+							+ "GROUP BY tests.id");
+
+			while (resultSet.next()) {
+				TestInServer test = new TestInServer();
+				test.setId(resultSet.getString("id"));
+				test.setSubject(resultSet.getString("subjectname")); // Added this line
+				test.setDuration(resultSet.getString("duration"));
+				test.setTestComments(resultSet.getString("testcomments"));
+				test.setAuthor(resultSet.getString("authorsname"));
+				test.setTestCode(resultSet.getString("code"));
+				test.setDateString(resultSet.getString("date"));
+				test.setTime(resultSet.getString("time"));
+				String lockBTN = resultSet.getString("locked");
+
+				if (lockBTN.equals("FALSE"))
+					test.setLockBtnPressed(false);
+				else
+					test.setLockBtnPressed(true);
+				tests.add(test);
+			}
+			resultSet.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tests;
 	}
 
 	private ArrayList<Object> getQuestionsFromTest(String query) {
@@ -987,6 +1095,7 @@ public class EchoServer extends AbstractServer {
 	 * }
 	 */
 
+	// TODO see if piechart is needed
 	// query_passed: select passed students
 	// grade_index - position of the grade field
 	private ArrayList<String> TestGrades_PassedGrades(String query_passed, int grade_index) throws SQLException {
@@ -1001,23 +1110,5 @@ public class EchoServer extends AbstractServer {
 		}
 		return outputList;
 	}
-
-	/*
-	 * // query_failed: select failed students query
-	 * // grade_index - position of the grade field
-	 * private ArrayList<String> testGrades_failed_Query(String query_failed, int
-	 * grade_index) throws SQLException {
-	 * ArrayList<String> outputList = new ArrayList<String>();
-	 * stmt = conn.createStatement();
-	 * ArrayList<ResultSet> res = new ArrayList<>();
-	 * ResultSet queryResult = stmt.executeQuery(query_failed);
-	 * 
-	 * // outputList.addAll((String)queryResult.getString(query_passed));
-	 * while (queryResult.next()) {
-	 * outputList.add(queryResult.getString(grade_index));
-	 * }
-	 * return outputList;
-	 * }
-	 */
 
 }

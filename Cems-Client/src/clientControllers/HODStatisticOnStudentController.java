@@ -65,6 +65,10 @@ public class HODStatisticOnStudentController extends BasicController {
     @FXML
     private Label live_time;
 
+    /**
+     * Initializes the controller.
+     * Starts the clock on the UI.
+     */
     @FXML
     void initialize() {
         // Start the clock
@@ -89,7 +93,9 @@ public class HODStatisticOnStudentController extends BasicController {
     private static ArrayList<Test> AllcompletedTestsList;
 
     /**
-     * This function loads the statistics from the server and populates the table.
+     * 
+     * Loads the data for the HODStatisticOnStudentController.
+     * This method should be called to populate the necessary data for the view.
      */
     public void load() {
 
@@ -255,10 +261,20 @@ public class HODStatisticOnStudentController extends BasicController {
         table.setItems(sortedData);
     }
 
+    /**
+     * Sets the list of students under the same department.
+     *
+     * @param listToAdd The ArrayList of student names.
+     */
     public static void setStudentListUnderSameDepartment(ArrayList<String> listToAdd) {
         StudentsList = listToAdd;
     }
 
+    /**
+     * Sets the list of completed tests for a specific student.
+     *
+     * @param listToAdd The ArrayList of completed Test objects.
+     */
     public static void setcompletedTestsForSpecificStudent(ArrayList<Test> listToAdd) {
         completedTestsList = listToAdd;
     }

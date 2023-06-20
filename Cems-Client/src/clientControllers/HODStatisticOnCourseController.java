@@ -27,6 +27,13 @@ import javafx.util.Callback;
 import logic.Statistics;
 import logic.Test;
 
+/**
+ * 
+ * This controller handles the statistics on course view for the Head of
+ * Department (HOD).
+ * 
+ * It extends from the BasicController class.
+ */
 public class HODStatisticOnCourseController extends BasicController {
 
     // Define the FXML components
@@ -60,18 +67,34 @@ public class HODStatisticOnCourseController extends BasicController {
     @FXML
     private Label live_time;
 
-    // Initialize the live_time label with the current time
+    /**
+     * 
+     * This function initializes the controller.
+     * It starts the clock on the UI.
+     */
     @FXML
     void initialize() {
         Timenow(live_time);
     }
 
-    // Define the logoutPressed and backPressed methods
+    /**
+     * 
+     * This function is called when the "Log Out" button is pressed.
+     * It handles the action of logging out the user.
+     * 
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     void logoutPressed(ActionEvent event) {
-
     }
 
+    /**
+     * 
+     * This function is called when the "Back" button is pressed.
+     * It navigates the user back to the statistics view.
+     * 
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     void backPressed(ActionEvent event) {
         openScreen("/clientFXMLS/HodStatisticScrene.fxml", "CEMS System - Head Of Department - Statistics", event);
@@ -84,7 +107,10 @@ public class HODStatisticOnCourseController extends BasicController {
     private static ArrayList<Test> AllcompletedTestsList;
     private static ArrayList<Statistics> allCourseStatistics;
 
-    // The load method is called when the controller is initialized
+    /**
+     * 
+     * This function loads the statistics from the server and populates the table.
+     */
     public void load() {
 
         // Request the list of courses in the same department from the server
@@ -303,12 +329,22 @@ public class HODStatisticOnCourseController extends BasicController {
 
     }
 
-    // Set the list of courses in the same department
+    /**
+     * 
+     * Set the list of courses in the same department.
+     * 
+     * @param listToAdd The list of courses to set.
+     */
     public static void setCoursesSameDepartment(ArrayList<String> listToAdd) {
         SubjectCourse = listToAdd;
     }
 
-    // Set the list of exams for the courses
+    /**
+     * 
+     * Set the list of exams for the courses.
+     * 
+     * @param listToAdd The list of exams to set.
+     */
     public static void setCoursesExams(ArrayList<Test> listToAdd) {
         completedTestsList = listToAdd;
     }
