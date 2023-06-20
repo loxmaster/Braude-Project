@@ -3,27 +3,35 @@ package logic;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javafx.scene.control.Button;
+
 public class TestInServer implements Serializable {
 
     private ArrayList<Question> quesitonsInTest;
     private String id, subject, author;
     private String duration, testComment, testCode;
     private String time, dateString;
-    //private DatePicker date;
+    // private DatePicker date;
     private int totalPoints;
-
-    // noah - added getters and setters for course - not yet updated in the sql -
-    // talk to me
     private String course;
+    private String TimeLeft;
+
+    // ongoing_tests
+    private String timeToAdd,ReasonForTimeExtension;
+    private Button LockTest;
+    private Button AddTime;
+    private Button UnlockTest;
+    private boolean LockBtnPressed = false;
+    private boolean ongoingTest_approved = false;
+    private boolean ongoingTest_denied = false;
+    // HOD time extension
+    private Button Approve;
+    private Button Deny;
 
     public TestInServer() {
         id = new String();
         subject = new String();
-        
-        // noah - added getters and setters for course - not yet updated in the sql -
-        // talk to me
         course = new String();
-
         author = new String();
         duration = new String();
         testComment = new String();
@@ -32,18 +40,6 @@ public class TestInServer implements Serializable {
         dateString = new String();
         totalPoints = 0;
         quesitonsInTest = new ArrayList<Question>();
-    }
-
-    // noah - added getters and setters for course - not yet updated in the sql -
-    // talk to me
-    public String getCourse() {
-        return course;
-    }
-
-    // noah - added getters and setters for course - not yet updated in the sql -
-    // talk to me
-    public void setCourse(String course) {
-        this.course = course;
     }
 
     public TestInServer(String id, String subject, String author, String duration, String testComment, String testCode,
@@ -142,7 +138,103 @@ public class TestInServer implements Serializable {
         return totalPoints;
     }
 
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
     public void setTotalPoints(int totalPoints) {
         this.totalPoints = totalPoints;
+    }
+
+    public boolean isOngoingTest_approved() {
+        return ongoingTest_approved;
+    }
+
+    public void setOngoingTest_approved(boolean ongoingTest_approved) {
+        this.ongoingTest_approved = ongoingTest_approved;
+    }
+
+    public boolean isOngoingTest_denied() {
+        return ongoingTest_denied;
+    }
+
+    public void setOngoingTest_denied(boolean ongoingTest_denied) {
+        this.ongoingTest_denied = ongoingTest_denied;
+    }
+
+    public Button getLockTest() {
+        return LockTest;
+    }
+
+    public void setLockTest(Button lockTest) {
+        this.LockTest = lockTest;
+    }
+
+    public Button getAddTime() {
+        return AddTime;
+    }
+
+    public void setAddTime(Button addTime) {
+        this.AddTime = addTime;
+    }
+
+    public String getTimeLeft() {
+        return TimeLeft;
+    }
+
+    public void setTimeLeft(String timeLeft) {
+        TimeLeft = timeLeft;
+    }
+
+    public Button getApprove() {
+        return Approve;
+    }
+
+    public void setApprove(Button approve) {
+        Approve = approve;
+    }
+
+    public Button getDeny() {
+        return Deny;
+    }
+
+    public void setDeny(Button deny) {
+        Deny = deny;
+    }
+
+    public String getTimeToAdd() {
+        return timeToAdd;
+    }
+
+    public void setTimeToAdd(String timeToAdd) {
+        this.timeToAdd = timeToAdd;
+    }
+
+    public String getReasonForTimeExtension() {
+        return ReasonForTimeExtension;
+    }
+
+    public void setReasonForTimeExtension(String reasonForTimeExtension) {
+        ReasonForTimeExtension = reasonForTimeExtension;
+    }
+
+    public boolean isLockBtnPressed() {
+        return LockBtnPressed;
+    }
+
+    public void setLockBtnPressed(boolean lockBtnPressed) {
+        LockBtnPressed = lockBtnPressed;
+    }
+
+    public Button getUnlockTest() {
+        return UnlockTest;
+    }
+
+    public void setUnlockTest(Button unlockTest) {
+        UnlockTest = unlockTest;
     }
 }

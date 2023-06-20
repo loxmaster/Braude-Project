@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import logic.QuestionModel;
+import logic.Test;
 import logic.User;
 
 /**
@@ -24,6 +25,7 @@ public class LecturerController extends BasicController {
 	public static ArrayList<String> subjectsList;
 	public static ArrayList<String> coursesList;
 	public static ArrayList<QuestionModel> questions;
+	public static ArrayList<Test> ongoingTests;
 
 	@FXML
 	private Button BtnInfo;
@@ -62,6 +64,7 @@ public class LecturerController extends BasicController {
 
 		setCoursesList(new ArrayList<String>());
 		ClientUI.chat.getCoursesForLecturer((Object) ClientHandler.user.getUsername());
+
 
 		// Sets the welcome label
 		setWelcomeLabel();
@@ -168,9 +171,8 @@ public class LecturerController extends BasicController {
 	@FXML
 	void MenageOngoingTestsPressed(ActionEvent event) {
 		// open Ongoing Test screen
-		CheckTestController ctc = (CheckTestController) openScreen("/clientFXMLS/LecturerOngoingTest.fxml",
-				"CEMS System - Lecturer - Create Tests", event);
-		ctc.loadTable();
+		OngoingTestController ctc = (OngoingTestController) openScreen("/clientFXMLS/LecturerOngoingTest.fxml", "CEMS System - Lecturer - Create Tests", event);
+		ctc.load();
 	}
 
 	/**
@@ -239,6 +241,14 @@ public class LecturerController extends BasicController {
 	 */
 	public static void setQuestions(ArrayList<QuestionModel> questions) {
 		LecturerController.questions = questions;
+	}
+
+    public static ArrayList<Test> getOngoingTests() {
+		return ongoingTests;
+	}
+
+	public static void setOngoingTests(ArrayList<Test> ongoingTests) {
+		LecturerController.ongoingTests = ongoingTests;
 	}
 
 }
