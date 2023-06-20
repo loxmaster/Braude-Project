@@ -273,7 +273,8 @@ public class DBTestController extends BasicController {
 		DBTestController.TestList = TestList;
 	}
 
-	void EditTestPressed(ActionEvent event) {
+	@FXML
+	void EditTestsPressed(ActionEvent event) {
 
 	}
 

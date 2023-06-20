@@ -65,7 +65,6 @@ public class LecturerController extends BasicController {
 		setCoursesList(new ArrayList<String>());
 		ClientUI.chat.getCoursesForLecturer((Object) ClientHandler.user.getUsername());
 
-
 		// Sets the welcome label
 		setWelcomeLabel();
 	}
@@ -129,7 +128,7 @@ public class LecturerController extends BasicController {
 	 */
 	@FXML
 	void EditTestsPressed(ActionEvent event) {
-		DBTestController dbt = (DBTestController) openScreen("/clientFXMLS/LecturerTestTableNoAddQuestionPlease.fxml",
+		DBTestController dbt = (DBTestController) openScreen("/clientFXMLS/LecturerTestTable.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
 		dbt.load();
 		dbt.initialize();
@@ -171,7 +170,8 @@ public class LecturerController extends BasicController {
 	@FXML
 	void MenageOngoingTestsPressed(ActionEvent event) {
 		// open Ongoing Test screen
-		OngoingTestController ctc = (OngoingTestController) openScreen("/clientFXMLS/LecturerOngoingTest.fxml", "CEMS System - Lecturer - Create Tests", event);
+		OngoingTestController ctc = (OngoingTestController) openScreen("/clientFXMLS/LecturerOngoingTest.fxml",
+				"CEMS System - Lecturer - Create Tests", event);
 		ctc.load();
 	}
 
@@ -243,7 +243,7 @@ public class LecturerController extends BasicController {
 		LecturerController.questions = questions;
 	}
 
-    public static ArrayList<Test> getOngoingTests() {
+	public static ArrayList<Test> getOngoingTests() {
 		return ongoingTests;
 	}
 

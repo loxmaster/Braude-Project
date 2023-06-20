@@ -27,7 +27,7 @@
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="BtnInfo" layoutX="548.0" layoutY="343.0" mnemonicParsing="false" onAction="#EditTestsPressed" prefHeight="30.0" prefWidth="250.0" text="Edit A Test">
+      <Button fx:id="EditTest" layoutX="548.0" layoutY="343.0" mnemonicParsing="false" onAction="#EditTestsPressed" prefHeight="30.0" prefWidth="250.0" text="Edit A Test">
          <font>
             <Font name="Calibri Bold Italic" size="18.0" />
          </font>
