@@ -191,25 +191,24 @@ public class ClientController implements ChatIF {
     public void getcompletedTestsForStudentList() {
         ArrayList<String> list = new ArrayList<String>();
         String key = ClientHandler.user.getUser_id(); // TODO may couse problem
-        String testType = "computer";
+       // String testType = "computer";
         String status = "completed";
         String tested = "true";
         String query = String.format(
-                "SELECT * FROM completed_tests WHERE student_id='%s' AND test_type='%s' AND status='%s' AND tested='%s';",
-                key, testType, status, tested);
+                "SELECT * FROM completed_tests WHERE student_id='%s' AND status='%s' AND tested='%s';",
+                key, status, tested);
 
         list.addAll(Arrays.asList("completedTestsForStudent", query));
         client.passToServer((Object) list);
         // client.getcompletedTestsForStudentList();
     }
 
-    public void getcompletedTestsForLecturerList() {
+    public void getcompletedTestsForLecturerList(String check) {
         ArrayList<String> list = new ArrayList<String>();
-        String status = "completed";
-        String tested = "true";
+        String tested = check;
         String query = String.format(
-                "SELECT * FROM completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
-                ClientHandler.user.getUsername(), status, tested); // TODO may couse problem
+                "SELECT * FROM completed_tests WHERE authorsname='%s' AND tested='%s';",
+                ClientHandler.user.getUsername(), tested); // TODO may couse problem
 
         list.addAll(Arrays.asList("completedTestsForLecturer", query));
         client.passToServer((Object) list);

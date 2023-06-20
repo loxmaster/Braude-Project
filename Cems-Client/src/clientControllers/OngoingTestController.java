@@ -68,8 +68,8 @@ public class OngoingTestController extends BasicController {
 
 	public void load() {
 
-		//table.getItems().clear();
-		//table.refresh();
+		table.getItems().clear();
+		table.refresh();
 
 		Code.setCellValueFactory(new PropertyValueFactory<>("Code"));
 		Subject.setCellValueFactory(new PropertyValueFactory<>("Subject"));

@@ -149,7 +149,7 @@ public class LecturerStatisticalController extends BasicController {
 	 */
 	public void load() {
 		// Request completed tests for the lecturer
-		ClientUI.chat.getcompletedTestsForLecturerList();
+		ClientUI.chat.getcompletedTestsForLecturerList("true");
 		// Wait for the response
 		try {
 			Thread.sleep(500);

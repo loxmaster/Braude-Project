@@ -182,6 +182,7 @@ public class EchoServer extends AbstractServer {
 								int flag = executeMyQuery(list.get(1));
 								// if (flag != 0) flag=1;
 								client.sendToClient(flag == 0 ? idExists : flag);
+								if ((list.get(0) == "testEval") && flag!=0) System.out.println("SMS sent to Student!");
 								break;
 
 							case "isStudentTakingCourse": // list size od 2 {tag, query}
@@ -455,23 +456,28 @@ public class EchoServer extends AbstractServer {
 		try {
 			Statement statement = conn.createStatement();
 
-			ResultSet resultSet = statement
+			/*ResultSet resultSet = statement
 					.executeQuery("SELECT tests.*, subjectcourses.subjectname, ongoing_tests.locked "
 							+ "FROM tests "
 							+ "LEFT JOIN subjectcourses ON CAST(tests.id AS UNSIGNED) = CAST(subjectcourses.subjectid AS UNSIGNED) "
 							+ "LEFT JOIN ongoing_tests ON tests.id = ongoing_tests.test_id "
 							+ "WHERE STR_TO_DATE(CONCAT(tests.date, ' ', tests.time), '%Y-%m-%d %H:%i') <= NOW() AND "
 							+ "TIMESTAMPADD(MINUTE, TIME_TO_SEC(TIMEDIFF(tests.duration, '00:00'))/60, STR_TO_DATE(CONCAT(tests.date, ' ', tests.time), '%Y-%m-%d %H:%i')) >= NOW()"
-							+ "GROUP BY tests.id");
-
+							+ "GROUP BY tests.id");*/
+			String query = "SELECT * "
+                    + "FROM ongoing_tests "
+                    + "WHERE STR_TO_DATE(CONCAT(ongoing_tests.date, ' ', ongoing_tests.time), '%Y-%m-%d %H:%i') <= NOW() "
+                    + "AND TIMESTAMPADD(MINUTE, TIME_TO_SEC(TIMEDIFF(ongoing_tests.duration, '00:00'))/60, STR_TO_DATE(CONCAT(ongoing_tests.date, ' ', ongoing_tests.time), '%Y-%m-%d %H:%i')) >= NOW()";
+//            ResultSet resultSet = statement
+			ResultSet resultSet = statement.executeQuery(query);
 			while (resultSet.next()) {
 				TestInServer test = new TestInServer();
-				test.setId(resultSet.getString("id"));
-				test.setSubject(resultSet.getString("subjectname")); // Added this line
+				test.setId(resultSet.getString("test_id"));
+				//test.setSubject(resultSet.getString("subjectname")); // Added this line
 				test.setDuration(resultSet.getString("duration"));
-				test.setTestComments(resultSet.getString("testcomments"));
-				test.setAuthor(resultSet.getString("authorsname"));
-				test.setTestCode(resultSet.getString("code"));
+				//test.setTestComments(resultSet.getString("testcomments"));
+				//test.setAuthor(resultSet.getString("authorsname"));
+				//test.setTestCode(resultSet.getString("code"));
 				test.setDateString(resultSet.getString("date"));
 				test.setTime(resultSet.getString("time"));
 				String lockBTN = resultSet.getString("locked");
