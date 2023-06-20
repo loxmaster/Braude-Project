@@ -24,7 +24,7 @@ import logic.QuestionModel;
 import logic.Test;
 
 public class EvaluateTestController extends BasicController {
-private String student_id;
+  private String student_id;
   private ChangeListener<? super String> questionPointsListener; // Listener for points TextBox
   private ArrayList<QuestionModel> questionlist;
   private static ArrayList<String> selectedAnswers;
@@ -108,8 +108,7 @@ private String student_id;
 
     int waitCap = 500; // wait max 5 seconds for sql
     while (localtest == null && waitCap != 0) {
-      System.out.println("i loop in selected answers");
-
+      System.out.println("waiting for selected answers...");
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
@@ -145,12 +144,13 @@ private String student_id;
       }
       waitCap--;
     }
-
+    // reset radio buttons when switching between the sub-questions
     A.setSelected(false);
     B.setSelected(false);
     C.setSelected(false);
     D.setSelected(false);
 
+    // mark the selected answer that the student put in
     for (int i = 0; i < selectedAnswers.size(); i++) {
       switch (selectedAnswers.get(i)) {
         case "a":
@@ -174,7 +174,7 @@ private String student_id;
         RadioButton selectedRadioButton = (RadioButton) source;
         String answer = selectedRadioButton.getText();
 
-        // Clear styles for all radio buttons
+        // reset radio button styles
         A.setStyle("");
         B.setStyle("");
         C.setStyle("");
@@ -183,19 +183,15 @@ private String student_id;
         // Set the style for the selected radio button
         selectedRadioButton.setStyle("-fx-color: green");
 
-        // Process the selected answer
+        // mark selected answer
         switch (answer) {
           case "a":
-            // Do something for answer 'a'
             break;
           case "b":
-            // Do something for answer 'b'
             break;
           case "c":
-            // Do something for answer 'c'
             break;
           case "d":
-            // Do something for answer 'd'
             break;
         }
       }
@@ -210,15 +206,14 @@ private String student_id;
   }
 
   public void loadQuestion(QuestionModel question) {
-    // loadEditQuestionScreen();
-
+    // set relevant data into the fields:
     qBody.setText(question.getQuestiontext());
-
     OptionA.setText(question.getOptionA());
     OptionB.setText(question.getOptionB());
     OptionC.setText(question.getOptionC());
     OptionD.setText(question.getOptionD());
 
+    // mark the correct answer in green
     switch (question.getAnswer()) {
       case "a":
         A.setStyle("-fx-color: green");
@@ -238,10 +233,10 @@ private String student_id;
 
   @FXML
   void savePressed(ActionEvent event) {
-int val = Integer.parseInt(totalPoints.getText());
+    int val = Integer.parseInt(totalPoints.getText());
     if (!isGradeValid(val)) {
       JOptionPane.showMessageDialog(null, "Test grade must be under 100 or non negative!", "Error",
-      JOptionPane.ERROR_MESSAGE);
+          JOptionPane.ERROR_MESSAGE);
       return;
     }
     ArrayList<String> saveChanges = new ArrayList<>();
@@ -250,17 +245,18 @@ int val = Integer.parseInt(totalPoints.getText());
     saveChanges.add(totalPoints.getText());
     saveChanges.add(testcomments);
     ClientUI.updatestatus = 1;
-    ClientUI.chat.SendEvaluatedTest(localtest.getId(),student_id,totalPoints.getText(),testcomments);
-    if(ClientUI.updatestatus == 0){
+    ClientUI.chat.SendEvaluatedTest(localtest.getId(), student_id, totalPoints.getText(), testcomments);
+    if (ClientUI.updatestatus == 0) {
       JOptionPane.showMessageDialog(null, "Changes could not be saved! (idExists)", "Error",
-      JOptionPane.ERROR_MESSAGE);
+          JOptionPane.ERROR_MESSAGE);
       ClientUI.updatestatus = 1;
       return;
     }
-      JOptionPane.showMessageDialog(null, "Changes saved!", "Success!",
-      JOptionPane.ERROR_MESSAGE);
-      CheckTestController ctc = (CheckTestController)openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml", "CEMS System - Lecturer", event);
-      ctc.loadTable();
+    JOptionPane.showMessageDialog(null, "Changes saved!", "Success!",
+        JOptionPane.ERROR_MESSAGE);
+    CheckTestController ctc = (CheckTestController) openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml",
+        "CEMS System - Lecturer", event);
+    ctc.loadTable();
   }
 
   private boolean isGradeValid(int parseInt) {
@@ -284,8 +280,9 @@ int val = Integer.parseInt(totalPoints.getText());
 
   @FXML
   void backPressed(ActionEvent event) {
-    CheckTestController ctc = (CheckTestController)openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml", "CEMS System - Lecturer", event);
-      ctc.loadTable();
+    CheckTestController ctc = (CheckTestController) openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml",
+        "CEMS System - Lecturer", event);
+    ctc.loadTable();
   }
 
   @FXML

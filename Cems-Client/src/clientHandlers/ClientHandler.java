@@ -245,7 +245,7 @@ public class ClientHandler extends AbstractClient {
 						case "completedTestsForLecturer": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
-							ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
+							
 							// CompletedTestList = (ArrayList<Test>) severMessage;
 							int i = 1;
 							while (i < list.size()) {
@@ -797,14 +797,14 @@ public class ClientHandler extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-
+//unused lol
 	// return a list of grades where [testGrades, passed grades, failed grades]
 	// query that selects PASSED and FAILED grades --> echoserver to parse
 	// parse: [testGrades(echoServer identifier), passed(query), failed(query)]
 	public void GetTestGrades_StatisticalInformation(String testID) {
 		ArrayList<String> list = new ArrayList<String>();
 
-		// FIXME fix this query
+		
 		String query_passed = "SELECT grade from projecton.testResults WHERE grade>=55";
 		String query_failed = "SELECT grade from projecton.testResults WHERE grade<55";
 		list.addAll(Arrays.asList("testGrades", query_passed, query_failed));

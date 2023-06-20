@@ -257,7 +257,7 @@ public class EditQuestionController extends BasicController {
 
 	@FXML
 	void cancelPressed(ActionEvent event) {
-		// TODO cancel does the same as back maybe remove the 'Back' utton?
+		
 		backPressed(event);
 	}
 

@@ -519,7 +519,7 @@ public class EchoServer extends AbstractServer {
 
 				TestInServer tempTest = new TestInServer(
 						res.getString(1),
-						"MATH", // TODO: Add subject to SQL
+						"MATH", // FIXME: Add subject to SQL
 						res.getString(4),
 						res.getString(2),
 						res.getString(3),
@@ -987,7 +987,6 @@ public class EchoServer extends AbstractServer {
 	 * }
 	 */
 
-	// TODO see if piechart is needed
 	// query_passed: select passed students
 	// grade_index - position of the grade field
 	private ArrayList<String> TestGrades_PassedGrades(String query_passed, int grade_index) throws SQLException {

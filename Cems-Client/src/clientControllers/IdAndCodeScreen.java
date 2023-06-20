@@ -77,31 +77,6 @@ public class IdAndCodeScreen extends BasicController {
 	@FXML
 	void AutomaticPressed(ActionEvent event) {
 
-		// TODO see what not works here , when works delete whats below and all guchi
-		/*
-		if ((test_code == null)) {
-			try {
-				ClientUI.chat.isStudentTakingCourse();
-				Thread.sleep(3000);
-				ClientUI.chat.isTestReady(test_id);
-			} catch (IOException | InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		 
-		if (test_code == "none" || !(testCode.getText().equals(test_code)) || !testRunning) {
-			JOptionPane.showMessageDialog(null,
-					(String) "you either enetered a wrongh test code\n or you're not enlisted in this course!",
-					(String) "Error!", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		if (testCode.getText().equals(test_code) && testRunning) {
-			examController = (StudentExamController) openScreen("/clientFXMLS/StudentExam.fxml",
-					"CEMS System - Student - Exam", event);
-			examController.load(test_id);
-		}
-		*/
-
 		String code = testCode.getText();
 		examController = (StudentExamController) openScreen("/clientFXMLS/StudentExam.fxml",
 					"CEMS System - Student - Exam", event);

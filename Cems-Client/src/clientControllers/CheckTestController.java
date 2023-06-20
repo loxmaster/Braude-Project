@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 
 import clientHandlers.ClientUI;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -15,25 +14,16 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import logic.QuestionModel;
 import logic.Test;
 
 public class CheckTestController extends BasicController {
@@ -71,23 +61,21 @@ public class CheckTestController extends BasicController {
 
   public void loadTable() {
 
-    // get completed tests list initilized
+    // get completed tests list from the database
     ClientUI.chat.getcompletedTestsForLecturerList();
     try {
         Thread.sleep(250);
       } catch (InterruptedException e) {
       }
     
-
-    // Checked.setCellValueFactory(new PropertyValueFactory<>("checked"));
     test_id.setCellValueFactory(new PropertyValueFactory<>("id"));
     grade.setCellValueFactory(new PropertyValueFactory<>("Grade"));
     Date.setCellValueFactory(new PropertyValueFactory<>("dateString"));
     student_id.setCellValueFactory(new PropertyValueFactory<>("StudentID"));
     Checked.setCellValueFactory(new PropertyValueFactory<>("check"));
 
-    int cap = 20;
     // wait until we have a questions pulled from database
+    int cap = 20;
     while (completedTestsList.isEmpty() && (cap > 0)) {
       try {
         Thread.sleep(250);
@@ -104,22 +92,17 @@ public class CheckTestController extends BasicController {
           test.setCheck(createCheckButton(test));
         }
         FilteredList<Test> filteredList = new FilteredList<>(testlist_observable);
-        
-       //  ObservableList<Test> testlist_observable = FXCollections.observableArrayList(completedTestsList);
-
-
       table.setItems(filteredList);
-      //table.setItems(testlist_observable);
-     // listener - this will update the table to the filtered COMBOBOX SUBJECT
-      // courseComboBox.getSelectionModel().selectedItemProperty().addListener((observable,
-      // oldValue, newValue) -> {
-
-     // updatePredicate(filteredList);
     }
   }
 
-
-  // MANUAL RESOLUTION BUTTON ACTION
+/**
+ * takes test as input and creates a new button
+ * in list of completed test tables
+ * @param test
+ * @return
+ */
+  
   public Button createCheckButton(Test test) {
     Button checked = new Button("Manual Resolution");
     
@@ -151,9 +134,7 @@ public class CheckTestController extends BasicController {
           e.printStackTrace();
         }
         EvaluateTestController eqc = loader.getController();
-        //TODO get question from the test we sent to this method
         eqc.loadTest(test);
-        //System.out.println("opening edit question" + question.getId());
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/gui/Stylesheet.css").toExternalForm());
         currentStage.initStyle(StageStyle.UNDECORATED);

@@ -1,7 +1,6 @@
 package clientControllers;
 
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -9,14 +8,11 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import clientHandlers.ClientUI;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -24,10 +20,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import logic.QuestionModel;
 import logic.Test;
 
@@ -140,7 +134,7 @@ public class StudentExamController extends BasicController {
 			courseField.setText(localTest.getCourse());
 			startTime.setText(localTest.getTime());
 			testComments.setText(localTest.getTestComments());
-			subjectField.setText(localTest.getSubject()); // TODO FIX
+			subjectField.setText(localTest.getSubject());
 
 			// Adds every question in the test to the questioinTracker , which is a VBox of
 			// question buttons.
@@ -193,13 +187,6 @@ public class StudentExamController extends BasicController {
 					// Gets the current time
 					LocalTime currentTime = LocalTime.now();
 					if (currentTime.compareTo(targetTime) >= 0) {
-						// Time has ended.
-
-						//openPopupScreen("/clientFXMLS/popupScreen.fxml", "testCode", getInstance());
-
-						//Platform.exit();
-						//timeEnded(); // TODO FIX
-						
 					} else {
 						// Calculate the remaining time
 						int remainingHours = targetTime.getHour() - currentTime.getHour();

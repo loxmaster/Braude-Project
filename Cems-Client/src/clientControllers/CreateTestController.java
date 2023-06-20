@@ -162,12 +162,11 @@ public class CreateTestController extends BasicController {
 		test.setDate(date);
 		test.setDuration(duration.getText());
 		test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
-		// TODO test.setId(null);
 
 		// Gets all the questions from DataBase
 		LecturerController.setQuestions(new ArrayList<QuestionModel>());
 
-		// FIXME fix the query in
+		// fix the query in
 		// ClientHandler/GetLeturersQuestions_Handler so it returns only the
 		// courses the username's courses
 		// for example: lecturer noah does MATH and TOHNA, it should only have access to
@@ -474,20 +473,10 @@ public class CreateTestController extends BasicController {
 		pointsInTest = totalPoints;
 	}
 
-	/**
-	 * Method to create test id from given subject and course.
-	 * 
-	 * @param subject of the test.
-	 * @param course  of the test.
-	 * @return the string representing the test id.
-	 */
-	public String buildIdForTest(String subject, String course) {
-		// TODO get subject+course id string + number of test
-		return "010110";
-	}
 
-	// ############################### Controller for comment screen
-	// ########################################################
+	// ############################################### 
+	// ######## Controller for comment screen #######
+	// #############################################
 
 	/**
 	 * Since this controller is incharge of the comment screen also , this part will
