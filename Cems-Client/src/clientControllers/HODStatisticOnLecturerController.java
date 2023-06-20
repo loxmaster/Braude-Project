@@ -29,6 +29,12 @@ import logic.Statistics;
 import logic.Test;
 import logic.User;
 
+/**
+ * 
+ * This controller handles the Head of Department's view of lecturer statistics.
+ * 
+ * It extends from the BasicController class.
+ */
 public class HODStatisticOnLecturerController extends BasicController {
 
     // Define columns for the statistics table
@@ -74,6 +80,11 @@ public class HODStatisticOnLecturerController extends BasicController {
     @FXML
     private Label live_time;
 
+    /**
+     * 
+     * This function initializes the controller.
+     * It starts the clock on the UI.
+     */
     @FXML
     void initialize() {
         // Start the clock
@@ -94,6 +105,7 @@ public class HODStatisticOnLecturerController extends BasicController {
     }
 
     /**
+     * 
      * This function loads the statistics from the server and populates the table.
      */
     public void load() {
@@ -264,7 +276,6 @@ public class HODStatisticOnLecturerController extends BasicController {
                                 Stage stage = (Stage) btn.getScene().getWindow();
                                 stage.setScene(new Scene(root));
                                 stage.show();
-                                
 
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -344,15 +355,33 @@ public class HODStatisticOnLecturerController extends BasicController {
         table.setItems(sortedData);
     }
 
+    /**
+     * Sets the list of lecturers under the same department.
+     * 
+     * @param listToAdd The ArrayList of strings representing the lecturers.
+     */
     public static void setLecturerListUnderSameDepartment(ArrayList<String> listToAdd) {
         LecturerList = listToAdd;
     }
 
+    /**
+     * Sets the list of completed tests for a specific lecturer.
+     * 
+     * @param listToAdd The ArrayList of Test objects representing the completed
+     *                  tests.
+     */
     public static void setcompletedTestsForSpecificLecturer(ArrayList<Test> listToAdd) {
         completedTestsList = listToAdd;
     }
 
+    /**
+     * Sets the subjects and courses for a specific lecturer.
+     * 
+     * @param listToAdd The ArrayList of strings representing the subjects and
+     *                  courses.
+     */
     public static void getHodSubjectsCourseForTestSpecificLec(ArrayList<String> listToAdd) {
         SubjectCourseLec = listToAdd;
     }
+
 }
