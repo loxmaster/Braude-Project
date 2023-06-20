@@ -53,8 +53,8 @@ public class EditTestController extends CreateTestController {
         subjectUpdated.addAll(LecturerController.subjectsList);
         subjectUpdated.add(test.getSubject());
         subjectList = FXCollections.observableArrayList(subjectUpdated);
-        subjectComboBox.setItems(subjectList);
-        subjectComboBox.setValue(test.getSubject());
+        // s // subjectComboBox.setValue(test.getSubject());ubjectComboBox.setItems(subjectList);
+       
     }
     /**
      * Loads the course into the courseComboBox.
@@ -64,8 +64,8 @@ public class EditTestController extends CreateTestController {
         courseUpdated.addAll(LecturerController.coursesList);
         courseUpdated.add(test.getCourse());
         courseList = FXCollections.observableArrayList(courseUpdated);
-        courseComboBox.setItems(courseList);
-        courseComboBox.setValue(test.getCourse());
+        // courseComboBox.setItems(courseList);
+        // courseComboBox.setValue(test.getCourse());
     }
     /**
      * Loads the questions for the test.
@@ -108,16 +108,17 @@ public class EditTestController extends CreateTestController {
 
         // Remembers all the data from the screen and sends it to DataBase controller
         test.setAuthor(ClientHandler.user.getpName());
-        test.setSubject(subjectComboBox.getValue());
+       // test.setSubject(subjectComboBox.getValue());
 
         // noah - changed here - get course - talk to me
-        test.setCourse(courseComboBox.getValue());
+       // test.setCourse(courseComboBox.getValue());
 
-        test.setTestCode(code.getText());
-        test.setTime(startTime.getText());
-        test.setDate(date);
-        test.setDuration(duration.getText());
-        test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
+        //test.setTestCode(code.getText());
+        //test.setTime(startTime.getText());
+        //test.setDate(date);
+        //test.setDuration(duration.getText());
+        //test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
+        
         // TODO test.setId(null);
 
         // Gets all the questions from DataBase
