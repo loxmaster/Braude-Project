@@ -1,14 +1,10 @@
 package clientHandlers;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
@@ -27,7 +23,6 @@ import clientControllers.LecturerController;
 import clientControllers.LecturerStatisticalController;
 import clientControllers.StudentExamController;
 import clientControllers.ViewGradesController;
-import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 import logic.Question;
 import logic.QuestionModel;
@@ -500,9 +495,6 @@ public class ClientHandler extends AbstractClient {
 
 							System.out.println("Client Handler: " + list.get(1));
 							break;
-						case "":
-
-							break;
 
 					}
 				}
@@ -553,7 +545,6 @@ public class ClientHandler extends AbstractClient {
 
 	/**
 	 * This method handles all data coming from the UI
-	 *
 	 * @param message The message from the UI.
 	 */
 	public void handleMessageFromClientUI(Object message) {
@@ -580,7 +571,7 @@ public class ClientHandler extends AbstractClient {
            ZonedDateTime now = ZonedDateTime.now();
            ZonedDateTime testZonedDateTime = ZonedDateTime.of(testDate, testTime, now.getZone());
 		}
-
+	}
 	/**
 	 * Handles the message received from the lecturer user interface gets all the
 	 * questions for the lecturer.
