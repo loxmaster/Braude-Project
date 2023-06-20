@@ -7,26 +7,6 @@ import javafx.scene.control.DatePicker;
 
 public class Test {
 
-    private ArrayList<QuestionModel> quesitonsInTest;
-    private String id, author, subject;
-    private Button check;
-
-    public Button getCheck() {
-        return check;
-    }
-
-    public void setCheck(Button check) {
-        this.check = check;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
     private String duration, testComment, testCode;
     private String time, dateString;
     private DatePicker date;
@@ -34,6 +14,23 @@ public class Test {
     private String course;
     private String StudentsName, StudentID, Grade;
     private String status, questionsString, type, tested;
+    private ArrayList<QuestionModel> quesitonsInTest;
+    private String id, author, subject;
+    private Button check;
+
+    // ongoing_tests
+    private String TimeLeft;
+    private String timeToAdd,ReasonForTimeExtension;
+    private Button LockTest;
+    private Button AddTime;
+    private Button UnlockTest;
+    private boolean LockBtnPressed = false;
+    private boolean ongoingTest_approved = false;
+    private boolean ongoingTest_denied = false;
+    
+    // HOD time extension
+    private Button Approve;
+    private Button Deny;
 
     public Test() {
         id = new String();
@@ -47,12 +44,6 @@ public class Test {
         dateString = new String();
         totalPoints = 0;
         quesitonsInTest = new ArrayList<QuestionModel>();
-    }
-
-    // noah - added getters and setters for course - not yet updated in the sql -
-    // talk to me
-    public void setCourse(String course) {
-        this.course = course;
     }
 
     public Test(String id, String subject, String StudentsName, String StudentID, String Grade) {
@@ -78,7 +69,6 @@ public class Test {
         setQuesitonsInTest(quesitonsInTest);
     }
 
-    ////// is this the one u looking for???
     public Test(String id, String StudentID, String Grade, String author, String testCode, String dateString,
             String time, String duration, String questionsString, String type, String status, String tested) {
         this.id = id;
@@ -95,6 +85,27 @@ public class Test {
         this.tested = tested;
     }
 
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public Button getCheck() {
+        return check;
+    }
+
+    public void setCheck(Button check) {
+        this.check = check;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    
     public String getStatus() {
         return status;
     }
@@ -239,6 +250,94 @@ public class Test {
 
     public ArrayList<QuestionModel> getQuesitonsInTest() {
         return quesitonsInTest;
+    }
+
+    public boolean isOngoingTest_approved() {
+        return ongoingTest_approved;
+    }
+
+    public void setOngoingTest_approved(boolean ongoingTest_approved) {
+        this.ongoingTest_approved = ongoingTest_approved;
+    }
+
+    public boolean isOngoingTest_denied() {
+        return ongoingTest_denied;
+    }
+
+    public void setOngoingTest_denied(boolean ongoingTest_denied) {
+        this.ongoingTest_denied = ongoingTest_denied;
+    }
+
+    public Button getLockTest() {
+        return LockTest;
+    }
+
+    public void setLockTest(Button lockTest) {
+        this.LockTest = lockTest;
+    }
+
+    public Button getAddTime() {
+        return AddTime;
+    }
+
+    public void setAddTime(Button addTime) {
+        this.AddTime = addTime;
+    }
+
+    public String getTimeLeft() {
+        return TimeLeft;
+    }
+
+    public void setTimeLeft(String timeLeft) {
+        TimeLeft = timeLeft;
+    }
+
+    public Button getApprove() {
+        return Approve;
+    }
+
+    public void setApprove(Button approve) {
+        Approve = approve;
+    }
+
+    public Button getDeny() {
+        return Deny;
+    }
+
+    public void setDeny(Button deny) {
+        Deny = deny;
+    }
+
+    public String getTimeToAdd() {
+        return timeToAdd;
+    }
+
+    public void setTimeToAdd(String timeToAdd) {
+        this.timeToAdd = timeToAdd;
+    }
+
+    public String getReasonForTimeExtension() {
+        return ReasonForTimeExtension;
+    }
+
+    public void setReasonForTimeExtension(String reasonForTimeExtension) {
+        ReasonForTimeExtension = reasonForTimeExtension;
+    }
+
+    public boolean isLockBtnPressed() {
+        return LockBtnPressed;
+    }
+
+    public void setLockBtnPressed(boolean lockBtnPressed) {
+        LockBtnPressed = lockBtnPressed;
+    }
+
+    public Button getUnlockTest() {
+        return UnlockTest;
+    }
+
+    public void setUnlockTest(Button unlockTest) {
+        UnlockTest = unlockTest;
     }
    
 }

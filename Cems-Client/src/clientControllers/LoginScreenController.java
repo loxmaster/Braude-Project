@@ -157,6 +157,12 @@ public class LoginScreenController extends BasicController {
 		}
 	}
 
+	/**
+	 * Starts the application by opening the LoginScreen view.
+	 *
+	 * @param stage The primary stage of the application.
+	 * @throws IOException If an error occurs while loading the LoginScreen view.
+	 */
 	public void start(Stage stage) throws IOException {
 		openScreen("/clientFXMLS/LoginScreen.fxml", "CEMS - Login", null);
 	}

@@ -17,11 +17,15 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import logic.FileDownloadMessage;
 
+/**
+ * 
+ * Controller class for the IdAndCodeScreen view.
+ * 
+ * Extends the BasicController class.
+ */
 public class IdAndCodeScreen extends BasicController {
 
-	
 	/////////////////////////////// Local Variables ///////////////////////////////
-
 
 	private StudentExamController examController;
 
@@ -31,12 +35,10 @@ public class IdAndCodeScreen extends BasicController {
 
 	public static boolean testRunning = false;
 
-
 	/////////////////////////////// FXML variables ////////////////////////////////
 
-
 	@FXML
-    private Button downloadButton;
+	private Button downloadButton;
 
 	@FXML
 	private Button exitbutton;
@@ -55,59 +57,57 @@ public class IdAndCodeScreen extends BasicController {
 
 	@FXML
 	private ImageView onlineTest;
-	
+
 	@FXML
-    private Label live_time;
+	private Label live_time;
 
 	/////////////////////////////// FXML methods ///////////////////////////////
 
-
+	/**
+	 * 
+	 * Initializes the controller.
+	 * Starts the clock.
+	 */
 	@FXML
-    void initialize() {
-        // Start the clock
-        Timenow(live_time);
-    }
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
 
+	/**
+	 * 
+	 * Event handler for the Back button press.
+	 * Opens the StudentScreen view for code entering.
+	 * 
+	 * @param event The action event triggered by the user.
+	 */
 	@FXML
 	void backPressed(ActionEvent event) {
 		// Opening window for code entering
 		openScreen("/clientFXMLS/StudentScreen.fxml", "CEMS System - Student - Enter Code", event);
 	}
 
+	/**
+	 * 
+	 * Event handler for the Automatic button press.
+	 * 
+	 * @param event The action event triggered by the user.
+	 */
 	@FXML
 	void AutomaticPressed(ActionEvent event) {
 
-		// TODO see what not works here , when works delete whats below and all guchi
-		/*
-		if ((test_code == null)) {
-			try {
-				ClientUI.chat.isStudentTakingCourse();
-				Thread.sleep(3000);
-				ClientUI.chat.isTestReady(test_id);
-			} catch (IOException | InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		 
-		if (test_code == "none" || !(testCode.getText().equals(test_code)) || !testRunning) {
-			JOptionPane.showMessageDialog(null,
-					(String) "you either enetered a wrongh test code\n or you're not enlisted in this course!",
-					(String) "Error!", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-		if (testCode.getText().equals(test_code) && testRunning) {
-			examController = (StudentExamController) openScreen("/clientFXMLS/StudentExam.fxml",
-					"CEMS System - Student - Exam", event);
-			examController.load(test_id);
-		}
-		*/
-
 		String code = testCode.getText();
 		examController = (StudentExamController) openScreen("/clientFXMLS/StudentExam.fxml",
-					"CEMS System - Student - Exam", event);
+				"CEMS System - Student - Exam", event);
 		examController.load(code);
 	}
 
+	/**
+	 * 
+	 * Event handler for the Download button press.
+	 * 
+	 * @param event The action event triggered by the user.
+	 */
 	@FXML
 	synchronized void ClickDownload(ActionEvent event) {
 
@@ -132,7 +132,8 @@ public class IdAndCodeScreen extends BasicController {
 			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("All Files", "*.*");
 			fileChooser.getExtensionFilters().add(extFilter);
 			fileChooser.setInitialFileName(filename);
-			//fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Desktop"));
+			// fileChooser.setInitialDirectory(new File(System.getProperty("user.home") +
+			// File.separator + "Desktop"));
 
 			File file = fileChooser.showSaveDialog(null);
 			if (file != null) {
@@ -150,18 +151,32 @@ public class IdAndCodeScreen extends BasicController {
 		}
 	}
 
-
 	/////////////////////////////// Instance Methods ///////////////////////////////
 
-
+	/**
+	 * Retrieves the flag indicating if a test is currently running.
+	 *
+	 * @return {@code true} if a test is running, {@code false} otherwise.
+	 */
 	public static boolean isTestRunning() {
 		return testRunning;
 	}
 
+	/**
+	 * Sets the flag indicating if a test is currently running.
+	 *
+	 * @param testRunning {@code true} if a test is running, {@code false}
+	 *                    otherwise.
+	 */
 	public static void setTestRunning(boolean testRunning) {
 		IdAndCodeScreen.testRunning = testRunning;
 	}
 
+	/**
+	 * Sets the test code and test ID.
+	 *
+	 * @param list The list containing the test code and test ID.
+	 */
 	public static void setTest_code(ArrayList<String> list) {
 		test_code = list.get(0);
 		test_id = list.get(1);
@@ -169,13 +184,22 @@ public class IdAndCodeScreen extends BasicController {
 
 	private static FileDownloadMessage downloadMessage;
 
+	/**
+	 * Retrieves the file download message.
+	 *
+	 * @return The file download message.
+	 */
 	public synchronized static FileDownloadMessage getDownloadMessage() {
 		return downloadMessage;
 	}
 
+	/**
+	 * Sets the file download message.
+	 *
+	 * @param downloadMessage The file download message to set.
+	 */
 	public synchronized static void setDownloadMessage(FileDownloadMessage downloadMessage) {
 		IdAndCodeScreen.downloadMessage = downloadMessage;
 	}
 
 }
-

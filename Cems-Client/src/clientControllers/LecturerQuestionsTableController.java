@@ -64,21 +64,22 @@ public class LecturerQuestionsTableController extends BasicController {
     private ComboBox<String> courseComboBox; // ComboBox for selecting the course
 
     @FXML
-	private Label live_time; // Label for displaying the live time
+    private Label live_time; // Label for displaying the live time
 
-	/**
-	 * This function initializes the controller.
-	 * It starts the clock on the UI.
-	 */
-	@FXML
-	void initialize() {
-		// Start the clock
-		Timenow(live_time);
-	}
+    /**
+     * This function initializes the controller.
+     * It starts the clock on the UI.
+     */
+    @FXML
+    void initialize() {
+        // Start the clock
+        Timenow(live_time);
+    }
 
     /**
      * This function loads the filter ComboBoxes.
-     * It gets the courses list from the LecturerController and sets it to the course ComboBox.
+     * It gets the courses list from the LecturerController and sets it to the
+     * course ComboBox.
      */
     public void loadFilterComboboxes() {
         courseList = FXCollections.observableArrayList(LecturerController.getCoursesList());
@@ -93,18 +94,20 @@ public class LecturerQuestionsTableController extends BasicController {
      * @param filteredList The FilteredList of QuestionModel objects
      */
     private void updatePredicate(FilteredList<QuestionModel> filteredList) {
-		String selectedCourse = courseComboBox.getValue();
+        String selectedCourse = courseComboBox.getValue();
 
-		// add new filters here as needed, dont forget to add a new listener
-		filteredList.setPredicate(questionModel -> {
-			return selectedCourse == null || selectedCourse.isEmpty()
-					|| questionModel.getCoursename().contains(selectedCourse)
-					|| questionModel.getCoursename().contains(selectedCourse);
-		});}
+        // add new filters here as needed, dont forget to add a new listener
+        filteredList.setPredicate(questionModel -> {
+            return selectedCourse == null || selectedCourse.isEmpty()
+                    || questionModel.getCoursename().contains(selectedCourse)
+                    || questionModel.getCoursename().contains(selectedCourse);
+        });
+    }
 
     /**
      * This function loads the questions table.
-     * It sets the cell value factories for the table columns and adds the questions to the table.
+     * It sets the cell value factories for the table columns and adds the questions
+     * to the table.
      */
     public void loadTable() {
         loadFilterComboboxes();
@@ -128,10 +131,10 @@ public class LecturerQuestionsTableController extends BasicController {
         }
         if (LecturerController.questions.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error getting the question!", "Error", JOptionPane.ERROR_MESSAGE);
-        } 
-        else {
-            ObservableList<QuestionModel> questionList = FXCollections.observableArrayList(LecturerController.questions);
-            for (QuestionModel question : questionList){
+        } else {
+            ObservableList<QuestionModel> questionList = FXCollections
+                    .observableArrayList(LecturerController.questions);
+            for (QuestionModel question : questionList) {
                 question.setEdit(createEditButton(question));
             }
             FilteredList<QuestionModel> filteredList = new FilteredList<>(questionList);
@@ -143,6 +146,13 @@ public class LecturerQuestionsTableController extends BasicController {
         }
     }
 
+    /**
+     * 
+     * Creates an edit button for the specified question.
+     * 
+     * @param question The question model.
+     * @return The edit button.
+     */
     public Button createEditButton(QuestionModel question) {
         Button edit = new Button("Edit");
 
@@ -155,7 +165,6 @@ public class LecturerQuestionsTableController extends BasicController {
                 AnchorPane root = null;
                 Stage currentStage = new Stage();
 
-
                 FXMLLoader loader = new FXMLLoader();
                 try {
                     final double[] offsets = new double[2];
@@ -164,7 +173,7 @@ public class LecturerQuestionsTableController extends BasicController {
                         offsets[0] = mouseEvent.getSceneX();
                         offsets[1] = mouseEvent.getSceneY();
                     });
-            
+
                     root.setOnMouseDragged(mouseEvent -> {
                         currentStage.setX(mouseEvent.getScreenX() - offsets[0]);
                         currentStage.setY(mouseEvent.getScreenY() - offsets[1]);
@@ -190,15 +199,26 @@ public class LecturerQuestionsTableController extends BasicController {
         return edit;
     }
 
+    /**
+     * Event handler for the Back button press.
+     * Resets the questions list and opens the LecturerOptions view.
+     *
+     * @param event The action event triggered by the user.
+     */
     @FXML
     void backPressed(ActionEvent event) {
         LecturerController.questions = new ArrayList<QuestionModel>();
         openScreen("/clientFXMLS/LecturerOptions.fxml", "CEMS System - Lecturer", event);
     }
 
+    /**
+     * Event handler for the Help button press.
+     *
+     * @param event The action event triggered by the user.
+     */
     @FXML
     void helpPressed(ActionEvent event) {
-
+        // Add your code here for handling the Help button press
     }
 
 }
