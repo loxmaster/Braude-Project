@@ -257,7 +257,7 @@ public class ClientController implements ChatIF {
                 "SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
                 subjectid, courseid);
         subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodSubjectsCourseForTestSpecificLec", query));
-        client.passToServer((Object) query);
+        client.passToServer((Object) subjectcoursenameofcompletedtest);
         // client.getHodCourseForTestSpecificLec((String) id);
     }
 
@@ -295,7 +295,7 @@ public class ClientController implements ChatIF {
                 "SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
                 subjectid, courseid);
         subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodCourseForTestSpecificStudent", query));
-        client.passToServer((Object) query);
+        client.passToServer((Object) subjectcoursenameofcompletedtest);
     }
 
     // gets all subject available for lecturer
