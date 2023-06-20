@@ -14,88 +14,63 @@ import logic.User;
 // Suppressing warnings about unused imports or fields
 @SuppressWarnings("unused")
 
-/**
- * 
- * Controller class for the StudentScreen view.
- * 
- * Extends the BasicController class.
- */
+// This class is a controller for the StudentScreen view
 public class StudentScreenController extends BasicController {
 
-    private User student; // The User object representing the student who is currently logged in
+    // The User object representing the student who is currently logged in
+    private User student;
 
     @FXML
-    private Button Logout; // Button for logging out
+    private Button Logout;
 
     @FXML
-    private Button exitbutton; // Button for exiting
+    private Button exitbutton;
 
     @FXML
-    private Button logo; // Button for displaying logo
+    private Button logo;
 
     @FXML
-    private Label screen_label; // Label for displaying the screen message
+    private Label screen_label;
 
     @FXML
-    private Label live_time; // Label for displaying live time
+    private Label live_time;
 
-    /**
-     * 
-     * Initializes the StudentScreenController.
-     * Starts the clock by calling the Timenow() method with the live_time label.
-     */
     @FXML
     void initialize() {
+        // Start the clock
         Timenow(live_time);
     }
 
-    /**
-     * 
-     * Loads the student data.
-     * This method is called when the StudentScreen view is loaded.
-     * 
-     * @param student The User object representing the logged-in student.
-     */
+    // This method is called when the StudentScreen view is loaded. It initializes
+    // the student field and starts the clock.
     public void loadStudent(User student) {
+        // Store the User object representing the logged-in student
         this.student = student;
-        screen_label.setText("Welcome back, " + student.getUsername() + "!");
+        screen_label.setText("Welcome back," + student.getUsername() + " !");
     }
 
-    /**
-     * 
-     * Event handler for the Log Out button press.
-     * Logs out the student and closes the StudentScreen view.
-     * 
-     * @param event The action event triggered by the user.
-     */
+    // This method is called when the Log Out button is pressed. It logs the student
+    // out and closes the StudentScreen view.
     @FXML
     void LogOutPressed(ActionEvent event) {
         logoutPressed(event);
     }
 
-    /**
-     * 
-     * Event handler for the Open Code Prompt button press.
-     * Opens the EnterCodeForTestPreforming view.
-     * 
-     * @param event The action event triggered by the user.
-     */
+    // This method is called when the Open Code Prompt button is pressed. It opens
+    // the EnterCodeForTestPreforming view.
     @FXML
     void OpenCodePrompt(ActionEvent event) {
+        // Open the EnterCodeForTestPreforming view
         openScreen("/clientFXMLS/EnterCodeForTestPreforming.fxml", "CEMS System - Student - Enter Test Code", event);
     }
 
-    /**
-     * 
-     * Event handler for the Show Grades button press.
-     * Opens the ViewGrades view.
-     * 
-     * @param event The action event triggered by the user.
-     */
+    // This method is called when the Show Grades button is pressed. It opens the
+    // ViewGrades view.
     @FXML
-    void showGrades(ActionEvent event) {
-        ViewGradesController vgc = (ViewGradesController) openScreen("/clientFXMLS/ViewGrades.fxml",
-                "CEMS System - Student Grades", event);
-        vgc.initialize();
-    }
+	void showGrades(ActionEvent event) {
+		// Opening Show Grades screen
+		ViewGradesController vgc = (ViewGradesController) openScreen("/clientFXMLS/ViewGrades.fxml",
+				"CEMS System - Student Grades", event);
+		vgc.initialize();
+	}
 }

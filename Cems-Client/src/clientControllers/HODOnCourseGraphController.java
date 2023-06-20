@@ -22,7 +22,7 @@ import logic.Test;
  * It extends from the BasicController class.
  */
 public class HODOnCourseGraphController extends BasicController {
-    // Define UI elements
+
     @FXML
     private Text Course_NameID;
 
@@ -113,10 +113,6 @@ public class HODOnCourseGraphController extends BasicController {
     @FXML
     private Label live_time;
 
-    /**
-     * This function initializes the controller.
-     * It starts the clock on the UI.
-     */
     @FXML
     void initialize() {
         // Start the clock

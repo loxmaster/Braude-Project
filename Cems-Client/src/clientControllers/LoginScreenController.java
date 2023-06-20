@@ -16,45 +16,37 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-/**
- * This controller handles the login screen of the application.
- * It extends from the BasicController class.
- */
 public class LoginScreenController extends BasicController {
 
 	private String username, password;
 
 	@FXML
-	private AnchorPane AncPane; // AnchorPane for the login screen
+	private AnchorPane AncPane;
 
 	@FXML
-	private ComboBox<String> combo_Role; // ComboBox for selecting the role
+	private ComboBox<String> combo_Role;
 
 	@FXML
-	private TextField emailTextbox; // TextField for entering the email
+	private TextField emailTextbox;
 
 	@FXML
-	private Button exitbutton; // Button for exiting the application
+	private Button exitbutton;
 
 	@FXML
-	private Label live_time; // Label for displaying the live time
+	private Label live_time;
 
 	@FXML
-	private Button loginbutton; // Button for logging in
+	private Button loginbutton;
 
 	@FXML
-	private Button logo; // Button for the logo
+	private Button logo;
 
 	@FXML
-	private PasswordField passTextbox; // PasswordField for entering the password
+	private PasswordField passTextbox;
 
 	@FXML
-	private Label wrongLabel; // Label for displaying wrong login information
+	private Label wrongLabel;
 
-	/**
-	 * This function initializes the controller.
-	 * It starts the clock on the UI and adds values to the role ComboBox.
-	 */
 	@FXML
 	void initialize() {
 		// Start the clock
@@ -63,13 +55,6 @@ public class LoginScreenController extends BasicController {
 		combo_Role.getItems().addAll("student", "lecturer", "head_of_department");
 	}
 
-	/**
-	 * This function handles the login button press event.
-	 * It verifies the user credentials from the database and opens the corresponding screen based on the user type.
-	 *
-	 * @param event The ActionEvent object representing the login button press event
-	 * @throws IOException If an input or output exception occurred
-	 */
 	@FXML
 	void pressedLogin(ActionEvent event) throws IOException {
 
@@ -80,6 +65,9 @@ public class LoginScreenController extends BasicController {
 		username = emailTextbox.getText();
 		//password = passTextbox.getText();
 		String selectedRole = combo_Role.getValue();
+		//username = "Noah_Soskha";
+		//password = "123456";
+		//selectedRole = "lecturer";
 
 		System.out.println("Entered: " + username + " " + password + " " + selectedRole);
 
@@ -105,18 +93,19 @@ public class LoginScreenController extends BasicController {
 			// Verifies students credintials from database
 			ClientUI.chat.loginVarification(username, password, selectedRole);
 
-			// Waits for user to be found
-		try {
-			Thread.sleep(300);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		
-		}
+			// Waits 5 seconds for user to be found
+			int cap = 20;
+			while (!ClientHandler.user.getIsFound() && (cap > 0)) {
+				try {
+					Thread.sleep(250);
+					cap--;
+				} catch (InterruptedException e) {
+				}
+			}
 
 			if (!ClientHandler.user.getIsFound()) {
-						JOptionPane.showMessageDialog(null, "your username or password or type are incorrect!",
-					"Fail LogIn",
-					JOptionPane.ERROR_MESSAGE);
+			//	setVisibleFalse();
+				System.out.println("user not found! (loginscreencontroller)");
 			} else {
 				// if found loading the corresponding screen
 				switch (ClientHandler.user.getType()) {

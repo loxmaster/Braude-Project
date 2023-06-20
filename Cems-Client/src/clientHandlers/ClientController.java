@@ -2,10 +2,10 @@ package clientHandlers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.io.InputStreamReader;
 
 import logic.FileDownloadMessage;
 import logic.FileUploadMessage;
@@ -14,8 +14,7 @@ import logic.Test;
 
 public class ClientController implements ChatIF {
 
-    // Class variables
-    // ********************************************************************
+    // Class variables *************************************************
 
     /**
      * @param DEFAULT_PORT the default port to connect on.
@@ -25,27 +24,113 @@ public class ClientController implements ChatIF {
     final public static int DEFAULT_PORT = 5555;
     ClientHandler client;
 
-    // Constructors
-    // ***********************************************************************
+    // Constructors ****************************************************
 
     /**
-     * Constructs an instance of the ClientController.
+     * Constructs an instance of the ClientConsole UI.
      *
      * @param host The host to connect to.
      * @param port The port to connect on.
      */
     public ClientController(String host, int port) {
         try {
-            // Create a ClientHandler instance to handle the client-server communication.
-            // Pass the host, port, and a reference to this ClientController.
             client = new ClientHandler(host, port, this);
         } catch (IOException exception) {
-            System.out.println("Error: Can't setup connection! Terminating client.");
+            System.out.println("Error: Can't setup connection!" + " Terminating client.");
             System.exit(1);
         }
     }
 
+
     /**
+     * This method overrides the method in the ChatIF interface. It displays a
+     * message onto the screen.
+     *
+     * @param message The string to be displayed.
+     */
+    @Override
+    public void display(Object message) {
+        if (message instanceof ResultSet) {
+            ResultSet result = (ResultSet) message;
+            try {
+                System.out.println("Found: " + result);
+            } catch (Exception e) {
+                System.out.println("failed read");
+                e.printStackTrace();
+            }
+        } else
+            System.out.println("> " + (String) message.toString());
+    }
+
+    /**
+     * Method that uses the handler function to close connection.
+     * Notifices server when closed.
+     */
+    public void quit() {
+        client.quit();
+    }
+
+    /**
+     * Method that uses the handler function to open connection.
+     * If connection already open nothing happans.
+     */
+    public void openConnection() {
+        try {
+            client.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+  
+
+    public void getSelectedAnswers(String studentID, String id) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("getSelectedAnswers");
+        list.add("SELECT selected FROM projecton.completed_tests WHERE test_id='" + id + "' AND student_id= '"
+                + studentID + "';");
+        client.passToServer(list);
+    }
+
+    public void SendEvaluatedTest(String id, String studentID, String text, String testcomments) {
+        ArrayList<String> saveChanges = new ArrayList<>();
+        saveChanges.add("testEval");
+        saveChanges.add("UPDATE `projecton`.`completed_tests` SET `grade` = '" + text
+                + "', `tested` = 'true', `comment` = '" + testcomments + "' WHERE (`test_id` = '" + id
+                + "') and (`student_id` = '" + studentID + "');");
+        client.passToServer(saveChanges);
+    }
+
+    // /public void getSelectedAnswers(String studentID) {
+    // getSelectedAnswers();
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
      * Accepts user input from the console and sends it to the server for
      * processing.
      */
@@ -526,44 +611,8 @@ public class ClientController implements ChatIF {
         client.passToServer((Object) list);
     }
 
-    /**
-     * This method overrides the method in the ChatIF interface. It displays a
-     * message onto the screen.
-     *
-     * @param message The string to be displayed.
-     */
-    @Override
-    public void display(Object message) {
-        if (message instanceof ResultSet) {
-            ResultSet result = (ResultSet) message;
-            try {
-                System.out.println("Found: " + result);
-            } catch (Exception e) {
-                System.out.println("failed read");
-                e.printStackTrace();
-            }
-        } else
-            System.out.println("> " + (String) message.toString());
-    }
+    
 
-    /**
-     * Method that uses the handler function to close connection.
-     * Notifices server when closed.
-     */
-    public void quit() {
-        client.quit();
-    }
 
-    /**
-     * Method that uses the handler function to open connection.
-     * If connection already open nothing happans.
-     */
-    public void openConnection() {
-        try {
-            client.openConnection();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

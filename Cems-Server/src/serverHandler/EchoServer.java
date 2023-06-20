@@ -135,13 +135,6 @@ public class EchoServer extends AbstractServer {
 				case "ArrayList":
 					ArrayList<String> list = (ArrayList<String>) msg;
 					switch (list.get(0)) {
-						case "futureTests":
-							ArrayList<String> resgetFutureTests = getFutureTests_db(list.get(1),
-									"getFutureTests");
-							client.sendToClient(
-									resgetFutureTests == null ? (Object) notFound
-											: (Object) resgetFutureTests);
-							break;
 						case "getSubjectID":
 							// send query to be executed along with the identifier
 							ArrayList<String> resultList = getData_db(list.get(1), "getSubjectID");
@@ -171,6 +164,7 @@ public class EchoServer extends AbstractServer {
 						case "editquestion":
 						case "Addtesttodata":
 						case "DeleteQuestion":
+						case "testEval":
 							// executeMyQuery will execute a basic UPDATE query
 							int flag = executeMyQuery(list.get(1));
 							// if (flag != 0) flag=1;
@@ -337,6 +331,11 @@ public class EchoServer extends AbstractServer {
 									: (Object) resgetCoursesSameDepartment);
 							break;
 
+						case "getSelectedAnswers":
+							ArrayList<String> selectedAnswers = getSelectedAnswers_db(list);
+							client.sendToClient(selectedAnswers == null ? (Object) notFound : (Object) selectedAnswers);
+							System.out.println("Server: sending back selected answers:" + selectedAnswers);
+							break;
 						case "getCoursesExams":
 							ArrayList<String> resgetCoursesExams = getCoursesExams_db(list.get(1),
 									"getCoursesExams");
@@ -350,14 +349,14 @@ public class EchoServer extends AbstractServer {
 							System.out.println(rowsAffectedString);
 							client.sendToClient(rowsAffected);
 							break;
-							
+
 						case "updateLockButton_DB":
 							rows_affected = executeMyQuery(list.get(1));
 							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
 							System.out.println(rowsAffectedString);
 							client.sendToClient(rows_affected);
 							break;
-							
+
 						case "fetchOngoingTests":
 							try {
 								ArrayList<TestInServer> ongoingTests = fetchOngoingTestsFromDB();
@@ -365,25 +364,27 @@ public class EchoServer extends AbstractServer {
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
-						break;
-						
+							break;
+
 						case "fetch_ongoingTests_permissions_FromDB":
 							try {
-								ArrayList<TestInServer> ongoingTestsPermissions = fetch_ongoingTests_permissions_FromDB(list.get(1)); 
+								ArrayList<TestInServer> ongoingTestsPermissions = fetch_ongoingTests_permissions_FromDB(
+										list.get(1));
 								client.sendToClient((Object) ongoingTestsPermissions);
-								//client.sendToClient(ongoingTestsPermissions == null ? (Object) notFound : (Object) ongoingTestsPermissions);
+								// client.sendToClient(ongoingTestsPermissions == null ? (Object) notFound :
+								// (Object) ongoingTestsPermissions);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 							break;
-							
+
 						case "updateHODPermissionsTable":
 							rows_affected = executeMyQuery(list.get(1));
 							rowsAffectedString = rowsAffected + " " + Integer.toString(rows_affected);
 							System.out.println(rowsAffectedString);
 							client.sendToClient(rows_affected);
 							break;
-							
+
 						default:
 							loginVarification(list, client);
 							break;
@@ -396,66 +397,82 @@ public class EchoServer extends AbstractServer {
 		}
 	}
 
+	private ArrayList<String> getSelectedAnswers_db(ArrayList<String> list) {
+		try {
+			stmt = conn.createStatement();
+			ResultSet result = stmt.executeQuery(list.get(1));
+			list.remove(1);// remove the query from list
+			while (result.next()) {
+				list.add(result.getString(1));
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private ArrayList<TestInServer> fetch_ongoingTests_permissions_FromDB(String query) {
-		  ArrayList<TestInServer> tests = new ArrayList<>();
-		    try {
-		        Statement statement = conn.createStatement();
-		        ResultSet resultSet = statement.executeQuery(query);
-		        
-				while(resultSet.next()) {
-		            TestInServer test = new TestInServer();
-		            test.setId(resultSet.getString("id"));
-		            test.setSubject(resultSet.getString("Subject")); // Added this line
-		            test.setTimeToAdd(resultSet.getString("TimeToAdd"));
-		            test.setReasonForTimeExtension(resultSet.getString("Reason"));
-		            tests.add(test);
-		            
-		        }
-		        resultSet.close();
-		        statement.close();
-		    }catch (SQLException e) {
-		        e.printStackTrace();
-		    }
-		    return tests;
+		ArrayList<TestInServer> tests = new ArrayList<>();
+		try {
+			Statement statement = conn.createStatement();
+			ResultSet resultSet = statement.executeQuery(query);
+
+			while (resultSet.next()) {
+				TestInServer test = new TestInServer();
+				test.setId(resultSet.getString("id"));
+				test.setSubject(resultSet.getString("Subject")); // Added this line
+				test.setTimeToAdd(resultSet.getString("TimeToAdd"));
+				test.setReasonForTimeExtension(resultSet.getString("Reason"));
+				tests.add(test);
+
+			}
+			resultSet.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tests;
 	}
 
 	private ArrayList<TestInServer> fetchOngoingTestsFromDB() {
-	    ArrayList<TestInServer> tests = new ArrayList<>();
-	    try {
-	        Statement statement = conn.createStatement();
+		ArrayList<TestInServer> tests = new ArrayList<>();
+		try {
+			Statement statement = conn.createStatement();
 
-	        ResultSet resultSet = statement.executeQuery("SELECT tests.*, subjectcourses.subjectname, ongoing_tests.locked "
-	                + "FROM tests "
-	                + "LEFT JOIN subjectcourses ON CAST(tests.id AS UNSIGNED) = CAST(subjectcourses.subjectid AS UNSIGNED) "
-	                + "LEFT JOIN ongoing_tests ON tests.id = ongoing_tests.test_id "
-	                + "WHERE STR_TO_DATE(CONCAT(tests.date, ' ', tests.time), '%Y-%m-%d %H:%i') <= NOW() AND "
-	                + "TIMESTAMPADD(MINUTE, TIME_TO_SEC(TIMEDIFF(tests.duration, '00:00'))/60, STR_TO_DATE(CONCAT(tests.date, ' ', tests.time), '%Y-%m-%d %H:%i')) >= NOW()"
-	                + "GROUP BY tests.id");
-			
-	        while(resultSet.next()) {
-	            TestInServer test = new TestInServer();
-	            test.setId(resultSet.getString("id"));
-	            test.setSubject(resultSet.getString("subjectname")); // Added this line
-	            test.setDuration(resultSet.getString("duration"));
-	            test.setTestComments(resultSet.getString("testcomments"));
-	            test.setAuthor(resultSet.getString("authorsname"));
-	            test.setTestCode(resultSet.getString("code"));
-	            test.setDateString(resultSet.getString("date"));
-	            test.setTime(resultSet.getString("time"));
-	            String lockBTN = resultSet.getString("locked");
-	           
-	            if(lockBTN.equals("FALSE"))
-		            test.setLockBtnPressed(false);
-	            else
-		            test.setLockBtnPressed(true);
-	            	tests.add(test);
-	        }
-	        resultSet.close();
-	        statement.close();
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return tests;
+			ResultSet resultSet = statement
+					.executeQuery("SELECT tests.*, subjectcourses.subjectname, ongoing_tests.locked "
+							+ "FROM tests "
+							+ "LEFT JOIN subjectcourses ON CAST(tests.id AS UNSIGNED) = CAST(subjectcourses.subjectid AS UNSIGNED) "
+							+ "LEFT JOIN ongoing_tests ON tests.id = ongoing_tests.test_id "
+							+ "WHERE STR_TO_DATE(CONCAT(tests.date, ' ', tests.time), '%Y-%m-%d %H:%i') <= NOW() AND "
+							+ "TIMESTAMPADD(MINUTE, TIME_TO_SEC(TIMEDIFF(tests.duration, '00:00'))/60, STR_TO_DATE(CONCAT(tests.date, ' ', tests.time), '%Y-%m-%d %H:%i')) >= NOW()"
+							+ "GROUP BY tests.id");
+
+			while (resultSet.next()) {
+				TestInServer test = new TestInServer();
+				test.setId(resultSet.getString("id"));
+				test.setSubject(resultSet.getString("subjectname")); // Added this line
+				test.setDuration(resultSet.getString("duration"));
+				test.setTestComments(resultSet.getString("testcomments"));
+				test.setAuthor(resultSet.getString("authorsname"));
+				test.setTestCode(resultSet.getString("code"));
+				test.setDateString(resultSet.getString("date"));
+				test.setTime(resultSet.getString("time"));
+				String lockBTN = resultSet.getString("locked");
+
+				if (lockBTN.equals("FALSE"))
+					test.setLockBtnPressed(false);
+				else
+					test.setLockBtnPressed(true);
+				tests.add(test);
+			}
+			resultSet.close();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return tests;
 	}
 
 	private ArrayList<Object> getQuestionsFromTest(String query) {
@@ -610,7 +627,7 @@ public class EchoServer extends AbstractServer {
 
 				TestInServer tempTest = new TestInServer(
 						res.getString(1),
-						"MATH", // TODO: Add subject to SQL
+						"MATH", // FIXME: Add subject to SQL
 						res.getString(4),
 						res.getString(2),
 						res.getString(3),
@@ -810,8 +827,7 @@ public class EchoServer extends AbstractServer {
 		return null;
 	}
 
-	// getFutureTests_db
-	private ArrayList<String> getFutureTests_db(String query, String out) {
+	private ArrayList<String> getCompletedTestsForLecturer_db(String query, String out) {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(out); // add a new identifier
 		try {
@@ -823,24 +839,6 @@ public class EchoServer extends AbstractServer {
 				}
 			}
 			return res; // res size is 13 where in first index is indentifier
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	private ArrayList<String> getCompletedTestsForLecturer_db(String query, String out) {
-		ArrayList<String> res = new ArrayList<String>();
-		res.add(out); // add a new identifier
-		try {
-			stmt = conn.createStatement();
-			ResultSet result = stmt.executeQuery(query);
-			while (result.next()) {
-				for (int index = 1; index <= 8; index++) {
-					res.add(result.getString(index));
-				}
-			}
-			return res; // res size is 9 where in first index is indentifier
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1097,7 +1095,9 @@ public class EchoServer extends AbstractServer {
 	 * }
 	 */
 
-
+	// TODO see if piechart is needed
+	// query_passed: select passed students
+	// grade_index - position of the grade field
 	private ArrayList<String> TestGrades_PassedGrades(String query_passed, int grade_index) throws SQLException {
 		ArrayList<String> outputList = new ArrayList<String>();
 		stmt = conn.createStatement();

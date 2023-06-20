@@ -5,13 +5,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
 import clientControllers.CheckTestController;
 import clientControllers.CreateQuestionController;
 import clientControllers.CreateTestController;
-import clientControllers.DBTestController;
 import clientControllers.EvaluateTestController;
 import clientControllers.HODController;
 import clientControllers.HODStatisticOnCourseController;
@@ -114,6 +114,7 @@ public class ClientHandler extends AbstractClient {
 							question.getAnswer());
 					questionModel.setPoints(question.getPoints());
 					listOfQuestionModels.add(questionModel);
+					// listOfQuestionModels.add(questionModel);
 				}
 
 				testToAdd = new Test(testFromServer.getId(), testFromServer.getSubject(),
@@ -263,7 +264,7 @@ public class ClientHandler extends AbstractClient {
 						case "completedTestsForLecturer": {
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<Test> listToAdd = new ArrayList<>();
-							// ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
+							//ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
 							// CompletedTestList = (ArrayList<Test>) severMessage;
 							int i = 1;
 							while (i < list.size()) {
@@ -336,7 +337,6 @@ public class ClientHandler extends AbstractClient {
 						}
 
 						case "getCoursesSameDepartment": {
-
 							System.out.println("Client Handler: " + list.get(0));
 							ArrayList<String> listToAdd = new ArrayList<>();
 							int i = 1;
@@ -345,31 +345,6 @@ public class ClientHandler extends AbstractClient {
 								i++;
 							}
 							HODStatisticOnCourseController.setCoursesSameDepartment(listToAdd);
-							break;
-						}
-
-						case "getFutureTests": {
-							System.out.println("Client Handler: " + list.get(0));
-							ArrayList<Test> listToAdd = new ArrayList<>();
-							ArrayList<TestInServer> listToAdd_TestServer = new ArrayList<>();
-							int i = 1;
-							while (i < list.size()) {
-								listToAdd.add(new Test(
-										list.get(i),
-										list.get(i + 1),
-										list.get(i + 2),
-										list.get(i + 3),
-										list.get(i + 4),
-										list.get(i + 5),
-										list.get(i + 6),
-										list.get(i + 7),
-										list.get(i + 8),
-										list.get(i + 9),
-										list.get(i + 10),
-										list.get(i + 11)));
-								i += 12;
-							}
-							DBTestController.setTestList(listToAdd);
 							break;
 						}
 
@@ -495,6 +470,15 @@ public class ClientHandler extends AbstractClient {
 
 							System.out.println("Client Handler: " + list.get(1));
 							break;
+						case "getSelectedAnswers":
+							list.remove(0);
+							// Step 1: Remove square brackets
+							String cleanedInput = list.get(0).replace("[", "").replace("]", "");
+							String[] elements = cleanedInput.split(",");
+							ArrayList<String> clean = new ArrayList<>();
+							clean.addAll(Arrays.asList(elements));
+							EvaluateTestController.setSelectedAnswers(clean);
+							break;
 
 					}
 				}
@@ -606,7 +590,9 @@ public class ClientHandler extends AbstractClient {
 		try {
 			sendToServer((Object) this.getInetAddress());
 			closeConnection();
-		} catch (IOException e) {}
+		} catch (IOException e) {
+		}
+		// System.exit(0);
 	}
 
 	/**
@@ -614,9 +600,7 @@ public class ClientHandler extends AbstractClient {
 	 * Resets the client data.
 	 */
 	public static void resetClientData() {
-		// Reset the user object
 		user = new User();
-		// Reset the subjectsList and questions lists in the LecturerController
 		LecturerController.subjectsList = new ArrayList<String>();
 		LecturerController.questions = new ArrayList<QuestionModel>();
 	}

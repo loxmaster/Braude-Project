@@ -8,52 +8,36 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import logic.Test;
 
-/**
- * 
- * This controller handles the display of a test card in the application.
- * 
- * It extends from the BasicController class.
- */
-public class TestCardController extends BasicController {
+public class TestCardController extends BasicController{
 
     @FXML
-    private Text code_Exam; // Text field for displaying the exam code
+    private Text code_Exam;
 
     @FXML
-    private Button ReviewExam; // Button for reviewing the exam
+    private Button ReviewExam;
 
     @FXML
-    private Text grade; // Text field for displaying the grade
+    private Text grade;
 
     @FXML
-    private AnchorPane studentexamcard; // Anchor pane for the test card
+    private AnchorPane studentexamcard;
 
     @FXML
-    private Text test_name; // Text field for displaying the test name
+    private Text test_name;
 
     @FXML
-    private Text test_date; // Text field for displaying the test date
+    private Text test_date;
 
     @FXML
-    private Label live_time; // Label for displaying live time
+	private Label live_time;
 
-    /**
-     * 
-     * Initializes the TestCardController.
-     * Starts the clock by calling the Timenow() method with the live_time label.
-     */
-    @FXML
-    void initialize() {
-        Timenow(live_time);
-    }
+	@FXML
+	void initialize() {
+		// Start the clock
+		Timenow(live_time);
+	}
 
-    /**
-     * Sets the details of the test card.
-     *
-     * @param test          The Test object containing the test details.
-     * @param SubjectCourse An ArrayList of Strings containing the subject and
-     *                      course of the test.
-     */
+    // Method to set the details of the test card
     public void setCard(Test test, ArrayList<String> SubjectCourse) {
         // Set the exam code
         code_Exam.setText(test.getId());
@@ -68,7 +52,7 @@ public class TestCardController extends BasicController {
         // Set the test date
         test_date.setText(test.getDateString());
         // Randomly set the background color of the card
-        switch ((int) ((Math.random() * 20) % 6)) {
+        switch ((int) ((Math.random() * 20)%6)) {
             case 1:
                 studentexamcard.setStyle("-fx-background-color: #B9E5FF"
                         + ";" + "-fx-background-radius: 15;"

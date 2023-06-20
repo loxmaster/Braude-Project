@@ -66,6 +66,7 @@ public class LecturerController extends BasicController {
 		ClientUI.chat.getCoursesForLecturer((Object) ClientHandler.user.getUsername());
 
 
+		
 		// Sets the welcome label
 		setWelcomeLabel();
 	}
@@ -91,8 +92,7 @@ public class LecturerController extends BasicController {
 	 */
 	@FXML
 	void CheckTheTestsPressed(ActionEvent event) {
-		CheckTestController ctc = (CheckTestController) openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml",
-				"CEMS System - Lecturer - Check Tests", event);
+		CheckTestController ctc = (CheckTestController) openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml", "CEMS System - Lecturer - Check Tests", event);
 		ctc.loadTable();
 	}
 
@@ -105,9 +105,9 @@ public class LecturerController extends BasicController {
 	@FXML
 	void HelpPressed(ActionEvent event) {
 		if (textBox.isVisible())
-			textBox.setVisible(false);
+		textBox.setVisible(false);
 		else
-			textBox.setVisible(true);
+		textBox.setVisible(true);
 	}
 
 	/**
@@ -117,9 +117,9 @@ public class LecturerController extends BasicController {
 	 * @param event The action event triggered by the user.
 	 */
 	@FXML
-	void UploadTestPressed(ActionEvent event) {
+    void UploadTestPressed(ActionEvent event) {
 		openScreen("/clientFXMLS/LecturerTestUpload.fxml", "CEMS System - Lecturer - Upload A Test", event);
-	}
+    }
 
 	/**
 	 * Event handler for the Edit Tests button press.
@@ -131,7 +131,7 @@ public class LecturerController extends BasicController {
 	void EditTestsPressed(ActionEvent event) {
 		DBTestController dbt = (DBTestController) openScreen("/clientFXMLS/LecturerTestTable.fxml",
 				"CEMS System - Lecturer - Create Tests", event);
-		dbt.load();
+		//dbt.load();
 		dbt.initialize();
 	}
 
@@ -160,6 +160,7 @@ public class LecturerController extends BasicController {
 	void ManageTestsPressed(ActionEvent event) {
 		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Create Tests", event);
 		// ctc.loadFilterComboboxes();
+
 	}
 
 	/**

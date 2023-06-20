@@ -25,43 +25,39 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import logic.QuestionModel;
 
-/**
- * This controller handles the lecturer's questions table in the application.
- * It extends from the BasicController class.
- */
 public class LecturerQuestionsTableController extends BasicController {
 
     ObservableList<String> courseList;
 
     @FXML
-    private Button BtnInfo; // Button for displaying information
+    private Button BtnInfo;
 
     @FXML
-    private TableView<QuestionModel> table; // TableView for displaying the questions
+    private TableView<QuestionModel> table;
 
     @FXML
-    private TableColumn<QuestionModel, String> id; // TableColumn for the question id
+    private TableColumn<QuestionModel, String> id;
 
     @FXML
-    private TableColumn<QuestionModel, String> subject; // TableColumn for the question subject
+    private TableColumn<QuestionModel, String> subject;
 
     @FXML
-    private TableColumn<QuestionModel, String> coursename; // TableColumn for the course name
+    private TableColumn<QuestionModel, String> coursename;
 
     @FXML
-    private TableColumn<QuestionModel, String> questiontext; // TableColumn for the question text
+    private TableColumn<QuestionModel, String> questiontext;
 
     @FXML
-    private TableColumn<QuestionModel, String> questionnumber; // TableColumn for the question number
+    private TableColumn<QuestionModel, String> questionnumber;
 
     @FXML
-    private TableColumn<QuestionModel, String> lecturer; // TableColumn for the lecturer
+    private TableColumn<QuestionModel, String> lecturer;
 
     @FXML
-    private TableColumn<QuestionModel, Button> edit; // TableColumn for the edit button
+    private TableColumn<QuestionModel, Button> edit;
 
     @FXML
-    private ComboBox<String> courseComboBox; // ComboBox for selecting the course
+    private ComboBox<String> courseComboBox;
 
     @FXML
     private Label live_time; // Label for displaying the live time
@@ -87,12 +83,6 @@ public class LecturerQuestionsTableController extends BasicController {
         courseComboBox.setItems(courseList);
     }
 
-    /**
-     * This function updates the predicate of the filtered list.
-     * It filters the questions based on the selected course.
-     *
-     * @param filteredList The FilteredList of QuestionModel objects
-     */
     private void updatePredicate(FilteredList<QuestionModel> filteredList) {
         String selectedCourse = courseComboBox.getValue();
 

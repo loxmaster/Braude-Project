@@ -16,54 +16,39 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-/**
- * 
- * Controller class for handling upload test functionality.
- * 
- * Extends BasicController.
- */
 public class UploadTestController extends BasicController {
 
-	private String filePath = "none"; // Path to the selected file
-	private File selectedFile; // The selected file
-	private String filename; // Name of the selected file
+	private String filePath = "none";
+	File selectedFile;
+	String filename;
 
 	@FXML
-	private TextField TextPath; // Text field for displaying the file path
+	private TextField TextPath;
 
 	@FXML
-	private Button exitbutton; // Button for exiting
+	private Button exitbutton;
 
 	@FXML
-	private Button logo; // Button for displaying logo
+	private Button logo;
 
 	@FXML
-	private Button chooseFile; // Button for choosing a file
+	private Button chooseFile;
 
 	@FXML
-	private Button Upload; // Button for uploading
+	private Button Upload;
 
 	@FXML
-	private TextField testID; // Text field for entering the test ID
+	private TextField testID;
 
 	@FXML
-	private Label live_time; // Label for displaying live time
+	private Label live_time;
 
-	/**
-	 * 
-	 * Initializes the controller.
-	 * Starts the clock by calling the Timenow() method with the live_time label.
-	 */
 	@FXML
 	void initialize() {
+		// Start the clock
 		Timenow(live_time);
 	}
 
-	/**
-	 * Event handler for opening the file menu.
-	 *
-	 * @param event The action event triggered by the user.
-	 */
 	@FXML
 	void OpenFileMenu(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
@@ -76,13 +61,9 @@ public class UploadTestController extends BasicController {
 			TextPath.setText(filePath);
 			filename = selectedFile.getName();
 		}
+
 	}
 
-	/**
-	 * Event handler for the Upload button press.
-	 *
-	 * @param event The action event triggered by the user.
-	 */
 	@FXML
 	synchronized void UploadPressed(ActionEvent event) {
 		// Open file chooser dialog
@@ -99,7 +80,8 @@ public class UploadTestController extends BasicController {
 
 				byte[] fileContent = byteOutputStream.toByteArray();
 
-				// REVIEW
+
+				//REVIEW 
 				ClientUI.chat.uploadFile(testID.getText(), fileContent, filename);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -110,26 +92,14 @@ public class UploadTestController extends BasicController {
 					JOptionPane.ERROR_MESSAGE);
 	}
 
-	/**
-	 * 
-	 * Event handler for navigating back to the Lecturer screen.
-	 * 
-	 * @param event The action event triggered by the user.
-	 */
 	@FXML
 	void backToLecturer(ActionEvent event) {
 		openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer - Main Screen ", event);
 	}
-
-	/**
-	 * 
-	 * Event handler for navigating back to the Manage Test screen.
-	 * 
-	 * @param event The action event triggered by the user.
-	 */
 	@FXML
 	void backPressed(ActionEvent event) {
 		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Manage Test", event);
 	}
+
 
 }

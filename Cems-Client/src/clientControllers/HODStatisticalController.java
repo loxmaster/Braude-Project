@@ -5,10 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-/**
- * This controller handles the display of statistical information for the Head of Department (HOD).
- * It extends from the BasicController class.
- */
 public class HODStatisticalController extends BasicController {
 
     // Define UI elements

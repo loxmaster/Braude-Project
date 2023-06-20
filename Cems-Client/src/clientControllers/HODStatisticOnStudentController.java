@@ -27,47 +27,43 @@ import logic.Statistics;
 import logic.Test;
 import logic.User;
 
-/**
- * This controller handles the Head of Department's view of student statistics.
- * It extends from the BasicController class.
- */
 public class HODStatisticOnStudentController extends BasicController {
 
     @FXML
-    private TableColumn<Statistics, String> Average; // Column for average score
+    private TableColumn<Statistics, String> Average;
 
     @FXML
-    private TableColumn<Statistics, Void> Distribution; // Column for score distribution
+    private TableColumn<Statistics, Void> Distribution;
 
     @FXML
-    private TableColumn<Statistics, String> Email; // Column for student email
+    private TableColumn<Statistics, String> Email;
 
     @FXML
-    private TableColumn<Statistics, String> Number_Of_Courses; // Column for number of courses
+    private TableColumn<Statistics, String> Number_Of_Courses;
 
     @FXML
-    private TableColumn<Statistics, String> StudentsID; // Column for student ID
+    private TableColumn<Statistics, String> StudentsID;
 
     @FXML
-    private TableColumn<Statistics, String> Students_Name; // Column for student name
+    private TableColumn<Statistics, String> Students_Name;
 
     @FXML
-    private ComboBox<String> Name_combo; // Combo box for student names
+    private ComboBox<String> Name_combo;
 
     @FXML
-    private ComboBox<String> Combo_ID; // Combo box for student IDs
+    private ComboBox<String> Combo_ID;
 
     @FXML
-    private Button exitbutton; // Button for exiting
+    private Button exitbutton;
 
     @FXML
-    private Button logo; // Logo button
+    private Button logo;
 
     @FXML
-    private TableView<Statistics> table; // Table for displaying statistics
+    private TableView<Statistics> table;
 
     @FXML
-    private Label live_time; // Label for displaying live time
+    private Label live_time;
 
     /**
      * Initializes the controller.
@@ -79,23 +75,11 @@ public class HODStatisticOnStudentController extends BasicController {
         Timenow(live_time);
     }
 
-    /**
-     * This function is called when the logout button is pressed.
-     * It can be used to handle the logout action.
-     *
-     * @param event The ActionEvent object
-     */
     @FXML
     void logoutPressed(ActionEvent event) {
-        // Handle the logout action if needed
+
     }
 
-    /**
-     * This function is called when the back button is pressed.
-     * It opens the Statistical screen.
-     *
-     * @param event The ActionEvent object
-     */
     @FXML
     void backPressed(ActionEvent event) {
         // open Statistical screen screen
