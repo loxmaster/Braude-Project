@@ -674,7 +674,7 @@ public class ClientHandler extends AbstractClient {
 
 		ArrayList<String> list = new ArrayList<String>();
 		String status = "completed";
-		String tested = "true";
+		String tested = "false";
 		String query = String.format(
 				"SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
 				user.getUsername(), status, tested);
