@@ -90,6 +90,7 @@ public class UploadTestController extends BasicController {
 			JOptionPane.showMessageDialog(null,
 					(String) "Something went wrong!\n File not found! try picking the file again.", (String) "Error!",
 					JOptionPane.ERROR_MESSAGE);
+		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Manage Test", event);
 	}
 
 	@FXML

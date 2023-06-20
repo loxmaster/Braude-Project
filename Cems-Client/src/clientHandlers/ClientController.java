@@ -41,7 +41,6 @@ public class ClientController implements ChatIF {
         }
     }
 
-
     /**
      * This method overrides the method in the ChatIF interface. It displays a
      * message onto the screen.
@@ -82,10 +81,6 @@ public class ClientController implements ChatIF {
         }
     }
 
-
-
-  
-
     public void getSelectedAnswers(String studentID, String id) {
         ArrayList<String> list = new ArrayList<>();
         list.add("getSelectedAnswers");
@@ -107,30 +102,7 @@ public class ClientController implements ChatIF {
     // getSelectedAnswers();
     // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
+    /**
      * Accepts user input from the console and sends it to the server for
      * processing.
      */
@@ -172,48 +144,48 @@ public class ClientController implements ChatIF {
     }
 
     public void Update_HOD_permissionsTable_inDB(Test test) {
-		ArrayList<String> request = new ArrayList<>();
-	    String query = "DELETE FROM hod_timeextensionrequests WHERE id = " + test.getId();
-	    request.add("updateHODPermissionsTable");
-	    request.add(query);
+        ArrayList<String> request = new ArrayList<>();
+        String query = "DELETE FROM hod_timeextensionrequests WHERE id = " + test.getId();
+        request.add("updateHODPermissionsTable");
+        request.add(query);
         openConnection();
-        client.passToServer((Object)request);
-	}
+        client.passToServer((Object) request);
+    }
 
     public void fetch_ongoingTests_permissions_list() {
         ArrayList<String> ongoingTests_permissions_list = new ArrayList<String>();
-		String query = "SELECT * FROM hod_timeextensionrequests;";
-		ongoingTests_permissions_list.add("fetch_ongoingTests_permissions_FromDB");
-		ongoingTests_permissions_list.add(query);
-		openConnection();
+        String query = "SELECT * FROM hod_timeextensionrequests;";
+        ongoingTests_permissions_list.add("fetch_ongoingTests_permissions_FromDB");
+        ongoingTests_permissions_list.add(query);
+        openConnection();
         client.passToServer((Object) ongoingTests_permissions_list);
-	}
+    }
 
-    //get all the ongoing tests 
-	public void GetOngoingTests() {
+    // get all the ongoing tests
+    public void GetOngoingTests() {
         ArrayList<String> request = new ArrayList<>();
-	    request.add("fetchOngoingTests");
-	    client.passToServer((Object) request);
-	}
+        request.add("fetchOngoingTests");
+        client.passToServer((Object) request);
+    }
 
-    //update time extension requests in hod_timeextensionrequests table
-    public void SendRequest_TimeExtention_toHOD(String id,String comments, String timeToAdd, String subject) {
-    	ArrayList<String> listToSend = new ArrayList<String>();
+    // update time extension requests in hod_timeextensionrequests table
+    public void SendRequest_TimeExtention_toHOD(String id, String comments, String timeToAdd, String subject) {
+        ArrayList<String> listToSend = new ArrayList<String>();
         String query = "INSERT INTO `projecton`.`hod_timeextensionrequests` (`id`,`Subject`, `TimeToAdd`, `Reason`) VALUES ('"
                 + id + "','" + subject + "', '" + timeToAdd + "', '"
-                + comments +"');";
-		listToSend.add("Update_timeExtensionRequestsTable");
-		listToSend.add(query);
+                + comments + "');";
+        listToSend.add("Update_timeExtensionRequestsTable");
+        listToSend.add(query);
         client.passToServer((Object) listToSend);
     }
 
-    public void updateLockButton_DB(Test test,String value) {
+    public void updateLockButton_DB(Test test, String value) {
         ArrayList<String> list = new ArrayList<String>();
-	    String query = "UPDATE ongoing_tests SET locked = '" + value + "' WHERE test_id = " + test.getId();
-		list.add("updateLockButton_DB");
-		list.add(query);
+        String query = "UPDATE ongoing_tests SET locked = '" + value + "' WHERE test_id = " + test.getId();
+        list.add("updateLockButton_DB");
+        list.add(query);
         client.passToServer((Object) list);
-	}
+    }
 
     // gets all subject available for lecturer
     public void getcompletedTestsForStudentList() {
@@ -234,7 +206,7 @@ public class ClientController implements ChatIF {
     public void getcompletedTestsForLecturerList() {
         ArrayList<String> list = new ArrayList<String>();
         String status = "completed";
-        String tested = "true";
+        String tested = "false";
         String query = String.format(
                 "SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
                 ClientHandler.user.getUsername(), status, tested); // TODO may couse problem
@@ -285,7 +257,7 @@ public class ClientController implements ChatIF {
                 "SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
                 subjectid, courseid);
         subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodSubjectsCourseForTestSpecificLec", query));
-        client.passToServer((Object) query);
+        client.passToServer((Object) subjectcoursenameofcompletedtest);
         // client.getHodCourseForTestSpecificLec((String) id);
     }
 
@@ -323,7 +295,7 @@ public class ClientController implements ChatIF {
                 "SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
                 subjectid, courseid);
         subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodCourseForTestSpecificStudent", query));
-        client.passToServer((Object) query);
+        client.passToServer((Object) subjectcoursenameofcompletedtest);
     }
 
     // gets all subject available for lecturer
@@ -476,7 +448,7 @@ public class ClientController implements ChatIF {
         list.addAll(Arrays.asList("testNumber",
                 "SELECT MAX(CAST(SUBSTRING(id, 5, 2) AS UNSIGNED)) AS max_test_number FROM tests WHERE SUBSTRING(id, 1, 4) = '"
                         + (String) coursename + "';"));
-        client.passToServer(coursename);
+        client.passToServer((Object)list);
     }
 
     public void GetCourseIDfromSubjectCourses(Object coursename) {
@@ -484,7 +456,7 @@ public class ClientController implements ChatIF {
         list.addAll(Arrays.asList("getCourseID",
                 "SELECT courseid FROM projecton.subjectcourses where ( `coursename` = '" + (String) coursename
                         + "' );"));
-        client.passToServer(coursename);
+        client.passToServer((Object)list);
     }
 
     public void getTestWithCodeForStudent(String testCode) {
@@ -501,7 +473,7 @@ public class ClientController implements ChatIF {
                 Arrays.asList("check test",
                         "SELECT * FROM projecton.completed_tests where test_id = '" + test.getId()
                                 + "' AND student_id = '" + test.getStudentID() + "';"));
-        client.passToServer((Object) test);
+        client.passToServer((Object) listOfCommands);
     }
 
     public void sendToCompletedTest(Test localTest) {
@@ -589,7 +561,7 @@ public class ClientController implements ChatIF {
         ArrayList<String> listToSend = new ArrayList<String>();
         listToSend.add("DeleteQuestion");
         listToSend.add("DELETE FROM `projecton`.`questions` WHERE (`id` = '" + originalId + "');");
-        client.passToServer((Object) originalId);
+        client.passToServer((Object) listToSend);
     }
 
     public void getCoursesSameDepartment() {
@@ -610,9 +582,5 @@ public class ClientController implements ChatIF {
         list.addAll(Arrays.asList("getCoursesExams", query));
         client.passToServer((Object) list);
     }
-
-    
-
-
 
 }

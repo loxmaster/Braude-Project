@@ -109,7 +109,7 @@ public class CheckTestController extends BasicController {
     checked.setOnAction(new EventHandler<ActionEvent>() {
       
       @Override
-      public void handle(ActionEvent event) {
+      public void handle(ActionEvent event)  {
         // remember all the data of the question
         // send to EditQuestionScreen
         ((Node) event.getSource()).getScene().getWindow().hide();
