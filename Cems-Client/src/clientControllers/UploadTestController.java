@@ -52,8 +52,8 @@ public class UploadTestController extends BasicController {
 	@FXML
 	void OpenFileMenu(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Choose a file");
-		fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Desktop"));
+		 fileChooser.setTitle("Choose a file");
+		// fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + File.separator + "Desktop"));
 		Stage stage = (Stage) chooseFile.getScene().getWindow();
 		selectedFile = fileChooser.showOpenDialog(stage);
 		if (selectedFile != null) {

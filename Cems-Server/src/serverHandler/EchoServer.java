@@ -9,6 +9,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextInputDialog;
 import logic.ClientModel;
 import logic.FileDownloadMessage;
 import logic.FileUploadMessage;
@@ -527,10 +532,9 @@ public class EchoServer extends AbstractServer {
 		FileDownloadMessage fileContent = new FileDownloadMessage(fileId);
 		fileContent.setFileContent(null);
 		fileContent.setFilename(null);
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/projecton?serverTimezone=IST",
-				"root", "123456")) {
+		{
 			String sql = "SELECT file_data,file_name FROM uploaded_tests WHERE test_id = ?";
-			try (PreparedStatement statement = connection.prepareStatement(sql)) {
+			try (PreparedStatement statement = conn.prepareStatement(sql)) {
 				statement.setString(1, fileId);
 				try (ResultSet resultSet = statement.executeQuery()) {
 					if (resultSet.next()) {
@@ -538,24 +542,22 @@ public class EchoServer extends AbstractServer {
 						fileContent.setFilename(resultSet.getString("file_name"));
 					}
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			return fileContent;
 		}
-		return fileContent;
 	}
 
 	private boolean saveFileToDatabase(String fileId, byte[] fileContent, String filename) {
-		try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/projecton?serverTimezone=IST",
-				"root", "123456")) {
-			String sql = "INSERT INTO uploaded_tests (test_id, file_data, file_name) VALUES (?, ?, ?)";
-			try (PreparedStatement statement = connection.prepareStatement(sql)) {
-				statement.setString(1, fileId);
-				statement.setBytes(2, fileContent);
-				statement.setString(3, filename);
-				statement.executeUpdate();
-				return true;
-			}
+
+		String sql = "INSERT INTO uploaded_tests (test_id, file_data, file_name) VALUES (?, ?, ?)";
+		try (PreparedStatement statement = conn.prepareStatement(sql)) {
+			statement.setString(1, fileId);
+			statement.setBytes(2, fileContent);
+			statement.setString(3, filename);
+			statement.executeUpdate();
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -1018,6 +1020,7 @@ public class EchoServer extends AbstractServer {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 			System.out.println("Driver definition succeed");
+
 		} catch (Exception ex) {
 			/* handle the error */
 			System.out.println("Driver definition failed");
@@ -1026,7 +1029,17 @@ public class EchoServer extends AbstractServer {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/" + DBname + "?serverTimezone=IST", username,
 					Password);
 			System.out.println("SQL connection succeed");
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Success!");
+			alert.setHeaderText(null);
+			alert.setContentText("Server Started!");
+			alert.showAndWait();
 		} catch (SQLException ex) {// handle any errors
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("ERROR");
+			alert.setHeaderText(null);
+			alert.setContentText("Wrong Credentials!");
+			alert.showAndWait();
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
