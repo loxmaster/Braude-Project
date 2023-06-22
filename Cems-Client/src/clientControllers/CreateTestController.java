@@ -1,9 +1,10 @@
 package clientControllers;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Pattern;
-
-import javax.swing.JOptionPane;
 
 import clientHandlers.ClientHandler;
 import clientHandlers.ClientUI;
@@ -16,6 +17,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -30,13 +33,12 @@ import javafx.stage.Stage;
 import logic.QuestionModel;
 import logic.Test;
 
-
 public class CreateTestController extends BasicController {
 
-	// ############################### Local Variables ###########################################
+	// ############################### Local Variables
+	// ###########################################
 	
-	
-
+    
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
 	private Test test = new Test();
@@ -46,8 +48,8 @@ public class CreateTestController extends BasicController {
 	private static String nextTestNumber;
 	private static final Pattern TIME_PATTERN = Pattern.compile("^\\d{2}:\\d{2}$");
 
-	// ############################### FXML Variables ############################################
-
+	// ############################### FXML Variables
+	// ############################################
 
 	@FXML
 	private ToggleGroup toggleGroup;
@@ -81,21 +83,20 @@ public class CreateTestController extends BasicController {
 	@FXML
 	private Label live_time;
 
-	
-	// ############################### FXML Methods ###########################################
-
+	// ############################### FXML Methods
+	// ###########################################
 
 	@FXML
 	void initialize() {
 		// Start the clock
-		if(test==null){
-		code.setText("XXXX");
-		duration.setText("00:00");
-		startTime.setText("8:30");
+		if (test == null) {
+			code.setText("XXXX");
+			duration.setText("00:00");
+			startTime.setText("8:30");
 		}
 		Timenow(live_time);
 	}
-	
+
 	public static String getNextTestNumber() {
 		return nextTestNumber;
 	}
@@ -119,7 +120,6 @@ public class CreateTestController extends BasicController {
 		courseComboBox.getItems().removeAll();
 		courseComboBox.setItems(courseList);
 	}
-	
 
 	/**
 	 * Method handeling the pressing of 'Add Test Comments' button .
@@ -194,45 +194,48 @@ public class CreateTestController extends BasicController {
 	void savePressed(ActionEvent event) {
 		test.setAuthor(ClientHandler.user.getUsername()); // TODO change to pName and not username
 		test.setTestCode(code.getText());
+		
 
-		// grab course values from the combobox and get course id from db
-		ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		// // grab course values from the combobox and get course id from db
+		// ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
+		// try {
+		// 	Thread.sleep(100);
+		// } catch (InterruptedException e) {
+		// 	e.printStackTrace();
+		// }
+		// String courseid = CreateQuestionController.courseID;
+
+		// // grab subject values from the combobox and get subject id from db
+		// ClientUI.chat.GetSubjectIDfromSubjectCourses(subjectComboBox.getValue());
+		// try {
+		// 	Thread.sleep(100);
+		// } catch (InterruptedException e) {
+		// 	e.printStackTrace();
+		// }
+		// String subjectid = CreateQuestionController.getSubjectID();
+
+		// // grab concat values of subjectid and courseid get the next test number from db
+		// ClientUI.chat.getNextFreeTestNumber(subjectid + courseid);
+		// try {
+		// 	Thread.sleep(100);
+		// } catch (InterruptedException e) {
+		// 	e.printStackTrace();
+		// }
+
+		// // String nextTestNumber = subjectid + courseid + "03";
+
+		// // send all three so set a new testID
+		// String numberid = subjectid + courseid + nextTestNumber;
+		// test.setId(numberid);
+
+		if (test.getQuesitonsInTest().isEmpty()) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please Add Questions!");
+			alert.showAndWait();
+			return;
 		}
-		String courseid = CreateQuestionController.courseID;
-
-		// grab subject values from the combobox and get subject id from db
-		ClientUI.chat.GetSubjectIDfromSubjectCourses(subjectComboBox.getValue());
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		String subjectid = CreateQuestionController.getSubjectID();
-
-		// grab concat values of subjectid and courseid get the next test number from db
-		ClientUI.chat.getNextFreeTestNumber(subjectid + courseid);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		// String nextTestNumber = subjectid + courseid + "03";
-
-		// send all three so set a new testID
-		String numberid =subjectid + courseid + nextTestNumber; 
-		test.setId(numberid);
-
-
 		// Checks if the test points are in order
 		if (totalPoints.getText().equals("100")) {
 			totalPoints.setStyle("-fx-background-color: transparent;");
@@ -240,25 +243,42 @@ public class CreateTestController extends BasicController {
 
 		} else {
 			totalPoints.setStyle("-fx-background-color: red;"); // Set red background color
-			JOptionPane.showMessageDialog(null, "Points should be equal to 100!", "Error", JOptionPane.ERROR_MESSAGE);
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Invalid Points");
+			alert.showAndWait();
 			return;
 		}
-
+		LocalDate pickedDate = date.getValue();
+		
+		LocalDate currentDate = LocalDate.now();
 		// Checks if the date has been picked
-		if (date.getValue() != null) {
+		if ((pickedDate != null) && pickedDate.isAfter(currentDate) && (date.getValue() != null ) && !(date.getValue().equals("")) ){
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			sdf.format(new Date());
+			System.out.println(sdf);
 			date.setStyle("-fx-background-color: transparent;");
 			test.setDate(date);
 
 		} else {
 			date.setStyle("-fx-background-color: red;"); // Set red background color
-			JOptionPane.showMessageDialog(null, "Date Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Date Not Valid!");
+			alert.showAndWait();
 			return;
 		}
 
 		// Checks if the course has been picked
 		if (courseComboBox.getValue() == "" || courseComboBox.getValue() == " " || courseComboBox.getValue() == null) {
 			courseComboBox.setStyle("-fx-background-color: red;"); // Set red background color
-			JOptionPane.showMessageDialog(null, "Course Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Course Not Picked!");
+			alert.showAndWait();
 			return;
 		} else {
 			courseComboBox.setStyle("-fx-background-color: transparent;");
@@ -269,7 +289,11 @@ public class CreateTestController extends BasicController {
 		if (subjectComboBox.getValue() == "" || subjectComboBox.getValue() == ""
 				|| subjectComboBox.getValue() == null) {
 			subjectComboBox.setStyle("-fx-background-color: red;"); // Set red background color
-			JOptionPane.showMessageDialog(null, "Subject Not Picked!", "Error", JOptionPane.ERROR_MESSAGE);
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Subject Not Picked!");
+			alert.showAndWait();
 			return;
 		} else {
 			subjectComboBox.setStyle("-fx-background-color: transparent;");
@@ -283,8 +307,11 @@ public class CreateTestController extends BasicController {
 
 		} else {
 			startTime.setStyle("-fx-background-color: red;"); // Set red background color
-			JOptionPane.showMessageDialog(null, "Please insert time in a HH:MM format!", "Error",
-					JOptionPane.ERROR_MESSAGE);
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please insert time in a HH:MM format!");
+			alert.showAndWait();
 			return;
 		}
 
@@ -294,27 +321,72 @@ public class CreateTestController extends BasicController {
 
 		} else {
 			duration.setStyle("-fx-background-color: red;"); // Set red background color
-			JOptionPane.showMessageDialog(null, "Please insert duration in a HH:MM format and above 0!", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		}
-
-		if (test.getQuesitonsInTest().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Please add questions!", "Error", JOptionPane.ERROR_MESSAGE);
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Please insert duration in a HH:MM format and above 0!");
+			alert.showAndWait();
 			return;
 		}
 
 		
-		
+		if (code.getText().length() == 4) {
+			code.setStyle("-fx-background-color: transparent;");
+			test.setTestCode(code.getText());
+
+		} else {
+			code.setStyle("-fx-background-color: red;"); // Set red background color
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Invalid Test Code! (4 digits)");
+			alert.showAndWait();
+			return;
+		}
+		// grab course values from the combobox and get course id from db
+		ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		String courseid = CreateQuestionController.courseID;
+
+		// grab subject values from the combobox and get subject id from db
+		ClientUI.chat.GetSubjectIDfromSubjectCourses(subjectComboBox.getValue());
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		String subjectid = CreateQuestionController.getSubjectID();
+
+		// grab concat values of subjectid and courseid get the next test number from db
+		ClientUI.chat.getNextFreeTestNumber(subjectid + courseid);
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		// String nextTestNumber = subjectid + courseid + "03";
+
+		// send all three so set a new testID
+		String numberid = subjectid + courseid + nextTestNumber;
+		test.setId(numberid);
+
 		// Sends the test to the database using the ClientController 'chat' in the
 		// ClientUI, while showing a message to the user
 		ClientUI.chat.sendTestToDatabase(test);
-		JOptionPane.showMessageDialog(null, "Changes Saved!", "Success!", JOptionPane.WARNING_MESSAGE);
+		Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Changes Saved!");
+			alert.showAndWait();
 		// Goes to lecturer screen
 		backToLecturer(event);
 	}
-	
-	
+
 	// #########################################################
 	// ######################### Local Methods #################
 	// #########################################################
@@ -377,12 +449,14 @@ public class CreateTestController extends BasicController {
 				// Creates new listener for this question and puts it in questionPointsListener
 				questionPointsListener = new ChangeListener<String>() {
 					@Override
-					public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+					public void changed(ObservableValue<? extends String> observable, String oldValue,
+							String newValue) {
 						try {
 							if (newValue == null)
 								question.setPoints("0");
-							else
+							else if (Integer.parseInt(newValue) > 0) {
 								question.setPoints(newValue);
+							}
 							updateTotalPoints();
 							totalPoints.setText(String.valueOf(pointsInTest));
 						} catch (Exception e) {
@@ -470,11 +544,11 @@ public class CreateTestController extends BasicController {
 		ArrayList<QuestionModel> tempQuestionList = test.getQuesitonsInTest();
 		for (QuestionModel question : tempQuestionList)
 			totalPoints += Integer.parseInt(question.getPoints());
+
 		pointsInTest = totalPoints;
 	}
 
-
-	// ############################################### 
+	// ###############################################
 	// ######## Controller for comment screen #######
 	// #############################################
 
@@ -540,10 +614,9 @@ public class CreateTestController extends BasicController {
 	@FXML
 	void backPressed(ActionEvent event) {
 		// goes back to options screen
-		
-		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer", event);
-		
-	}
 
+		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer", event);
+
+	}
 
 }
