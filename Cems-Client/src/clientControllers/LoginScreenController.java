@@ -58,7 +58,7 @@ public class LoginScreenController extends BasicController {
 	}
 
 	@FXML
-	void pressedLogin(ActionEvent event) throws IOException {
+	public String pressedLogin(ActionEvent event) throws IOException {
 
 		// Opens connection if closed
 		ClientUI.chat.openConnection();
@@ -73,7 +73,6 @@ public class LoginScreenController extends BasicController {
 
 		System.out.println("Entered: " + username + " " + password + " " + selectedRole);
 
-		if ((username.trim().isEmpty() || password.trim().isEmpty() || selectedRole == null )) {
 			if (username.isEmpty()) {
 				emailTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);");
 				Alert alert = new Alert(AlertType.ERROR);
@@ -81,11 +80,9 @@ public class LoginScreenController extends BasicController {
 				alert.setHeaderText(null);
 				alert.setContentText("Username is Empty!");
 				alert.showAndWait();
-
 				passTextbox.setStyle("");
-				//emailTextbox.setStyle("");
 				combo_Role.setStyle("");
-				return;
+				return "Username is Empty!";
 			}
 			if (password.isEmpty()) {
 				passTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);;");
@@ -94,11 +91,9 @@ public class LoginScreenController extends BasicController {
 				alert.setHeaderText(null);
 				alert.setContentText("Password is Empty!");
 				alert.showAndWait();
-
-				//passTextbox.setStyle("");
 				emailTextbox.setStyle("");
 				combo_Role.setStyle("");
-				return;
+				return "Password is Empty!";
 			}
 			if (selectedRole == null) {
 				combo_Role.setStyle("-fx-background-color: rgb(255, 74, 74);;");
@@ -109,13 +104,9 @@ public class LoginScreenController extends BasicController {
 				alert.showAndWait();
 				passTextbox.setStyle("");
 				emailTextbox.setStyle("");
-				//combo_Role.setStyle("");
-				return;
+				return "Role not selected!";
 			}
-			return;
-		}
 
-		else {
 			// Verifies students credintials from database
 			ClientUI.chat.loginVarification(username, password, selectedRole);
 
@@ -130,14 +121,14 @@ public class LoginScreenController extends BasicController {
 			}
 
 			if (!ClientHandler.user.getIsFound()) {
-			//	setVisibleFalse();
-				//System.out.println("user not found! (loginscreencontroller)");
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error");
 				alert.setHeaderText(null);
 				alert.setContentText("user not found!");
 				alert.showAndWait();
-			} else {
+				return "User not found!";
+			}
+
 				// if found loading the corresponding screen
 				switch (ClientHandler.user.getType()) {
 					case "student": {
@@ -169,11 +160,9 @@ public class LoginScreenController extends BasicController {
 								"incorrect username or password",
 								JOptionPane.ERROR_MESSAGE);
 					}
-
 				}
-			}
+				return "Success";
 
-		}
 	}
 
 /**
@@ -184,5 +173,5 @@ public class LoginScreenController extends BasicController {
  */
 public void start(Stage stage) throws IOException {
     openScreen("/clientFXMLS/LoginScreen.fxml", "CEMS - Login", null);
-}
+	}
 }
