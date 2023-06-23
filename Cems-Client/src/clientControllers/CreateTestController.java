@@ -276,7 +276,7 @@ public class CreateTestController extends BasicController {
 	 * @param event The action event that triggers this method.
 	 */
 	@FXML
-	void savePressed(ActionEvent event) {
+	String savePressed(ActionEvent event) {
 		test.setAuthor(ClientHandler.user.getUsername()); // TODO change to pName and not username
 		test.setTestCode(code.getText());
 		
@@ -319,7 +319,7 @@ public class CreateTestController extends BasicController {
 			alert.setHeaderText(null);
 			alert.setContentText("Please Add Questions!");
 			alert.showAndWait();
-			return;
+			return "Please Add Questions!";
 		}
 		// Checks if the test points are in order
 		if (totalPoints.getText().equals("100")) {
@@ -333,7 +333,7 @@ public class CreateTestController extends BasicController {
 			alert.setHeaderText(null);
 			alert.setContentText("Invalid Points");
 			alert.showAndWait();
-			return;
+			return "Invalid Points";
 		}
 		LocalDate pickedDate = date.getValue();
 		
@@ -353,7 +353,7 @@ public class CreateTestController extends BasicController {
 			alert.setHeaderText(null);
 			alert.setContentText("Date Not Valid!");
 			alert.showAndWait();
-			return;
+			return "Date Not Valid!";
 		}
 
 		// Checks if the course has been picked
@@ -364,7 +364,7 @@ public class CreateTestController extends BasicController {
 			alert.setHeaderText(null);
 			alert.setContentText("Course Not Picked!");
 			alert.showAndWait();
-			return;
+			return "Course Not Picked!";
 		} else {
 			courseComboBox.setStyle("-fx-background-color: transparent;");
 			test.setCourse(courseComboBox.getValue());
@@ -379,7 +379,7 @@ public class CreateTestController extends BasicController {
 			alert.setHeaderText(null);
 			alert.setContentText("Subject Not Picked!");
 			alert.showAndWait();
-			return;
+			return "Subject Not Picked!";
 		} else {
 			subjectComboBox.setStyle("-fx-background-color: transparent;");
 			test.setSubject(subjectComboBox.getValue());
@@ -397,7 +397,7 @@ public class CreateTestController extends BasicController {
 			alert.setHeaderText(null);
 			alert.setContentText("Please insert time in a HH:MM format!");
 			alert.showAndWait();
-			return;
+			return "Please insert time in a HH:MM format!";
 		}
 
 		if (TIME_PATTERN.matcher(duration.getText()).matches() && !duration.getText().equals("00:00")) {
@@ -411,7 +411,7 @@ public class CreateTestController extends BasicController {
 			alert.setHeaderText(null);
 			alert.setContentText("Please insert duration in a HH:MM format and above 0!");
 			alert.showAndWait();
-			return;
+			return "Please insert duration in a HH:MM format and above 0!";
 		}
 
 		
@@ -426,7 +426,7 @@ public class CreateTestController extends BasicController {
 			alert.setHeaderText(null);
 			alert.setContentText("Invalid Test Code! (4 digits)");
 			alert.showAndWait();
-			return;
+			return "Invalid Test Code! (4 digits)";
 		}
 		// grab course values from the combobox and get course id from db
 		ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
@@ -470,6 +470,7 @@ public class CreateTestController extends BasicController {
 			alert.showAndWait();
 		// Goes to lecturer screen
 		backToLecturer(event);
+		return "Changes Saved!";
 	}
 
 	// #########################################################
