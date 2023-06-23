@@ -141,6 +141,8 @@ public class IdAndCodeScreen extends BasicController {
 					if (fileContent != null) {
 						fos.write(fileContent);
 						fos.flush();
+						StudentUploadController suc = (StudentUploadController) openScreen("/clientFXMLS/StudentUploadTest.fxml", "CEMS System - Student - Test", event);
+        				suc.load(test_code);
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

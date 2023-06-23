@@ -69,10 +69,6 @@ public class ServerController {
             e.printStackTrace();
         }
 
-        //DELETE THIS LATER
-        EchoServer.main(null);
-        EchoServer.startServer(dbNameField.getText(), usernameField.getText(), passwordField.getText());
-
     }
 
     /**

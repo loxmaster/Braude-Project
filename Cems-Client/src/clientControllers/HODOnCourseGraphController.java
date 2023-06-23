@@ -14,6 +14,13 @@ import javafx.scene.text.Text;
 import logic.Statistics;
 import logic.Test;
 
+/**
+ * 
+ * This controller handles the view of statistical information on courses for
+ * the Head of Department (HOD).
+ * 
+ * It extends from the BasicController class.
+ */
 public class HODOnCourseGraphController extends BasicController {
 
     @FXML
@@ -112,23 +119,51 @@ public class HODOnCourseGraphController extends BasicController {
         Timenow(live_time);
     }
 
+    /**
+     * 
+     * This function handles the action of clicking the "Back to Lecturer" button.
+     * 
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     void backToLecturer(ActionEvent event) {
-
+        // Handle back to lecturer action
     }
 
+    /**
+     * 
+     * This function handles the action of clicking the "Back to Statistical"
+     * button.
+     * It navigates the user back to the statistical information on courses page.
+     * 
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     void backtoStatistical(ActionEvent event) {
-        HODStatisticOnCourseController Hod = (HODStatisticOnCourseController) openScreen(
-                "/clientFXMLS/HodStatisticOnCourses.fxml", "Statistical Informatrion On Courses", event);
-        Hod.load();
+        HODStatisticOnCourseController hod = (HODStatisticOnCourseController) openScreen(
+                "/clientFXMLS/HodStatisticOnCourses.fxml", "Statistical Information On Courses", event);
+        hod.load();
     }
 
+    /**
+     * 
+     * This function handles the action of clicking the "Exit" button.
+     * 
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     void exitPressed(ActionEvent event) {
-        
+        // Handle exit action
     }
 
+    /**
+     * 
+     * This function populates the UI with course statistics.
+     * 
+     * @param data                  The Statistics object containing the course
+     *                              statistics.
+     * @param AllcompletedTestsList The list of all completed tests for the course.
+     */
     public void CoursesdInfo(Statistics data, ArrayList<Test> AllcompletedTestsList) {
 
         // Create pie chart data

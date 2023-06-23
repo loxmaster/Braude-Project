@@ -84,7 +84,7 @@ public class ClientController implements ChatIF {
     public void getSelectedAnswers(String studentID, String id) {
         ArrayList<String> list = new ArrayList<>();
         list.add("getSelectedAnswers");
-        list.add("SELECT selected FROM projecton.completed_tests WHERE test_id='" + id + "' AND student_id= '"
+        list.add("SELECT selected FROM completed_tests WHERE test_id='" + id + "' AND student_id= '"
                 + studentID + "';");
         client.passToServer(list);
     }
@@ -92,7 +92,7 @@ public class ClientController implements ChatIF {
     public void SendEvaluatedTest(String id, String studentID, String text, String testcomments) {
         ArrayList<String> saveChanges = new ArrayList<>();
         saveChanges.add("testEval");
-        saveChanges.add("UPDATE `projecton`.`completed_tests` SET `grade` = '" + text
+        saveChanges.add("UPDATE `completed_tests` SET `grade` = '" + text
                 + "', `tested` = 'true', `comment` = '" + testcomments + "' WHERE (`test_id` = '" + id
                 + "') and (`student_id` = '" + studentID + "');");
         client.passToServer(saveChanges);
@@ -136,7 +136,7 @@ public class ClientController implements ChatIF {
         String pass = (String) password;
         String role = (String) type;
         String query = String.format(
-                "SELECT * FROM projecton.users  WHERE username = '%s' AND password = '%s' AND type = '%s';",
+                "SELECT * FROM users  WHERE username = '%s' AND password = '%s' AND type = '%s';",
                 name, pass, role);
         credentials.addAll(Arrays.asList(query, name, pass, role));
         // pass email and password to the client for authentication
@@ -171,7 +171,7 @@ public class ClientController implements ChatIF {
     // update time extension requests in hod_timeextensionrequests table
     public void SendRequest_TimeExtention_toHOD(String id, String comments, String timeToAdd, String subject) {
         ArrayList<String> listToSend = new ArrayList<String>();
-        String query = "INSERT INTO `projecton`.`hod_timeextensionrequests` (`id`,`Subject`, `TimeToAdd`, `Reason`) VALUES ('"
+        String query = "INSERT INTO `hod_timeextensionrequests` (`id`,`Subject`, `TimeToAdd`, `Reason`) VALUES ('"
                 + id + "','" + subject + "', '" + timeToAdd + "', '"
                 + comments + "');";
         listToSend.add("Update_timeExtensionRequestsTable");
@@ -191,25 +191,24 @@ public class ClientController implements ChatIF {
     public void getcompletedTestsForStudentList() {
         ArrayList<String> list = new ArrayList<String>();
         String key = ClientHandler.user.getUser_id(); // TODO may couse problem
-        String testType = "computer";
+       // String testType = "computer";
         String status = "completed";
         String tested = "true";
         String query = String.format(
-                "SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND test_type='%s' AND status='%s' AND tested='%s';",
-                key, testType, status, tested);
+                "SELECT * FROM completed_tests WHERE student_id='%s' AND status='%s' AND tested='%s';",
+                key, status, tested);
 
         list.addAll(Arrays.asList("completedTestsForStudent", query));
         client.passToServer((Object) list);
         // client.getcompletedTestsForStudentList();
     }
 
-    public void getcompletedTestsForLecturerList() {
+    public void getcompletedTestsForLecturerList(String check) {
         ArrayList<String> list = new ArrayList<String>();
-        String status = "completed";
-        String tested = "false";
+        String tested = check;
         String query = String.format(
-                "SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
-                ClientHandler.user.getUsername(), status, tested); // TODO may couse problem
+                "SELECT * FROM completed_tests WHERE authorsname='%s' AND tested='%s';",
+                ClientHandler.user.getUsername(), tested); // TODO may couse problem
 
         list.addAll(Arrays.asList("completedTestsForLecturer", query));
         client.passToServer((Object) list);
@@ -219,7 +218,7 @@ public class ClientController implements ChatIF {
     public void getAllTestsOfLecturer() {
         ArrayList<String> list = new ArrayList<String>();
         String query = String.format(
-                "SELECT * FROM projecton.tests WHERE authorsname='%s' AND id NOT IN (SELECT test_id FROM projecton.completed_tests ) AND id NOT IN (SELECT test_id FROM projecton.ongoing_tests)",
+                "SELECT * FROM tests WHERE authorsname='%s' AND id NOT IN (SELECT test_id FROM completed_tests ) AND id NOT IN (SELECT test_id FROM ongoing_tests)",
                 ClientHandler.user.getUsername()); // TODO may couse problems
         list.addAll(Arrays.asList("futureTests", query));
         client.passToServer((Object) list);
@@ -228,7 +227,7 @@ public class ClientController implements ChatIF {
     // fetch data for hod in statistic on lecterurs
     public void getLecturerListUnderSameDepartment() {
         ArrayList<String> list = new ArrayList<String>();
-        String query = String.format("SELECT * FROM projecton.users  WHERE type = 'lecturer' AND department = '%s';",
+        String query = String.format("SELECT * FROM users  WHERE type = 'lecturer' AND department = '%s';",
                 ClientHandler.user.getDepartment()); // TODO may couse problem
         list.addAll(Arrays.asList("LecturerListUnderSameDepartment", query));
         client.passToServer((Object) list);
@@ -241,7 +240,7 @@ public class ClientController implements ChatIF {
         String status = "completed";
         String tested = "true";
         String query = String.format(
-                "SELECT * FROM projecton.completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
+                "SELECT * FROM completed_tests WHERE authorsname='%s' AND status='%s' AND tested='%s';",
                 userName, status, tested);
         list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificLecturerList", query));
         client.passToServer((Object) list);
@@ -254,7 +253,7 @@ public class ClientController implements ChatIF {
         String subjectid = ((String) id).substring(0, 2);
         String courseid = ((String) id).substring(2, 4);
         String query = String.format(
-                "SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+                "SELECT * FROM subjectcourses WHERE subjectid='%s' AND courseid='%s';",
                 subjectid, courseid);
         subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodSubjectsCourseForTestSpecificLec", query));
         client.passToServer((Object) subjectcoursenameofcompletedtest);
@@ -265,7 +264,7 @@ public class ClientController implements ChatIF {
     public void geStudentListUnderSameDepartment() {
         ArrayList<String> list = new ArrayList<String>();
         String query = String.format(
-                "SELECT * FROM projecton.users  WHERE type = 'student' AND department = '%s';",
+                "SELECT * FROM users  WHERE type = 'student' AND department = '%s';",
                 ClientHandler.user.getDepartment()); // TODO may couse problems
         list.addAll(Arrays.asList("studentListUnderSameDepartment", query));
         client.passToServer((Object) list);
@@ -278,7 +277,7 @@ public class ClientController implements ChatIF {
         String status = "completed";
         String tested = "true";
         String query = String.format(
-                "SELECT * FROM projecton.completed_tests WHERE student_id='%s' AND status='%s' AND tested='%s';",
+                "SELECT * FROM completed_tests WHERE student_id='%s' AND status='%s' AND tested='%s';",
                 userID, status, tested);
 
         list.addAll(Arrays.asList("HodGETcompletedTestsForSpecificStudentList", query));
@@ -292,7 +291,7 @@ public class ClientController implements ChatIF {
         String subjectid = ((String) id).substring(0, 2);
         String courseid = ((String) id).substring(2, 4);
         String query = String.format(
-                "SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+                "SELECT * FROM subjectcourses WHERE subjectid='%s' AND courseid='%s';",
                 subjectid, courseid);
         subjectcoursenameofcompletedtest.addAll(Arrays.asList("getHodCourseForTestSpecificStudent", query));
         client.passToServer((Object) subjectcoursenameofcompletedtest);
@@ -304,7 +303,7 @@ public class ClientController implements ChatIF {
         String subjectid = ((String) id).substring(0, 2);
         String courseid = ((String) id).substring(2, 4);
         String query = String.format(
-                "SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+                "SELECT * FROM subjectcourses WHERE subjectid='%s' AND courseid='%s';",
                 subjectid, courseid);
         subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTest", query));
         client.passToServer((Object) subjectcoursenameofcompletedtest);
@@ -316,7 +315,7 @@ public class ClientController implements ChatIF {
         String subjectid = ((String) id).substring(0, 2);
         String courseid = ((String) id).substring(2, 4);
         String query = String.format(
-                "SELECT * FROM projecton.subjectcourses WHERE subjectid='%s' AND courseid='%s';",
+                "SELECT * FROM subjectcourses WHERE subjectid='%s' AND courseid='%s';",
                 subjectid, courseid);
         subjectcoursenameofcompletedtest.addAll(Arrays.asList("getSubjectsCourseForTestLec", query));
         client.passToServer((Object) subjectcoursenameofcompletedtest);
@@ -326,7 +325,7 @@ public class ClientController implements ChatIF {
     public void GetSubjectIDfromSubjectCourses(String subjectname) {
         ArrayList<String> list = new ArrayList<String>();
         list.addAll(Arrays.asList("getSubjectID",
-                "SELECT subjectid FROM projecton.subjectcourses where ( `subjectname` = '" + subjectname + "' );"));
+                "SELECT subjectid FROM subjectcourses where ( `subjectname` = '" + subjectname + "' );"));
         client.passToServer((Object) list);
     }
 
@@ -335,7 +334,7 @@ public class ClientController implements ChatIF {
         ArrayList<String> subjectList = new ArrayList<String>();
 
         subjectList.addAll(Arrays.asList("lecturersubjects",
-                "SELECT department FROM projecton.users WHERE (`username` = '" + (String) username + "');"));
+                "SELECT department FROM users WHERE (`username` = '" + (String) username + "');"));
         client.passToServer((Object) subjectList);
     }
 
@@ -344,7 +343,7 @@ public class ClientController implements ChatIF {
         ArrayList<String> courseList = new ArrayList<String>();
 
         courseList.addAll(Arrays.asList("lecturercourses",
-                "SELECT courses FROM projecton.lecturer WHERE username = '" + (String) username + "';"));
+                "SELECT courses FROM lecturer WHERE username = '" + (String) username + "';"));
         client.passToServer((Object) courseList);
     }
 
@@ -354,7 +353,7 @@ public class ClientController implements ChatIF {
 
         // Construct the INSERT query to create a new question
         list.addAll(Arrays.asList("createquestion",
-                "INSERT INTO `projecton`.`questions` (`id`, `lecturer`, `subject`, `coursename`, `questiontext`, `questionnumber`) VALUES ('"
+                "INSERT INTO `questions` (`id`, `lecturer`, `subject`, `coursename`, `questiontext`, `questionnumber`) VALUES ('"
                         + Id + "','" + ClientHandler.user.getUsername() + "', '" + subject + "', '" + course + "', '"
                         + Body + "', '"
                         + QNumber + "');")); // TODO may couse problems ClientHandler.user.getUsername()
@@ -367,7 +366,7 @@ public class ClientController implements ChatIF {
             String subjectID) {
         ArrayList<String> list = new ArrayList<String>();
         // Construct the INSERT query to create a new answer
-        String query = "INSERT INTO `projecton`.`answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
+        String query = "INSERT INTO `answers` (optionA, optionB, optionC, optionD, correctAnswer,questionid) VALUES ('"
                 + optionA + "', '" + optionB + "', '" + optionC + "', '" + optionD + "', '" + correctAnswer + "', '"
                 + subjectID + "');";
         list.add("createanswers");
@@ -381,10 +380,10 @@ public class ClientController implements ChatIF {
 
         // '*' returns every question, it's used in CreateTestController
         if ((String) username == "*")
-            list.addAll(Arrays.asList("lecturerquestions", "SELECT * FROM projecton.questions;"));
+            list.addAll(Arrays.asList("lecturerquestions", "SELECT * FROM questions;"));
         else
             list.addAll(Arrays.asList("lecturerquestions",
-                    "SELECT * FROM projecton.questions where ( `lecturer` = '" + (String) username + "' );"));
+                    "SELECT * FROM questions where ( `lecturer` = '" + (String) username + "' );"));
         client.passToServer((Object) list);
     }
 
@@ -394,7 +393,7 @@ public class ClientController implements ChatIF {
         ArrayList<String> list = new ArrayList<String>();
         // ugly will stay ugly <3
         list.addAll(Arrays.asList("editquestion",
-                "UPDATE `projecton`.`questions` SET `id` = '" + NewID
+                "UPDATE `questions` SET `id` = '" + NewID
                         + "', `lecturer` = '" + ClientHandler.user.getUsername() // TODO can couse prooblems
                         + "', `subject` = '" + subject
                         + "', `coursename` = '" + course
@@ -409,7 +408,7 @@ public class ClientController implements ChatIF {
 
         // ugly will stay ugly <3
         list.addAll(Arrays.asList("editquestion",
-                "UPDATE `projecton`.`answers` SET `optionA` = '" + qA
+                "UPDATE `answers` SET `optionA` = '" + qA
                         + "', `optionB` = '" + qB
                         + "', `optionC` = '" + qC
                         + "', `optionD` = '" + qD
@@ -432,7 +431,7 @@ public class ClientController implements ChatIF {
             questionPoints.add("" + question.getPoints());
         }
 
-        String query = "INSERT INTO `projecton`.`tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`, `points`) VALUES ('"
+        String query = "INSERT INTO `tests` (`id`, `duration`, `testcomments`, `authorsname`, `code`, `date`, `time`, `questions`, `points`) VALUES ('"
                 + test.getId() + "','" + test.getDuration() + "', '" + test.getTestComments() + "', '"
                 + test.getAuthor() + "', '" + test.getTestCode() + "', '" + test.getDate().getValue().toString() + "','"
                 + test.getTime() + "', '" + questionIdList + "', '" + questionPoints + "');";
@@ -454,7 +453,7 @@ public class ClientController implements ChatIF {
     public void GetCourseIDfromSubjectCourses(Object coursename) {
         ArrayList<String> list = new ArrayList<String>();
         list.addAll(Arrays.asList("getCourseID",
-                "SELECT courseid FROM projecton.subjectcourses where ( `coursename` = '" + (String) coursename
+                "SELECT courseid FROM subjectcourses where ( `coursename` = '" + (String) coursename
                         + "' );"));
         client.passToServer((Object)list);
     }
@@ -462,7 +461,7 @@ public class ClientController implements ChatIF {
     public void getTestWithCodeForStudent(String testCode) {
         ArrayList<String> listOfCommands = new ArrayList<>();
         listOfCommands.addAll(
-                Arrays.asList("gettestwithcode", "SELECT * FROM projecton.tests where code = '" + testCode + "';"));
+                Arrays.asList("gettestwithcode", "SELECT * FROM tests where code = '" + testCode + "';"));
 
         client.passToServer((Object) listOfCommands);
     }
@@ -471,7 +470,7 @@ public class ClientController implements ChatIF {
         ArrayList<String> listOfCommands = new ArrayList<>();
         listOfCommands.addAll(
                 Arrays.asList("check test",
-                        "SELECT * FROM projecton.completed_tests where test_id = '" + test.getId()
+                        "SELECT * FROM completed_tests where test_id = '" + test.getId()
                                 + "' AND student_id = '" + test.getStudentID() + "';"));
         client.passToServer((Object) listOfCommands);
     }
@@ -498,7 +497,7 @@ public class ClientController implements ChatIF {
             }
         }
 
-        String query = "INSERT INTO `projecton`.`completed_tests` (`test_id`, `student_id`, `grade`, `authorsname`, `code`, `date`, `time`,"
+        String query = "INSERT INTO `completed_tests` (`test_id`, `student_id`, `grade`, `authorsname`, `code`, `date`, `time`,"
                 +
                 " `duration`, `questions`, `test_type`, `status`,  `selected` , `points`) VALUES ('" + localTest.getId()
                 + "', '" + ClientHandler.user.getUser_id() + "', '" + grade +
@@ -552,7 +551,7 @@ public class ClientController implements ChatIF {
         ArrayList<String> sendToServer = new ArrayList<>();
         sendToServer.add("getTest");
         sendToServer.add(test_id);
-        sendToServer.add("SELECT questions FROM projecton.tests WHERE (id = '" + sendToServer.get(1) + "')");
+        sendToServer.add("SELECT questions FROM tests WHERE (id = '" + sendToServer.get(1) + "')");
         client.passToServer((Object) sendToServer);
 
     }
@@ -560,14 +559,14 @@ public class ClientController implements ChatIF {
     public void DeleteQuestion(String originalId) {
         ArrayList<String> listToSend = new ArrayList<String>();
         listToSend.add("DeleteQuestion");
-        listToSend.add("DELETE FROM `projecton`.`questions` WHERE (`id` = '" + originalId + "');");
+        listToSend.add("DELETE FROM `questions` WHERE (`id` = '" + originalId + "');");
         client.passToServer((Object) listToSend);
     }
 
     public void getCoursesSameDepartment() {
         ArrayList<String> list = new ArrayList<String>();
         String query = String.format(
-                "SELECT * FROM projecton.subjectcourses  WHERE subjectname ='%s';",
+                "SELECT * FROM subjectcourses  WHERE subjectname ='%s';",
                 ClientHandler.user.getDepartment()); // TODO may couse problems
 
         list.addAll(Arrays.asList("getCoursesSameDepartment", query));
@@ -577,10 +576,17 @@ public class ClientController implements ChatIF {
     public void getCoursesExams(String courseID) {
         ArrayList<String> list = new ArrayList<String>();
         String query = String.format(
-                "SELECT * FROM projecton.completed_tests WHERE test_id LIKE '%s%%' AND status='completed' AND tested='true';",
+                "SELECT * FROM completed_tests WHERE test_id LIKE '%s%%' AND status='completed' AND tested='true';",
                 courseID);
         list.addAll(Arrays.asList("getCoursesExams", query));
         client.passToServer((Object) list);
+    }
+
+    public void uploadStudentFile(String testId, byte[] fileContent, String filename) {
+        FileUploadMessage fileUpload = new FileUploadMessage(testId, fileContent, filename);
+        ArrayList<Object> listToSend = new ArrayList<>();
+        listToSend.addAll(Arrays.asList("studentupload", fileUpload, ClientHandler.user.getUser_id()));
+        client.passToServer((Object) listToSend);
     }
 
 }

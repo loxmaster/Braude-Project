@@ -104,42 +104,6 @@ public class BasicController {
 		}
 	}
 
-	/**
-	 * Method for opening a popup screen from given fxml path and title.
-	 * 
-	 * @param fxml              fxml path.
-	 * @param title             title of the screen.
-	 * @param shouldBeBasicCtrl the controller incharge of the screen.
-	 * @param currentComment    the comment currently saved.
-	 */
-	public void openPopupScreen( String fxml, String title, BasicController basicCtrl ) {
-
-		// Load the FXML file for the pop-up window
-		FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
-		try {
-			// CreateTestController ctc = (CreateTestController) shouldBeBasicCtrl;
-
-			loader.setController((StudentExamController)basicCtrl);
-			AnchorPane root = loader.load();
-
-			// Create a new stage for the pop-up window
-			Stage popupStage = new Stage();
-			popupStage.initModality(Modality.APPLICATION_MODAL);
-			popupStage.setTitle(title);
-
-			// Set the scene with the loaded FXML layout
-			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/gui/Stylesheet.css").toExternalForm());
-			popupStage.setScene(scene);
-
-			// Show the pop-up window and wait until it finishes
-			popupStage.showAndWait();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	// logout method is same for everyone, goes back to the main login screen.
 	@FXML
 	void logoutPressed(ActionEvent event) {

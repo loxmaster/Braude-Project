@@ -62,7 +62,7 @@ public class CheckTestController extends BasicController {
   public void loadTable() {
 
     // get completed tests list from the database
-    ClientUI.chat.getcompletedTestsForLecturerList();
+    ClientUI.chat.getcompletedTestsForLecturerList("false");
     try {
         Thread.sleep(250);
       } catch (InterruptedException e) {

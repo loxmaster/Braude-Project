@@ -9,7 +9,7 @@
 			"port": 3306,
 			"driver": "MySQL",
 			"name": "connection",
-			"database": "projecton",
+			"database": "",
 			"username": "root"
 		}
 	]

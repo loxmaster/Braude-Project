@@ -589,6 +589,7 @@ public class ClientHandler extends AbstractClient {
 	 */
 	public void quit() {
 		try {
+			openConnection();
 			sendToServer((Object) this.getInetAddress());
 			closeConnection();
 		} catch (IOException e) {

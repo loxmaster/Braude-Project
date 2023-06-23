@@ -23,6 +23,11 @@ import javafx.scene.layout.VBox;
 import logic.QuestionModel;
 import logic.Test;
 
+/**
+ * This controller handles the evaluation of a test by assigning points to each
+ * question.
+ * It extends from the BasicController class.
+ */
 public class EvaluateTestController extends BasicController {
   private String student_id;
   private ChangeListener<? super String> questionPointsListener; // Listener for points TextBox
@@ -50,10 +55,20 @@ public class EvaluateTestController extends BasicController {
   private int pointsInTest = 0;
   private static Test localtest;
 
+  /**
+   * Getter for the localtest variable.
+   * 
+   * @return The localtest variable.
+   */
   public static Test getLocaltest() {
     return localtest;
   }
 
+  /**
+   * Setter for the localtest variable.
+   * 
+   * @param test The Test object to set as the localtest.
+   */
   public static void setLocaltest(Test test) {
     EvaluateTestController.localtest = test;
   }
@@ -98,6 +113,12 @@ public class EvaluateTestController extends BasicController {
   // Timenow(live_time);
   // }
 
+  /**
+   * 
+   * This method loads the test for evaluation.
+   * 
+   * @param test The Test object to load for evaluation.
+   */
   public void loadTest(Test test) {
     // loadEditQuestionScreen();
     // this.localtest = test;
@@ -205,6 +226,12 @@ public class EvaluateTestController extends BasicController {
 
   }
 
+  /**
+   * 
+   * This method loads a question for evaluation.
+   * 
+   * @param question The QuestionModel object to load for evaluation.
+   */
   public void loadQuestion(QuestionModel question) {
     // set relevant data into the fields:
     qBody.setText(question.getQuestiontext());
@@ -231,6 +258,12 @@ public class EvaluateTestController extends BasicController {
 
   }
 
+  /**
+   * This method handles the action of clicking the "Save" button.
+   * It is responsible for saving the evaluation results of the test.
+   * 
+   * @param event The ActionEvent triggered by the button click.
+   */
   @FXML
   void savePressed(ActionEvent event) {
     int val = Integer.parseInt(totalPoints.getText());
@@ -263,6 +296,12 @@ public class EvaluateTestController extends BasicController {
     return (parseInt > 100 || parseInt < 0) ? false : true;
   }
 
+  /**
+   * This method handles the action of clicking the "Edit Comments" button.
+   * It allows the user to edit the comments for the evaluated test.
+   * 
+   * @param event The ActionEvent triggered by the button click.
+   */
   @FXML
   void editCommentsPressed(ActionEvent event) {
     TextInputDialog dialog = new TextInputDialog(testcomments);
@@ -278,6 +317,12 @@ public class EvaluateTestController extends BasicController {
     });
   }
 
+  /**
+   * This method handles the action of clicking the "Back" button.
+   * It navigates the user back to the Lecturer screen.
+   * 
+   * @param event The ActionEvent triggered by the button click.
+   */
   @FXML
   void backPressed(ActionEvent event) {
     CheckTestController ctc = (CheckTestController) openScreen("/clientFXMLS/LecturerCheckAutomatingTest.fxml",
@@ -285,6 +330,12 @@ public class EvaluateTestController extends BasicController {
     ctc.loadTable();
   }
 
+  /**
+   * This method handles the action of clicking the "Back to Lecturer" button.
+   * It navigates the user back to the Lecturer screen.
+   * 
+   * @param event The ActionEvent triggered by the button click.
+   */
   @FXML
   void backToLecturer(ActionEvent event) {
     openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer", event);
@@ -414,6 +465,12 @@ public class EvaluateTestController extends BasicController {
     return hBox;
   }
 
+  /**
+   * Updates the total points for the test.
+   * Iterates over the questions in the test and calculates the sum of their
+   * points.
+   * The total points are stored in the 'pointsInTest' variable.
+   */
   private void updateTotalPoints() {
     int totalPoints = 0;
     ArrayList<QuestionModel> tempQuestionList = localtest.getQuesitonsInTest();

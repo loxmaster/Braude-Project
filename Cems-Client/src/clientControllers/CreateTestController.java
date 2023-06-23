@@ -41,51 +41,128 @@ public class CreateTestController extends BasicController {
     
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
-	private Test test = new Test();
+
+	/**
+	 * Test object for the current test.
+	 */
+	protected Test test = new Test();
+
+	/**
+	 * The total points in the current test.
+	 */
 	private int pointsInTest = 0;
-	private ChangeListener<? super String> questionPointsListener; // Listener for points TextBox
+
+	/**
+	 * Listener for changes in the points TextBox.
+	 */
+	private ChangeListener<? super String> questionPointsListener;
+
+	/**
+	 * Static variables for test count and the next test number.
+	 */
 	public static String testCount;
 	private static String nextTestNumber;
+
+	/**
+	 * Pattern for time validation.
+	 */
 	private static final Pattern TIME_PATTERN = Pattern.compile("^\\d{2}:\\d{2}$");
 
 	// ############################### FXML Variables
 	// ############################################
 
+	/**
+	 * ToggleGroup for radio buttons.
+	 */
 	@FXML
-	private ToggleGroup toggleGroup;
-	@FXML
-	private RadioButton A, B, C, D;
-	@FXML
-	private TextField qID;
-	@FXML
-	private TextArea OptionA, OptionB, OptionC, OptionD;
-	@FXML
-	private TextArea qBody;
-	@FXML
-	private TextField code, duration, startTime, totalPoints;
-	@FXML
-	private DatePicker date;
-	@FXML
-	private VBox questionTracker;
-	@FXML
-	private Button exitbutton;
-	@FXML
-	private Button logo;
-	@FXML
-	private Button savebutton;
-	@FXML
-	private TextArea qPoints;
-	@FXML
-	private ComboBox<String> subjectComboBox;
-	@FXML
-	private ComboBox<String> courseComboBox;
+	protected ToggleGroup toggleGroup;
 
+	/**
+	 * Radio buttons for multiple choice options.
+	 */
+	@FXML
+	protected RadioButton A, B, C, D;
+
+	/**
+	 * TextField for question ID.
+	 */
+	@FXML
+	protected TextField qID;
+
+	/**
+	 * TextAreas for multiple choice options and question body.
+	 */
+	@FXML
+	protected TextArea OptionA;
+	@FXML
+	protected TextArea OptionB;
+	@FXML
+	protected TextArea OptionC;
+	@FXML
+	protected TextArea OptionD;
+	@FXML
+	protected TextArea qBody;
+
+	/**
+	 * TextFields for code, duration, start time, and total points.
+	 */
+	@FXML
+	protected TextField code, duration, startTime, totalPoints;
+
+	/**
+	 * DatePicker for test date.
+	 */
+	@FXML
+	protected DatePicker date;
+
+	/**
+	 * VBox for question tracker.
+	 */
+	@FXML
+	protected VBox questionTracker;
+
+	/**
+	 * Buttons for exit and logo.
+	 */
+	@FXML
+	protected Button exitbutton;
+	@FXML
+	protected Button logo;
+
+	/**
+	 * Button for save operation.
+	 */
+	@FXML
+	protected Button savebutton;
+
+	/**
+	 * TextArea for question points.
+	 */
+	@FXML
+	protected TextArea qPoints;
+
+	/**
+	 * ComboBoxes for subject and course selection.
+	 */
+	@FXML
+	protected ComboBox<String> subjectComboBox;
+	@FXML
+	protected ComboBox<String> courseComboBox;
+
+	/**
+	 * Label for live time display.
+	 */
 	@FXML
 	private Label live_time;
 
 	// ############################### FXML Methods
 	// ###########################################
 
+	/**
+	 * This method is called to initialize a controller after its root element has
+	 * been completely processed.
+	 * It starts the clock and sets default values for the test if it is null.
+	 */
 	@FXML
 	void initialize() {
 		// Start the clock
@@ -101,14 +178,19 @@ public class CreateTestController extends BasicController {
 		return nextTestNumber;
 	}
 
+	/**
+	 * This method is used to set the next test number.
+	 *
+	 * @param nextNumber The next test number to be set.
+	 */
 	public static void setNextTestNumber(String nextNumber) {
 		nextTestNumber = nextNumber;
 	}
 
 	/**
-	 * Hook method , called when this screen is opened and sets the subject
-	 * ComboBox . P.S. Since the subjectList is static we can access it and
-	 * no parameters needed when calling this function.
+	 * This method is used to load the filter options into the comboboxes.
+	 * It fetches the subjects and courses lists from the LecturerController and
+	 * sets them in the respective comboboxes.
 	 */
 	public void loadFilterComboboxes() {
 		subjectList = FXCollections.observableArrayList(LecturerController.getSubjectsList());
@@ -122,9 +204,9 @@ public class CreateTestController extends BasicController {
 	}
 
 	/**
-	 * Method handeling the pressing of 'Add Test Comments' button .
-	 * 
-	 * @param event
+	 * Method handling the pressing of 'Add Test Comments' button.
+	 *
+	 * @param event The action event that triggers this method.
 	 */
 	@FXML
 	void editCommentsPressed(ActionEvent event) {
@@ -141,10 +223,12 @@ public class CreateTestController extends BasicController {
 	}
 
 	/**
-	 * Method handeling the pressing of 'Add Questions' button .
-	 * 
-	 * @param event
+	 * This method is triggered when the add question button is pressed.
+	 * It is responsible for handling the operation of adding a question.
+	 *
+	 * @param event The action event that triggers this method.
 	 */
+
 	@FXML
 	void addQuestionPressed(ActionEvent event) {
 		// test is current test
@@ -162,11 +246,12 @@ public class CreateTestController extends BasicController {
 		test.setDate(date);
 		test.setDuration(duration.getText());
 		test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
+		// TODO test.setId(null);
 
 		// Gets all the questions from DataBase
 		LecturerController.setQuestions(new ArrayList<QuestionModel>());
 
-		// fix the query in
+		// FIXME fix the query in
 		// ClientHandler/GetLeturersQuestions_Handler so it returns only the
 		// courses the username's courses
 		// for example: lecturer noah does MATH and TOHNA, it should only have access to
@@ -185,10 +270,10 @@ public class CreateTestController extends BasicController {
 	}
 
 	/**
-	 * Method handeling the pressing of 'Save' button .
-	 * 
-	 * @param event
-	 * @return
+	 * This method is triggered when the save button is pressed.
+	 * It is responsible for handling the save operation.
+	 *
+	 * @param event The action event that triggers this method.
 	 */
 	@FXML
 	void savePressed(ActionEvent event) {
@@ -587,10 +672,11 @@ public class CreateTestController extends BasicController {
 	 */
 
 	/**
-	 * Method Handeling the pressing of 'Cancel' button in comment creen.
-	 * Closes the creen and returns to previous screen.
-	 * 
-	 * @param event
+	 * This method is triggered when the cancel button is pressed in the comments
+	 * screen.
+	 * It closes the comments screen.
+	 *
+	 * @param event The action event that triggers this method.
 	 */
 	@FXML
 	void cancelComments(ActionEvent event) {
@@ -599,10 +685,10 @@ public class CreateTestController extends BasicController {
 	}
 
 	/**
-	 * Method Handeling the pressing of 'Save' button in comment creen.
-	 * Remembers the text in the TextBox and returning to the previous window.
-	 * 
-	 * @param event
+	 * Method handling the pressing of 'Save' button in comment screen.
+	 * It remembers the text in the TextBox and returns to the previous window.
+	 *
+	 * @param event The action event that triggers this method.
 	 */
 	@FXML
 	void saveComments(ActionEvent event) {
@@ -611,6 +697,12 @@ public class CreateTestController extends BasicController {
 		popupStage.close();
 	}
 
+	/**
+	 * This method is triggered when the back button is pressed.
+	 * It navigates back to the options screen.
+	 *
+	 * @param event The action event that triggers this method.
+	 */
 	@FXML
 	void backPressed(ActionEvent event) {
 		// goes back to options screen

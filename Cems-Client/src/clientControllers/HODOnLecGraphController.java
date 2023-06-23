@@ -13,7 +13,13 @@ import javafx.scene.text.Text;
 import logic.Statistics;
 import logic.Test;
 
-// Extends the BasicController class
+/**
+ * 
+ * This controller handles the view of statistical information on a lecturer for
+ * the Head of Department (HOD).
+ * 
+ * It extends from the BasicController class.
+ */
 public class HODOnLecGraphController extends BasicController {
 
     // FXML variables used to interface with the UI
@@ -118,7 +124,13 @@ public class HODOnLecGraphController extends BasicController {
         Timenow(live_time);
     }
 
-    // Method to handle "back" button click
+    /**
+     * 
+     * This function handles the action of clicking the "Back" button.
+     * It navigates the user back to the statistical information on lecturer screen.
+     * 
+     * @param event The ActionEvent triggered by the button press.
+     */
     @FXML
     void backtoStatistical(ActionEvent event) {
         HODStatisticOnLecturerController Hod = (HODStatisticOnLecturerController) openScreen(
@@ -126,8 +138,15 @@ public class HODOnLecGraphController extends BasicController {
         Hod.load();
     }
 
-    // Method to populate the UI with statistics
-
+    /**
+     * 
+     * This function sets the data for the statistical information on a lecturer
+     * view.
+     * 
+     * @param stats              The Statistics object containing the lecturer's
+     *                           statistics.
+     * @param completedTestsList The list of completed tests for the lecturer.
+     */
     public void setData(Statistics stats, ArrayList<Test> completedTestsList) {
         // Arrays to store the number of students and their percentage in each grade
         // category

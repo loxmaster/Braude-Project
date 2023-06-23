@@ -16,32 +16,30 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class UploadTestController extends BasicController {
+public class StudentUploadController extends BasicController{
 
-	private String filePath = "none";
-	File selectedFile;
-	String filename;
+    private String testId;
+    private String filePath = "none";
+	private File selectedFile;
+	private String filename;
 
-	@FXML
-	private TextField TextPath;
+    @FXML
+    private TextField TextPath;
 
-	@FXML
-	private Button exitbutton;
+    @FXML
+    private Button Upload;
 
-	@FXML
-	private Button logo;
+    @FXML
+    private Button chooseFile;
 
-	@FXML
-	private Button chooseFile;
+    @FXML
+    private Button exitbutton;
 
-	@FXML
-	private Button Upload;
+    @FXML
+    private Label live_time;
 
-	@FXML
-	private TextField testID;
-
-	@FXML
-	private Label live_time;
+    @FXML
+    private Button logo;
 
 	@FXML
 	void initialize() {
@@ -49,7 +47,11 @@ public class UploadTestController extends BasicController {
 		Timenow(live_time);
 	}
 
-	@FXML
+    public void load(String testId) {
+        this.testId = testId;
+    }
+
+    @FXML
 	void OpenFileMenu(ActionEvent event) {
 		FileChooser fileChooser = new FileChooser();
 		 fileChooser.setTitle("Choose a file");
@@ -64,10 +66,9 @@ public class UploadTestController extends BasicController {
 
 	}
 
-	@FXML
+    @FXML
 	synchronized void UploadPressed(ActionEvent event) {
 		// Open file chooser dialog
-
 		if (selectedFile != null) {
 			try (FileInputStream fileInputStream = new FileInputStream(selectedFile);
 					ByteArrayOutputStream byteOutputStream = new ByteArrayOutputStream()) {
@@ -82,7 +83,7 @@ public class UploadTestController extends BasicController {
 
 
 				//REVIEW 
-				ClientUI.chat.uploadFile(testID.getText(), fileContent, filename);
+				ClientUI.chat.uploadStudentFile(testId, fileContent, filename);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -92,15 +93,5 @@ public class UploadTestController extends BasicController {
 					JOptionPane.ERROR_MESSAGE);
 		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Manage Test", event);
 	}
-
-	@FXML
-	void backToLecturer(ActionEvent event) {
-		openScreen("/clientFXMLS/Lecturer1.fxml", "CEMS System - Lecturer - Main Screen ", event);
-	}
-	@FXML
-	void backPressed(ActionEvent event) {
-		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer - Manage Test", event);
-	}
-
 
 }

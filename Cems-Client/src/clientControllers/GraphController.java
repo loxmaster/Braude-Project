@@ -13,7 +13,11 @@ import javafx.scene.text.Text;
 import logic.Statistics;
 import logic.Test;
 
-// Extends the BasicController class
+/**
+ * 
+ * This controller handles the display of graphs.
+ * It extends from the BasicController class.
+ */
 public class GraphController extends BasicController {
 
     // FXML variables used to interface with the UI
@@ -112,13 +116,24 @@ public class GraphController extends BasicController {
     @FXML
     private Label live_time;
 
+    /**
+     * 
+     * This function initializes the controller.
+     * It starts the clock on the UI.
+     */
     @FXML
     void initialize() {
         // Start the clock
         Timenow(live_time);
     }
 
-    // Method to handle "back" button click
+    /**
+     * 
+     * This function handles the action of clicking the "Back to Statistical"
+     * button.
+     * It navigates the user back to the statistical information screen for
+     * lecturers.
+     */
     @FXML
     void backtoStatistical(ActionEvent event) {
         LecturerStatisticalController lsc = (LecturerStatisticalController) openScreen(
@@ -126,7 +141,12 @@ public class GraphController extends BasicController {
         lsc.load();
     }
 
-    // Method to populate the UI with statistics
+    /**
+     * 
+     * This function populates the UI with statistical data.
+     * It takes a Statistics object and a list of completed tests as input.
+     * The function updates the UI components with the relevant statistics.
+     */
 
     public void setData(Statistics stats, ArrayList<Test> completedTestsList) {
         // Arrays to store the number of students and their percentage in each grade

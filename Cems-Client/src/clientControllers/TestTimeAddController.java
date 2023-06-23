@@ -40,9 +40,9 @@ public class TestTimeAddController extends BasicController {
     
     
 	public void load(Test test) {
-		codeField.setText(test.getTestCode());
+		//codeField.setText(test.getTestCode());
 		timeLeftField.setText(test.getTimeLeft());
-		subjectField.setText(test.getSubject());
+		//subjectField.setText(test.getSubject());
 		codeField.setDisable(true);
 		timeLeftField.setDisable(true);
 		subjectField.setDisable(true);

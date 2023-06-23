@@ -40,6 +40,9 @@ public class StudentExamController extends BasicController {
 	private LocalTime targetTime;
 
 	private boolean timeRanOut = false;
+	private Test testToSendIfFinishedTime;
+
+	private Timer timer;
 
 	/////////////////////////////// FXML variables ////////////////////////////////
 
@@ -86,20 +89,27 @@ public class StudentExamController extends BasicController {
 	@FXML
 	void submitExam(ActionEvent event) {
 		Test localTest = getTest();
-
-		// Checks if any of the questions in test hasnt been selected.
-		for (QuestionModel question : localTest.getQuesitonsInTest()) {
-			if (question.getSelected() == null) {
-				JOptionPane.showMessageDialog(null, "You didnt select all the questions !", "Warning !",
-						JOptionPane.WARNING_MESSAGE);
-				return;
+		if (!timeRanOut) {
+			// Checks if any of the questions in test hasnt been selected.
+			for (QuestionModel question : localTest.getQuesitonsInTest()) {
+				if (question.getSelected() == null) {
+					JOptionPane.showMessageDialog(null, "You didnt select all the questions !", "Warning !",
+							JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 			}
+			ClientUI.chat.sendToCompletedTest(localTest);
+			JOptionPane.showMessageDialog(null, "Good Luck !", "Success !", JOptionPane.WARNING_MESSAGE);
+		
+			backToStudent(event);
 		}
-
-		ClientUI.chat.sendToCompletedTest(localTest);
-		JOptionPane.showMessageDialog(null, "Good Luck !", "Success !", JOptionPane.WARNING_MESSAGE);
-	
-		backToStudent(event);
+		// Sending of the test after the time has finished
+		else {
+			JOptionPane.showMessageDialog(null, "Time Ran Out, cant submit anymore , Good Luck !", "Warning !",
+							JOptionPane.WARNING_MESSAGE);
+			ClientUI.chat.sendToCompletedTest(testToSendIfFinishedTime);
+			backToStudent(event);
+		}
 
 	}
 
@@ -186,7 +196,18 @@ public class StudentExamController extends BasicController {
 
 					// Gets the current time
 					LocalTime currentTime = LocalTime.now();
-					if (currentTime.compareTo(targetTime) >= 0) {
+					if (currentTime.compareTo(targetTime) >= 0) {					
+						// Checks if any of the questions in test hasnt been selected, if so selects "e" as default
+						// "e" Means that its not of the selected questions.
+						for (QuestionModel question : localTest.getQuesitonsInTest()) {
+							System.out.println(question.getSelected());
+							if (question.getSelected() == null) {
+								question.setSelected("e");
+							}
+						}
+						testToSendIfFinishedTime = getTest();
+						timeRanOut = true;
+						timer.stop();
 					} else {
 						// Calculate the remaining time
 						int remainingHours = targetTime.getHour() - currentTime.getHour();
@@ -214,18 +235,11 @@ public class StudentExamController extends BasicController {
 			};
 			// Create the timer with a 1-second delay
 			int delay = 1000; // milliseconds
-			new Timer(delay, taskPerformer).start();
-
+			timer = new Timer(delay, taskPerformer);
+			timer.start();
 		}
 	}
 	
-	public StudentExamController getInstance() {
-		return this;
-	}
-
-	private void timeEnded() {
-		
-	}
 
 	// Method for adding the time and duration
 	public int[] getTargetTimeString(String time, String duration) {

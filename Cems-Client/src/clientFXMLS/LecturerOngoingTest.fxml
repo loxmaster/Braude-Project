@@ -42,5 +42,10 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
+      <Label fx:id="live_time" layoutX="26.0" layoutY="79.0" prefHeight="27.0" prefWidth="108.0">
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+      </Label>
 </children>
 </AnchorPane>
