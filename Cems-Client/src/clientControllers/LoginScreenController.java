@@ -161,7 +161,7 @@ public class LoginScreenController extends BasicController {
 								JOptionPane.ERROR_MESSAGE);
 					}
 				}
-				return "Success";
+				return "Success User Found!";
 
 	}
 
