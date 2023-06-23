@@ -8,11 +8,13 @@ import clientHandlers.ClientUI;
 import clientHandlers.ClientHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -72,19 +74,43 @@ public class LoginScreenController extends BasicController {
 		System.out.println("Entered: " + username + " " + password + " " + selectedRole);
 
 		if ((username.trim().isEmpty() || password.trim().isEmpty() || selectedRole == null )) {
-			// setVisibleFalse();
-			JOptionPane.showMessageDialog(null, "your username or password are incorrect!",
-					"incorrect username or password",
-					JOptionPane.ERROR_MESSAGE);
 			if (username.isEmpty()) {
 				emailTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);");
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText(null);
+				alert.setContentText("Username is Empty!");
+				alert.showAndWait();
+
+				passTextbox.setStyle("");
+				//emailTextbox.setStyle("");
+				combo_Role.setStyle("");
+				return;
 			}
 			if (password.isEmpty()) {
 				passTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);;");
-			}
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText(null);
+				alert.setContentText("Password is Empty!");
+				alert.showAndWait();
 
+				//passTextbox.setStyle("");
+				emailTextbox.setStyle("");
+				combo_Role.setStyle("");
+				return;
+			}
 			if (selectedRole == null) {
 				combo_Role.setStyle("-fx-background-color: rgb(255, 74, 74);;");
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText(null);
+				alert.setContentText("Role not selected!");
+				alert.showAndWait();
+				passTextbox.setStyle("");
+				emailTextbox.setStyle("");
+				//combo_Role.setStyle("");
+				return;
 			}
 			return;
 		}
@@ -105,7 +131,12 @@ public class LoginScreenController extends BasicController {
 
 			if (!ClientHandler.user.getIsFound()) {
 			//	setVisibleFalse();
-				System.out.println("user not found! (loginscreencontroller)");
+				//System.out.println("user not found! (loginscreencontroller)");
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText(null);
+				alert.setContentText("user not found!");
+				alert.showAndWait();
 			} else {
 				// if found loading the corresponding screen
 				switch (ClientHandler.user.getType()) {
