@@ -32,8 +32,7 @@ public class CreateTest_Test {
 	private CreateTestController mockCreateTestController;
 	// private CreateQuestionController mockCreateQuestionController;
 	private ActionEvent event;
-	private DatePicker date;
-	private ArrayList<QuestionModel> qtest;
+
 
 	@Before
 	public void setUp() throws Exception {
@@ -82,46 +81,145 @@ public class CreateTest_Test {
 		assertEquals(expected, result);
 
 	}
+	
+	@Test
+	public void testSavePressedWithoutCourse() { 
+		doNothing().when(mockCreateTestController).callTheTestFromUI();
+		doReturn(false).when(mockCreateTestController).areQuestionsInTest();
+		doReturn(true).when(mockCreateTestController).qInTestsAreHundred(anyInt());
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(true).when(mockCreateTestController).isDateValid();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(true).when(mockCreateTestController).isCourseNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).showAlert(anyString(),anyString());
+		String expected = "Course Not Picked!";
+		String result = mockCreateTestController.savePressed(event);
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testSavePressedWithoutSubject() { 
+		doNothing().when(mockCreateTestController).callTheTestFromUI();
+		doReturn(false).when(mockCreateTestController).areQuestionsInTest();
+		doReturn(true).when(mockCreateTestController).qInTestsAreHundred(anyInt());
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(true).when(mockCreateTestController).isDateValid();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(false).when(mockCreateTestController).isCourseNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetCourse();
+		doReturn(true).when(mockCreateTestController).isSubjectNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).showAlert(anyString(),anyString());
+		String expected = "Subject Not Picked!";
+		String result = mockCreateTestController.savePressed(event);
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testSavePressedWithInvalidStartTimeFormat() { 
+		doNothing().when(mockCreateTestController).callTheTestFromUI();
+		doReturn(false).when(mockCreateTestController).areQuestionsInTest();
+		doReturn(true).when(mockCreateTestController).qInTestsAreHundred(anyInt());
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(true).when(mockCreateTestController).isDateValid();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(false).when(mockCreateTestController).isCourseNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetCourse();
+		doReturn(false).when(mockCreateTestController).isSubjectNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetSubject();
+		doReturn(false).when(mockCreateTestController).isTimeMatcher();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).showAlert(anyString(),anyString());
+		String expected = "Please insert time in a HH:MM format!";
+		String result = mockCreateTestController.savePressed(event);
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testSavePressedWithInvalidDurationFormatOrZeroDuration() { 
+		doNothing().when(mockCreateTestController).callTheTestFromUI();
+		doReturn(false).when(mockCreateTestController).areQuestionsInTest();
+		doReturn(true).when(mockCreateTestController).qInTestsAreHundred(anyInt());
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(true).when(mockCreateTestController).isDateValid();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(false).when(mockCreateTestController).isCourseNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetCourse();
+		doReturn(false).when(mockCreateTestController).isSubjectNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetSubject();
+		doReturn(true).when(mockCreateTestController).isTimeMatcher();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetTime();
+		doReturn(false).when(mockCreateTestController).isTimeDuration();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).showAlert(anyString(),anyString());
+		String expected = "Please insert duration in a HH:MM format and above 0!";
+		String result = mockCreateTestController.savePressed(event);
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testSavePressedWithInvalidTestCodeLength() { 
+		doNothing().when(mockCreateTestController).callTheTestFromUI();
+		doReturn(false).when(mockCreateTestController).areQuestionsInTest();
+		doReturn(true).when(mockCreateTestController).qInTestsAreHundred(anyInt());
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(true).when(mockCreateTestController).isDateValid();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(false).when(mockCreateTestController).isCourseNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetCourse();
+		doReturn(false).when(mockCreateTestController).isSubjectNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetSubject();
+		doReturn(true).when(mockCreateTestController).isTimeMatcher();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetTime();
+		doReturn(true).when(mockCreateTestController).isTimeDuration();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetDuration();
+		doReturn(false).when(mockCreateTestController).isCodeValid();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).showAlert(anyString(),anyString());
+		String expected = "Invalid Test Code! (4 digits)";
+		String result = mockCreateTestController.savePressed(event);
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testSavePressedWithValidData() { 
+		doNothing().when(mockCreateTestController).callTheTestFromUI();
+		doReturn(false).when(mockCreateTestController).areQuestionsInTest();
+		doReturn(true).when(mockCreateTestController).qInTestsAreHundred(anyInt());
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(true).when(mockCreateTestController).isDateValid();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doReturn(false).when(mockCreateTestController).isCourseNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetCourse();
+		doReturn(false).when(mockCreateTestController).isSubjectNotPicked();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetSubject();
+		doReturn(true).when(mockCreateTestController).isTimeMatcher();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetTime();
+		doReturn(true).when(mockCreateTestController).isTimeDuration();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetDuration();
+		doReturn(true).when(mockCreateTestController).isCodeValid();
+		doNothing().when(mockCreateTestController).updateStyles(anyInt());
+		doNothing().when(mockCreateTestController).testSetTestCode();
+		doNothing().when(mockCreateTestController).SaveTheTest(event);
+		String expected = "Changes Saved!";
+		String result = mockCreateTestController.savePressed(event);
+		assertEquals(expected, result);
+	}
 
-//	
-//	@Test
-//	public void testSavePressedWithInvalidDate() { 
-//		doNothing().when(mockCreateTestController).callTheTestFromUI();
-//	}
-//	
-//	@Test
-//	public void testSavePressedWithoutCourse() { 
-//		doNothing().when(mockCreateTestController).callTheTestFromUI();
-//	}
-//	
-//	@Test
-//	public void testSavePressedWithoutSubject() { 
-//		doNothing().when(mockCreateTestController).callTheTestFromUI();
-//	}
-//	
-//	@Test
-//	public void testSavePressedWithInvalidStartTimeFormat() { 
-//		doNothing().when(mockCreateTestController).callTheTestFromUI();
-//	}
-//	
-//	@Test
-//	public void testSavePressedWithInvalidDurationFormatOrZeroDuration() { 
-//		doNothing().when(mockCreateTestController).callTheTestFromUI();
-//	}
-//	
-//	@Test
-//	public void testSavePressedWithInvalidTestCodeLength() { 
-//		doNothing().when(mockCreateTestController).callTheTestFromUI();
-//	}
-//	
-//	@Test
-//	public void testSavePressedWithValidData() { 
-//		doNothing().when(mockCreateTestController).callTheTestFromUI();
-//	}
-//	
-//	@Test
-//	public void testSavePressedWithDatabaseErrors() { 
-//		doNothing().when(mockCreateTestController).callTheTestFromUI();
-//	}
 
 }

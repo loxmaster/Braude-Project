@@ -40,12 +40,14 @@ public class CreateTestController extends BasicController {
 
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
-	public String strTest;
 
 	/**
 	 * Test object for the current test.
 	 */
 	protected Test test = new Test();
+	public Test gettest() {
+		return test;
+	}
 
 	/**
 	 * The total points in the current test.
@@ -146,8 +148,14 @@ public class CreateTestController extends BasicController {
 	 */
 	@FXML
 	protected ComboBox<String> subjectComboBox;
+	public String getsubjectComboBox() {
+		return subjectComboBox.getValue();
+	}
 	@FXML
 	protected ComboBox<String> courseComboBox;
+	public String getcourseComboBox() {
+		return courseComboBox.getValue();
+	}
 
 	/**
 	 * Label for live time display.
@@ -183,8 +191,7 @@ public class CreateTestController extends BasicController {
 	@FXML
 	public String savePressed(ActionEvent event) {
 		callTheTestFromUI();
-//		Test localTest = new Test();
-//		localTest =test;
+
 
 		if (areQuestionsInTest()) {
 			showAlert("Error", "Please Add Questions!");
@@ -208,7 +215,6 @@ public class CreateTestController extends BasicController {
 			System.out.println(sdf);
 			updateStyles(3);
 			test.setDate(date);
-			strTest = "Date Valid!";
 
 		} else {
 			updateStyles(4);
@@ -217,30 +223,29 @@ public class CreateTestController extends BasicController {
 		}
 
 		// Checks if the course has been picked
-		if (test.getCourse() == "" || test.getCourse() == " " || test.getCourse() == null) { // Misha : Changed here
+		if (isCourseNotPicked()) { // Misha : Changed here
 			updateStyles(5);
 			showAlert("Error", "Course Not Picked!");
 			return "Course Not Picked!";
 		} else {
 			updateStyles(6);
-			test.setCourse(courseComboBox.getValue());
+			testSetCourse();
 		}
 
 		// Checks if the subject has been picked
-		if (subjectComboBox.getValue() == "" || subjectComboBox.getValue() == "" // TODO continue this shit
-				|| subjectComboBox.getValue() == null) {
+		if (isSubjectNotPicked()) {
 			updateStyles(7);
 			showAlert("Error", "Subject Not Picked!");
 			return "Subject Not Picked!";
 		} else {
 			updateStyles(8);
-			test.setSubject(subjectComboBox.getValue());
+			testSetSubject();
 		}
 
 		// Checks if the Start time matches the wanted style
-		if (TIME_PATTERN.matcher(startTime.getText()).matches()) {
+		if (isTimeMatcher()) {
 			updateStyles(9);
-			test.setTime(startTime.getText());
+			testSetTime();
 
 		} else {
 			updateStyles(10);
@@ -248,9 +253,9 @@ public class CreateTestController extends BasicController {
 			return "Please insert time in a HH:MM format!";
 		}
 
-		if (TIME_PATTERN.matcher(duration.getText()).matches() && !duration.getText().equals("00:00")) {
+		if (isTimeDuration()) {
 			updateStyles(11);
-			test.setDuration(duration.getText());
+			testSetDuration();
 
 		} else {
 			updateStyles(12);
@@ -258,9 +263,9 @@ public class CreateTestController extends BasicController {
 			return "Please insert duration in a HH:MM format and above 0!";
 		}
 
-		if (code.getText().length() == 4) {
+		if (isCodeValid()) {
 			updateStyles(13);
-			test.setTestCode(code.getText());
+			testSetTestCode();
 
 		} else {
 			updateStyles(14);
@@ -268,6 +273,23 @@ public class CreateTestController extends BasicController {
 			return "Invalid Test Code! (4 digits)";
 
 		}
+		SaveTheTest(event);
+		return "Changes Saved!";
+	}
+
+	public boolean isTimeMatcher() {
+		return TIME_PATTERN.matcher(startTime.getText()).matches();
+	}
+
+	public boolean isTimeDuration() {
+		return TIME_PATTERN.matcher(duration.getText()).matches() && !duration.getText().equals("00:00");
+	}
+
+	public boolean isCodeValid() {
+		return code.getText().length() == 4;
+	}
+
+	public void SaveTheTest(ActionEvent event) {
 		// grab course values from the combobox and get course id from db
 		ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
 		try {
@@ -304,7 +326,35 @@ public class CreateTestController extends BasicController {
 		showAlert("Error", "Changes Saved!");
 		// Goes to lecturer screen
 		backToLecturer(event);
-		return "Changes Saved!";
+	}
+
+	public void testSetTestCode() {
+		test.setTestCode(code.getText());
+	}
+
+	public void testSetDuration() {
+		test.setDuration(duration.getText());
+	}
+
+	public void testSetTime() {
+		test.setTime(startTime.getText());
+	}
+
+	public void testSetSubject() {
+		test.setSubject(getsubjectComboBox());
+	}
+
+	public void testSetCourse() {
+		test.setCourse(getcourseComboBox());
+	}
+
+	public boolean isSubjectNotPicked() {
+		return subjectComboBox.getValue() == "" || subjectComboBox.getValue() == "" // TODO continue this shit
+				|| subjectComboBox.getValue() == null;
+	}
+
+	public boolean isCourseNotPicked() {
+		return test.getCourse() == "" || test.getCourse() == " " || test.getCourse() == null;
 	}
 
 	public boolean isDateValid() {
@@ -448,10 +498,10 @@ public class CreateTestController extends BasicController {
 		// noah - changed here - get course - talk to me
 		test.setCourse(courseComboBox.getValue());
 
-		test.setTestCode(code.getText());
-		test.setTime(startTime.getText());
+		testSetTestCode();
+		testSetTime();
 		test.setDate(date);
-		test.setDuration(duration.getText());
+		testSetDuration();
 		test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
 		// TODO test.setId(null);
 
@@ -485,9 +535,9 @@ public class CreateTestController extends BasicController {
 		test.setDate(date);
 		test.setCourse(courseComboBox.getValue());
 		test.setSubject(subjectComboBox.getValue());
-		test.setTime(startTime.getText());
-		test.setDuration(duration.getText());
-		test.setTestCode(code.getText());
+		testSetTime();
+		testSetDuration();
+		testSetTestCode();
 	}
 
 	// #########################################################
