@@ -160,7 +160,6 @@ public class LoginScreenController extends BasicController {
 	/**
 	 * Method to extract the dependency of the database to check the credentials of
 	 * the user.
-	 * 
 	 * @param username
 	 * @param password
 	 * @param selectedRole

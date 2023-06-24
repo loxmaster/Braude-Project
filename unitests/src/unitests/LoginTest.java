@@ -25,9 +25,9 @@ public class LoginTest {
 	@Before
 	public void setUp() {
 
-		mockLoginScreenController = new LoginScreenController();
+		//mockLoginScreenController = new LoginScreenController();
 		
-		mockLoginScreenController = spy(new LogInScreenController()); // should be this 
+		mockLoginScreenController = spy(new LogInScreenController()); // Misha : see if this spy crap works
 
 		/*emailTextbox = mock(TextField.class);
 		passTextbox = mock(TextField.class);
@@ -165,7 +165,7 @@ public class LoginTest {
 		assertEquals(expected, result);
 	}
 
-	
+
 	/**
 	 * Test method to test correct input of the user credentials.
 	 * Input : "Amir_Mishayev" as username , "123456" as password, "lecturer" as type.

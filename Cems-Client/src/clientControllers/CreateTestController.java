@@ -37,8 +37,7 @@ public class CreateTestController extends BasicController {
 
 	// ############################### Local Variables
 	// ###########################################
-	
-    
+
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
 
@@ -269,6 +268,16 @@ public class CreateTestController extends BasicController {
 		dbq.load(test);
 	}
 
+	private void setTheTestFromUI() {
+		test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
+		test.setDate(date);
+		test.setCourse(courseComboBox.getValue());
+		test.setSubject(subjectComboBox.getValue());
+		test.setTime(startTime.getText());
+		test.setDuration(duration.getText());
+		test.setTestCode(code.getText());
+	}
+
 	/**
 	 * This method is triggered when the save button is pressed.
 	 * It is responsible for handling the save operation.
@@ -277,43 +286,11 @@ public class CreateTestController extends BasicController {
 	 */
 	@FXML
 	String savePressed(ActionEvent event) {
-		test.setAuthor(ClientHandler.user.getUsername()); // TODO change to pName and not username
-		test.setTestCode(code.getText());
+
+		setTheTestFromUI(); // Misha : First sets the data, will use in UnitTest to set our own test.
+
 		
-
-		// // grab course values from the combobox and get course id from db
-		// ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
-		// try {
-		// 	Thread.sleep(100);
-		// } catch (InterruptedException e) {
-		// 	e.printStackTrace();
-		// }
-		// String courseid = CreateQuestionController.courseID;
-
-		// // grab subject values from the combobox and get subject id from db
-		// ClientUI.chat.GetSubjectIDfromSubjectCourses(subjectComboBox.getValue());
-		// try {
-		// 	Thread.sleep(100);
-		// } catch (InterruptedException e) {
-		// 	e.printStackTrace();
-		// }
-		// String subjectid = CreateQuestionController.getSubjectID();
-
-		// // grab concat values of subjectid and courseid get the next test number from db
-		// ClientUI.chat.getNextFreeTestNumber(subjectid + courseid);
-		// try {
-		// 	Thread.sleep(100);
-		// } catch (InterruptedException e) {
-		// 	e.printStackTrace();
-		// }
-
-		// // String nextTestNumber = subjectid + courseid + "03";
-
-		// // send all three so set a new testID
-		// String numberid = subjectid + courseid + nextTestNumber;
-		// test.setId(numberid);
-
-		if (test.getQuesitonsInTest().isEmpty()) {
+		if (test.getQuesitonsInTest().isEmpty()) { // Misha : Checks the data directly with the test instead of UI
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText(null);
@@ -322,9 +299,9 @@ public class CreateTestController extends BasicController {
 			return "Please Add Questions!";
 		}
 		// Checks if the test points are in order
-		if (totalPoints.getText().equals("100")) {
+		if (test.getTotalPoints() == 100) { // Misha : Checks the data directly with the test instead of UI all should be the same
 			totalPoints.setStyle("-fx-background-color: transparent;");
-			test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
+			//test.setTotalPoints(Integer.parseInt(totalPoints.getText())); // Misha : Changed here
 
 		} else {
 			totalPoints.setStyle("-fx-background-color: red;"); // Set red background color
@@ -335,14 +312,15 @@ public class CreateTestController extends BasicController {
 			alert.showAndWait();
 			return "Invalid Points";
 		}
-		LocalDate pickedDate = date.getValue();
-		
+		LocalDate pickedDate = test.getDate().getValue(); // Misha : Changed here
+
 		LocalDate currentDate = LocalDate.now();
 		// Checks if the date has been picked
-		if ((pickedDate != null) && pickedDate.isAfter(currentDate) && (date.getValue() != null ) && !(date.getValue().equals("")) ){
+		if ((pickedDate != null) && pickedDate.isAfter(currentDate) && (test.getDate().getValue() != null) // Misha : Changed here
+				&& !(test.getDate().getValue().equals(""))) { // Misha : Changed here
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			sdf.format(new Date());
-			System.out.println(sdf);
+			System.out.println(sdf); 
 			date.setStyle("-fx-background-color: transparent;");
 			test.setDate(date);
 
@@ -357,7 +335,7 @@ public class CreateTestController extends BasicController {
 		}
 
 		// Checks if the course has been picked
-		if (courseComboBox.getValue() == "" || courseComboBox.getValue() == " " || courseComboBox.getValue() == null) {
+		if (test.getCourse() == "" || test.getCourse() == " " || test.getCourse() == null) { // Misha : Changed here
 			courseComboBox.setStyle("-fx-background-color: red;"); // Set red background color
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
@@ -371,7 +349,7 @@ public class CreateTestController extends BasicController {
 		}
 
 		// Checks if the subject has been picked
-		if (subjectComboBox.getValue() == "" || subjectComboBox.getValue() == ""
+		if (subjectComboBox.getValue() == "" || subjectComboBox.getValue() == "" // TODO continue this shit
 				|| subjectComboBox.getValue() == null) {
 			subjectComboBox.setStyle("-fx-background-color: red;"); // Set red background color
 			Alert alert = new Alert(AlertType.ERROR);
@@ -414,7 +392,6 @@ public class CreateTestController extends BasicController {
 			return "Please insert duration in a HH:MM format and above 0!";
 		}
 
-		
 		if (code.getText().length() == 4) {
 			code.setStyle("-fx-background-color: transparent;");
 			test.setTestCode(code.getText());
@@ -454,20 +431,18 @@ public class CreateTestController extends BasicController {
 			e.printStackTrace();
 		}
 
-		// String nextTestNumber = subjectid + courseid + "03";
-
 		// send all three so set a new testID
 		String numberid = subjectid + courseid + nextTestNumber;
 		test.setId(numberid);
-
+		test.setAuthor(ClientHandler.user.getUsername());
 		// Sends the test to the database using the ClientController 'chat' in the
 		// ClientUI, while showing a message to the user
 		ClientUI.chat.sendTestToDatabase(test);
 		Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText(null);
-			alert.setContentText("Changes Saved!");
-			alert.showAndWait();
+		alert.setTitle("Error");
+		alert.setHeaderText(null);
+		alert.setContentText("Changes Saved!");
+		alert.showAndWait();
 		// Goes to lecturer screen
 		backToLecturer(event);
 		return "Changes Saved!";
@@ -662,15 +637,6 @@ public class CreateTestController extends BasicController {
 		if (comment != null)
 			commentsBox.setText(comment);
 	}
-
-	/**
-	 * TODO maybe for future refrence
-	 * Method returning the string that is in the comment TextBox.
-	 * Called by the controller that opened this popup.
-	 * private String getComment() {
-	 * return comment;
-	 * }
-	 */
 
 	/**
 	 * This method is triggered when the cancel button is pressed in the comments
