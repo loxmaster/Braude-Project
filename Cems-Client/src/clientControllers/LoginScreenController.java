@@ -68,78 +68,105 @@ public class LoginScreenController extends BasicController {
 		// gest text from fields
 		credentials = getLoginCredentials();
 
-		if (credentials == null)
+		if (credentials == null) {
+			updateStyles(4);
 			return "Credentials are empty!";
+		}
 
 		else if (credentials.get(0) == null) {
-			emailTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);");
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText(null);
-			alert.setContentText("Username is Empty!");
-			alert.showAndWait();
-			passTextbox.setStyle("");
-			combo_Role.setStyle("");
+			updateStyles(1);
+			showAlert("Error", "Username is Empty!");
 			return "Username is Empty!";
+
 		} else if (credentials.get(1) == null) {
-			passTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);;");
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText(null);
-			alert.setContentText("Password is Empty!");
-			alert.showAndWait();
-			emailTextbox.setStyle("");
-			combo_Role.setStyle("");
+			updateStyles(2);
+			showAlert("Error", "Password is Empty!");
+
 			return "Password is Empty!";
+
 		} else if (credentials.get(2) == null) {
-			combo_Role.setStyle("-fx-background-color: rgb(255, 74, 74);;");
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
-			alert.setHeaderText(null);
-			alert.setContentText("Role not selected!");
-			alert.showAndWait();
-			passTextbox.setStyle("");
-			emailTextbox.setStyle("");
+			updateStyles(3);
+			showAlert("Error", "Role not selected!");
+
 			return "Role not selected!";
 		}
 
 		// Verifies students credintials from database
 		if (varifyCredentials(credentials.get(0), credentials.get(1), credentials.get(2))) {
-			// if found loading the corresponding screen
-			switch (ClientHandler.user.getType()) {
-			case "student": {
-				StudentScreenController ssc = (StudentScreenController) openScreen("/clientFXMLS/StudentScreen.fxml",
-						"CEMS System - Student", event);
-				ssc.loadStudent(ClientHandler.user);
-				System.out.println("Opening Student screen...");
-				break;
-			}
-
-			case "lecturer": {
-				LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml",
-						"CEMS System - Lecturer", event);
-				lc.loadLecturer(ClientHandler.user);
-				System.out.println("Opening Lecturer screen...");
-				break;
-			}
-			case "head_of_department":
-			case "hod": {
-				HODController hoc = (HODController) openScreen("/clientFXMLS/HOD.fxml",
-						"CEMS System - Head Of The Department", event);
-				hoc.loadHOD(ClientHandler.user);
-				break;
-			}
-
-			// If the type isnt ok
-			default: {
-				JOptionPane.showMessageDialog(null, "your username or password are incorrect!",
-						"incorrect username or password", JOptionPane.ERROR_MESSAGE);
-			}
-			}
+			lodingfxml(event,credentials.get(2));
 			return "Success User Found!";
 		} else {
 			return "user not found!";
 		}
+		
+	}
+
+	public void lodingfxml(ActionEvent event, String type) {
+		// if found loading the corresponding screen
+		switch (ClientHandler.user.getType()) {
+		case "student": {
+			StudentScreenController ssc = (StudentScreenController) openScreen("/clientFXMLS/StudentScreen.fxml",
+					"CEMS System - Student", event);
+			ssc.loadStudent(ClientHandler.user);
+			System.out.println("Opening Student screen...");
+			break;
+		}
+
+		case "lecturer": {
+			LecturerController lc = (LecturerController) openScreen("/clientFXMLS/Lecturer1.fxml",
+					"CEMS System - Lecturer", event);
+			lc.loadLecturer(ClientHandler.user);
+			System.out.println("Opening Lecturer screen...");
+			break;
+		}
+		case "head_of_department":
+		case "hod": {
+			HODController hoc = (HODController) openScreen("/clientFXMLS/HOD.fxml",
+					"CEMS System - Head Of The Department", event);
+			hoc.loadHOD(ClientHandler.user);
+			break;
+		}
+
+		// If the type isnt ok
+		default: {
+			JOptionPane.showMessageDialog(null, "your username or password are incorrect!",
+					"incorrect username or password", JOptionPane.ERROR_MESSAGE);
+		}
+		}
+	}
+
+	public void updateStyles(int val) {
+		switch (val) {
+		case 1:
+			emailTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);");
+			passTextbox.setStyle("");
+			combo_Role.setStyle("");
+			break;
+		case 2:
+			passTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);;");
+			emailTextbox.setStyle("");
+			combo_Role.setStyle("");
+			break;
+		case 3:
+			combo_Role.setStyle("-fx-background-color: rgb(255, 74, 74);;");
+			passTextbox.setStyle("");
+			emailTextbox.setStyle("");
+			break;
+		default:
+			emailTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);");
+			passTextbox.setStyle("-fx-background-color: rgb(255, 74, 74);;");
+			combo_Role.setStyle("-fx-background-color: rgb(255, 74, 74);;");
+			break;
+		}
+
+	}
+
+	public void showAlert(String title, String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(title);
+		alert.setHeaderText(null);
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 
 	/**
@@ -147,8 +174,8 @@ public class LoginScreenController extends BasicController {
 	 */
 	public ArrayList<String> getLoginCredentials() {
 
-		if (emailTextbox.getText().equals("") || passTextbox.getText().equals("")
-				|| combo_Role.getValue().equals(null)) {
+		if (emailTextbox.getText().equals("") && passTextbox.getText().equals("")
+				&& combo_Role.getValue().equals(null)) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Error");
 			alert.setHeaderText(null);

@@ -1,49 +1,91 @@
-package unitests;
+package unittests;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
+import java.util.ArrayList;
+import clientControllers.CreateTestController;
+import clientHandlers.ClientController;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import java.io.IOException;
+import java.lang.reflect.Method;
+import javafx.event.ActionEvent;
 
-import java.beans.Transient;
-import java.util.Arrays;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-class CreateTest_Test {
+public class CreateTest_Test {
 
 	// private variables we goona use in the tests
-	private CreateTestController mockCreateTestController;
-	private Test test;
-	private QuestionModel question1, question2;
+	private CreateTestController mockCreateTestController;   
+	private ActionEvent event;
 
-	@BeforeEach
-	void setUp() throws Exception {
-		//mockCreateTestController = new CreateTestController();
+	
+	@Before
+	public void setUp() throws Exception {
+		mockCreateTestController = spy(new CreateTestController()); 
 
-		mockCreateTestController = spy(new CreateTestController()); // not sure
+	} 
 
+	
+	@Test
+	public void testSavePressedWithEmptyQuestions() { 
+		doNothing().when(mockCreateTestController).callTheTestFromUI();
+		doNothing().when(mockCreateTestController).showAlert(anyString(), anyString());		
+		String expected = "Please Add Questions!";
+		String result = mockCreateTestController.savePressed(event);
+		assertEquals(expected, result);
+	}
 
-		test = new Test ();
-
-		question1 = new QuestionModel();
-		question2 = new QuestionModel();
-
+	@Test
+	public void testSavePressedWithInvalidPoints() { 
+		doNothing().when(mockCreateTestController).callTheTestFromUI();
+		Test test = new Test();
 		
 	}
-
-	@Test
-	void test1() { // Misha : i think we need to test only the save method in createtestcontroller
-		// test.setQuesitonsInTest(Arrays.asList(null));
-	}
-
-	@Test
-	void test2() {
-		// test.setQuesitonsInTest(Arrays.asList(question1, question2));
-	}
-
-	@Test
-	void test3() {
-		// test.setDuration(null);
-	}
+	
+	
+//	
+//	@Test
+//	public void testSavePressedWithInvalidDate() { 
+//		doNothing().when(mockCreateTestController).callTheTestFromUI();
+//	}
+//	
+//	@Test
+//	public void testSavePressedWithoutCourse() { 
+//		doNothing().when(mockCreateTestController).callTheTestFromUI();
+//	}
+//	
+//	@Test
+//	public void testSavePressedWithoutSubject() { 
+//		doNothing().when(mockCreateTestController).callTheTestFromUI();
+//	}
+//	
+//	@Test
+//	public void testSavePressedWithInvalidStartTimeFormat() { 
+//		doNothing().when(mockCreateTestController).callTheTestFromUI();
+//	}
+//	
+//	@Test
+//	public void testSavePressedWithInvalidDurationFormatOrZeroDuration() { 
+//		doNothing().when(mockCreateTestController).callTheTestFromUI();
+//	}
+//	
+//	@Test
+//	public void testSavePressedWithInvalidTestCodeLength() { 
+//		doNothing().when(mockCreateTestController).callTheTestFromUI();
+//	}
+//	
+//	@Test
+//	public void testSavePressedWithValidData() { 
+//		doNothing().when(mockCreateTestController).callTheTestFromUI();
+//	}
+//	
+//	@Test
+//	public void testSavePressedWithDatabaseErrors() { 
+//		doNothing().when(mockCreateTestController).callTheTestFromUI();
+//	}
 
 }
