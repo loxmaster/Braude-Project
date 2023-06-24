@@ -1,50 +1,28 @@
-package unitests;
+package unittests;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-//import static org.mockito.Mockito.mock;
-
+import static org.mockito.Mockito.mock;
 import java.util.ArrayList;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ComboBox;
 import clientControllers.LoginScreenController;
 import org.junit.Before;
 import org.junit.Test;
-import java.lang.reflect.Field;
+
+import java.io.IOException;
 import javafx.event.ActionEvent;
 
-//import gui.UserScreens.LogInScreenController;
-import javafx.event.ActionEvent;
 
 public class LoginTest {
 	private LoginScreenController mockLoginScreenController;
 	private ActionEvent event;
-	//private TextField emailTextbox, passTextbox;
-	//private ComboBox<String> combo_Role;
+//	private TextField emailTextbox, passTextbox;
+//	private ComboBox<String> combo_Role;
 
 	@Before
-	public void setUp() {
-
-		//mockLoginScreenController = new LoginScreenController();
+	public void setUp() throws  IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 		
-		mockLoginScreenController = spy(new LogInScreenController()); // Misha : see if this spy crap works
+		mockLoginScreenController = spy(new LoginScreenController()); // Misha : see if this spy crap works
 
-		/*emailTextbox = mock(TextField.class);
-		passTextbox = mock(TextField.class);
-		combo_Role = mock(ComboBox.class);
-
-		// Use reflection to access and modify private fields
-		Field emailTextboxField = LoginScreenController.class.getDeclaredField("emailTextbox");
-		emailTextboxField.setAccessible(true);
-		emailTextboxField.set(mokLoginScreenController, emailTextbox);
-
-		Field passTextboxField = LoginScreenController.class.getDeclaredField("passTextbox");
-		passTextboxField.setAccessible(true);
-		passTextboxField.set(mokLoginScreenController, passTextbox);
-
-		Field combo_RoleField = LoginScreenController.class.getDeclaredField("combo_Role");
-		combo_RoleField.setAccessible(true);
-		combo_RoleField.set(mokLoginScreenController, combo_Role);*/
 
 	}
 
@@ -52,9 +30,10 @@ public class LoginTest {
 	 * Test for checking the login of with null Credentials.
 	 * Input : null as credentials.
 	 * Result : Fail with "Credentials are empty!" message.
+	 * @throws IOException 
 	 */
 	@Test
-	public void TestloginAllNullCrerdentials() {
+	public void TestloginAllNullCrerdentials() throws IOException {
 		
 		// Misha : Changed the code in login controller a bit to fit this shit .
 		// So "this shit" defines that when getLoginCredentials() of the controller is called
@@ -66,24 +45,6 @@ public class LoginTest {
 		String result = mockLoginScreenController.pressedLogin(event);
 		assertEquals(expected, result);
 		
-		// IDK whats all that bellow decided to not delete and just to comment it.
-		
-		/*when(emailTextbox.getText()).thenReturn(null);
-		when(passTextbox.getText()).thenReturn(null);
-		when(combo_Role.getValue()).thenReturn(null);
-
-		mokLoginScreenController.pressedLogin(mock(ActionEvent.class));
-
-		verify(emailTextbox.setStyle().equals("-fx-background-color: rgb(255, 74, 74);"));
-		verify(passTextbox.setStyle().equals("-fx-background-color: rgb(255, 74, 74);"));
-		verify(combo_Role.setStyle().equals("-fx-background-color: rgb(255, 74, 74);"));
-
-		assertTrue(emailTextbox.getStyle().equals("-fx-background-color: rgb(255, 74, 74);"));
-		assertTrue(passTextbox.getStyle().equals("-fx-background-color: rgb(255, 74, 74);"));
-		assertTrue(combo_Role.getStyle().equals("-fx-background-color: rgb(255, 74, 74);"));*/
-		
-		//?
-		//verify(mokLoginScreenController, times(1)).showErrorMessage("your username or password are incorrect!");
 	}
 
 
@@ -91,9 +52,10 @@ public class LoginTest {
 	 * Test for checking the login of with wrong type.
 	 * Input : "Amir_Mishayev" as username, "123456" as password, null as type.
 	 * Result : Fail with "Role not selected!" message.
+	 * @throws IOException 
 	 */
 	@Test
-	public void TestloginNullType() {
+	public void TestloginNullType() throws IOException {
 		ArrayList<String> credentials = new ArrayList<>();
 		credentials.add("Amir_Mishayev");
 		credentials.add("123456");
@@ -111,7 +73,7 @@ public class LoginTest {
 	 * Result : Fail with "User not found!" message.
 	 */
 	@Test
-	public void TestloginWrongUsername() {
+	public void TestloginWrongUsername() throws IOException {
 		
 		// Misha : changed the code also for this shit. added method to varify the credentials ,
 		// returns true or false based if the user was found.  
@@ -120,48 +82,51 @@ public class LoginTest {
 		credentials.add("WrongUsername");
 		credentials.add("123456");
 		credentials.add("lecturer");
-		doReturn(credentials).when(mockLoginScreenController).getLoginCredentials();
-		doReturn(false).when(mockLoginScreenController).varifyCredentials(); // maybe should send parameters where
+		when(mockLoginScreenController.getLoginCredentials()).thenReturn(credentials);
+		when(mockLoginScreenController.varifyCredentials(anyString(), anyString(), anyString())).thenReturn(false);
 		String expected = "user not found!";
 		String result = mockLoginScreenController.pressedLogin(event);
 		assertEquals(expected, result);
 	}
 
 
+
 	/**
 	 * Test for checking the login of with wrong password.
 	 * Input : "Amir_Mishayev" as username, "WrongPassword" as password, "lecturer" as type.
 	 * Result : Fail with "User not found!" message.
+	 * @throws IOException 
 	 */
 	@Test
-	public void TestloginWrongPassword() {
+	public void TestloginWrongPassword() throws IOException {
 		ArrayList<String> credentials = new ArrayList<>();
 		credentials.add("Amir_Mishayev");
 		credentials.add("WrongPassword");
 		credentials.add("lecturer");
 		doReturn(credentials).when(mockLoginScreenController).getLoginCredentials();
-		doReturn(false).when(mockLoginScreenController).varifyCredentials(); // maybe should send parameters where
+		when(mockLoginScreenController.varifyCredentials(anyString(), anyString(), anyString())).thenReturn(false);
 		String expected = "User not found!";
-		String result = mockloginScreenController.pressedLogin(event);
+		String result = mockLoginScreenController.pressedLogin(event);
 		assertEquals(expected, result);
 	}
 
 
 	/**
-	 * Test for checking the login of with wrong type.
+	 * Test for checking the login of with wrong type.(Amir_Mishayev not from type student)
 	 * Input : "Amir_Mishayev" as username, "123456" as password, "student" as type.
 	 * Result : Fail with "User not found!" message.
+	 * @throws IOException 
 	 */
 	@Test
-	public void TestloginWrongType() { // Not really sure what happans here when the type doesnt correspond
+	public void TestloginWrongType() throws IOException { // Not really sure what happans here when the type doesnt correspond
 		ArrayList<String> credentials = new ArrayList<>();
 		credentials.add("Amir_Mishayev");
 		credentials.add("123456");
 		credentials.add("student");
 		doReturn(credentials).when(mockLoginScreenController).getLoginCredentials();
-		doReturn(false).when(mockLoginScreenController).varifyCredentials(); // maybe should send parameters where
+		when(mockLoginScreenController.varifyCredentials(anyString(), anyString(), anyString())).thenReturn(false);
 		String expected = "User not found!";
-		String result = mockloginScreenController.pressedLogin(event);
+		String result = mockLoginScreenController.pressedLogin(event);
 		assertEquals(expected, result);
 	}
 
@@ -170,17 +135,18 @@ public class LoginTest {
 	 * Test method to test correct input of the user credentials.
 	 * Input : "Amir_Mishayev" as username , "123456" as password, "lecturer" as type.
 	 * Result : Success with "Success User Found!" message.
+	 * @throws IOException 
 	 */
 	@Test
-  	public void testLoginSuccessful() {
+  	public void testLoginSuccessful() throws IOException {
 		ArrayList<String> credentials = new ArrayList<>();
 		credentials.add("Amir_Mishayev");
 		credentials.add("123456");
 		credentials.add("lecturer");
 		doReturn(credentials).when(mockLoginScreenController).getLoginCredentials();
-		doReturn(true).when(mockLoginScreenController).varifyCredentials(); // maybe should send parameters where
+		when(mockLoginScreenController.varifyCredentials(anyString(), anyString(), anyString())).thenReturn(false);
 		String expected = "Success User Found!";
-		String result = mockloginScreenController.pressedLogin(event);
+		String result = mockLoginScreenController.pressedLogin(event);
 		assertEquals(expected, result);
 	}
 
