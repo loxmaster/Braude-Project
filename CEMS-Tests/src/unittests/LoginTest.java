@@ -24,7 +24,6 @@ public class LoginTest {
 		mockLoginScreenController = spy(new LoginScreenController());
 		mockChat = mock(ClientController.class);
 		ClientUI.chat = mockChat;
-
 	}
 	
 	

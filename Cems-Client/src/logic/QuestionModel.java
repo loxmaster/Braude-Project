@@ -14,7 +14,16 @@ public class QuestionModel implements Serializable {
     private String points = "0";
     private Button edit;
     private CheckBox checkBox;
-    private String selected;
+    
+    public void setCheckBox(CheckBox checkBox) {
+		this.checkBox = checkBox;
+	}
+
+	private String selected;
+    
+    public QuestionModel(String id) {
+    	this.id=id;
+    }
 
     public QuestionModel(String id, String subject, String coursename, String questiontext, String questionnumber,
             String lecturer, String optionA, String optionB, String optionC, String optionD, String answer) {
@@ -29,7 +38,7 @@ public class QuestionModel implements Serializable {
         this.optionC = optionC;
         this.optionD = optionD;
         this.answer = answer;
-        checkBox = new CheckBox();
+        //checkBox = new CheckBox();
     }
 
     public String getSelected() {
@@ -151,6 +160,7 @@ public class QuestionModel implements Serializable {
     public CheckBox getCheckBox() {
         return checkBox;
     }
+    
 
     @Override
     public int hashCode() {

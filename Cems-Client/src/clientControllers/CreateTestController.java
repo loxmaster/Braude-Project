@@ -40,6 +40,7 @@ public class CreateTestController extends BasicController {
 
 	ObservableList<String> subjectList;
 	ObservableList<String> courseList;
+	public String strTest;
 
 	/**
 	 * Test object for the current test.
@@ -182,14 +183,16 @@ public class CreateTestController extends BasicController {
 	@FXML
 	public String savePressed(ActionEvent event) {
 		callTheTestFromUI();
-		if (test.getQuesitonsInTest().isEmpty()) { 
+//		Test localTest = new Test();
+//		localTest =test;
+
+		if (areQuestionsInTest()) {
 			showAlert("Error", "Please Add Questions!");
 			return "Please Add Questions!";
 		}
-		
-		
+
 		// Checks if the test points are in order
-		if (test.getTotalPoints() == 100) { 
+		if (qInTestsAreHundred(test.getTotalPoints())) {
 			updateStyles(1);
 
 		} else {
@@ -197,19 +200,15 @@ public class CreateTestController extends BasicController {
 			showAlert("Error", "Invalid Points");
 			return "Invalid Points";
 		}
-		LocalDate pickedDate = test.getDate().getValue(); 
 
-		LocalDate currentDate = LocalDate.now();
 		// Checks if the date has been picked
-		if ((pickedDate != null) && pickedDate.isAfter(currentDate) && (test.getDate().getValue() != null) // Misha :
-																											// Changed
-																											// here
-				&& !(test.getDate().getValue().equals(""))) { // Misha : Changed here
+		if (isDateValid()) {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 			sdf.format(new Date());
 			System.out.println(sdf);
 			updateStyles(3);
 			test.setDate(date);
+			strTest = "Date Valid!";
 
 		} else {
 			updateStyles(4);
@@ -267,7 +266,7 @@ public class CreateTestController extends BasicController {
 			updateStyles(14);
 			showAlert("Error", "Invalid Test Code! (4 digits)");
 			return "Invalid Test Code! (4 digits)";
-			
+
 		}
 		// grab course values from the combobox and get course id from db
 		ClientUI.chat.GetCourseIDfromSubjectCourses(courseComboBox.getValue());
@@ -306,6 +305,24 @@ public class CreateTestController extends BasicController {
 		// Goes to lecturer screen
 		backToLecturer(event);
 		return "Changes Saved!";
+	}
+
+	public boolean isDateValid() {
+		LocalDate pickedDate = test.getDate().getValue();
+		LocalDate currentDate = LocalDate.now();
+		return (pickedDate != null) && pickedDate.isAfter(currentDate) && isGetDateValid();
+	}
+
+	public boolean isGetDateValid() {
+		return (test.getDate().getValue() != null) && (!test.getDate().getValue().equals(""));
+	}
+
+	public boolean qInTestsAreHundred(int val) {
+		return val == 100;
+	}
+
+	public boolean areQuestionsInTest() {
+		return test.getQuesitonsInTest().isEmpty();
 	}
 
 	public void updateStyles(int val) {
@@ -460,9 +477,9 @@ public class CreateTestController extends BasicController {
 	}
 
 	public void callTheTestFromUI() {
-		setTheTestFromUI(); 
+		setTheTestFromUI();
 	}
-	
+
 	private void setTheTestFromUI() {
 		test.setTotalPoints(Integer.parseInt(totalPoints.getText()));
 		test.setDate(date);
@@ -471,7 +488,6 @@ public class CreateTestController extends BasicController {
 		test.setTime(startTime.getText());
 		test.setDuration(duration.getText());
 		test.setTestCode(code.getText());
-		//return true;
 	}
 
 	// #########################################################
@@ -625,7 +641,7 @@ public class CreateTestController extends BasicController {
 	 * over all the questions in the test and adding up all the questions points.
 	 * Remembers the result in local variable pointsInTest.
 	 */
-	private void updateTotalPoints() {
+	public void updateTotalPoints() {
 		int totalPoints = 0;
 		ArrayList<QuestionModel> tempQuestionList = test.getQuesitonsInTest();
 		for (QuestionModel question : tempQuestionList)
@@ -700,6 +716,11 @@ public class CreateTestController extends BasicController {
 
 		openScreen("/clientFXMLS/LecturerManageTest.fxml", "CEMS System - Lecturer", event);
 
+	}
+
+	public Test getTest() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
