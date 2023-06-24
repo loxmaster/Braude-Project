@@ -42,7 +42,7 @@ public class ServerUI extends Application {
 		// Create a new scene with the root pane
 		Scene scene = new Scene(root);
 		// Add the CSS file to the scene
-		scene.getStylesheets().add(getClass().getResource("/serverFXMLS/background.css").toExternalForm());
+		//scene.getStylesheets().add(getClass().getResource("/serverFXMLS/background.css").toExternalForm());
 		// Get the controller from the FXMLLoader
 		sController = loader.getController();
 		// Call the load method on the controller
