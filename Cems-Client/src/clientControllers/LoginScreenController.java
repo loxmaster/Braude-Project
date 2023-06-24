@@ -63,11 +63,7 @@ public class LoginScreenController extends BasicController {
 		ArrayList<String> credentials = new ArrayList<>();
 
 		// Opens connection if closed
-		if (ClientUI.chat != null) {
-			ClientUI.chat.openConnection();
-		} else {
-			return null;
-		}
+		ClientUI.chat.openConnection();
 
 		// gest text from fields
 		credentials = getLoginCredentials();
