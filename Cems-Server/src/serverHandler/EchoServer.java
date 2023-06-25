@@ -685,23 +685,30 @@ public class EchoServer extends AbstractServer {
 	}
 
 	// User Login Varification
-	private void loginVarification(ArrayList<String> list, ConnectionToClient client) {
+	private String loginVarification(ArrayList<String> list, ConnectionToClient client) {
 		try {
-
 			stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(list.get(0));
 			if (result.next()) {
 				// check if the password in the DB is the same as user input
-				String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3)
+				if( result.getString(2).equals(list.get(1))) {
+					String res = result.getString(1) + " " + result.getString(2) + " " + result.getString(3)
 						+ " " + result.getString(4) + " " + result.getString(5) + " " + result.getString(6);
-				System.out.println("Message sent back: " + res);
-				client.sendToClient((Object) res);
-
-			} else {
+					System.out.println("Message sent back: " + res);
+					return "Login varified";
+				}	
+				else
+					if(client!=null) {
+						client.sendToClient((Object) userNotFound);
+						return "Wrong password";
+					}
+				}
+			else {
 				// The user is not in the database (not registered)
 				// or incorrect password
 				System.out.println("user has not been found!");
-				client.sendToClient((Object) userNotFound);
+				if(client!=null)
+					client.sendToClient((Object) userNotFound);
 			}
 
 		} catch (SQLException e) {
@@ -709,6 +716,7 @@ public class EchoServer extends AbstractServer {
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
+		return userNotFound;
 	}
 
 	/**
