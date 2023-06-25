@@ -40,6 +40,10 @@ public class CreateTest_Test {
 
 	}
 
+
+ 	// Check Functionality: testing clickSavePressed case that no questions added - NULL questions.
+	// Input Data: no questions added.
+	// Expected Result: method should return the string "Please Add Questions!".
 	@Test
 	public void testSavePressedWithEmptyQuestions() {
 		doNothing().when(mockCreateTestController).callTheTestFromUI();
@@ -49,24 +53,34 @@ public class CreateTest_Test {
 		assertEquals(expected, result);
 	}
 
+
+	// Check Functionality: testing whether the method correctly handles the scenario of points exceeding the limit.
+	// Input Data: questions added with Total Point 101.
+	// Expected Result:  return false.
 	@Test
 	public void testSavePressedWithInvalidPoints() {
 		doNothing().when(mockCreateTestController).callTheTestFromUI();
 		doReturn(false).when(mockCreateTestController).areQuestionsInTest();
 		boolean result = mockCreateTestController.qInTestsAreHundred(101);
-
 		assertFalse(result);
 	}
 
+
+	// Check Functionality: testing whether the method correctly handles the scenario of points exceeding the limit.
+	// Input Data: questions added with Total Point 100.
+	// Expected Result: return true.
 	@Test
 	public void testSavePressedWithValidPoints() {
 		doNothing().when(mockCreateTestController).callTheTestFromUI();
 		doReturn(false).when(mockCreateTestController).areQuestionsInTest();
 		boolean result = mockCreateTestController.qInTestsAreHundred(100);
-
 		assertTrue(result);
 	}
 
+
+	// Check Functionality: tests whether the method correctly handles the scenario of an invalid date.
+	// Input Data: questions added with Total Point 100 and invalid date.
+	// Expected Result: method should return the string "Date Not Valid!".
 	@Test
 	public void testSavePressedWithInvalidDate() {
 		doNothing().when(mockCreateTestController).callTheTestFromUI();
@@ -79,9 +93,12 @@ public class CreateTest_Test {
 		String expected = "Date Not Valid!";
 		String result = mockCreateTestController.savePressed(event);
 		assertEquals(expected, result);
-
 	}
 	
+
+	// Check Functionality: tests whether the method correctly handles the scenario of a missing course selection.
+	// Input Data: questions added with Total Point 100 , valid date and course is not picked.
+	// Expected Result: method should return the string "Course Not Picked!".
 	@Test
 	public void testSavePressedWithoutCourse() { 
 		doNothing().when(mockCreateTestController).callTheTestFromUI();
@@ -98,6 +115,10 @@ public class CreateTest_Test {
 		assertEquals(expected, result);
 	}
 	
+
+	// Check Functionality: tests whether the method correctly handles the scenario of a missing subject selection.
+	// Input Data: questions added with Total Point 100 , valid date ,course  picked and subject not picked.
+	// Expected Result: method should return the string "Subject Not Picked!".
 	@Test
 	public void testSavePressedWithoutSubject() { 
 		doNothing().when(mockCreateTestController).callTheTestFromUI();
@@ -117,6 +138,10 @@ public class CreateTest_Test {
 		assertEquals(expected, result);
 	}
 	
+
+	// Check Functionality: tests whether the method correctly handles the scenario of an invalid time format.
+	// Input Data: questions added with Total Point 100 , valid date ,course picked , subject picked and invalid start time.
+	// Expected Result: method should return the string "Please insert time in a HH:MM format!".
 	@Test
 	public void testSavePressedWithInvalidStartTimeFormat() { 
 		doNothing().when(mockCreateTestController).callTheTestFromUI();
@@ -139,6 +164,10 @@ public class CreateTest_Test {
 		assertEquals(expected, result);
 	}
 	
+
+	// Check Functionality: tests whether the method correctly handles the scenario of an invalid duration format.
+	// Input Data: questions added with Total Point 100 , valid date ,course picked , subject picked  , valid start time and invalid duration time.
+	// Expected Result: method should return the string "Please insert duration in a HH:MM format and above 0!".
 	@Test
 	public void testSavePressedWithInvalidDurationFormatOrZeroDuration() { 
 		doNothing().when(mockCreateTestController).callTheTestFromUI();
@@ -164,6 +193,11 @@ public class CreateTest_Test {
 		assertEquals(expected, result);
 	}
 	
+
+
+	// Check Functionality: tests whether the method correctly handles the scenario of an invalid test code.
+	// Input Data: questions added with Total Point 100,valid date,course picked,subject picked,valid start time,valid duration time and invalid test code.
+	// Expected Result: method should return the string "Invalid Test Code! (4 digits)".
 	@Test
 	public void testSavePressedWithInvalidTestCodeLength() { 
 		doNothing().when(mockCreateTestController).callTheTestFromUI();
@@ -192,6 +226,10 @@ public class CreateTest_Test {
 		assertEquals(expected, result);
 	}
 	
+
+	// Check Functionality: tests whether the method correctly handles the scenario of valid data and returns the appropriate message.
+	// Input Data: All data valid.
+	// Expected Result: method should return the string "Changes Saved!".
 	@Test
 	public void testSavePressedWithValidData() { 
 		doNothing().when(mockCreateTestController).callTheTestFromUI();
